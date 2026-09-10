@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "e4-manual-review-v1",
+  "reviewedAt": "2026-09-10T14:42:00-05:00",
+  "reviewer": "Codex",
+  "basis": "Informal comparison of each terminal result with the frozen note and its manualChecks. This is not the owner-approved gold evaluation defined for E7.",
+  "summary": {
+    "cases": 20,
+    "terminalDeterministicallyAdmissible": 8,
+    "terminalFailures": 12,
+    "admissibleOutputsFullySatisfyingManualChecks": 0,
+    "admissibleOutputsWithUnsupportedOrIncorrectInterpretations": 8,
+    "admissibleOutputsWithOmittedSupportedFacts": 8,
+    "formalPrecisionRecallOrF1Calculated": false
+  },
+  "reviews": [
+    {
+      "noteId": "E4-001",
+      "terminalResult": "admissible_by_harness",
+      "semanticResult": "incorrect",
+      "findings": ["Created three duplicate subjects for one observed group.", "Classified an observed count as reported_total.", "Omitted the unidentified-member age claim."]
+    },
+    {
+      "noteId": "E4-002",
+      "terminalResult": "json_parse_failure",
+      "semanticResult": "no_complete_output",
+      "findings": ["Both attempts reached the 700-token ceiling with incomplete JSON."]
+    },
+    {
+      "noteId": "E4-003",
+      "terminalResult": "json_parse_failure",
+      "semanticResult": "no_complete_output",
+      "findings": ["Both attempts reached the 700-token ceiling with incomplete JSON."]
+    },
+    {
+      "noteId": "E4-004",
+      "terminalResult": "admissible_by_harness",
+      "semanticResult": "incorrect",
+      "findings": ["Used equipment_group instead of an unlinked claim.", "Invented direct observation and reported_total scope.", "Used 'last month' as evidence for the quantity."]
+    },
+    {
+      "noteId": "E4-005",
+      "terminalResult": "json_parse_failure",
+      "semanticResult": "no_complete_output",
+      "findings": ["Both attempts reached the 700-token ceiling with malformed JSON."]
+    },
+    {
+      "noteId": "E4-006",
+      "terminalResult": "json_parse_failure",
+      "semanticResult": "no_complete_output",
+      "findings": ["Both attempts reached the 700-token ceiling; no complete negation result was produced."]
+    },
+    {
+      "noteId": "E4-007",
+      "terminalResult": "admissible_by_harness",
+      "semanticResult": "incorrect",
+      "findings": ["Created Room 5 as equipment.", "Attached the ultrasound quantity to the room subject.", "Classified observed quantities as reported_total and spread Room 5 to the ultrasound group."]
+    },
+    {
+      "noteId": "E4-008",
+      "terminalResult": "json_parse_failure",
+      "semanticResult": "no_complete_output",
+      "findings": ["Both attempts reached the 700-token ceiling; no complete conditional-future result was produced."]
+    },
+    {
+      "noteId": "E4-009",
+      "terminalResult": "admissible_by_harness",
+      "semanticResult": "incorrect",
+      "findings": ["Created five duplicate equipment subjects.", "Classified the directly observed count of two as reported_total.", "Proposed a location ambiguity that the note did not contain."]
+    },
+    {
+      "noteId": "E4-010",
+      "terminalResult": "admissible_by_harness",
+      "semanticResult": "incorrect",
+      "findings": ["Converted an estimated age into an unsupported absent quantity of zero.", "Invented reported_total and department scope.", "Omitted the supported age estimate."]
+    },
+    {
+      "noteId": "E4-011",
+      "terminalResult": "deterministic_evidence_failure",
+      "semanticResult": "incorrect",
+      "findings": ["Added a trailing space to excerpts, so they were not exact substrings.", "Classified an approximate observed count as reported_total and attributed staff speech."]
+    },
+    {
+      "noteId": "E4-012",
+      "terminalResult": "deterministic_evidence_failure",
+      "semanticResult": "incorrect",
+      "findings": ["Assigned quantityValue to a model claim.", "Added unsupported text to the evidence excerpt.", "Created a location ambiguity where none existed."]
+    },
+    {
+      "noteId": "E4-013",
+      "terminalResult": "json_parse_failure",
+      "semanticResult": "no_complete_output",
+      "findings": ["Both attempts reached the 700-token ceiling with incomplete JSON."]
+    },
+    {
+      "noteId": "E4-014",
+      "terminalResult": "deterministic_evidence_failure",
+      "semanticResult": "incorrect",
+      "findings": ["Added unsupported text to every excerpt.", "Used value absent for present equipment.", "Did not preserve the explicit total-of-two claim correctly."]
+    },
+    {
+      "noteId": "E4-015",
+      "terminalResult": "json_parse_failure",
+      "semanticResult": "no_complete_output",
+      "findings": ["The retry reached the 700-token ceiling with incomplete JSON."]
+    },
+    {
+      "noteId": "E4-016",
+      "terminalResult": "json_parse_failure",
+      "semanticResult": "no_complete_output",
+      "findings": ["Both attempts reached the 700-token ceiling; no complete change result was produced."]
+    },
+    {
+      "noteId": "E4-017",
+      "terminalResult": "admissible_by_harness",
+      "semanticResult": "incorrect",
+      "findings": ["Created the room and asset ID as equipment subjects.", "Invented direct observation and reported_total scope.", "Omitted the document-backed identifier claim."]
+    },
+    {
+      "noteId": "E4-018",
+      "terminalResult": "admissible_by_harness",
+      "semanticResult": "incorrect",
+      "findings": ["Created three duplicate group subjects and quantity claims.", "Classified the observed quantity as reported_total.", "Omitted the attributed unidentified-member location claim."]
+    },
+    {
+      "noteId": "E4-019",
+      "terminalResult": "admissible_by_harness",
+      "semanticResult": "incorrect",
+      "findings": ["Reversed possible presence into absence with quantity zero.", "Invented reported_total, Confirmed certainty, and an attribution equal to the note ID."]
+    },
+    {
+      "noteId": "E4-020",
+      "terminalResult": "json_parse_failure",
+      "semanticResult": "no_complete_output",
+      "findings": ["Both attempts reached the 700-token ceiling; no complete split-provenance result was produced."]
+    }
+  ]
+}

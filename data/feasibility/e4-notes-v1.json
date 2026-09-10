@@ -1,0 +1,109 @@
+{
+  "datasetVersion": "e4-notes-v1",
+  "partition": "feasibility-spike",
+  "synthetic": true,
+  "notice": "Synthetic demonstration data.",
+  "frozenAt": "2026-09-10T14:03:26-05:00",
+  "notes": [
+    {
+      "id": "E4-001",
+      "text": "I saw three DemoScan Technologies MRI scanners in Radiology. One of the three looked about eight years old, but I could not tell which unit it was.",
+      "manualChecks": ["observed quantity 3", "age attaches to unidentified member, not all three", "claim-attachment ambiguity"]
+    },
+    {
+      "id": "E4-002",
+      "text": "The radiology manager said Campus North has four CT scanners in total, all made by Aster Imaging.",
+      "manualChecks": ["attributed statement", "reported total 4", "Campus North location scope"]
+    },
+    {
+      "id": "E4-003",
+      "text": "The department lead said there are three MRI scanners.",
+      "manualChecks": ["quantity 3 with unknown completeness", "attributed statement", "unknown location scope"]
+    },
+    {
+      "id": "E4-004",
+      "text": "They installed a new ultrasound last month.",
+      "manualChecks": ["unlinked equipment claim", "no inferred location", "no inferred manufacturer"]
+    },
+    {
+      "id": "E4-005",
+      "text": "I read serial DS-4471 on the label of the DemoScan CT scanner in Room C2.",
+      "manualChecks": ["individual candidate", "label source for identifier", "no claim that current installation is verified"]
+    },
+    {
+      "id": "E4-006",
+      "text": "I did not see a CT scanner in the East Wing.",
+      "manualChecks": ["negated presence", "must not create positive CT presence", "direct observation"]
+    },
+    {
+      "id": "E4-007",
+      "text": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5.",
+      "manualChecks": ["two equipment subjects", "quantity 2 attaches only to ultrasound", "Room 5 attaches only to MRI"]
+    },
+    {
+      "id": "E4-008",
+      "text": "If the renovation is approved, the hospital may add two MRI scanners next year.",
+      "manualChecks": ["conditional future statement", "must not represent current presence", "estimated certainty"]
+    },
+    {
+      "id": "E4-009",
+      "text": "The technician told me, 'We have five patient monitors across Intensive Care in total.' I personally saw two beside the nurses' station.",
+      "manualChecks": ["reported total 5 from attributed statement", "observed quantity 2 separate", "same modality with distinct evidence"]
+    },
+    {
+      "id": "E4-010",
+      "text": "Someone mentioned that the Meridian Diagnostics MRI is probably six or seven years old.",
+      "manualChecks": ["unattributed statement", "estimated age range", "individual candidate without durable identifier"]
+    },
+    {
+      "id": "E4-011",
+      "text": "I counted about twelve NovaPulse patient monitors on the ward.",
+      "manualChecks": ["observed approximate quantity", "estimated certainty", "ward scope"]
+    },
+    {
+      "id": "E4-012",
+      "text": "The HelioView MRI in Room 2 is model HV-One, according to the facilities coordinator.",
+      "manualChecks": ["individual candidate", "attributed statement", "model and room attached to same subject"]
+    },
+    {
+      "id": "E4-013",
+      "text": "I saw an Aster Imaging CT in Emergency and another Aster Imaging CT in Outpatients; the second one was model AX-4.",
+      "manualChecks": ["two distinct subjects", "model attaches only to second CT", "no grouped total inference"]
+    },
+    {
+      "id": "E4-014",
+      "text": "The imaging director confirmed that Radiology has exactly two ultrasound systems in total: one DemoScan EchoLeaf and one LumaCare Sonora.",
+      "manualChecks": ["reported total 2 for Radiology", "word confirmed does not make certainty Confirmed", "two named individual candidates"]
+    },
+    {
+      "id": "E4-015",
+      "text": "There are four MRI scanners across the Meadow Health organization, though I only visited its River Campus today.",
+      "manualChecks": ["quantity scope unknown unless completeness explicit", "organization location scope", "must not assign total to River Campus"]
+    },
+    {
+      "id": "E4-016",
+      "text": "The site manager said two scanners were transferred today and West Campus now has two MRI scanners in total.",
+      "manualChecks": ["reported change", "reported total 2", "does not identify transferred assets"]
+    },
+    {
+      "id": "E4-017",
+      "text": "The service sheet dated Monday lists asset ID MH-208 for the LumaCare ultrasound in Bay 3.",
+      "manualChecks": ["supporting document source", "identifier may be confirmed by cited sheet", "other facts are not automatically confirmed"]
+    },
+    {
+      "id": "E4-018",
+      "text": "I observed three Aster Imaging MRI scanners. A nurse said one is in the basement, but she did not know which one.",
+      "manualChecks": ["observed quantity 3", "basement claim attaches to unidentified member", "mixed direct and attributed sources"]
+    },
+    {
+      "id": "E4-019",
+      "text": "There might be another CT scanner somewhere on this campus; nobody was sure of the room or manufacturer.",
+      "manualChecks": ["estimated unlinked claim", "unknown location detail", "no invented manufacturer"]
+    },
+    {
+      "id": "E4-020",
+      "text": "The authorized demo registry record says serial NP-900 belongs to a NovaPulse monitor. Today I saw a monitor bearing NP-900 in Critical Care.",
+      "manualChecks": ["authorized record supports identity", "direct observation supports current sighting and location", "separate provenance for distinct facts"]
+    }
+  ]
+}

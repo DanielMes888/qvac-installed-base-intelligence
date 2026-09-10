@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "e4-offline-network-probe-v1",
+  "startedAt": "2026-09-10T19:47:07.116Z",
+  "endedAt": "2026-09-10T19:47:32.430Z",
+  "target": "https://registry.npmjs.org/@qvac/sdk",
+  "payloadContainedObservationData": false,
+  "externalFetchSucceeded": false,
+  "blockedOrTimedOut": true,
+  "error": "TypeError: fetch failed",
+  "cachedModelLoadMs": 5139.1948,
+  "extraction": {
+    "noteId": "E4-004",
+    "attemptNumber": 1,
+    "status": "succeeded",
+    "failureCategory": null,
+    "errors": [],
+    "rawOutput": "{\n\n  \"subjects\": [\n    {\n      \"subjectId\": \"s1\",\n      \"kind\": \"equipment_group\",\n      \"label\": \"Ultrasound\"\n    }\n  ],\n  \"claims\": [\n    {\n      \"claimType\": \"quantity\",\n      \"subjectId\": \"s1\",\n      \"value\": \"1\",\n      \"quantityValue\": 1,\n      \"quantityScope\": \"reported_total\",\n      \"locationScope\": \"department\",\n      \"sourceType\": \"direct_observation\",\n      \"attribution\": \"direct_observation\",\n      \"certainty\": \"reported\",\n      \"evidenceExcerpt\": \"last month\",\n      \"negated\": false\n    }\n  ],\n  \"ambiguities\": [\n    {\n      \"type\": \"location_scope\",\n      \"subjectIds\": [\"s1\"],\n      \"evidenceExcerpt\": \"last month\",\n      \"description\": \"The location scope is ambiguous between the department and the location of the department.\"\n    }\n  ],\n  \"clarificationQuestion\": \"Is the 'last month' reference to the department's location or the location of the department?\"\n  }",
+    "parsedOutput": {
+      "subjects": [
+        {
+          "subjectId": "s1",
+          "kind": "equipment_group",
+          "label": "Ultrasound"
+        }
+      ],
+      "claims": [
+        {
+          "claimType": "quantity",
+          "subjectId": "s1",
+          "value": "1",
+          "quantityValue": 1,
+          "quantityScope": "reported_total",
+          "locationScope": "department",
+          "sourceType": "direct_observation",
+          "attribution": "direct_observation",
+          "certainty": "reported",
+          "evidenceExcerpt": "last month",
+          "negated": false
+        }
+      ],
+      "ambiguities": [
+        {
+          "type": "location_scope",
+          "subjectIds": [
+            "s1"
+          ],
+          "evidenceExcerpt": "last month",
+          "description": "The location scope is ambiguous between the department and the location of the department."
+        }
+      ],
+      "clarificationQuestion": "Is the 'last month' reference to the department's location or the location of the department?"
+    },
+    "metrics": {
+      "totalMs": 19764.220699999998,
+      "observedTtftMs": 16337.5183,
+      "engineTimeToFirstToken": 16281.722,
+      "promptTokens": 417,
+      "generatedTokens": 236,
+      "emittedTokens": 236,
+      "tokensPerSecond": 107.44253531604267,
+      "cacheTokens": 0,
+      "backendDevice": "gpu"
+    }
+  },
+  "realLocalInferenceCompletedWhileBlocked": true,
+  "relationToInferenceRun": "The external-network check and cached real-QVAC extraction ran sequentially in this process under the same default restricted-network permission profile used for e4-run-v1.json."
+}

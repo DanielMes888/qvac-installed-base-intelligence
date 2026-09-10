@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/qvac-installed-base/e4-draft-claim-set.schema.json",
+  "title": "E4 Draft Claim Set",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["subjects", "claims", "ambiguities", "clarificationQuestion"],
+  "properties": {
+    "subjects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["subjectId", "kind", "label"],
+        "properties": {
+          "subjectId": { "type": "string", "pattern": "^s[1-9][0-9]*$" },
+          "kind": {
+            "type": "string",
+            "enum": ["individual_candidate", "equipment_group", "unlinked_claim"]
+          },
+          "label": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claimType",
+          "subjectId",
+          "value",
+          "quantityValue",
+          "quantityScope",
+          "locationScope",
+          "sourceType",
+          "attribution",
+          "certainty",
+          "evidenceExcerpt",
+          "negated"
+        ],
+        "properties": {
+          "claimType": {
+            "type": "string",
+            "enum": ["modality", "manufacturer", "model", "quantity", "location", "age", "identifier", "presence", "change"]
+          },
+          "subjectId": { "type": "string", "pattern": "^s[1-9][0-9]*$" },
+          "value": { "type": ["string", "null"] },
+          "quantityValue": { "type": ["integer", "null"], "minimum": 0 },
+          "quantityScope": { "type": "string", "enum": ["observed", "reported_total", "unknown"] },
+          "locationScope": { "type": ["string", "null"] },
+          "sourceType": {
+            "type": "string",
+            "enum": ["direct_observation", "attributed_staff_statement", "unattributed_statement", "existing_authorized_record", "supporting_document_or_label"]
+          },
+          "attribution": { "type": ["string", "null"] },
+          "certainty": { "type": "string", "enum": ["reported", "estimated", "confirmed", "unknown"] },
+          "evidenceExcerpt": { "type": "string", "minLength": 1 },
+          "negated": { "type": "boolean" }
+        }
+      }
+    },
+    "ambiguities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "subjectIds", "evidenceExcerpt", "description"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["quantity_completeness", "location_scope", "claim_attachment", "identity_detail", "other"]
+          },
+          "subjectIds": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^s[1-9][0-9]*$" }
+          },
+          "evidenceExcerpt": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "clarificationQuestion": { "type": ["string", "null"] }
+  }
+}

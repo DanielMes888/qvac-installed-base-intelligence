@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "e4-topology-probe-v1",
+  "observedAt": "2026-09-10T19:37:55.459Z",
+  "qvacSdk": "0.19.0",
+  "scope": "No Electron or browser UI was built. This checks only SDK packaging surface and loopback host mechanics.",
+  "electron": {
+    "sdkForgeExportResolvable": true,
+    "forgeExportPath": "C:\\Users\\danie\\Downloads\\Hackathon-Dojo\\qvac-installed-base-intelligence\\node_modules\\@qvac\\sdk\\src\\electron-forge\\index.cjs",
+    "forgePeerDependency": "^7.11.1",
+    "importError": null
+  },
+  "browserNativeHost": {
+    "boundAddress": "127.0.0.1",
+    "addressFamily": "IPv4",
+    "acceptedLocalOriginStatus": 200,
+    "rejectedForeignOriginStatus": 403,
+    "shutdownWithProbe": true
+  }
+}

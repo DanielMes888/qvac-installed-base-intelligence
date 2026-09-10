@@ -1,0 +1,45 @@
+{
+  "manifestVersion": "e4-manifest-v1",
+  "frozenAt": "2026-09-10T14:03:26-05:00",
+  "partition": "feasibility-spike",
+  "recordCount": 20,
+  "files": [
+    {
+      "path": "data/feasibility/e4-notes-v1.json",
+      "sha256": "e045d0bebd91ba8bd8492d053f10fa522dfba97254d72905f6810bc35de49883"
+    },
+    {
+      "path": "prompts/e4-equipment-extraction-v1.txt",
+      "sha256": "5a81fea93da4528897e47677f854d464bf98bdb95197c3d89bc7e1090326e64e"
+    },
+    {
+      "path": "schemas/e4-draft-claim-set.schema.json",
+      "sha256": "3b79fb59a9b8aec6fa1b37a2ad87f4dbc428eb5d0d090a4709621ebab39aaabf"
+    }
+  ],
+  "model": {
+    "sdkExport": "QWEN3_1_7B_INST_Q4",
+    "modelId": "Qwen3-1.7B-Q4_0.gguf",
+    "source": "unsloth/Qwen3-1.7B-GGUF",
+    "revision": "d7f544eead698dbd1f15126ef60b45a1e1933222",
+    "file": "Qwen3-1.7B-Q4_0.gguf",
+    "quantization": "Q4_0",
+    "expectedBytes": 1056782912,
+    "sha256": "c876f159707a4e4f70e045106c69db15bfc935a4981706fd4f65c6e7ea1e81c5",
+    "license": "Apache-2.0"
+  },
+  "runtime": {
+    "node": "22.17.0",
+    "npm": "10.9.2",
+    "qvacSdk": "0.19.0",
+    "backendRequested": "gpu",
+    "contextSize": 4096,
+    "generation": {
+      "temperature": 0,
+      "topP": 1,
+      "seed": 20260910,
+      "maxGeneratedTokens": 700
+    },
+    "maxAttemptsPerNote": 2
+  }
+}

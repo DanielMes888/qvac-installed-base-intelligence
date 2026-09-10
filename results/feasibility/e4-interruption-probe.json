@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "e4-interruption-probe-v1",
+  "observedAt": "2026-09-10T19:38:24.831Z",
+  "childExitCode": null,
+  "childSignalCode": "SIGTERM",
+  "stderr": "",
+  "recovered": {
+    "observationId": "E4-INTERRUPTION-001",
+    "originalText": "Synthetic demonstration data: I saw one DemoScan MRI in Room 2.",
+    "status": "processing",
+    "persistedBeforeInferenceAt": "2026-09-10T19:38:24.822Z"
+  },
+  "passed": true
+}

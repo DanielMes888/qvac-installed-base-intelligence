@@ -2,7 +2,9 @@
 
 Type: E4 Feasibility Gate
 
-Status: ready
+Status: done
+
+Outcome: E4 failed. The bounded result is published in `results/feasibility/E4_FAILURE_REPORT.md`; Ticket 02 remains blocked.
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
@@ -31,16 +33,16 @@ Blocked by: None. This is the first executable ticket.
 
 ## Acceptance Criteria
 
-- [ ] No crash occurs during the recorded 20-note run.
-- [ ] Every stable case ID retains its original synthetic input and has a terminal Succeeded or Failed attempt record.
+- [x] No crash occurs during the recorded 20-note run.
+- [x] Every stable case ID retains its original synthetic input and has a terminal Succeeded or Failed attempt record.
 - [ ] All 20 cases produce schema-valid output after at most one controlled retry.
-- [ ] First-attempt and post-retry validity are reported separately.
+- [x] First-attempt and post-retry validity are reported separately.
 - [ ] Warm end-to-end extraction, including retry, is at most 15 seconds for at least 19 of 20 notes.
-- [ ] Cold loading, typical latency, unsupported values, memory, and actual backend are reported separately.
-- [ ] Invalid output is excluded from any working dataset.
-- [ ] The required inference path is run after internet disconnection.
-- [ ] The topology comparison covers process compatibility, IPC or loopback boundary, startup/shutdown ownership, packaging prerequisites, and expected setup friction without building either interface.
-- [ ] A failed gate produces the concrete blocker and smallest proposed model, runtime, or platform change without relaxing thresholds.
+- [x] Cold loading, typical latency, unsupported values, memory, and actual backend are reported separately.
+- [x] Invalid output is excluded from any working dataset.
+- [x] The required inference path is run after internet disconnection.
+- [x] The topology comparison covers process compatibility, IPC or loopback boundary, startup/shutdown ownership, packaging prerequisites, and expected setup friction without building either interface.
+- [x] A failed gate produces the concrete blocker and smallest proposed model, runtime, or platform change without relaxing thresholds.
 
 ## Required Tests or Evidence
 
@@ -65,3 +67,15 @@ Blocked by: None. This is the first executable ticket.
 - Machine-readable E4 results and Markdown summary.
 - Offline-run evidence and topology-comparison note.
 - Gate decision: pass, or bounded failure report.
+
+Published artifacts:
+
+- `data/feasibility/e4-manifest-v1.json`
+- `results/feasibility/e4-run-v1.json`
+- `results/feasibility/e4-acquisition-probe.json`
+- `results/feasibility/e4-manual-review-v1.json`
+- `results/feasibility/e4-offline-network-probe.json`
+- `results/feasibility/e4-interruption-probe.json`
+- `results/feasibility/e4-topology-probe.json`
+- `results/feasibility/E4_FAILURE_REPORT.md`
+- `results/feasibility/E4_TOPOLOGY_COMPARISON.md`
