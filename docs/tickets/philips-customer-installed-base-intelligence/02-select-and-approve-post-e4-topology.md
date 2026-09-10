@@ -8,19 +8,21 @@ Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
 ## Objective
 
-Use E4 evidence to select Electron or a browser interface plus same-computer native QVAC host, or explicitly record that neither candidate has enough support, before any platform-dependent implementation begins.
+Use the preserved E4-v1 evidence and a successful E4-v2 result to select Electron or a browser interface plus same-computer native QVAC host, or explicitly record that neither candidate has enough support, before any platform-dependent implementation begins.
 
 ## Scope
 
-- Review all E4 gates, limitations, actual backend behavior, offline evidence, and topology-comparison findings.
+- Review all E4-v1 and E4-v2 gates, limitations, actual backend behavior, offline evidence, and topology-comparison findings.
 - Record the selected topology, exact SDK/model/runtime approach, local communication boundary, startup/shutdown ownership, persistence implications, packaging implications, and measured rationale in an ADR.
-- If E4 failed or evidence is insufficient, record no selection and describe only the smallest separately bounded follow-up proposal.
+- If E4-v2 passes but the combined E4-v1/E4-v2 topology evidence remains insufficient, record no selection and describe only the smallest separately bounded follow-up proposal.
 - Update topology-dependent portions of the accepted specification and preliminary delivery dependencies without changing settled domain behavior.
 - Obtain explicit project-owner acceptance of the ADR and any affected specification updates.
 
 ## Dependencies
 
-Blocked by: `docs/tickets/philips-customer-installed-base-intelligence/01-prove-real-local-qvac-feasibility.md`.
+Blocked by: `docs/tickets/philips-customer-installed-base-intelligence/01b-prove-real-local-qvac-feasibility-v2.md` producing `Outcome: E4-v2 passed`, followed by explicit project-owner acceptance of that pass.
+
+The required successful evidence and owner decision remain unresolved if Ticket 01b finishes with `Outcome: E4-v2 failed`; that completed failure does not make this ticket ready.
 
 ## Implementation Boundaries Affected
 
@@ -31,7 +33,7 @@ Blocked by: `docs/tickets/philips-customer-installed-base-intelligence/01-prove-
 
 ## Acceptance Criteria
 
-- [ ] The ADR cites the exact E4 configuration and measured evidence.
+- [ ] The ADR cites the exact E4-v1 baseline, E4-v2 configuration, and measured evidence.
 - [ ] The ADR selects one candidate topology or explicitly records that no candidate can yet be selected.
 - [ ] No claim of browser-local, cloud, delegated, or cross-device inference is introduced.
 - [ ] Startup, shutdown, local communication, persistence, packaging, and conditional smoke-test consequences are recorded.
@@ -40,7 +42,7 @@ Blocked by: `docs/tickets/philips-customer-installed-base-intelligence/01-prove-
 
 ## Required Tests or Evidence
 
-- Read-only review of E4 machine-readable results and summary.
+- Read-only review of E4-v1 and successful E4-v2 machine-readable results and summaries.
 - Trace from every ADR conclusion to measured E4 evidence or an explicit unresolved item.
 - Project-owner acceptance record.
 
