@@ -74,7 +74,10 @@ Deterministic code expands source references to inspectable excerpts, checks bou
 2. Obtain project-owner approval of the annotation/checklist and freeze the notes, annotations, compact schema, prompt, model/runtime configuration, and hashes before the first held-out inference.
 3. Do not inspect E4-v2 held-out inputs for prompt tuning or use held-out failures to change and rerun the frozen configuration while calling the result held-out.
 4. Run all 20 only after Stages 0-2 pass. Use at most one deterministic retry per note and preserve every attempt.
-5. Report structural/schema validity separately from semantic correctness. Publish semantic checklist totals and unsupported, omitted, wrong-attachment, wrong-scope, wrong-source, wrong-certainty, and negation errors with numerators and denominators. Do not present this feasibility result as the formal E7 held-out accuracy evaluation.
+5. Score each terminal output against a frozen critical semantic checklist. A note passes only when every applicable critical field is correct: equipment type; manufacturer and model when supported by the evidence; quantity and Quantity Scope; evidence and Information Source linkage; and uncertainty or ambiguity state.
+6. Require at least 18/20 held-out notes to pass the complete critical semantic checklist. Require zero unsupported equipment identities or quantities to be admitted as valid Draft Claims.
+7. Exclude a semantically incorrect output from the valid Draft Claim set even when it is schema-valid. Preserve it in evaluation evidence and count it in both the semantic and schema-valid reporting as applicable.
+8. Report structural/schema validity separately from semantic correctness. Publish semantic checklist totals and unsupported, omitted, wrong-attachment, wrong-scope, wrong-source, wrong-certainty, and negation errors with numerators and denominators. This is only an E4 feasibility screen; do not replace, claim, or execute the full E7 evaluation.
 
 ## Dependencies
 
@@ -105,6 +108,9 @@ Ticket 02 requires this ticket to finish with `Outcome: E4-v2 passed`; a complet
 - [ ] Warm end-to-end extraction, including retry, is at most 15 seconds for at least 19 of 20 notes.
 - [ ] Model loading, prompt/input tokens, output tokens, TTFT, throughput, total latency, retries, failures, memory, and actual backend are reported.
 - [ ] Schema validity and semantic correctness are reported separately with numerators and denominators.
+- [ ] At least 18/20 held-out notes pass every applicable critical semantic check for equipment type, supported manufacturer/model, quantity and Quantity Scope, evidence and Information Source linkage, and uncertainty or ambiguity state.
+- [ ] Zero unsupported equipment identities or quantities are admitted as valid Draft Claims.
+- [ ] Every semantically incorrect output is excluded from the valid Draft Claim set even when schema-valid, while remaining preserved as evaluation evidence.
 - [ ] Invalid or length-stopped output is excluded from every working dataset.
 - [ ] The cached selected path completes all 20 cases under restricted/offline execution after model acquisition.
 - [ ] Every evaluated inference is real `@qvac/sdk` 0.19.0 on the same computer and records GPU backend; no cloud, delegation, or hidden deterministic extraction fallback is used.
@@ -112,7 +118,7 @@ Ticket 02 requires this ticket to finish with `Outcome: E4-v2 passed`; a complet
 
 ## Unchanged Success Thresholds
 
-The acceptance checklist above is authoritative. Its original numeric thresholds remain 20/20 schema-valid terminal outputs after at most one retry and warm end-to-end extraction at or below 15 seconds for at least 19/20 notes. It also retains the original mandatory conditions for no crashes or lost notes, separate first/retry reporting, invalid-output exclusion, a complete cached offline run, and measured same-computer local QVAC execution. Semantic correctness is reported separately and cannot be hidden by schema-validity totals or human correction. These gates are not weakened, averaged, or replaced by the probe criteria.
+The acceptance checklist above is authoritative. Its original numeric thresholds remain 20/20 schema-valid terminal outputs after at most one retry and warm end-to-end extraction at or below 15 seconds for at least 19/20 notes. It also retains the original mandatory conditions for no crashes or lost notes, separate first/retry reporting, invalid-output exclusion, a complete cached offline run, and measured same-computer local QVAC execution. E4-v2 adds the semantic feasibility gate of at least 18/20 complete critical-checklist passes and zero admitted unsupported equipment identities or quantities. Schema validity cannot hide semantic failure, and human correction cannot turn a failed extraction into a passing result. These gates are not weakened, averaged, or replaced by the probe criteria.
 
 ## Required Tests or Evidence
 
@@ -121,6 +127,7 @@ The acceptance checklist above is authoritative. Its original numeric thresholds
 - Versioned compact prompt, one-tool schema, raw-JSON fallback schema if used, and deterministic reference-expansion/validation tests.
 - Machine-readable Stage 1, Stage 2, and, if reached, Stage 3 results containing every attempt.
 - Tests proving length-stopped output is rejected without parsing, no more than one retry occurs, evidence references expand exactly, invalid references fail, and invalid output cannot enter working data.
+- Tests proving semantic-checklist failure excludes a schema-valid output from the valid Draft Claim set and that any unsupported equipment identity or quantity fails the admission gate.
 - Human-readable report covering model metadata, acquisition, configuration, reasoning control, contract-path decision, structural and semantic results, performance, offline execution, timebox, and final gate decision.
 - Before/after verification that the tracked E4-v1 evidence matches commit `cbccff2c5b13d5af4687288b988568de9ef22339`.
 
