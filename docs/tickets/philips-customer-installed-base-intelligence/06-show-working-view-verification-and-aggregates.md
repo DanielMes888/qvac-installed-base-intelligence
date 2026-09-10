@@ -6,6 +6,8 @@ Status: blocked
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
+Emergency prototype note (2026-09-10): ADR 0006 implements only the limited seeded customer, verification-item, and aggregate views mapped in `docs/EMERGENCY_DEMO_STATUS.md`. This ticket remains blocked and its complete acceptance criteria are not claimed finished.
+
 ## Objective
 
 Complete the minimum winning-demo seam by presenting the reconciled evidence as a bounded customer working view, a focused Verification Item list, and one limited cross-customer aggregate dashboard.

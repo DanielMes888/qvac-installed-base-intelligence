@@ -6,6 +6,8 @@ Status: blocked
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
+Emergency prototype note (2026-09-10): ADR 0006 implements only an evidence-based candidate and explicit repeated-evidence link without record growth, as mapped in `docs/EMERGENCY_DEMO_STATUS.md`. This ticket remains blocked and its broader reconciliation criteria are incomplete.
+
 ## Objective
 
 Turn reviewed claims into a conservative evidence view that distinguishes identity states, quantity meanings, and candidate relationships while demonstrating that repeated observations do not create duplicate equipment records.

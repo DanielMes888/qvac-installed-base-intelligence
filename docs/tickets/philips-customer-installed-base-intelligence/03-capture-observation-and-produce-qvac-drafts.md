@@ -6,6 +6,8 @@ Status: blocked
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
+Emergency prototype note (2026-09-10): ADR 0006 implements only the capture/save/real-QVAC/validated-draft subset mapped in `docs/EMERGENCY_DEMO_STATUS.md`. This ticket remains blocked and its complete acceptance criteria are not claimed finished.
+
 ## Objective
 
 Deliver the first user-visible vertical slice: select a fictional customer, save an Equipment Observation Note before inference, invoke real local QVAC, and inspect structurally valid Draft Claims without changing the Installed-Base Working View.

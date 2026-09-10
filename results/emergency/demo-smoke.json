@@ -1,7 +1,7 @@
 {
   "schemaVersion": "emergency-demo-smoke-v1",
-  "startedAt": "2026-09-10T21:08:15.305Z",
-  "completedAt": "2026-09-10T21:08:42.733Z",
+  "startedAt": "2026-09-10T21:26:54.819Z",
+  "completedAt": "2026-09-10T21:27:20.688Z",
   "synthetic": true,
   "note": "I saw one DemoScan MRI scanner, model DS-One, in Radiology.",
   "environment": {
@@ -12,13 +12,13 @@
       "reachable": false,
       "error": "TypeError"
     },
-    "loopbackOrigin": "http://127.0.0.1:65364"
+    "loopbackOrigin": "http://127.0.0.1:53860"
   },
   "extraction": {
-    "id": "c6240a10-577e-4e99-ac24-6ed805a27e20",
+    "id": "66c6887b-5e57-4887-887c-872e024b18bf",
     "customerId": "northbridge",
     "originalText": "I saw one DemoScan MRI scanner, model DS-One, in Radiology.",
-    "recordedAt": "2026-09-10T21:08:15.386Z",
+    "recordedAt": "2026-09-10T21:26:54.921Z",
     "status": "succeeded",
     "attempts": [
       {
@@ -124,12 +124,12 @@
           "clarification": null
         },
         "metrics": {
-          "totalMs": 22368.408199999998,
+          "totalMs": 20693.4766,
           "promptTokens": 245,
           "generatedTokens": 60,
           "emittedTokens": 60,
-          "timeToFirstToken": 20422.841,
-          "tokensPerSecond": 70.73211273284127,
+          "timeToFirstToken": 18899.785,
+          "tokensPerSecond": 73.11990445665816,
           "backendDevice": "gpu"
         }
       }
@@ -251,7 +251,7 @@
       }
     },
     "load": {
-      "loadMs": 4918.469599999999,
+      "loadMs": 5014.9826,
       "info": {
         "modelId": "13dd17f190cd6438",
         "modelType": "llamacpp-completion",
@@ -263,7 +263,7 @@
         ],
         "displayName": "LLM (llama.cpp)",
         "addonPackage": "@qvac/llm-llamacpp",
-        "loadedAt": "2026-09-10T21:08:20.300Z",
+        "loadedAt": "2026-09-10T21:26:59.934Z",
         "name": "QWEN3_1_7B_INST_Q4",
         "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
         "toolDialect": "hermes"
@@ -327,7 +327,7 @@
           "model": "DS-One",
           "location": "Radiology",
           "evidenceObservationIds": [
-            "c6240a10-577e-4e99-ac24-6ed805a27e20"
+            "66c6887b-5e57-4887-887c-872e024b18bf"
           ]
         },
         {
@@ -343,10 +343,10 @@
       ],
       "observations": [
         {
-          "id": "c6240a10-577e-4e99-ac24-6ed805a27e20",
+          "id": "66c6887b-5e57-4887-887c-872e024b18bf",
           "customerId": "northbridge",
           "originalText": "I saw one DemoScan MRI scanner, model DS-One, in Radiology.",
-          "recordedAt": "2026-09-10T21:08:15.386Z",
+          "recordedAt": "2026-09-10T21:26:54.921Z",
           "status": "succeeded",
           "attempts": [
             {
@@ -452,12 +452,12 @@
                 "clarification": null
               },
               "metrics": {
-                "totalMs": 22368.408199999998,
+                "totalMs": 20693.4766,
                 "promptTokens": 245,
                 "generatedTokens": 60,
                 "emittedTokens": 60,
-                "timeToFirstToken": 20422.841,
-                "tokensPerSecond": 70.73211273284127,
+                "timeToFirstToken": 18899.785,
+                "tokensPerSecond": 73.11990445665816,
                 "backendDevice": "gpu"
               }
             }
@@ -558,12 +558,12 @@
             }
           ],
           "clarification": null,
-          "reviewedAt": "2026-09-10T21:08:42.721Z",
+          "reviewedAt": "2026-09-10T21:27:20.677Z",
           "reconciliation": {
             "recordId": "nb-mri-01",
             "reason": "Smoke-test reviewer confirmed modality and supported identifying details",
             "actor": "Local demo user",
-            "decidedAt": "2026-09-10T21:08:42.727Z"
+            "decidedAt": "2026-09-10T21:27:20.682Z"
           },
           "model": {
             "sdk": "0.19.0",
@@ -584,7 +584,7 @@
             }
           },
           "load": {
-            "loadMs": 4918.469599999999,
+            "loadMs": 5014.9826,
             "info": {
               "modelId": "13dd17f190cd6438",
               "modelType": "llamacpp-completion",
@@ -596,7 +596,7 @@
               ],
               "displayName": "LLM (llama.cpp)",
               "addonPackage": "@qvac/llm-llamacpp",
-              "loadedAt": "2026-09-10T21:08:20.300Z",
+              "loadedAt": "2026-09-10T21:26:59.934Z",
               "name": "QWEN3_1_7B_INST_Q4",
               "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
               "toolDialect": "hermes"

@@ -17,7 +17,9 @@ async function bootstrap() {
 
 async function capture() {
   const button = $('#extract')
+  const lockedControls = [$('#customer'), $('#note'), $('#reset')]
   button.disabled = true
+  lockedControls.forEach((control) => { control.disabled = true })
   setStatus('Original note saved. QVAC is extracting locally…')
   $('#drafts').innerHTML = ''
   $('#draft-empty').classList.remove('hidden')
@@ -28,8 +30,9 @@ async function capture() {
       method: 'POST',
       body: JSON.stringify({ customerId: $('#customer').value, text: $('#note').value })
     })
+    await loadView()
     if (currentObservation.status !== 'succeeded') {
-      setStatus(`Note saved; extraction failed after ${currentObservation.attempts.length} attempt(s).`, 'error')
+      setStatus(`Note saved locally. QVAC extraction failed after ${currentObservation.attempts.length} attempt(s); no Draft Claims entered the working view. Reset or try the synthetic note again.`, 'error')
       return
     }
     renderDrafts(currentObservation)
@@ -39,6 +42,7 @@ async function capture() {
     setStatus(error.message, 'error')
   } finally {
     button.disabled = false
+    lockedControls.forEach((control) => { control.disabled = false })
   }
 }
 

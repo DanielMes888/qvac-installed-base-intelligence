@@ -18,7 +18,7 @@ npm.cmd test
 npm.cmd run smoke:demo
 ```
 
-The smoke command invokes the real cached QVAC model and writes reviewable evidence to [demo-smoke.json](results/emergency/demo-smoke.json). See the [prototype report](results/emergency/PROTOTYPE_REPORT.md) and [deadline ADR](docs/adr/0006-use-time-constrained-browser-prototype.md) for the bounded result and limitations.
+The smoke command invokes the real cached QVAC model and writes reviewable evidence to [demo-smoke.json](results/emergency/demo-smoke.json). Follow the [demo guide](docs/DEMO_GUIDE.md), and see the [prototype report](results/emergency/PROTOTYPE_REPORT.md), [emergency scope status](docs/EMERGENCY_DEMO_STATUS.md), and [deadline ADR](docs/adr/0006-use-time-constrained-browser-prototype.md) for the bounded result and limitations.
 
 ## Problem
 

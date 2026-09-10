@@ -2,7 +2,7 @@
 
 ## Philips Customer Installed Base Intelligence with QVAC
 
-**Status:** The technical specification was explicitly accepted by the project owner and 12 local delivery tickets were published on 2026-09-10. Ticket 01, E4, is the only ready executable gate on the inspected Windows laptop; full and platform-dependent implementation remain blocked until the post-E4 ADR is accepted. Competition compliance and final submission readiness remain unverified.
+**Status:** The technical specification was explicitly accepted and 12 local delivery tickets were published on 2026-09-10. E4 and E4-v2 both failed. The project owner subsequently authorized the bounded browser/Node emergency prototype in ADR 0006 for the deadline; it does not pass E4, complete Tickets 03–06, or authorize their full scope. Competition compliance and final submission readiness remain unverified.
 
 **Purpose:** Define what we will build, why it creates value, how it will work, how it will be evaluated, and what the demo will show.
 

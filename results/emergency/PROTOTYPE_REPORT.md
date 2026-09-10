@@ -45,12 +45,12 @@ The smoke note was: `I saw one DemoScan MRI scanner, model DS-One, in Radiology.
 
 | Metric | Result |
 | --- | ---: |
-| Cached model load | 4,918.47 ms |
-| End-to-end extraction | 22,368.41 ms |
+| Cached model load | 5,014.98 ms |
+| End-to-end extraction | 20,693.48 ms |
 | Prompt tokens | 245 |
 | Generated/emitted tokens | 60 / 60 |
-| TTFT | 20,422.84 ms |
-| Throughput | 70.73 tokens/s |
+| TTFT | 18,899.79 ms |
+| Throughput | 73.12 tokens/s |
 | Backend | GPU |
 | Retry | None |
 
@@ -59,6 +59,16 @@ The scripted smoke used the actual loopback HTTP endpoints with the production r
 ## Offline result
 
 The smoke run first attempted a short external npm-registry request, which failed, and then completed cached model loading, real QVAC inference, review, reconciliation, customer-view generation, and aggregate generation in the same process. The application has no cloud inference, delegated inference, telemetry, upload, or non-loopback server binding. This demonstrates the bounded workflow under the command environment's restricted network access; it is not a general operating-system security audit.
+
+## Essential demo-readiness pass
+
+On 2026-09-10, the application was reset and started at `127.0.0.1:4173`. The page, synthetic notice, capture/review controls, customer view, verification panel, and aggregate panel loaded. The complete test suite passed 21/21.
+
+The running application then processed the rehearsed note through its production loopback API and real QVAC adapter. It saved the note, produced five Draft Claims, required review of all five, suggested `nb-mri-01`, and linked the repeated evidence. Northbridge had two equipment records before and after the link, the selected MRI gained one evidence reference, three verification items were returned, and the aggregate reported three verified and two provisional records. Reset restored zero observations and zero new evidence links.
+
+A controlled invalid-output test confirms that terminally invalid QVAC output leaves the original note visible with Failed status, creates no Draft Claims, and changes neither accepted evidence nor equipment-record count. The browser now refreshes the saved-note count before showing success or failure. A discovered port-conflict startup crash was replaced with an actionable message explaining how to close the prior server or choose another loopback port.
+
+Automated browser surfaces were unavailable, so visual layout, click behavior, and disconnected presentation remain the project owner's manual checks in [DEMO_GUIDE.md](../../docs/DEMO_GUIDE.md).
 
 ## Timebox record
 

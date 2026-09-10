@@ -54,6 +54,13 @@ export async function createPrototypeServer({
   return { server, close: async () => { await closeQvac(); await new Promise((resolve) => server.close(resolve)) } }
 }
 
+export function startupErrorMessage(error, host, port) {
+  if (error?.code === 'EADDRINUSE') {
+    return `Prototype could not start: http://${host}:${port} is already in use. Close the existing prototype terminal, or choose another loopback port with $env:PROTOTYPE_PORT=4174 before npm.cmd start.`
+  }
+  return `Prototype could not start: ${error instanceof Error ? error.message : String(error)}`
+}
+
 function isLocalRequest(request) {
   const host = request.headers.host ?? ''
   if (!/^127\.0\.0\.1(?::\d+)?$/.test(host)) return false
@@ -91,6 +98,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const host = '127.0.0.1'
   const port = Number(process.env.PROTOTYPE_PORT || 4173)
   const app = await createPrototypeServer()
+  app.server.on('error', async (error) => {
+    console.error(startupErrorMessage(error, host, port))
+    await closeQvac()
+    process.exitCode = 1
+  })
   app.server.listen(port, host, () => console.log(`Prototype ready at http://${host}:${port}`))
   const shutdown = async () => { await app.close(); process.exit(0) }
   process.on('SIGINT', shutdown)

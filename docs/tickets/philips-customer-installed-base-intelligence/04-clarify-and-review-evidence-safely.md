@@ -6,6 +6,8 @@ Status: blocked
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
+Emergency prototype note (2026-09-10): ADR 0006 implements only explicit Accept/Reject review for produced Draft Claims, as mapped in `docs/EMERGENCY_DEMO_STATUS.md`. Clarification and the rest of this ticket remain deferred; the ticket remains blocked and incomplete.
+
 ## Objective
 
 Extend the capture slice through the bounded clarification lifecycle and explicit human review, producing Accepted or Human-Authored Claims without permitting inference loops or semantic approval to imply factual confirmation.

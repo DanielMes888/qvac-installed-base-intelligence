@@ -5,7 +5,7 @@ import { request as httpRequest } from 'node:http'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 
-import { createPrototypeServer } from '../../src/server.mjs'
+import { createPrototypeServer, startupErrorMessage } from '../../src/server.mjs'
 
 const note = 'I saw one DemoScan MRI scanner, model DS-One, in Radiology.'
 const draft = {
@@ -18,6 +18,12 @@ const draft = {
   ],
   clarification: null
 }
+
+test('startup port conflicts produce an actionable local recovery message', () => {
+  const error = Object.assign(new Error('busy'), { code: 'EADDRINUSE' })
+  assert.match(startupErrorMessage(error, '127.0.0.1', 4173), /already running|already in use/i)
+  assert.match(startupErrorMessage(error, '127.0.0.1', 4173), /PROTOTYPE_PORT/)
+})
 
 test('HTTP seam captures, reviews, and links repeated evidence without record growth', async (t) => {
   const directory = await mkdtemp(path.join(tmpdir(), 'qvac-prototype-'))
@@ -53,6 +59,8 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
   assert.equal(rejectedHostStatus, 403)
 
   const before = await fetch(`${origin}/api/customers/northbridge/view`).then((response) => response.json())
+  const clientScript = await fetch(`${origin}/app.js`).then((response) => response.text())
+  assert.match(clientScript, /Note saved locally.*no Draft Claims entered the working view/)
   const observation = await fetch(`${origin}/api/observations`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -76,4 +84,39 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
   assert.equal(reconciled.equipmentRecords.length, before.equipmentRecords.length)
   assert.equal(reconciled.unlinkedClaims, 0)
   assert.deepEqual(reconciled.equipmentRecords.find(({ id }) => id === 'nb-mri-01').evidenceObservationIds, [observation.id])
+})
+
+test('invalid QVAC output leaves a visible failed observation and cannot affect the working view', async (t) => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'qvac-prototype-invalid-'))
+  const app = await createPrototypeServer({
+    workspacePath: path.join(directory, 'workspace.json'),
+    extractor: async () => ({
+      status: 'failed',
+      attempts: [{ status: 'failed', failureCategory: 'validation', errors: ['invalid quantity scope'], rawOutput: '{"bad":true}' }],
+      draft: null,
+      model: { sdk: 'controlled-test-adapter' }
+    })
+  })
+  await new Promise((resolve) => app.server.listen(0, '127.0.0.1', resolve))
+  const { port } = app.server.address()
+  const origin = `http://127.0.0.1:${port}`
+  t.after(async () => {
+    await app.close()
+    await rm(directory, { recursive: true, force: true })
+  })
+
+  const before = await fetch(`${origin}/api/customers/northbridge/view`).then((response) => response.json())
+  const observation = await fetch(`${origin}/api/observations`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ customerId: 'northbridge', text: 'Synthetic invalid-output test note.' })
+  }).then((response) => response.json())
+  const after = await fetch(`${origin}/api/customers/northbridge/view`).then((response) => response.json())
+
+  assert.equal(observation.status, 'failed')
+  assert.equal(observation.originalText, 'Synthetic invalid-output test note.')
+  assert.equal(observation.draftClaims.length, 0)
+  assert.equal(after.observations.length, before.observations.length + 1)
+  assert.equal(after.acceptedClaimCount, before.acceptedClaimCount)
+  assert.equal(after.equipmentRecords.length, before.equipmentRecords.length)
 })
