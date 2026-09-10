@@ -1,0 +1,77 @@
+﻿# Node.js and package-manager caches
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/install-state.gz
+*.log
+
+# TypeScript and generated output
+*.tsbuildinfo
+dist/
+build/
+coverage/
+
+# Expo and Metro
+.expo/
+.expo-shared/
+web-build/
+expo-env.d.ts
+.metro-health-check*
+
+# React Native / Android
+.gradle/
+.cxx/
+.externalNativeBuild/
+android/local.properties
+*.apk
+*.aab
+*.dex
+*.keystore
+*.jks
+
+# React Native / iOS
+Pods/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.ipa
+*.dSYM/
+*.dSYM.zip
+ios/.xcode.env.local
+
+# Environment files and local secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Downloaded models and weights
+models/
+*.gguf
+*.ggml
+*.safetensors
+*.onnx
+*.onnx_data
+*.tflite
+*.pt
+*.pth
+*.ckpt
+*.mlmodel
+*.mlmodelc/
+*.mlpackage/
+
+# Local SQLite databases and sidecars
+*.sqlite
+*.sqlite3
+*.db
+*.sqlite-*
+*.sqlite3-*
+*.db-*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
