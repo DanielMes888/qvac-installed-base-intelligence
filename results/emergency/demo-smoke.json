@@ -1,7 +1,7 @@
 {
   "schemaVersion": "emergency-demo-smoke-v1",
-  "startedAt": "2026-09-10T21:52:16.265Z",
-  "completedAt": "2026-09-10T21:52:43.786Z",
+  "startedAt": "2026-09-10T22:11:38.477Z",
+  "completedAt": "2026-09-10T22:12:03.067Z",
   "synthetic": true,
   "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
   "environment": {
@@ -12,13 +12,13 @@
       "reachable": false,
       "error": "TypeError"
     },
-    "loopbackOrigin": "http://127.0.0.1:62864"
+    "loopbackOrigin": "http://127.0.0.1:63155"
   },
   "extraction": {
-    "id": "389f9344-1b9f-4b83-969f-5f77e146937a",
+    "id": "89f3ead9-a2c5-4027-995d-9a0cb86fb028",
     "customerId": "northbridge",
     "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
-    "recordedAt": "2026-09-10T21:52:16.935Z",
+    "recordedAt": "2026-09-10T22:11:38.557Z",
     "status": "succeeded",
     "attempts": [
       {
@@ -124,12 +124,12 @@
           "clarification": null
         },
         "metrics": {
-          "totalMs": 21856.2195,
+          "totalMs": 19634.8049,
           "promptTokens": 247,
           "generatedTokens": 60,
           "emittedTokens": 60,
-          "timeToFirstToken": 19995.841,
-          "tokensPerSecond": 70.60983359615884,
+          "timeToFirstToken": 17860.546000000002,
+          "tokensPerSecond": 73.82153152610022,
           "backendDevice": "gpu"
         }
       }
@@ -251,7 +251,7 @@
       }
     },
     "load": {
-      "loadMs": 4934.1854,
+      "loadMs": 4815.581700000001,
       "info": {
         "modelId": "13dd17f190cd6438",
         "modelType": "llamacpp-completion",
@@ -263,7 +263,7 @@
         ],
         "displayName": "LLM (llama.cpp)",
         "addonPackage": "@qvac/llm-llamacpp",
-        "loadedAt": "2026-09-10T21:52:21.866Z",
+        "loadedAt": "2026-09-10T22:11:43.370Z",
         "name": "QWEN3_1_7B_INST_Q4",
         "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
         "toolDialect": "hermes"
@@ -327,7 +327,7 @@
           "model": "DS-One",
           "location": "Radiology",
           "evidenceObservationIds": [
-            "389f9344-1b9f-4b83-969f-5f77e146937a"
+            "89f3ead9-a2c5-4027-995d-9a0cb86fb028"
           ]
         },
         {
@@ -343,10 +343,10 @@
       ],
       "observations": [
         {
-          "id": "389f9344-1b9f-4b83-969f-5f77e146937a",
+          "id": "89f3ead9-a2c5-4027-995d-9a0cb86fb028",
           "customerId": "northbridge",
           "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
-          "recordedAt": "2026-09-10T21:52:16.935Z",
+          "recordedAt": "2026-09-10T22:11:38.557Z",
           "status": "succeeded",
           "attempts": [
             {
@@ -452,12 +452,12 @@
                 "clarification": null
               },
               "metrics": {
-                "totalMs": 21856.2195,
+                "totalMs": 19634.8049,
                 "promptTokens": 247,
                 "generatedTokens": 60,
                 "emittedTokens": 60,
-                "timeToFirstToken": 19995.841,
-                "tokensPerSecond": 70.60983359615884,
+                "timeToFirstToken": 17860.546000000002,
+                "tokensPerSecond": 73.82153152610022,
                 "backendDevice": "gpu"
               }
             }
@@ -558,12 +558,12 @@
             }
           ],
           "clarification": null,
-          "reviewedAt": "2026-09-10T21:52:43.774Z",
+          "reviewedAt": "2026-09-10T22:12:03.057Z",
           "reconciliation": {
             "recordId": "nb-mri-01",
             "reason": "La revisión del smoke test confirmó la modalidad y los datos de identificación respaldados",
             "actor": "Usuario local de demostración",
-            "decidedAt": "2026-09-10T21:52:43.780Z"
+            "decidedAt": "2026-09-10T22:12:03.062Z"
           },
           "model": {
             "sdk": "0.19.0",
@@ -584,7 +584,7 @@
             }
           },
           "load": {
-            "loadMs": 4934.1854,
+            "loadMs": 4815.581700000001,
             "info": {
               "modelId": "13dd17f190cd6438",
               "modelType": "llamacpp-completion",
@@ -596,7 +596,7 @@
               ],
               "displayName": "LLM (llama.cpp)",
               "addonPackage": "@qvac/llm-llamacpp",
-              "loadedAt": "2026-09-10T21:52:21.866Z",
+              "loadedAt": "2026-09-10T22:11:43.370Z",
               "name": "QWEN3_1_7B_INST_Q4",
               "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
               "toolDialect": "hermes"
@@ -611,6 +611,7 @@
         {
           "id": "v1",
           "customerId": "northbridge",
+          "equipmentRecordId": "nb-ct-02",
           "priority": 1,
           "reason": "Confirmar si la observación de CT corresponde al equipo AX-4",
           "status": "open"
@@ -618,6 +619,7 @@
         {
           "id": "v2",
           "customerId": "northbridge",
+          "equipmentRecordId": "nb-mri-01",
           "priority": 2,
           "reason": "Verificar el número de serie del equipo MRI en la próxima visita",
           "status": "open"

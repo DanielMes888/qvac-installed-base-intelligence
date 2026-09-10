@@ -45,18 +45,20 @@ The smoke note was: `Observé un escáner MRI DemoScan, modelo DS-One, en Radiol
 
 | Metric | Result |
 | --- | ---: |
-| Cached model load | 4,934.19 ms |
-| End-to-end extraction | 21,856.22 ms |
+| Cached model load | 4,815.58 ms |
+| End-to-end extraction | 19,634.80 ms |
 | Prompt tokens | 247 |
 | Generated/emitted tokens | 60 / 60 |
-| TTFT | 19,995.84 ms |
-| Throughput | 70.61 tokens/s |
+| TTFT | 17,860.55 ms |
+| Throughput | 73.82 tokens/s |
 | Backend | GPU |
 | Retry | None |
 
 The scripted smoke used the actual loopback HTTP endpoints with the production real-QVAC adapter. Its reviewer accepted only exact supported values, found seeded record `nb-mri-01` with a match score of 3, and explicitly reconciled it. Northbridge remained at two equipment records before and after reconciliation. This scripted reviewer is test evidence for the seam; the browser requires a person to make the decisions.
 
 The Spanish product-clarity pass keeps this adapter, compact raw-JSON contract, canonical values, and reconciliation behavior unchanged. It translates the browser presentation and rehearsed observation, adds the problem/solution/value framing, and exposes the same workflow as six narrated steps. The same real adapter returned all five supported claims for the Spanish note in one attempt.
+
+The subsequent operational UI pass moves the pitch into the README and demo guide. The application now separates capture, review and reconciliation, installed-base records, and prioritized verification into focused workspaces. The normal workflow hides tokens, source offsets, internal IDs, and raw model output. Each extracted datum begins without a selected decision, and the completion action remains disabled until a person explicitly accepts or rejects every datum. This changes presentation and interaction only; the QVAC adapter, prompt, compact contract, persistence, and reconciliation rules remain unchanged.
 
 ## Offline result
 

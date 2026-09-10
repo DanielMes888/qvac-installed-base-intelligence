@@ -2,6 +2,14 @@
 
 **Current status: Both E4 feasibility attempts failed. Under the project owner's deadline exception, a provisional same-computer browser/Node prototype now demonstrates one narrow real-QVAC workflow. This does not mark E4 as passed, unblock Ticket 02, or establish submission readiness.**
 
+## Pitch del producto
+
+**Problema.** Las observaciones de campo sobre equipos instalados llegan como notas sin estructura. Pueden quedar sin registrar, duplicarse o conservar información incierta sin una fuente visible.
+
+**Solución.** El prototipo usa QVAC local para convertir una observación en datos revisables. Una persona acepta o rechaza cada dato y reconcilia la evidencia repetida con equipos existentes antes de actualizar la vista de trabajo.
+
+**Valor.** La aplicación muestra una base instalada más confiable, reduce la interpretación manual de notas, evita crear registros duplicados y mantiene la información en el computador local. Estas son capacidades del prototipo; no son resultados medidos en un proceso real de Philips.
+
 ## Run the emergency prototype
 
 Prerequisites are the pinned Node/npm versions, installed dependencies, and the cached model documented in the E4 evidence.
@@ -11,7 +19,7 @@ npm.cmd run reset
 npm.cmd start
 ```
 
-Open `http://127.0.0.1:4173` on the same laptop. Use the prefilled synthetic observation for the rehearsed path, review each Draft Claim, then explicitly link the repeated evidence to the suggested seeded record. The interface shows the customer equipment records, three verification items, and the limited aggregate dashboard.
+Open `http://127.0.0.1:4173` on the same laptop. Use the prefilled synthetic observation for the rehearsed path, review each extracted datum, then explicitly link the repeated evidence to the suggested seeded record. The operational interface separates capture, review, installed-base records, and prioritized verification items.
 
 ```powershell
 npm.cmd test

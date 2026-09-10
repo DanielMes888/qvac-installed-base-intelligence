@@ -47,15 +47,15 @@ Trate siempre la salida como un borrador. Rechace cualquier valor que la observa
 
 ## Guion de presentación: entre tres y cinco minutos
 
-### 0:00–0:40 — Problema, solución y límites
+### 0:00–0:35 — Presentar el problema y el producto
 
-**Qué mostrar:** las tarjetas Problema, Solución y Valor, el aviso de datos sintéticos y la dirección `127.0.0.1`.
+**Qué mostrar:** la barra superior de la aplicación, el cliente activo, el estado **QVAC local disponible**, el indicador **Datos sintéticos** y la dirección `127.0.0.1`.
 
-**Qué explicar:** la información de campo puede quedar sin estructura, repetirse o conservar incertidumbre. QVAC propone datos, la persona los revisa y la reconciliación evita duplicados. Señale: **“Inferencia local con QVAC: los datos no se envían a la nube.”**
+**Qué explicar:** use la propuesta breve de esta guía. La información de campo puede quedar sin estructura, repetirse o conservar incertidumbre. QVAC propone datos, la persona los revisa y la reconciliación evita duplicados. La pantalla principal se reserva para el trabajo operativo.
 
-**Resultado visible:** el público entiende el problema antes de ver controles y reconoce que el caso es ficticio y local.
+**Resultado visible:** el público identifica de inmediato el cliente, el estado local de QVAC y el límite de datos ficticios.
 
-### 0:40–1:10 — Pasos 1 y 2: seleccionar y registrar
+### 0:35–1:05 — Capturar: seleccionar y registrar
 
 **Qué mostrar:** **Hospital General Northbridge · Campus Central** y la observación ensayada.
 
@@ -63,37 +63,37 @@ Trate siempre la salida como un borrador. Rechace cualquier valor que la observa
 
 **Resultado visible:** un cliente ficticio y una nota breve, sin formulario extenso.
 
-### 1:10–1:50 — Paso 3: extraer localmente
+### 1:05–1:50 — Capturar: analizar localmente
 
-**Qué hacer:** pulse **Guardar y ejecutar QVAC local**.
+**Qué hacer:** pulse **Guardar y analizar con QVAC**.
 
-**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 20–25 segundos por la carga del modelo. El smoke test de esta versión tardó 21.86 segundos de extremo a extremo, incluidos 4.93 segundos de carga desde la caché.
+**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 20–25 segundos por la carga del modelo. El smoke test de esta versión tardó 19.63 segundos de extremo a extremo, incluidos 4.82 segundos de carga desde la caché.
 
-**Resultado visible:** el botón queda bloqueado durante la inferencia y luego aparece un estado verde con GPU, latencia y tokens generados.
+**Resultado visible:** el botón queda bloqueado durante la inferencia, la barra superior indica que QVAC está analizando y luego vuelve a mostrar **QVAC local disponible**.
 
-### 1:50–2:40 — Paso 4: revisar y aprobar
+### 1:50–2:40 — Revisar: comprobar y decidir
 
 **Qué mostrar:** **Datos extraídos pendientes de revisión.**, su evidencia y sus alcances.
 
-**Qué hacer:** compare los cinco datos esperados con la frase original y cambie cada decisión respaldada de **Rechazar** a **Aprobar**. Pulse **Aplicar decisiones de revisión**.
+**Qué hacer:** la aplicación abre **Revisar** automáticamente. Compare los cinco datos esperados con la observación original, elija **Aprobar** o **Rechazar** en cada fila y observe el progreso. Pulse **Completar revisión** cuando las cinco decisiones estén registradas.
 
 **Por qué importa:** una salida válida en estructura todavía puede ser incorrecta. Solo los datos aprobados entran en la vista de trabajo.
 
 **Resultado visible:** cinco decisiones explícitas y un candidato de equipo existente.
 
-### 2:40–3:20 — Paso 5: reconciliar
+### 2:40–3:20 — Revisar: reconciliar
 
 **Qué mostrar:** el candidato DemoScan DS-One y los dos registros existentes de Northbridge.
 
-**Qué hacer:** pulse **Vincular evidencia repetida**.
+**Qué hacer:** compare la columna **Evidencia aceptada** con **Equipo existente propuesto** y pulse **Vincular con equipo existente**.
 
 **Por qué importa:** una observación repetida debe enriquecer el registro existente sin crear otro equipo automáticamente.
 
 **Resultado visible:** el mensaje confirma que el número de registros no aumentó; Northbridge sigue con dos equipos y el MRI muestra una nueva evidencia vinculada.
 
-### 3:20–4:10 — Paso 6: consultar el resultado
+### 3:20–4:10 — Base instalada y Verificaciones
 
-**Qué mostrar:** **Base instalada consolidada.**, **Información pendiente de verificar.** y el resumen agregado.
+**Qué mostrar:** abra **Base instalada** para enseñar el resumen del cliente, la lista limpia de equipos y el resumen local. Después abra **Verificaciones**.
 
 **Qué explicar:** los registros verificados y provisionales permanecen separados; las tres verificaciones indican qué conviene confirmar después; el agregado solo combina métricas compatibles.
 
@@ -123,11 +123,11 @@ Si el puerto 4173 está en uso, cierre la terminal anterior del prototipo. Si no
 - [ ] Con internet desconectado, `npm.cmd start` muestra la dirección local y la página carga.
 - [ ] Todo el texto de navegación, acciones, estados, resultados y errores visibles está en español.
 - [ ] Los avisos **Datos completamente sintéticos para demostración.** e **Inferencia local con QVAC: los datos no se envían a la nube.** permanecen visibles.
-- [ ] Los seis pasos explican la vista, la acción y su importancia sin extender la demostración.
+- [ ] La navegación separa claramente Capturar, Revisar, Base instalada y Verificaciones.
 - [ ] Northbridge y la observación ensayada aparecen al iniciar.
-- [ ] La captura guarda la nota antes de inferir y termina con un estado local de QVAC, GPU, latencia y tokens.
-- [ ] Aparecen exactamente cinco datos respaldados con evidencia y desplazamientos numéricos.
-- [ ] Aprobarlos muestra `DemoScan MRI · DS-One · Radiología` como candidato.
+- [ ] La captura guarda la nota antes de inferir, presenta un estado de progreso claro y termina con QVAC local disponible.
+- [ ] Aparecen exactamente cinco datos respaldados y cada uno resalta su evidencia en la observación, sin mostrar detalles técnicos en el recorrido normal.
+- [ ] Completar las cinco decisiones muestra una comparación entre la evidencia aceptada y `DemoScan MRI · DS-One · Radiología`.
 - [ ] Vincular la evidencia mantiene dos registros y aumenta a uno el vínculo de evidencia del MRI.
 - [ ] Se ven tres verificaciones; el agregado muestra tres registros verificados y dos provisionales.
 - [ ] Restablecer devuelve las observaciones y los nuevos vínculos a cero.

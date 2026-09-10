@@ -15,10 +15,10 @@
   ],
   "observations": [],
   "verificationItems": [
-    { "id": "v1", "customerId": "northbridge", "priority": 1, "reason": "Confirmar si la observación de CT corresponde al equipo AX-4", "status": "open" },
-    { "id": "v2", "customerId": "northbridge", "priority": 2, "reason": "Verificar el número de serie del equipo MRI en la próxima visita", "status": "open" },
+    { "id": "v1", "customerId": "northbridge", "equipmentRecordId": "nb-ct-02", "priority": 1, "reason": "Confirmar si la observación de CT corresponde al equipo AX-4", "status": "open" },
+    { "id": "v2", "customerId": "northbridge", "equipmentRecordId": "nb-mri-01", "priority": 2, "reason": "Verificar el número de serie del equipo MRI en la próxima visita", "status": "open" },
     { "id": "v3", "customerId": "northbridge", "priority": 3, "reason": "Aclarar si la cantidad reportada en Radiología representa un total", "status": "open" },
-    { "id": "v4", "customerId": "meadow", "priority": 1, "reason": "Resolver las cantidades contradictorias de monitores de pacientes", "status": "open" },
-    { "id": "v5", "customerId": "harbor", "priority": 2, "reason": "Confirmar la sala actual del equipo MRI", "status": "open" }
+    { "id": "v4", "customerId": "meadow", "equipmentRecordId": "meadow-mon-02", "priority": 1, "reason": "Resolver las cantidades contradictorias de monitores de pacientes", "status": "open" },
+    { "id": "v5", "customerId": "harbor", "equipmentRecordId": "harbor-mri-01", "priority": 2, "reason": "Confirmar la sala actual del equipo MRI", "status": "open" }
   ]
 }

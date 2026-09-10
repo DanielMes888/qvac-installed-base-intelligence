@@ -1,5 +1,8 @@
 const $ = (selector) => document.querySelector(selector)
+const $$ = (selector) => [...document.querySelectorAll(selector)]
+
 let currentObservation = null
+let currentView = null
 
 const claimLabels = {
   equipmentType: 'Tipo de equipo',
@@ -14,105 +17,199 @@ const certaintyLabels = { reported: 'Reportado', estimated: 'Estimado', unknown:
 const sourceLabels = { directObservation: 'Observación directa', attributedStatement: 'Declaración atribuida', unattributedStatement: 'Declaración sin atribuir', recordOrLabel: 'Registro o etiqueta' }
 const locationScopeLabels = { room: 'Sala', dept: 'Departamento', site: 'Sede', customer: 'Cliente', unknown: 'Sin definir' }
 const quantityScopeLabels = { observed: 'Cantidad observada', reportedTotal: 'Total reportado', unknown: 'Alcance desconocido' }
-const statusLabels = { verified: 'Verificado', provisional: 'Provisional', open: 'Abierto' }
+const statusLabels = { verified: 'Verificado', provisional: 'Provisional', open: 'Pendiente' }
 const modalityLabels = { Ultrasound: 'Ultrasonido', 'Patient monitoring': 'Monitoreo de pacientes' }
 const locationLabels = { Radiology: 'Radiología', Emergency: 'Emergencias', Imaging: 'Diagnóstico por imágenes', 'Critical Care': 'Cuidados intensivos', 'Room 2': 'Sala 2' }
 
-$('#customer').addEventListener('change', loadView)
-$('#extract').addEventListener('click', capture)
+$$('.nav-item').forEach((button) => button.addEventListener('click', () => activateWorkspace(button.dataset.workspace)))
+$$('.workspace-link').forEach((button) => button.addEventListener('click', () => activateWorkspace(button.dataset.target)))
+$('#customer').addEventListener('change', changeCustomer)
+$('#note').addEventListener('input', updateNoteLength)
+$('#capture-form').addEventListener('submit', capture)
 $('#review').addEventListener('click', review)
 $('#reset').addEventListener('click', reset)
 
-bootstrap().catch(() => setStatus('No fue posible conectar con el servidor local. Confirme que la aplicación esté iniciada.', 'error'))
+bootstrap().catch(() => {
+  setRuntime('No se pudo conectar con QVAC local', 'error')
+  setFeedback('No fue posible conectar con el servidor local. Confirme que la aplicación esté iniciada.', 'error')
+})
 
 async function bootstrap() {
   const data = await api('/api/bootstrap')
   $('#customer').innerHTML = data.customers.map((customer) => `<option value="${customer.id}">${escapeHtml(customer.name)} · ${escapeHtml(customer.site)}</option>`).join('')
   $('#footer-runtime').textContent = `${data.qvac.sdk} · ${data.qvac.modelExport} · GPU local`
+  updateNoteLength()
+  await loadView()
+  setRuntime('QVAC local disponible', 'ready')
+}
+
+function activateWorkspace(name) {
+  $$('.workspace').forEach((workspace) => workspace.classList.toggle('active', workspace.id === `workspace-${name}`))
+  $$('.nav-item').forEach((button) => {
+    const active = button.dataset.workspace === name
+    button.classList.toggle('active', active)
+    button.setAttribute('aria-current', active ? 'page' : 'false')
+  })
+  document.querySelector(`#workspace-${name}`)?.focus({ preventScroll: true })
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+async function changeCustomer() {
+  if (currentObservation && currentObservation.customerId !== $('#customer').value) clearReviewWorkspace()
   await loadView()
 }
 
-async function capture() {
+async function capture(event) {
+  event.preventDefault()
   const button = $('#extract')
   const lockedControls = [$('#customer'), $('#note'), $('#reset')]
   button.disabled = true
+  button.innerHTML = '<span><span class="spinner" aria-hidden="true"></span>Guardando y analizando…</span>'
   lockedControls.forEach((control) => { control.disabled = true })
-  setStatus('Observación guardada. QVAC está extrayendo la información localmente…')
-  $('#drafts').innerHTML = ''
-  $('#draft-empty').classList.remove('hidden')
-  $('#review').classList.add('hidden')
-  $('#reconcile').innerHTML = ''
+  setRuntime('QVAC analizando localmente', 'working')
+  setFeedback('Guardando la observación antes de iniciar el análisis local…', 'loading')
+  clearReviewWorkspace(false)
+
   try {
     currentObservation = await api('/api/observations', {
       method: 'POST',
       body: JSON.stringify({ customerId: $('#customer').value, text: $('#note').value })
     })
+    renderOriginalObservation(currentObservation)
     await loadView()
     if (currentObservation.status !== 'succeeded') {
-      setStatus(`Observación guardada localmente. La extracción de QVAC falló después de ${currentObservation.attempts.length} intento(s); ningún dato extraído entró en la base instalada. Restablezca la demostración o vuelva a usar la nota sintética.`, 'error')
+      showExtractionFailure(currentObservation)
+      activateWorkspace('review')
       return
     }
     renderDrafts(currentObservation)
-    const attempt = currentObservation.attempts.at(-1)
-    setStatus(`Inferencia local completada con QVAC · GPU · ${Math.round(attempt.metrics.totalMs)} ms · ${attempt.metrics.generatedTokens ?? '—'} tokens generados`, 'success')
+    setFeedback('Análisis local completado. Revise los datos antes de incorporarlos.', 'success')
+    activateWorkspace('review')
   } catch {
-    setStatus('No fue posible completar la captura. Confirme que el servidor local siga activo.', 'error')
+    setFeedback('No fue posible completar la captura. Confirme que el servidor local siga activo; el texto permanece en el formulario.', 'error')
   } finally {
     button.disabled = false
+    button.innerHTML = '<span>Guardar y analizar con QVAC</span><span aria-hidden="true">→</span>'
     lockedControls.forEach((control) => { control.disabled = false })
+    setRuntime('QVAC local disponible', 'ready')
   }
+}
+
+function renderOriginalObservation(observation) {
+  $('#original-note').textContent = observation.originalText
+  $('#observation-state').className = 'observation-state saved'
+  $('#observation-state').textContent = `Observación guardada · ${formatDate(observation.recordedAt)}`
+}
+
+function showExtractionFailure(observation) {
+  $('#draft-empty').classList.remove('hidden')
+  $('#draft-empty').innerHTML = `<strong>La observación está guardada</strong><span>QVAC no produjo datos seguros después de ${observation.attempts.length} intento(s). Ningún resultado modificó la base instalada.</span><button class="button secondary workspace-link" data-target="capture" type="button">Volver a Capturar</button>`
+  $('#draft-empty').querySelector('.workspace-link').addEventListener('click', () => activateWorkspace('capture'))
+  $('#review-progress').textContent = 'Análisis no completado'
+  $('#review-progress').className = 'review-progress error'
+  $('#review-nav-count').classList.add('hidden')
+  setFeedback('Observación guardada localmente. El análisis no produjo datos utilizables; puede volver a intentarlo desde Capturar.', 'error')
 }
 
 function renderDrafts(observation) {
   $('#draft-empty').classList.add('hidden')
-  $('#drafts').innerHTML = `<div class="status"><span class="badge">Pendiente</span> Datos extraídos pendientes de revisión. Compare cada dato con su evidencia antes de aprobarlo.</div>${observation.draftClaims.map((claim) => `
-    <div class="claim" data-claim="${claim.claimId}">
-      <div class="claim-head"><div><div class="claim-type">${translate(claim.type, claimLabels)}</div><div class="claim-value">${escapeHtml(displayClaimValue(claim))}</div></div><span class="badge">${translate(claim.certainty, certaintyLabels)}</span></div>
-      <div class="claim-meta">Fuente: ${translate(claim.sourceType, sourceLabels)} · Alcance de ubicación: ${translate(claim.locationScope, locationScopeLabels)}${claim.quantityScope ? ` · ${translate(claim.quantityScope, quantityScopeLabels)}` : ''}</div>
-      <div class="evidence">“${escapeHtml(claim.evidence.text)}” · fragmento ${claim.evidence.start}–${claim.evidence.end}</div>
-      <div class="choice"><label><input type="radio" name="${claim.claimId}" value="accepted"><span>Aprobar</span></label><label><input type="radio" name="${claim.claimId}" value="rejected" checked><span>Rechazar</span></label></div>
-    </div>`).join('')}
-    ${observation.clarification ? `<div class="evidence"><strong>Posible aclaración detectada:</strong> ${escapeHtml(observation.clarification.question)}</div>` : ''}`
+  $('#review-nav-count').textContent = observation.draftClaims.length
+  $('#review-nav-count').classList.remove('hidden')
+  $('#drafts').innerHTML = observation.draftClaims.map((claim) => `
+    <article class="claim" data-claim="${claim.claimId}">
+      <div class="claim-main">
+        <div class="claim-name"><span>${translate(claim.type, claimLabels)}</span><strong>${escapeHtml(displayClaimValue(claim))}</strong></div>
+        <span class="certainty ${claim.certainty}">${translate(claim.certainty, certaintyLabels)}</span>
+      </div>
+      <div class="evidence"><span>Evidencia en la observación</span><mark>${escapeHtml(claim.evidence.text)}</mark></div>
+      <div class="claim-footer">
+        <details><summary>Ver procedencia</summary><p>${translate(claim.sourceType, sourceLabels)} · ${translate(claim.locationScope, locationScopeLabels)}${claim.quantityScope ? ` · ${translate(claim.quantityScope, quantityScopeLabels)}` : ''}</p></details>
+        <fieldset class="decision"><legend>Decisión</legend><label><input type="radio" name="${claim.claimId}" value="accepted"><span>Aprobar</span></label><label><input type="radio" name="${claim.claimId}" value="rejected"><span>Rechazar</span></label></fieldset>
+      </div>
+    </article>`).join('')
+
+  $$('.decision input').forEach((input) => input.addEventListener('change', updateReviewProgress))
   $('#review').classList.remove('hidden')
+  updateReviewProgress()
+}
+
+function updateReviewProgress() {
+  const total = currentObservation?.draftClaims.length ?? 0
+  const completed = $$('.decision input:checked').length
+  $('#review-progress').textContent = total ? `${completed} de ${total} decisiones completadas` : 'Sin datos pendientes'
+  $('#review-progress').className = `review-progress${completed === total && total ? ' complete' : ''}`
+  $('#review').disabled = !total || completed !== total
 }
 
 async function review() {
   const button = $('#review')
   button.disabled = true
+  button.innerHTML = '<span><span class="spinner" aria-hidden="true"></span>Aplicando revisión…</span>'
   try {
     const decisions = currentObservation.draftClaims.map((claim) => ({ claimId: claim.claimId, decision: document.querySelector(`input[name="${claim.claimId}"]:checked`).value }))
     currentObservation = await api(`/api/observations/${currentObservation.id}/review`, { method: 'POST', body: JSON.stringify({ decisions }) })
-    button.classList.add('hidden')
+    renderReviewedClaims(currentObservation)
     renderCandidates(currentObservation.candidates)
-    setStatus('Revisión aplicada. Ahora decida si la evidencia corresponde a un equipo existente.', 'success')
+    $('#reconciliation-section').classList.remove('hidden')
+    $('#review-progress').textContent = 'Revisión completada'
+    $('#review-progress').className = 'review-progress complete'
+    $('#review-nav-count').classList.add('hidden')
+    setFeedback('Revisión completada. Los datos rechazados quedaron fuera de la base instalada.', 'success')
     await loadView()
+    $('#reconciliation-section').scrollIntoView({ behavior: 'smooth', block: 'start' })
   } catch {
-    setStatus('No fue posible aplicar la revisión. Los datos siguen pendientes.', 'error')
+    setFeedback('No fue posible aplicar la revisión. Sus decisiones siguen visibles para volver a intentarlo.', 'error')
+    updateReviewProgress()
   } finally {
-    button.disabled = false
+    button.innerHTML = '<span>Completar revisión</span><span aria-hidden="true">→</span>'
   }
+}
+
+function renderReviewedClaims(observation) {
+  $$('.claim').forEach((card) => {
+    const claim = observation.draftClaims.find((item) => item.claimId === card.dataset.claim)
+    card.classList.add(claim.decision)
+    card.querySelectorAll('input').forEach((input) => { input.disabled = true })
+  })
+  $('#review').classList.add('hidden')
 }
 
 function renderCandidates(candidates) {
+  const accepted = currentObservation.draftClaims.filter((claim) => claim.decision === 'accepted' && !claim.negated)
   if (!candidates.length) {
-    $('#reconcile').innerHTML = '<div class="status">Ningún dato aprobado coincide con un registro existente. La evidencia permanece sin vincular para evitar un duplicado incorrecto.</div>'
+    $('#reconcile').innerHTML = '<div class="surface empty-reconciliation"><strong>No hay un equipo existente suficientemente relacionado</strong><p>La evidencia aceptada permanece sin vincular. No se creará ningún registro automáticamente.</p></div>'
     return
   }
-  $('#reconcile').innerHTML = `<h3>Posible equipo existente</h3><p class="caption">Revise la coincidencia y vincúlela explícitamente para evitar duplicar el registro.</p>${candidates.map((candidate) => `<div class="candidate"><strong>${escapeHtml(candidate.manufacturer)} ${escapeHtml(displayModality(candidate.modality))}</strong><br><small>${escapeHtml(candidate.model)} · ${escapeHtml(displayLocation(candidate.location))} · ${candidate.score} coincidencia(s)</small><br><button data-record="${candidate.id}">Vincular evidencia repetida</button></div>`).join('')}`
-  $('#reconcile').querySelectorAll('button').forEach((button) => button.addEventListener('click', () => reconcile(button.dataset.record)))
+
+  $('#reconcile').innerHTML = candidates.map((candidate, index) => {
+    const matches = matchingFields(accepted, candidate)
+    return `<article class="surface comparison-card ${index ? 'secondary-candidate' : ''}">
+      <div class="comparison-column"><span class="comparison-label">Evidencia aceptada</span>${accepted.map((claim) => `<div class="comparison-row"><span>${translate(claim.type, claimLabels)}</span><strong>${escapeHtml(displayClaimValue(claim))}</strong></div>`).join('')}</div>
+      <div class="match-connector"><span aria-hidden="true">↔</span><strong>${matches.length} coincidencias</strong><small>${matches.map((field) => translate(field, claimLabels)).join(', ')}</small></div>
+      <div class="comparison-column equipment-candidate"><span class="comparison-label">Equipo existente propuesto</span><h3>${escapeHtml(candidate.manufacturer)} ${escapeHtml(displayModality(candidate.modality))}</h3><p>${escapeHtml(candidate.model)} · ${escapeHtml(displayLocation(candidate.location))}</p><span class="status-pill ${candidate.status}">${translate(candidate.status, statusLabels)}</span><button class="button primary link-record" data-record="${candidate.id}" type="button"><span>Vincular con equipo existente</span><span aria-hidden="true">→</span></button><small class="duplicate-note">La vinculación agrega evidencia a este equipo y evita crear un duplicado.</small></div>
+    </article>`
+  }).join('')
+  $$('.link-record').forEach((button) => button.addEventListener('click', () => reconcile(button.dataset.record)))
 }
 
 async function reconcile(recordId) {
-  const button = $(`#reconcile button[data-record="${recordId}"]`)
-  if (button) button.disabled = true
+  const button = $(`.link-record[data-record="${recordId}"]`)
+  if (button) {
+    button.disabled = true
+    button.innerHTML = '<span><span class="spinner" aria-hidden="true"></span>Vinculando…</span>'
+  }
   try {
     await api(`/api/observations/${currentObservation.id}/reconcile`, { method: 'POST', body: JSON.stringify({ recordId, reason: 'El usuario confirmó que la evidencia repetida corresponde a este registro sintético' }) })
-    $('#reconcile').innerHTML = '<div class="status success">Evidencia vinculada. El número de registros de equipos no aumentó.</div>'
-    setStatus('Reconciliación completada sin crear un equipo duplicado.', 'success')
+    $('#reconcile').innerHTML = '<div class="surface reconciliation-success"><span aria-hidden="true">✓</span><div><strong>Evidencia vinculada sin crear un duplicado</strong><p>El equipo existente conserva su registro y ahora incluye esta observación.</p><button class="button secondary workspace-link" data-target="installed" type="button">Ver base instalada</button></div></div>'
+    $('#reconcile .workspace-link').addEventListener('click', () => activateWorkspace('installed'))
+    setFeedback('Reconciliación completada. El número de equipos no aumentó.', 'success')
     await loadView()
   } catch {
-    setStatus('No fue posible reconciliar la evidencia. No se creó ningún equipo nuevo.', 'error')
-    if (button) button.disabled = false
+    setFeedback('No fue posible vincular la evidencia. No se creó ningún equipo nuevo; vuelva a intentarlo.', 'error')
+    if (button) {
+      button.disabled = false
+      button.innerHTML = '<span>Vincular con equipo existente</span><span aria-hidden="true">→</span>'
+    }
   }
 }
 
@@ -120,43 +217,98 @@ async function loadView() {
   const customerId = $('#customer').value
   if (!customerId) return
   const [view, bootstrapData] = await Promise.all([api(`/api/customers/${customerId}/view`), api('/api/bootstrap')])
-  $('#customer-title').textContent = `Base instalada consolidada. ${view.customer.name}`
-  $('#customer-metrics').innerHTML = metric(view.equipmentRecords.filter((record) => record.status === 'verified').length, 'Registros verificados') + metric(view.equipmentRecords.filter((record) => record.status === 'provisional').length, 'Registros provisionales') + metric(view.unlinkedClaims, 'Evidencias sin vincular') + metric(view.observations.length, 'Observaciones guardadas')
-  $('#equipment').innerHTML = view.equipmentRecords.map((record) => `<div class="record"><div class="record-head"><strong>${escapeHtml(record.manufacturer)} ${escapeHtml(displayModality(record.modality))}</strong><span class="badge ${record.status === 'provisional' ? 'provisional' : ''}">${translate(record.status, statusLabels)}</span></div><small>${escapeHtml(record.model)} · ${escapeHtml(displayLocation(record.location))} · ${record.evidenceObservationIds.length} nueva(s) evidencia(s) vinculada(s)</small></div>`).join('')
-  $('#verification').innerHTML = view.verificationItems.map((item) => `<div class="verify"><span class="priority">${item.priority}</span><div>${escapeHtml(item.reason)}<br><small>${translate(item.status, statusLabels)} · evidencia sintética</small></div></div>`).join('')
+  currentView = view
+  $('#header-customer').textContent = view.customer.name
+  $('#installed-title').textContent = `Base instalada de ${view.customer.name}`
+  $('#installed-description').textContent = `${view.customer.site} · vista de trabajo basada en evidencia sintética revisada.`
+  renderCustomerMetrics(view)
+  renderEquipment(view.equipmentRecords)
+  renderVerification(view)
   renderAggregate(bootstrapData.aggregate)
+}
+
+function renderCustomerMetrics(view) {
+  $('#customer-metrics').innerHTML = [
+    summaryMetric(view.equipmentRecords.length, 'Equipos registrados', 'Total del cliente'),
+    summaryMetric(view.equipmentRecords.filter((record) => record.status === 'verified').length, 'Verificados', 'Identidad respaldada'),
+    summaryMetric(view.equipmentRecords.filter((record) => record.status === 'provisional').length, 'Provisionales', 'Identidad por confirmar'),
+    summaryMetric(view.observations.length, 'Observaciones', 'Notas guardadas localmente')
+  ].join('')
+}
+
+function renderEquipment(records) {
+  $('#equipment').innerHTML = records.length ? records.map((record) => `<article class="equipment-row"><span class="equipment-symbol" aria-hidden="true">${escapeHtml(record.modality.slice(0, 2).toUpperCase())}</span><div class="equipment-identity"><strong>${escapeHtml(record.manufacturer)} ${escapeHtml(displayModality(record.modality))}</strong><span>${escapeHtml(record.model)} · ${escapeHtml(displayLocation(record.location))}</span></div><div class="equipment-evidence"><strong>${record.evidenceObservationIds.length}</strong><span>evidencias nuevas</span></div><span class="status-pill ${record.status}">${translate(record.status, statusLabels)}</span></article>`).join('') : '<div class="empty-state"><strong>No hay equipos registrados</strong><span>Las observaciones revisadas aparecerán aquí.</span></div>'
+}
+
+function renderVerification(view) {
+  const items = view.verificationItems
+  $('#verification-nav-count').textContent = items.length
+  $('#verification-summary').textContent = `${items.length} pendiente${items.length === 1 ? '' : 's'}`
+  $('#verification').innerHTML = items.length ? items.map((item) => {
+    const record = view.equipmentRecords.find((candidate) => candidate.id === item.equipmentRecordId)
+    const relation = record ? `${record.manufacturer} ${displayModality(record.modality)} · ${record.model}` : 'Grupo de equipos por confirmar'
+    return `<article class="verification-row"><span class="priority-badge">${item.priority}</span><div class="verification-copy"><strong>${escapeHtml(item.reason)}</strong><span>Confirmar en una próxima revisión de evidencia.</span></div><div class="verification-relation"><strong>${escapeHtml(relation)}</strong><span>${record ? displayLocation(record.location) : 'Relación aún no resuelta'}</span></div><span class="status-pill open">${translate(item.status, statusLabels)}</span></article>`
+  }).join('') : '<div class="empty-state"><strong>No hay verificaciones pendientes</strong><span>La evidencia disponible no requiere una comprobación prioritaria.</span></div>'
 }
 
 function renderAggregate(data) {
   const max = Math.max(1, ...data.byModality.map((item) => item.count))
-  $('#aggregate').innerHTML = `<div class="metric"><strong>${data.verifiedRecords}</strong><span>Registros verificados</span></div><div class="metric" style="margin-top:9px"><strong>${data.provisionalRecords}</strong><span>Registros provisionales</span></div>${data.byModality.map((item) => `<div class="bar-row"><div class="bar-label"><span>${escapeHtml(displayModality(item.modality))}</span><b>${item.count}</b></div><div class="bar"><span style="width:${item.count / max * 100}%"></span></div></div>`).join('')}`
+  $('#aggregate').innerHTML = `<div class="aggregate-summary"><div><strong>${data.verifiedRecords}</strong><span>Verificados</span></div><div><strong>${data.provisionalRecords}</strong><span>Provisionales</span></div><div><strong>${data.customers}</strong><span>Clientes ficticios</span></div></div><div class="modality-list"><span class="comparison-label">Registros por modalidad</span>${data.byModality.map((item) => `<div class="bar-row"><div><span>${escapeHtml(displayModality(item.modality))}</span><strong>${item.count}</strong></div><div class="bar"><span style="width:${item.count / max * 100}%"></span></div></div>`).join('')}</div>`
 }
 
 async function reset() {
+  const button = $('#reset')
+  button.disabled = true
+  button.textContent = 'Restableciendo…'
   try {
     await api('/api/reset', { method: 'POST' })
     currentObservation = null
-    $('#drafts').innerHTML = ''
-    $('#draft-empty').classList.remove('hidden')
-    $('#review').classList.add('hidden')
-    $('#reconcile').innerHTML = ''
-    setStatus('Demostración restablecida con datos completamente sintéticos.', 'success')
+    clearReviewWorkspace()
+    setFeedback('Demostración restablecida con los datos sintéticos iniciales.', 'success')
     await loadView()
+    activateWorkspace('capture')
   } catch {
-    setStatus('No fue posible restablecer la demostración. Confirme que el servidor local siga activo.', 'error')
+    setFeedback('No fue posible restablecer la demostración. Confirme que el servidor local siga activo.', 'error')
+  } finally {
+    button.disabled = false
+    button.textContent = 'Restablecer'
   }
 }
 
+function clearReviewWorkspace(clearObservation = true) {
+  if (clearObservation) currentObservation = null
+  $('#original-note').textContent = 'Todavía no hay una observación para revisar.'
+  $('#observation-state').className = 'observation-state'
+  $('#observation-state').textContent = 'Registre una observación desde Capturar.'
+  $('#drafts').innerHTML = ''
+  $('#draft-empty').classList.remove('hidden')
+  $('#draft-empty').innerHTML = '<strong>No hay datos para revisar</strong><span>Analice una observación para comenzar.</span><button class="button secondary workspace-link" data-target="capture" type="button">Ir a Capturar</button>'
+  $('#draft-empty .workspace-link').addEventListener('click', () => activateWorkspace('capture'))
+  $('#review').classList.add('hidden')
+  $('#reconciliation-section').classList.add('hidden')
+  $('#reconcile').innerHTML = ''
+  $('#review-progress').textContent = 'Sin datos pendientes'
+  $('#review-progress').className = 'review-progress'
+  $('#review-nav-count').classList.add('hidden')
+}
+
+function matchingFields(claims, candidate) {
+  const pairs = { equipmentType: candidate.modality, manufacturer: candidate.manufacturer, model: candidate.model }
+  return Object.entries(pairs).filter(([type, value]) => claims.some((claim) => claim.type === type && String(claim.value).toLowerCase() === String(value).toLowerCase())).map(([type]) => type)
+}
+
+function updateNoteLength() { $('#note-length').textContent = `${$('#note').value.length} caracteres` }
 function displayClaimValue(claim) {
   if (claim.type === 'equipmentType') return displayModality(String(claim.value))
   if (claim.type === 'location') return displayLocation(String(claim.value))
   return String(claim.value)
 }
-
 function displayModality(value) { return modalityLabels[value] ?? value }
 function displayLocation(value) { return locationLabels[value] ?? value }
 function translate(value, dictionary) { return dictionary[value] ?? value }
-function metric(value, name) { return `<div class="metric"><strong>${value}</strong><span>${name}</span></div>` }
-function setStatus(message, kind = '') { $('#capture-status').className = `status ${kind}`; $('#capture-status').textContent = message }
+function summaryMetric(value, label, detail) { return `<article class="summary-card"><strong>${value}</strong><div><span>${label}</span><small>${detail}</small></div></article>` }
+function setFeedback(message, kind = '') { $('#capture-status').className = `feedback ${kind}`; $('#capture-status').textContent = message }
+function setRuntime(message, kind) { $('#runtime-status').className = `runtime-status ${kind}`; $('#runtime-status').innerHTML = `<span class="status-dot"></span>${escapeHtml(message)}` }
+function formatDate(value) { return new Intl.DateTimeFormat('es', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) }
 function escapeHtml(value) { const node = document.createElement('span'); node.textContent = value; return node.innerHTML }
 async function api(url, options) { const response = await fetch(url, { headers: { 'content-type': 'application/json' }, ...options }); const data = await response.json(); if (!response.ok) throw new Error(data.error || 'La solicitud local falló.'); return data }

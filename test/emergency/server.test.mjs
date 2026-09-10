@@ -47,17 +47,20 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
   const page = await fetch(origin).then((response) => response.text())
   for (const expectedCopy of [
     'Datos completamente sintéticos para demostración.',
-    'Inferencia local con QVAC: los datos no se envían a la nube.',
-    'Seleccionar cliente ficticio',
-    'Registrar observación',
-    'Extraer información localmente con QVAC',
-    'Revisar y aprobar los datos',
-    'Reconciliar con equipos existentes',
-    'Consultar base instalada y verificaciones',
-    'Datos extraídos pendientes de revisión.',
-    'Información pendiente de verificar.',
-    'Base instalada consolidada.'
+    'Inteligencia de Base Instalada',
+    'QVAC local disponible',
+    'Datos sintéticos',
+    'Capturar',
+    'Revisar',
+    'Base instalada',
+    'Verificaciones',
+    'Guardar y analizar con QVAC',
+    'El análisis ocurre localmente.',
+    'Observación original',
+    'Datos extraídos pendientes de revisión',
+    'Información pendiente de verificar'
   ]) assert.match(page, new RegExp(expectedCopy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+  assert.doesNotMatch(page, /Problema|Solución|Valor/)
   const rejectedOrigin = await fetch(`${origin}/api/bootstrap`, { headers: { origin: 'http://example.invalid' } })
   assert.equal(rejectedOrigin.status, 403)
   const rejectedHostStatus = await new Promise((resolve, reject) => {
@@ -72,7 +75,12 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
 
   const before = await fetch(`${origin}/api/customers/northbridge/view`).then((response) => response.json())
   const clientScript = await fetch(`${origin}/app.js`).then((response) => response.text())
-  assert.match(clientScript, /Observación guardada localmente.*ningún dato extraído entró en la base instalada/)
+  assert.match(clientScript, /La observación está guardada.*Ningún resultado modificó la base instalada/)
+  assert.match(clientScript, /Vincular con equipo existente/)
+  assert.match(clientScript, /decisiones completadas/)
+  assert.match(page, /id="review"[^>]*disabled/)
+  assert.doesNotMatch(clientScript, /value="rejected" checked/)
+  assert.doesNotMatch(clientScript, /generatedTokens|metrics\.totalMs|evidence\.start|evidence\.end/)
   const observation = await fetch(`${origin}/api/observations`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
