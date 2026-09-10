@@ -10,7 +10,7 @@ The project owner authorized a deadline exception on 2026-09-10. [ADR 0006](../.
 2. The loopback-only Node host saves the original synthetic observation to `.local/workspace.json` before inference.
 3. The host invokes real `@qvac/sdk` 0.19.0 with cached `QWEN3_1_7B_INST_Q4` on the same laptop GPU.
 4. The raw compact JSON result uses short fields and a source ID. Deterministic code validates its schema, rejects length-stopped output, and expands the source ID into exact note offsets and evidence text. Final Draft Claims therefore include offsets; the fallback model response itself uses the shorter source reference rather than numeric offsets.
-5. Every atomic claim remains a Draft Claim. The UI defaults every claim to Reject; the user explicitly accepts or rejects each claim.
+5. Every atomic claim remains a Draft Claim with no preselected decision. Before review completion, the user may correct six approved fields while preserving the original QVAC value and then explicitly accepts or rejects each final value.
 6. Accepted identifying evidence produces ranked candidate records. The user explicitly links the observation to an existing record; no record is created automatically.
 7. The customer view refreshes without duplicate equipment growth and shows verified/provisional records, unlinked evidence, captured notes, and the top three verification items.
 8. The limited aggregate dashboard shows verified and provisional record counts separately and groups seeded records by modality.
@@ -41,17 +41,18 @@ The preferred one-tool contract failed in the bounded probe: none of three diagn
 - `simple-json-probe.json`: final three-note diagnostic probe; 3/3 structurally valid, with serious semantic errors on two complex cases.
 - `demo-smoke.json`: final real-QVAC vertical-slice evidence.
 - `clarification-smoke.json`: dedicated real-QVAC clarification attempt; initial extraction succeeded but produced no question, so the bounded workflow stopped before a second inference.
+- `correction-smoke.json`: deterministic public-seam correction workflow using a controlled Draft Claim; it is provenance and workflow evidence rather than model-quality evidence.
 
 The smoke note was: `Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.` The real local run produced one compact item and five supported atomic claims. Its single attempt recorded:
 
 | Metric | Result |
 | --- | ---: |
-| Cached model load | 5,496.60 ms |
-| End-to-end extraction | 23,597.98 ms |
+| Cached model load | 6,178.20 ms |
+| End-to-end extraction | 28,099.20 ms |
 | Prompt tokens | 247 |
 | Generated/emitted tokens | 60 / 60 |
-| TTFT | 21,739.99 ms |
-| Throughput | 71.91 tokens/s |
+| TTFT | 26,055.11 ms |
+| Throughput | 63.69 tokens/s |
 | Backend | GPU |
 | Retry | None |
 
@@ -67,13 +68,21 @@ The clarification lifecycle stores one substantive answer as a dated Evidence En
 
 `npm.cmd run smoke:clarification` exercised the unchanged real adapter with a synthetic quantity-scope ambiguity. The initial GPU extraction succeeded structurally in 19,663.81 ms with 272 prompt tokens, 64 generated tokens, 16,476.83 ms TTFT, and 74.24 tokens/s. It returned `x: null`, so deterministic logic presented no question and the smoke stopped before a second inference. This is a preserved failed real-model result, not a clarification pass. The controlled public-seam tests establish workflow behavior; they do not prove that the current model will emit a useful clarification in practice.
 
+## Reviewer-correction result
+
+Each active Draft Claim preserves its original QVAC value, current reviewed value, evidence reference, original and reviewed certainty, review status, and correction history. Corrections are limited to equipment type, manufacturer, model, quantity, quantity scope, and certainty before review completion. Quantity and enums are validated; malformed input is rejected. A correction still requires explicit acceptance or rejection.
+
+Every correction records a timestamp, the local demonstration reviewer, field, previous and corrected values, and an optional reason. When the corrected value is absent from the original observation, the workspace creates a separate `reviewerCorrection` Evidence Entry and labels the reviewer as its source. It does not rewrite the original QVAC evidence or attribute the new value to the model.
+
+`npm.cmd run smoke:correction` used the controlled Draft Claim `DS-Zero`, corrected it to the source-supported `DS-One`, retained both values and the original source offsets, required explicit acceptance, matched `nb-mri-01`, and reconciled without increasing Northbridge's two equipment records. The controlled adapter makes this a deterministic workflow check; the real-QVAC behavior remains evidenced by `demo-smoke.json`.
+
 ## Offline result
 
 The smoke run first attempted a short external npm-registry request, which failed, and then completed cached model loading, real QVAC inference, review, reconciliation, customer-view generation, and aggregate generation in the same process. The application has no cloud inference, delegated inference, telemetry, upload, or non-loopback server binding. This demonstrates the bounded workflow under the command environment's restricted network access; it is not a general operating-system security audit.
 
 ## Essential demo-readiness pass
 
-On 2026-09-10, the application was reset and started at `127.0.0.1:4173`. The page, synthetic notice, capture/review controls, customer view, verification panel, and aggregate panel loaded. The complete test suite passed 21/21.
+On 2026-09-10, the application was reset and started at `127.0.0.1:4173`. The page, synthetic notice, capture/review controls, customer view, verification panel, and aggregate panel loaded. The complete test suite now passes 37/37, including focused clarification and reviewer-correction coverage.
 
 The running application then processed the rehearsed note through its production loopback API and real QVAC adapter. It saved the note, produced five Draft Claims, required review of all five, suggested `nb-mri-01`, and linked the repeated evidence. Northbridge had two equipment records before and after the link, the selected MRI gained one evidence reference, three verification items were returned, and the aggregate reported three verified and two provisional records. Reset restored zero observations and zero new evidence links.
 
@@ -106,15 +115,17 @@ Then open `http://127.0.0.1:4173` on the laptop.
 ```powershell
 npm.cmd test
 npm.cmd run smoke:demo
+npm.cmd run smoke:correction
 ```
 
 ## Known limitations
 
 - E4 remains failed: the 1.7B model did not meet the frozen 20-note structural, semantic, or latency requirements. The compact three-note diagnostic probe still showed omission, negation, attachment, and quantity-scope errors.
 - The successful smoke uses one deliberately simple synthetic sentence and cannot support an accuracy claim.
-- Deterministic validation establishes structure and evidence bounds, not semantic truth. Human review is the semantic gate, and all choices default to rejection.
+- Deterministic validation establishes structure and evidence bounds, not semantic truth. Human review is the semantic gate, and no choice is preselected.
 - The raw fallback applies one source type, certainty, location scope, and evidence reference to all atomic claims derived from an equipment row. It is suitable for the rehearsed uniform sentence but can flatten mixed-certainty statements; those outputs require rejection in this prototype.
-- The prototype offers one clarification candidate for display but does not implement the accepted second-inference clarification lifecycle.
+- The accepted second-inference clarification lifecycle is implemented, but its dedicated real-model smoke did not receive a clarification candidate from the current 1.7B model.
+- Reviewer correction supports only the six approved fields and a single local reviewer attribution. It does not provide general record editing, identity verification, or multi-user authorization.
 - Local persistence is a single JSON file written through a completed temporary file followed by replacement. It has no migrations, encryption, authentication, synchronization, import/export, deletion workflow, or production recovery guarantees.
 - The prototype has no packaging, phone access, full E7 evaluation, user experiment, or comprehensive compliance/reproduction result.
 - Browser visual automation was unavailable in the execution environment. The HTTP page and full API seam were exercised automatically; final display rehearsal still needs a project-owner browser check on the laptop.

@@ -7,6 +7,7 @@ export class WorkspaceService {
     for (const observation of this.state.observations) {
       observation.revision ??= 0
       observation.evidenceEntryIds ??= []
+      observation.draftClaims = (observation.draftClaims ?? []).map(prepareDraftClaim)
       if (observation.clarification && !observation.clarification.status) {
         observation.clarification = { ...observation.clarification, status: 'pending', questionCount: 1, nextQuestion: observation.clarification.question, selectedAt: observation.recordedAt, resolvedAt: null, answerEvidenceEntryId: null }
       }
@@ -50,7 +51,7 @@ export class WorkspaceService {
       observation.load = extraction.load ?? null
       if (extraction.status === 'succeeded' && extraction.draft) {
         observation.subjects = extraction.draft.subjects
-        observation.draftClaims = extraction.draft.claims.map((claim) => ({ ...claim, decision: 'pending' }))
+        observation.draftClaims = extraction.draft.claims.map(prepareDraftClaim)
         const clarification = selectMaterialClarification(extraction.draft)
         observation.clarification = clarification ? {
           ...clarification,
@@ -121,7 +122,7 @@ export class WorkspaceService {
       observation.load = extraction.load ?? observation.load
       if (extraction.status === 'succeeded' && extraction.draft) {
         observation.subjects = extraction.draft.subjects
-        observation.draftClaims = extraction.draft.claims.map((claim) => ({ ...claim, decision: 'pending' }))
+        observation.draftClaims = extraction.draft.claims.map(prepareDraftClaim)
         observation.clarification.status = 'answered'
       } else {
         observation.clarification.status = 'failed'
@@ -162,8 +163,65 @@ export class WorkspaceService {
       const decision = byId.get(claim.claimId)
       if (!['accepted', 'rejected'].includes(decision)) throw new Error('Decisión de revisión inválida')
       claim.decision = decision
+      claim.reviewStatus = decision
     }
     observation.reviewedAt = new Date().toISOString()
+    await this.persist(this.state)
+    return this.observation(observationId)
+  }
+
+  async correctClaim(observationId, claimId, { field, correctedValue, reason } = {}) {
+    const observation = this.requireObservation(observationId)
+    if (observation.reviewedAt) throw new Error('La revisión ya fue completada; no se permiten más correcciones')
+    if (observation.clarification?.status === 'pending' || observation.clarification?.status === 'processing') {
+      throw new Error('Resuelva la aclaración antes de corregir los datos finales')
+    }
+    if (observation.status !== 'succeeded' || !observation.draftClaims.length) {
+      throw new Error('No existe una extracción final válida para corregir')
+    }
+
+    const claim = observation.draftClaims.find((item) => item.claimId === claimId)
+    if (!claim) throw new Error('Dato extraído desconocido')
+    validateCorrectionField(claim, field)
+    const value = validateCorrectionValue(field, correctedValue)
+    const shortReason = validateReason(reason)
+    const previousValue = currentFieldValue(claim, field)
+    if (sameValue(previousValue, value)) throw new Error('El valor corregido debe ser diferente del valor actual')
+
+    const correctedAt = new Date().toISOString()
+    const supported = isDirectlySupported(observation.originalText, field, value)
+    let evidenceEntryId = null
+    if (!supported) {
+      const evidenceEntry = {
+        id: randomUUID(),
+        observationId,
+        claimId,
+        type: 'reviewerCorrection',
+        field,
+        text: String(value),
+        author: 'Usuario local de demostración',
+        recordedAt: correctedAt,
+        reason: shortReason
+      }
+      this.state.evidenceEntries.push(evidenceEntry)
+      observation.evidenceEntryIds.push(evidenceEntry.id)
+      evidenceEntryId = evidenceEntry.id
+    }
+
+    setCurrentFieldValue(claim, field, value)
+    claim.decision = 'pending'
+    claim.reviewStatus = 'pending'
+    claim.corrections.push({
+      id: randomUUID(),
+      correctedAt,
+      reviewer: 'Usuario local de demostración',
+      field,
+      previousValue: structuredClone(previousValue),
+      correctedValue: structuredClone(value),
+      reason: shortReason,
+      origin: supported ? 'originalObservation' : 'reviewerProvided',
+      evidenceEntryId
+    })
     await this.persist(this.state)
     return this.observation(observationId)
   }
@@ -263,6 +321,107 @@ export class WorkspaceService {
     }))
     observation.attempts.push(...added)
   }
+}
+
+const CORRECTABLE_VALUE_TYPES = new Set(['equipmentType', 'manufacturer', 'model', 'quantity'])
+const QUANTITY_SCOPES = new Set(['observed', 'reportedTotal', 'unknown'])
+const CERTAINTY_STATES = new Set(['reported', 'estimated', 'unknown'])
+
+function prepareDraftClaim(claim) {
+  const prepared = structuredClone(claim)
+  prepared.originalValue = structuredClone(claim.originalValue ?? claim.value)
+  prepared.reviewedValue = structuredClone(claim.reviewedValue ?? claim.value)
+  prepared.originalCertainty = claim.originalCertainty ?? claim.certainty
+  prepared.reviewedCertainty = claim.reviewedCertainty ?? claim.certainty
+  prepared.originalQuantityScope = claim.originalQuantityScope ?? claim.quantityScope ?? null
+  prepared.reviewedQuantityScope = claim.reviewedQuantityScope ?? claim.quantityScope ?? null
+  prepared.decision ??= 'pending'
+  prepared.reviewStatus ??= prepared.decision
+  prepared.corrections = structuredClone(claim.corrections ?? [])
+  return prepared
+}
+
+function validateCorrectionField(claim, field) {
+  if (!['equipmentType', 'manufacturer', 'model', 'quantity', 'quantityScope', 'certainty'].includes(field)) {
+    throw new Error('Campo de corrección no permitido')
+  }
+  if (field === 'certainty') return
+  if (field === 'quantityScope' && claim.type === 'quantity') return
+  if (CORRECTABLE_VALUE_TYPES.has(field) && claim.type === field) return
+  throw new Error('El campo no corresponde a este dato extraído')
+}
+
+function validateCorrectionValue(field, correctedValue) {
+  if (field === 'quantity') {
+    if (correctedValue === '' || correctedValue === null || correctedValue === undefined) throw new Error('La cantidad es obligatoria')
+    const quantity = Number(correctedValue)
+    if (!Number.isSafeInteger(quantity) || quantity <= 0) throw new Error('La cantidad debe ser un número entero positivo válido')
+    return quantity
+  }
+  if (field === 'quantityScope') {
+    if (!QUANTITY_SCOPES.has(correctedValue)) throw new Error('El alcance de cantidad no es válido')
+    return correctedValue
+  }
+  if (field === 'certainty') {
+    if (!CERTAINTY_STATES.has(correctedValue)) throw new Error('El estado de certeza no es válido')
+    return correctedValue
+  }
+  if (typeof correctedValue !== 'string' || !correctedValue.trim()) throw new Error('El valor corregido es obligatorio')
+  const value = correctedValue.trim()
+  if (value.length > 100) throw new Error('El valor corregido es demasiado largo')
+  return value
+}
+
+function validateReason(reason) {
+  if (reason === undefined || reason === null || reason === '') return null
+  if (typeof reason !== 'string') throw new Error('El motivo debe ser texto')
+  const value = reason.trim()
+  if (value.length > 200) throw new Error('El motivo es demasiado largo')
+  return value || null
+}
+
+function currentFieldValue(claim, field) {
+  if (field === 'certainty') return claim.reviewedCertainty
+  if (field === 'quantityScope') return claim.reviewedQuantityScope
+  return claim.reviewedValue
+}
+
+function setCurrentFieldValue(claim, field, value) {
+  if (field === 'certainty') {
+    claim.reviewedCertainty = value
+    claim.certainty = value
+    return
+  }
+  if (field === 'quantityScope') {
+    claim.reviewedQuantityScope = value
+    claim.quantityScope = value
+    return
+  }
+  claim.reviewedValue = value
+  claim.value = value
+}
+
+function sameValue(left, right) {
+  return typeof left === 'string' && typeof right === 'string'
+    ? left.trim().toLocaleLowerCase('es') === right.trim().toLocaleLowerCase('es')
+    : left === right
+}
+
+function isDirectlySupported(originalText, field, value) {
+  if (['quantityScope', 'certainty'].includes(field)) return false
+  const normalizedText = normalizeForSupport(originalText)
+  const normalizedValue = normalizeForSupport(String(value))
+  if (!normalizedValue) return false
+  if (field === 'quantity') return new RegExp(`(^|\\D)${escapeRegExp(normalizedValue)}($|\\D)`).test(normalizedText)
+  return new RegExp(`(^|[^a-z0-9])${escapeRegExp(normalizedValue)}($|[^a-z0-9])`).test(normalizedText)
+}
+
+function normalizeForSupport(value) {
+  return value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase('es')
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 function selectMaterialClarification(draft) {

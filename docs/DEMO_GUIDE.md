@@ -45,6 +45,14 @@ El smoke test usa un espacio de trabajo ignorado y separado; no modifica el esta
 
 Trate siempre la salida como un borrador. Rechace cualquier valor que la observación no respalde. No reconcilie si no aparece el candidato esperado.
 
+Si desea enseñar la corrección sin depender de un error real del modelo, use el smoke determinista antes del ensayo:
+
+```powershell
+npm.cmd run smoke:correction
+```
+
+Ese recorrido parte de un Draft Claim controlado `DS-Zero`, usa la misma API de **Corregir** para establecer `DS-One`, conserva ambos valores y demuestra que la base instalada sigue sin cambios hasta la revisión y reconciliación explícitas. No presente este adaptador controlado como inferencia real de QVAC.
+
 ## Flujo acotado de aclaración
 
 Cuando QVAC devuelve una ambigüedad material, **Revisar** muestra una sola pregunta en español antes de habilitar las decisiones finales. El usuario puede:
@@ -79,7 +87,7 @@ El smoke real dedicado usó: **La directora de radiología dijo que hay tres esc
 
 **Qué hacer:** pulse **Guardar y analizar con QVAC**.
 
-**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 20–25 segundos por la carga del modelo. El smoke test principal final tardó 23.60 segundos de extremo a extremo, incluidos 5.50 segundos de carga desde la caché.
+**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 25–30 segundos por la carga del modelo. El smoke test principal final tardó 28.10 segundos de extremo a extremo, incluidos 6.18 segundos de carga desde la caché.
 
 **Resultado visible:** el botón queda bloqueado durante la inferencia, la barra superior indica que QVAC está analizando y luego vuelve a mostrar **QVAC local disponible**.
 
@@ -87,9 +95,9 @@ El smoke real dedicado usó: **La directora de radiología dijo que hay tres esc
 
 **Qué mostrar:** **Datos extraídos pendientes de revisión.**, su evidencia y sus alcances.
 
-**Qué hacer:** la aplicación abre **Revisar** automáticamente. Compare los cinco datos esperados con la observación original, elija **Aprobar** o **Rechazar** en cada fila y observe el progreso. Pulse **Completar revisión** cuando las cinco decisiones estén registradas.
+**Qué hacer:** la aplicación abre **Revisar** automáticamente. Compare los cinco datos esperados con la observación original. Si un campo compatible es incorrecto, pulse **Corregir**, elija el campo, guarde el valor final y muestre que aparecen **Valor extraído por QVAC** y **Valor corregido por el usuario**. Después elija **Aprobar** o **Rechazar** en cada fila y pulse **Completar revisión** cuando todas las decisiones estén registradas.
 
-**Por qué importa:** una salida válida en estructura todavía puede ser incorrecta. Solo los datos aprobados entran en la vista de trabajo.
+**Por qué importa:** una salida válida en estructura todavía puede ser incorrecta. La corrección conserva la salida original y registra quién aportó el cambio. Solo los valores finales aprobados entran en la vista de trabajo.
 
 **Resultado visible:** cinco decisiones explícitas y un candidato de equipo existente.
 
@@ -126,7 +134,7 @@ npm.cmd start
 
 El botón **Restablecer demostración** recupera el mismo conjunto semilla sintético mientras el servidor está activo.
 
-Si la extracción falla o devuelve JSON inválido, la interfaz debe indicar que la observación se guardó localmente y que ningún dato extraído entró en la base instalada. No improvise valores aceptados. Restablezca la demostración, confirme la nota ensayada y haga un nuevo intento. Si la estructura es válida pero algún dato es incorrecto, rechácelo, declare la limitación del modelo y no lo reconcilie.
+Si la extracción falla o devuelve JSON inválido, la interfaz debe indicar que la observación se guardó localmente y que ningún dato extraído entró en la base instalada. No improvise valores aceptados. Restablezca la demostración, confirme la nota ensayada y haga un nuevo intento. Si la estructura es válida pero un campo compatible es incorrecto, corríjalo con procedencia visible o rechácelo; no reconcilie información que no haya sido revisada.
 
 Si el segundo análisis falla, confirme que la observación y la respuesta fechada siguen visibles, que los borradores iniciales ya no pueden revisarse y que no aparece otra pregunta. No vuelva a ejecutar QVAC para esa observación.
 
@@ -141,6 +149,8 @@ Si el puerto 4173 está en uso, cierre la terminal anterior del prototipo. Si no
 - [ ] Northbridge y la observación ensayada aparecen al iniciar.
 - [ ] La captura guarda la nota antes de inferir, presenta un estado de progreso claro y termina con QVAC local disponible.
 - [ ] Aparecen exactamente cinco datos respaldados y cada uno resalta su evidencia en la observación, sin mostrar detalles técnicos en el recorrido normal.
+- [ ] **Corregir** conserva el valor de QVAC, muestra el valor del usuario y deja el dato pendiente hasta una nueva decisión explícita.
+- [ ] Una corrección no respaldada literalmente aparece como evidencia aportada por el revisor y no se atribuye a QVAC.
 - [ ] Completar las cinco decisiones muestra una comparación entre la evidencia aceptada y `DemoScan MRI · DS-One · Radiología`.
 - [ ] Vincular la evidencia mantiene dos registros y aumenta a uno el vínculo de evidencia del MRI.
 - [ ] Se ven tres verificaciones; el agregado muestra tres registros verificados y dos provisionales.
@@ -154,4 +164,4 @@ Si el puerto 4173 está en uso, cierre la terminal anterior del prototipo. Si no
 - No afirme que la inferencia ocurre dentro del navegador; QVAC se ejecuta en el host Node del mismo computador.
 - No afirme que se trata de un inventario auditado, un flujo de Philips validado, seguridad o privacidad de producción, captura más rápida, adopción, integración con CRM o preparación para envío.
 - La disponibilidad de una pregunta depende de que el modelo actual produzca un candidato válido; el smoke real dedicado no lo consiguió.
-- La edición, exportación, eliminación, empaquetado, ejecución móvil, evaluación E7 completa, experimentos con usuarios, recuperación avanzada y tableros ampliados siguen aplazados.
+- La edición fuera de los seis campos de corrección aprobados, exportación, eliminación, empaquetado, ejecución móvil, evaluación E7 completa, experimentos con usuarios, recuperación avanzada y tableros ampliados siguen aplazados.

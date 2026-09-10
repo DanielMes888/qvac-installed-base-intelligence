@@ -38,6 +38,20 @@ npm.cmd run smoke:clarification
 
 On the recorded run, the 1.7B model completed the initial extraction but returned no clarification candidate, so the command stopped before a second inference. Controlled-adapter tests cover the complete lifecycle; this real-model limitation must remain visible and must not be presented as a successful clarification demonstration.
 
+## Corrección durante la revisión
+
+Antes de completar la revisión, cada dato extraído ofrece la acción **Corregir** para tipo de equipo, fabricante, modelo, cantidad, alcance de cantidad y estado de certeza. La aplicación conserva el **Valor extraído por QVAC** y muestra por separado el **Valor corregido por el usuario**. Cada cambio registra fecha, revisor, campo, valores anterior y nuevo, y un motivo opcional.
+
+Si el nuevo valor no aparece directamente en la observación original, se guarda como Evidence Entry atribuida al revisor y nunca a QVAC. Corregir no aprueba el dato ni modifica un equipo existente: la persona todavía debe aceptar o rechazar el valor final y después decidir cualquier reconciliación.
+
+El smoke determinista recorre esta API pública con un Draft Claim controlado deliberadamente incorrecto:
+
+```powershell
+npm.cmd run smoke:correction
+```
+
+Su evidencia se publica en [correction-smoke.json](results/emergency/correction-smoke.json). Este smoke prueba el flujo y la procedencia; no mide la calidad de QVAC.
+
 ## Problem
 
 Hospital equipment observations remain scattered across field employees' notes and memory. Incomplete, estimated, repeated, or contradictory reports can produce unreliable installed-base records without clear supporting evidence.

@@ -23,10 +23,10 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; min-width: 320px; background: var(--bg); color: var(--ink); font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
-button, select, textarea { font: inherit; }
+button, input, select, textarea { font: inherit; }
 button, select { cursor: pointer; }
-button:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid color-mix(in srgb, var(--focus) 32%, transparent); outline-offset: 2px; }
-button:disabled, select:disabled, textarea:disabled { cursor: wait; opacity: 0.62; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid color-mix(in srgb, var(--focus) 32%, transparent); outline-offset: 2px; }
+button:disabled, input:disabled, select:disabled, textarea:disabled { cursor: wait; opacity: 0.62; }
 
 .topbar { position: sticky; top: 0; z-index: 20; background: rgba(255, 255, 255, 0.97); border-bottom: 1px solid var(--line); backdrop-filter: blur(14px); }
 .topbar-main { min-height: 68px; max-width: 1240px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: minmax(270px, 1fr) minmax(210px, 0.7fr) auto; gap: 24px; align-items: center; }
@@ -80,8 +80,8 @@ button:disabled, select:disabled, textarea:disabled { cursor: wait; opacity: 0.6
 .field small, .privacy-note small { display: block; margin-top: 6px; color: var(--muted); font-size: 11px; }
 .label-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .label-row span { color: var(--muted); font-size: 10px; }
-select, textarea { width: 100%; border: 1px solid var(--line-strong); border-radius: 9px; background: #fff; color: var(--ink); padding: 11px 12px; outline: 0; transition: border 120ms, box-shadow 120ms; }
-select:focus, textarea:focus { border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 15%, transparent); }
+input, select, textarea { width: 100%; border: 1px solid var(--line-strong); border-radius: 9px; background: #fff; color: var(--ink); padding: 11px 12px; outline: 0; transition: border 120ms, box-shadow 120ms; }
+input:focus, select:focus, textarea:focus { border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 15%, transparent); }
 textarea { min-height: 154px; resize: vertical; }
 .privacy-note { margin-top: 18px; padding: 11px 12px; display: flex; gap: 10px; align-items: flex-start; border-radius: 9px; background: var(--brand-soft); color: var(--brand-dark); }
 .privacy-note > span { color: var(--success); font-size: 9px; margin-top: 5px; }
@@ -124,6 +124,8 @@ blockquote { margin: 0; padding: 15px; border: 0; border-radius: 9px; background
 .saved-answer span, .saved-answer strong { display: block; }
 .saved-answer span { color: var(--muted); font-size: 9px; font-weight: 750; letter-spacing: 0.05em; text-transform: uppercase; }
 .saved-answer strong { margin-top: 3px; font-size: 12px; }
+.saved-answer small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+.reviewer-evidence { border-color: #dfcf9c; background: #fffaf0; }
 .empty-state { min-height: 190px; padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border: 1px dashed var(--line-strong); border-radius: 10px; color: var(--muted); text-align: center; }
 .empty-state strong { color: var(--ink); }
 .empty-state .button { margin-top: 8px; }
@@ -157,6 +159,24 @@ blockquote { margin: 0; padding: 15px; border: 0; border-radius: 9px; background
 .evidence > span { display: block; margin-bottom: 3px; color: var(--muted); font-size: 10px; font-weight: 700; text-transform: uppercase; }
 .evidence mark { background: #e0f1e8; color: #284737; }
 .claim-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+.claim-actions { display: flex; align-items: center; gap: 8px; }
+.correct-claim { min-height: 31px; padding: 5px 10px; font-size: 11px; }
+.correction-summary { margin: 11px 0; padding: 11px 12px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; border: 1px solid #dfcf9c; border-radius: 8px; background: #fffaf0; }
+.correction-summary div span, .correction-summary div strong { display: block; }
+.correction-summary div span { color: var(--muted); font-size: 9px; font-weight: 750; letter-spacing: 0.04em; text-transform: uppercase; }
+.correction-summary div strong { margin-top: 2px; font-size: 12px; }
+.correction-summary small { grid-column: 1 / -1; color: var(--muted); font-size: 10px; }
+.correction-arrow { color: var(--warning); font-weight: 800; }
+.correction-form { margin: 13px 0 4px; padding: 14px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-subtle); }
+.correction-grid { display: grid; grid-template-columns: minmax(150px, 0.7fr) minmax(180px, 1fr); gap: 11px; }
+.correction-form label { display: block; color: var(--ink); font-size: 11px; font-weight: 750; }
+.correction-form label > span { color: var(--muted); font-weight: 500; }
+.correction-form label > input, .correction-form label > select, .correction-value-control { margin-top: 5px; }
+.correction-form input, .correction-form select { padding: 8px 9px; font-size: 12px; }
+.correction-help { margin: 8px 0 0; color: var(--muted); font-size: 10px; }
+.correction-form-actions { margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+.correction-form-actions .button { min-height: 34px; padding: 6px 11px; font-size: 11px; }
+.correction-form .feedback { margin: 7px 0 0; }
 details { color: var(--muted); font-size: 11px; }
 details summary { cursor: pointer; }
 details p { margin: 4px 0 0; }
@@ -266,8 +286,12 @@ details p { margin: 4px 0 0; }
   .process-card li:not(:last-child)::after { display: none; }
   .process-card li > span { margin-bottom: 7px; }
   .claim-footer { align-items: flex-start; flex-direction: column; }
+  .claim-actions { width: 100%; align-items: stretch; flex-direction: column; }
   .decision { width: 100%; }
   .decision label { flex: 1; }
+  .correction-grid { grid-template-columns: 1fr; }
+  .correction-summary { grid-template-columns: 1fr; }
+  .correction-arrow { transform: rotate(90deg); }
   .clarification-actions { align-items: stretch; flex-direction: column; }
   .clarification-actions .button.primary { width: 100%; }
   .summary-grid { grid-template-columns: repeat(2, 1fr); }

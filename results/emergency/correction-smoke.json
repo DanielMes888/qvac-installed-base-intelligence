@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "reviewer-correction-smoke-v1",
+  "startedAt": "2026-09-10T23:41:56.741Z",
+  "completedAt": "2026-09-10T23:41:56.803Z",
+  "synthetic": true,
+  "adapter": "controlled-test-adapter",
+  "purpose": "Deterministic public-seam smoke of reviewer correction; this is not real-QVAC quality evidence.",
+  "observationId": "dfcb07b6-cb42-4dab-93e5-f09451d5d329",
+  "correction": {
+    "originalQvacValue": "DS-Zero",
+    "reviewedValue": "DS-One",
+    "evidenceReferencePreserved": {
+      "id": "e0",
+      "start": 0,
+      "end": 62,
+      "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
+    },
+    "audit": {
+      "id": "dba57d63-771b-4d01-8c8a-114d252ff1d0",
+      "correctedAt": "2026-09-10T23:41:56.785Z",
+      "reviewer": "Usuario local de demostración",
+      "field": "model",
+      "previousValue": "DS-Zero",
+      "correctedValue": "DS-One",
+      "reason": "El modelo aparece en la observación original.",
+      "origin": "originalObservation",
+      "evidenceEntryId": null
+    },
+    "installedBaseChanged": false
+  },
+  "review": {
+    "explicit": true,
+    "acceptedClaimCount": 3,
+    "candidateIds": [
+      "nb-mri-01"
+    ]
+  },
+  "reconciliation": {
+    "recordId": "nb-mri-01",
+    "equipmentRecordCountBefore": 2,
+    "equipmentRecordCountAfter": 2,
+    "duplicateGrowthPrevented": true
+  },
+  "failure": null
+}

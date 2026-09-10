@@ -1,7 +1,7 @@
 {
   "schemaVersion": "emergency-demo-smoke-v1",
-  "startedAt": "2026-09-10T22:43:08.444Z",
-  "completedAt": "2026-09-10T22:43:37.757Z",
+  "startedAt": "2026-09-10T23:39:15.742Z",
+  "completedAt": "2026-09-10T23:39:50.170Z",
   "synthetic": true,
   "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
   "environment": {
@@ -12,13 +12,13 @@
       "reachable": false,
       "error": "TypeError"
     },
-    "loopbackOrigin": "http://127.0.0.1:64409"
+    "loopbackOrigin": "http://127.0.0.1:53058"
   },
   "extraction": {
-    "id": "7e5a6949-79cf-4ac9-a4b1-b6b7bdbc95da",
+    "id": "f35d0ec6-fc6d-451d-bae2-0a27a877751c",
     "customerId": "northbridge",
     "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
-    "recordedAt": "2026-09-10T22:43:08.598Z",
+    "recordedAt": "2026-09-10T23:39:15.824Z",
     "revision": 0,
     "status": "succeeded",
     "attempts": [
@@ -125,19 +125,19 @@
           "clarification": null
         },
         "metrics": {
-          "totalMs": 23597.9849,
+          "totalMs": 28099.2039,
           "promptTokens": 247,
           "generatedTokens": 60,
           "emittedTokens": 60,
-          "timeToFirstToken": 21739.993000000002,
-          "tokensPerSecond": 71.90735456437925,
+          "timeToFirstToken": 26055.107,
+          "tokensPerSecond": 63.693456134316754,
           "backendDevice": "gpu"
         },
-        "attemptId": "4559d76d-029f-4604-9532-7ddf8886da13",
+        "attemptId": "1720ba8f-71aa-468a-a14a-bee6f09ce72b",
         "phase": "initial",
         "observationRevision": 0,
-        "startedAt": "2026-09-10T22:43:08.600Z",
-        "completedAt": "2026-09-10T22:43:37.740Z",
+        "startedAt": "2026-09-10T23:39:15.826Z",
+        "completedAt": "2026-09-10T23:39:50.151Z",
         "draftStatus": "active"
       }
     ],
@@ -165,7 +165,15 @@
           "end": 62,
           "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
-        "decision": "pending"
+        "originalValue": "MRI",
+        "reviewedValue": "MRI",
+        "originalCertainty": "reported",
+        "reviewedCertainty": "reported",
+        "originalQuantityScope": null,
+        "reviewedQuantityScope": null,
+        "decision": "pending",
+        "reviewStatus": "pending",
+        "corrections": []
       },
       {
         "claimId": "c2",
@@ -182,7 +190,15 @@
           "end": 62,
           "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
-        "decision": "pending"
+        "originalValue": "DemoScan",
+        "reviewedValue": "DemoScan",
+        "originalCertainty": "reported",
+        "reviewedCertainty": "reported",
+        "originalQuantityScope": null,
+        "reviewedQuantityScope": null,
+        "decision": "pending",
+        "reviewStatus": "pending",
+        "corrections": []
       },
       {
         "claimId": "c3",
@@ -199,7 +215,15 @@
           "end": 62,
           "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
-        "decision": "pending"
+        "originalValue": "DS-One",
+        "reviewedValue": "DS-One",
+        "originalCertainty": "reported",
+        "reviewedCertainty": "reported",
+        "originalQuantityScope": null,
+        "reviewedQuantityScope": null,
+        "decision": "pending",
+        "reviewStatus": "pending",
+        "corrections": []
       },
       {
         "claimId": "c4",
@@ -217,7 +241,15 @@
           "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
         "quantityScope": "observed",
-        "decision": "pending"
+        "originalValue": 1,
+        "reviewedValue": 1,
+        "originalCertainty": "reported",
+        "reviewedCertainty": "reported",
+        "originalQuantityScope": "observed",
+        "reviewedQuantityScope": "observed",
+        "decision": "pending",
+        "reviewStatus": "pending",
+        "corrections": []
       },
       {
         "claimId": "c5",
@@ -234,7 +266,15 @@
           "end": 62,
           "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
-        "decision": "pending"
+        "originalValue": "Radiology",
+        "reviewedValue": "Radiology",
+        "originalCertainty": "reported",
+        "reviewedCertainty": "reported",
+        "originalQuantityScope": null,
+        "reviewedQuantityScope": null,
+        "decision": "pending",
+        "reviewStatus": "pending",
+        "corrections": []
       }
     ],
     "clarification": null,
@@ -259,7 +299,7 @@
       }
     },
     "load": {
-      "loadMs": 5496.5983,
+      "loadMs": 6178.2022,
       "info": {
         "modelId": "13dd17f190cd6438",
         "modelType": "llamacpp-completion",
@@ -271,7 +311,7 @@
         ],
         "displayName": "LLM (llama.cpp)",
         "addonPackage": "@qvac/llm-llamacpp",
-        "loadedAt": "2026-09-10T22:43:14.090Z",
+        "loadedAt": "2026-09-10T23:39:22.000Z",
         "name": "QWEN3_1_7B_INST_Q4",
         "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
         "toolDialect": "hermes"
@@ -336,7 +376,7 @@
           "model": "DS-One",
           "location": "Radiology",
           "evidenceObservationIds": [
-            "7e5a6949-79cf-4ac9-a4b1-b6b7bdbc95da"
+            "f35d0ec6-fc6d-451d-bae2-0a27a877751c"
           ]
         },
         {
@@ -352,10 +392,10 @@
       ],
       "observations": [
         {
-          "id": "7e5a6949-79cf-4ac9-a4b1-b6b7bdbc95da",
+          "id": "f35d0ec6-fc6d-451d-bae2-0a27a877751c",
           "customerId": "northbridge",
           "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
-          "recordedAt": "2026-09-10T22:43:08.598Z",
+          "recordedAt": "2026-09-10T23:39:15.824Z",
           "revision": 0,
           "status": "succeeded",
           "attempts": [
@@ -462,19 +502,19 @@
                 "clarification": null
               },
               "metrics": {
-                "totalMs": 23597.9849,
+                "totalMs": 28099.2039,
                 "promptTokens": 247,
                 "generatedTokens": 60,
                 "emittedTokens": 60,
-                "timeToFirstToken": 21739.993000000002,
-                "tokensPerSecond": 71.90735456437925,
+                "timeToFirstToken": 26055.107,
+                "tokensPerSecond": 63.693456134316754,
                 "backendDevice": "gpu"
               },
-              "attemptId": "4559d76d-029f-4604-9532-7ddf8886da13",
+              "attemptId": "1720ba8f-71aa-468a-a14a-bee6f09ce72b",
               "phase": "initial",
               "observationRevision": 0,
-              "startedAt": "2026-09-10T22:43:08.600Z",
-              "completedAt": "2026-09-10T22:43:37.740Z",
+              "startedAt": "2026-09-10T23:39:15.826Z",
+              "completedAt": "2026-09-10T23:39:50.151Z",
               "draftStatus": "active"
             }
           ],
@@ -502,7 +542,15 @@
                 "end": 62,
                 "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
-              "decision": "accepted"
+              "originalValue": "MRI",
+              "reviewedValue": "MRI",
+              "originalCertainty": "reported",
+              "reviewedCertainty": "reported",
+              "originalQuantityScope": null,
+              "reviewedQuantityScope": null,
+              "decision": "accepted",
+              "reviewStatus": "accepted",
+              "corrections": []
             },
             {
               "claimId": "c2",
@@ -519,7 +567,15 @@
                 "end": 62,
                 "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
-              "decision": "accepted"
+              "originalValue": "DemoScan",
+              "reviewedValue": "DemoScan",
+              "originalCertainty": "reported",
+              "reviewedCertainty": "reported",
+              "originalQuantityScope": null,
+              "reviewedQuantityScope": null,
+              "decision": "accepted",
+              "reviewStatus": "accepted",
+              "corrections": []
             },
             {
               "claimId": "c3",
@@ -536,7 +592,15 @@
                 "end": 62,
                 "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
-              "decision": "accepted"
+              "originalValue": "DS-One",
+              "reviewedValue": "DS-One",
+              "originalCertainty": "reported",
+              "reviewedCertainty": "reported",
+              "originalQuantityScope": null,
+              "reviewedQuantityScope": null,
+              "decision": "accepted",
+              "reviewStatus": "accepted",
+              "corrections": []
             },
             {
               "claimId": "c4",
@@ -554,7 +618,15 @@
                 "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
               "quantityScope": "observed",
-              "decision": "accepted"
+              "originalValue": 1,
+              "reviewedValue": 1,
+              "originalCertainty": "reported",
+              "reviewedCertainty": "reported",
+              "originalQuantityScope": "observed",
+              "reviewedQuantityScope": "observed",
+              "decision": "accepted",
+              "reviewStatus": "accepted",
+              "corrections": []
             },
             {
               "claimId": "c5",
@@ -571,16 +643,24 @@
                 "end": 62,
                 "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
-              "decision": "accepted"
+              "originalValue": "Radiology",
+              "reviewedValue": "Radiology",
+              "originalCertainty": "reported",
+              "reviewedCertainty": "reported",
+              "originalQuantityScope": null,
+              "reviewedQuantityScope": null,
+              "decision": "accepted",
+              "reviewStatus": "accepted",
+              "corrections": []
             }
           ],
           "clarification": null,
-          "reviewedAt": "2026-09-10T22:43:37.746Z",
+          "reviewedAt": "2026-09-10T23:39:50.158Z",
           "reconciliation": {
             "recordId": "nb-mri-01",
             "reason": "La revisión del smoke test confirmó la modalidad y los datos de identificación respaldados",
             "actor": "Usuario local de demostración",
-            "decidedAt": "2026-09-10T22:43:37.751Z"
+            "decidedAt": "2026-09-10T23:39:50.164Z"
           },
           "model": {
             "sdk": "0.19.0",
@@ -601,7 +681,7 @@
             }
           },
           "load": {
-            "loadMs": 5496.5983,
+            "loadMs": 6178.2022,
             "info": {
               "modelId": "13dd17f190cd6438",
               "modelType": "llamacpp-completion",
@@ -613,7 +693,7 @@
               ],
               "displayName": "LLM (llama.cpp)",
               "addonPackage": "@qvac/llm-llamacpp",
-              "loadedAt": "2026-09-10T22:43:14.090Z",
+              "loadedAt": "2026-09-10T23:39:22.000Z",
               "name": "QWEN3_1_7B_INST_Q4",
               "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
               "toolDialect": "hermes"

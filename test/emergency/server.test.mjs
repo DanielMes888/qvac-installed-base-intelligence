@@ -82,6 +82,10 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
   assert.match(clientScript, /La observación está guardada.*Ningún resultado modificó la base instalada/)
   assert.match(clientScript, /Vincular con equipo existente/)
   assert.match(clientScript, /decisiones completadas/)
+  assert.match(clientScript, /Corregir/)
+  assert.match(clientScript, /Valor extraído por QVAC/)
+  assert.match(clientScript, /Valor corregido por el usuario/)
+  assert.match(clientScript, /Evidencia aportada por el revisor/)
   assert.match(page, /id="review"[^>]*disabled/)
   assert.doesNotMatch(clientScript, /value="rejected" checked/)
   assert.doesNotMatch(clientScript, /generatedTokens|metrics\.totalMs|evidence\.start|evidence\.end/)
@@ -190,4 +194,48 @@ test('HTTP clarification answer preserves evidence and replaces drafts before re
   assert.equal(clarified.attempts.length, 2)
   assert.equal(clarified.draftClaims.find(({ type }) => type === 'model').value, 'DS-Two')
   assert.equal(clarified.reviewedAt, null)
+})
+
+test('HTTP correction keeps the QVAC value and requires a later explicit review', async (t) => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'qvac-prototype-correction-'))
+  const wrongModelDraft = {
+    ...draft,
+    claims: draft.claims.map((item) => item.type === 'model' ? { ...item, value: 'DS-Zero' } : item)
+  }
+  const app = await createPrototypeServer({
+    workspacePath: path.join(directory, 'workspace.json'),
+    extractor: async () => ({
+      status: 'succeeded',
+      attempts: [{ status: 'succeeded' }],
+      draft: wrongModelDraft,
+      model: { sdk: 'controlled-test-adapter' }
+    })
+  })
+  await new Promise((resolve) => app.server.listen(0, '127.0.0.1', resolve))
+  const { port } = app.server.address()
+  const origin = `http://127.0.0.1:${port}`
+  t.after(async () => {
+    await app.close()
+    await rm(directory, { recursive: true, force: true })
+  })
+
+  const observation = await fetch(`${origin}/api/observations`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ customerId: 'northbridge', text: note })
+  }).then((response) => response.json())
+  const modelClaim = observation.draftClaims.find(({ type }) => type === 'model')
+  const corrected = await fetch(`${origin}/api/observations/${observation.id}/claims/${modelClaim.claimId}/correction`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ field: 'model', correctedValue: 'DS-One', reason: 'Corrección determinista' })
+  }).then((response) => response.json())
+  const correctedModel = corrected.draftClaims.find(({ type }) => type === 'model')
+
+  assert.equal(correctedModel.originalValue, 'DS-Zero')
+  assert.equal(correctedModel.reviewedValue, 'DS-One')
+  assert.equal(correctedModel.value, 'DS-One')
+  assert.equal(correctedModel.decision, 'pending')
+  assert.equal(correctedModel.corrections.length, 1)
+  assert.equal(corrected.reviewedAt, null)
 })

@@ -38,6 +38,10 @@ export async function createPrototypeServer({
       if (clarificationMatch && request.method === 'POST') {
         return json(response, 200, await workspace.clarify(clarificationMatch[1], await bodyJson(request), extractor))
       }
+      const correctionMatch = url.pathname.match(/^\/api\/observations\/([^/]+)\/claims\/([^/]+)\/correction$/)
+      if (correctionMatch && request.method === 'POST') {
+        return json(response, 200, await workspace.correctClaim(correctionMatch[1], correctionMatch[2], await bodyJson(request)))
+      }
       const reviewMatch = url.pathname.match(/^\/api\/observations\/([^/]+)\/review$/)
       if (reviewMatch && request.method === 'POST') return json(response, 200, await workspace.review(reviewMatch[1], (await bodyJson(request)).decisions))
       const reconcileMatch = url.pathname.match(/^\/api\/observations\/([^/]+)\/reconcile$/)

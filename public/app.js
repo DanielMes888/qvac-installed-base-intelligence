@@ -17,6 +17,7 @@ const certaintyLabels = { reported: 'Reportado', estimated: 'Estimado', unknown:
 const sourceLabels = { directObservation: 'Observación directa', attributedStatement: 'Declaración atribuida', unattributedStatement: 'Declaración sin atribuir', recordOrLabel: 'Registro o etiqueta' }
 const locationScopeLabels = { room: 'Sala', dept: 'Departamento', site: 'Sede', customer: 'Cliente', unknown: 'Sin definir' }
 const quantityScopeLabels = { observed: 'Cantidad observada', reportedTotal: 'Total reportado', unknown: 'Alcance desconocido' }
+const correctionFieldLabels = { equipmentType: 'Tipo de equipo', manufacturer: 'Fabricante', model: 'Modelo', quantity: 'Cantidad', quantityScope: 'Alcance de cantidad', certainty: 'Estado de certeza' }
 const statusLabels = { verified: 'Verificado', provisional: 'Provisional', open: 'Pendiente' }
 const modalityLabels = { Ultrasound: 'Ultrasonido', 'Patient monitoring': 'Monitoreo de pacientes' }
 const locationLabels = { Radiology: 'Radiología', Emergency: 'Emergencias', Imaging: 'Diagnóstico por imágenes', 'Critical Care': 'Cuidados intensivos', 'Room 2': 'Sala 2' }
@@ -102,7 +103,9 @@ async function capture(event) {
 
 function renderOriginalObservation(observation) {
   $('#original-note').textContent = observation.originalText
-  $('#clarification-evidence').innerHTML = (observation.evidenceEntries ?? []).map((entry) => `<div class="saved-answer"><span>Respuesta de aclaración · ${formatDate(entry.recordedAt)}</span><strong>${escapeHtml(entry.text)}</strong></div>`).join('')
+  $('#clarification-evidence').innerHTML = (observation.evidenceEntries ?? []).map((entry) => entry.type === 'reviewerCorrection'
+    ? `<div class="saved-answer reviewer-evidence"><span>Evidencia aportada por el revisor · ${formatDate(entry.recordedAt)}</span><strong>${escapeHtml(translate(entry.field, correctionFieldLabels))}: ${escapeHtml(entry.text)}</strong>${entry.reason ? `<small>${escapeHtml(entry.reason)}</small>` : ''}</div>`
+    : `<div class="saved-answer"><span>Respuesta de aclaración · ${formatDate(entry.recordedAt)}</span><strong>${escapeHtml(entry.text)}</strong></div>`).join('')
   $('#observation-state').className = 'observation-state saved'
   $('#observation-state').textContent = `Observación guardada · ${formatDate(observation.recordedAt)}`
 }
@@ -127,20 +130,136 @@ function renderDrafts(observation, { reviewEnabled = true } = {}) {
         <div class="claim-name"><span>${translate(claim.type, claimLabels)}</span><strong>${escapeHtml(displayClaimValue(claim))}</strong></div>
         <span class="certainty ${claim.certainty}">${translate(claim.certainty, certaintyLabels)}</span>
       </div>
+      ${renderCorrectionSummary(claim)}
       <div class="evidence"><span>Evidencia en la observación</span><mark>${escapeHtml(claim.evidence.text)}</mark></div>
       <div class="claim-footer">
         <details><summary>Ver procedencia</summary><p>${translate(claim.sourceType, sourceLabels)} · ${translate(claim.locationScope, locationScopeLabels)}${claim.quantityScope ? ` · ${translate(claim.quantityScope, quantityScopeLabels)}` : ''}</p></details>
-        <fieldset class="decision"><legend>Decisión</legend><label><input type="radio" name="${claim.claimId}" value="accepted" ${reviewEnabled ? '' : 'disabled'}><span>Aprobar</span></label><label><input type="radio" name="${claim.claimId}" value="rejected" ${reviewEnabled ? '' : 'disabled'}><span>Rechazar</span></label></fieldset>
+        <div class="claim-actions">${reviewEnabled ? `<button class="button secondary correct-claim" data-claim="${claim.claimId}" type="button">Corregir</button>` : ''}<fieldset class="decision"><legend>Decisión</legend><label><input type="radio" name="${claim.claimId}" value="accepted" ${reviewEnabled ? '' : 'disabled'}><span>Aprobar</span></label><label><input type="radio" name="${claim.claimId}" value="rejected" ${reviewEnabled ? '' : 'disabled'}><span>Rechazar</span></label></fieldset></div>
       </div>
+      ${reviewEnabled ? renderCorrectionForm(claim) : ''}
     </article>`).join('')
 
   $$('.decision input').forEach((input) => input.addEventListener('change', updateReviewProgress))
+  $$('.correct-claim').forEach((button) => button.addEventListener('click', () => openCorrection(button.dataset.claim)))
+  $$('.cancel-correction').forEach((button) => button.addEventListener('click', () => closeCorrection(button.dataset.claim)))
+  $$('.correction-field').forEach((select) => select.addEventListener('change', () => renderCorrectionInput(select.closest('.correction-form'), select.value)))
+  $$('.correction-form').forEach((form) => form.addEventListener('submit', correctClaim))
   $('#review').classList.toggle('hidden', !reviewEnabled)
   if (reviewEnabled) updateReviewProgress()
   else {
     $('#review-progress').textContent = '1 aclaración pendiente'
     $('#review-progress').className = 'review-progress'
   }
+}
+
+function renderCorrectionSummary(claim) {
+  if (!claim.corrections?.length) return ''
+  const latest = claim.corrections.at(-1)
+  return `<div class="correction-summary">
+    <div><span>Valor extraído por QVAC</span><strong>${escapeHtml(formatCorrectionValue(claim, latest.field, true))}</strong></div>
+    <span class="correction-arrow" aria-hidden="true">→</span>
+    <div><span>Valor corregido por el usuario</span><strong>${escapeHtml(formatCorrectionValue(claim, latest.field, false))}</strong></div>
+    <small>${latest.origin === 'reviewerProvided' ? 'Origen: evidencia aportada por el revisor' : 'Origen: observación original'} · ${formatDate(latest.correctedAt)}</small>
+  </div>`
+}
+
+function renderCorrectionForm(claim) {
+  const fields = correctionFields(claim)
+  return `<form class="correction-form hidden" data-claim="${claim.claimId}" novalidate>
+    <div class="correction-grid">
+      <label>Campo a corregir<select class="correction-field" name="field">${fields.map((field) => `<option value="${field}">${translate(field, correctionFieldLabels)}</option>`).join('')}</select></label>
+      <label class="correction-value-label">Valor corregido<div class="correction-value-control"></div></label>
+    </div>
+    <label>Motivo breve <span>(opcional)</span><input class="correction-reason" name="reason" maxlength="200" type="text" placeholder="Explique por qué realizó el cambio"></label>
+    <p class="correction-help">El valor original de QVAC se conservará. Si el nuevo valor no aparece en la observación, se guardará como evidencia aportada por usted.</p>
+    <div class="correction-form-actions"><button class="button secondary save-correction" type="submit">Guardar corrección</button><button class="text-button cancel-correction" data-claim="${claim.claimId}" type="button">Cancelar</button></div>
+    <div class="correction-status feedback" aria-live="polite"></div>
+  </form>`
+}
+
+function correctionFields(claim) {
+  const fields = ['certainty']
+  if (['equipmentType', 'manufacturer', 'model', 'quantity'].includes(claim.type)) fields.unshift(claim.type)
+  if (claim.type === 'quantity') fields.splice(1, 0, 'quantityScope')
+  return fields
+}
+
+function openCorrection(claimId) {
+  const form = $(`.correction-form[data-claim="${claimId}"]`)
+  $$('.correction-form').forEach((candidate) => candidate.classList.toggle('hidden', candidate !== form))
+  renderCorrectionInput(form, form.querySelector('.correction-field').value)
+  form.classList.remove('hidden')
+  form.querySelector('input, select').focus()
+}
+
+function closeCorrection(claimId) {
+  $(`.correction-form[data-claim="${claimId}"]`)?.classList.add('hidden')
+}
+
+function renderCorrectionInput(form, field) {
+  const claim = currentObservation.draftClaims.find((item) => item.claimId === form.dataset.claim)
+  const currentValue = correctionCurrentValue(claim, field)
+  const control = form.querySelector('.correction-value-control')
+  if (field === 'quantityScope') {
+    control.innerHTML = `<select name="correctedValue" required>${Object.entries(quantityScopeLabels).map(([value, label]) => `<option value="${value}" ${value === currentValue ? 'selected' : ''}>${label}</option>`).join('')}</select>`
+  } else if (field === 'certainty') {
+    control.innerHTML = `<select name="correctedValue" required>${['reported', 'estimated', 'unknown'].map((value) => `<option value="${value}" ${value === currentValue ? 'selected' : ''}>${certaintyLabels[value]}</option>`).join('')}</select>`
+  } else {
+    const type = field === 'quantity' ? 'number' : 'text'
+    const constraints = field === 'quantity' ? 'min="1" step="1"' : 'maxlength="100"'
+    control.innerHTML = `<input name="correctedValue" type="${type}" ${constraints} required value="${escapeHtml(currentValue)}">`
+  }
+}
+
+async function correctClaim(event) {
+  event.preventDefault()
+  const form = event.currentTarget
+  const claimId = form.dataset.claim
+  const decisions = new Map($$('.decision input:checked').map((input) => [input.name, input.value]))
+  const submit = form.querySelector('.save-correction')
+  const status = form.querySelector('.correction-status')
+  submit.disabled = true
+  status.className = 'correction-status feedback loading'
+  status.textContent = 'Guardando la corrección…'
+  try {
+    const field = form.querySelector('.correction-field').value
+    const input = form.querySelector('[name="correctedValue"]')
+    currentObservation = await api(`/api/observations/${currentObservation.id}/claims/${claimId}/correction`, {
+      method: 'POST',
+      body: JSON.stringify({ field, correctedValue: input.value, reason: form.querySelector('.correction-reason').value })
+    })
+    renderOriginalObservation(currentObservation)
+    renderDrafts(currentObservation)
+    for (const [savedClaimId, decision] of decisions) {
+      if (savedClaimId === claimId) continue
+      const inputToRestore = document.querySelector(`input[name="${savedClaimId}"][value="${decision}"]`)
+      if (inputToRestore) inputToRestore.checked = true
+    }
+    updateReviewProgress()
+    setFeedback('Corrección guardada. El dato todavía requiere aprobación o rechazo explícito.', 'success')
+  } catch (error) {
+    submit.disabled = false
+    status.className = 'correction-status feedback error'
+    status.textContent = error instanceof Error ? error.message : 'No fue posible guardar la corrección.'
+  }
+}
+
+function correctionCurrentValue(claim, field) {
+  if (field === 'certainty') return claim.reviewedCertainty
+  if (field === 'quantityScope') return claim.reviewedQuantityScope
+  return claim.reviewedValue
+}
+
+function formatCorrectionValue(claim, field, original) {
+  const value = field === 'certainty'
+    ? (original ? claim.originalCertainty : claim.reviewedCertainty)
+    : field === 'quantityScope'
+      ? (original ? claim.originalQuantityScope : claim.reviewedQuantityScope)
+      : (original ? claim.originalValue : claim.reviewedValue)
+  if (field === 'certainty') return translate(value, certaintyLabels)
+  if (field === 'quantityScope') return translate(value, quantityScopeLabels)
+  if (field === 'equipmentType') return displayModality(String(value))
+  return String(value)
 }
 
 function renderClarification(clarification) {
@@ -239,7 +358,9 @@ function renderReviewedClaims(observation) {
   $$('.claim').forEach((card) => {
     const claim = observation.draftClaims.find((item) => item.claimId === card.dataset.claim)
     card.classList.add(claim.decision)
-    card.querySelectorAll('input').forEach((input) => { input.disabled = true })
+    card.querySelectorAll('input, select, textarea, button').forEach((control) => { control.disabled = true })
+    card.querySelector('.correction-form')?.classList.add('hidden')
+    card.querySelector('.correct-claim')?.classList.add('hidden')
   })
   $('#review').classList.add('hidden')
 }
@@ -368,14 +489,15 @@ function clearReviewWorkspace(clearObservation = true) {
 
 function matchingFields(claims, candidate) {
   const pairs = { equipmentType: candidate.modality, manufacturer: candidate.manufacturer, model: candidate.model }
-  return Object.entries(pairs).filter(([type, value]) => claims.some((claim) => claim.type === type && String(claim.value).toLowerCase() === String(value).toLowerCase())).map(([type]) => type)
+  return Object.entries(pairs).filter(([type, value]) => claims.some((claim) => claim.type === type && String(claim.reviewedValue ?? claim.value).toLowerCase() === String(value).toLowerCase())).map(([type]) => type)
 }
 
 function updateNoteLength() { $('#note-length').textContent = `${$('#note').value.length} caracteres` }
 function displayClaimValue(claim) {
-  if (claim.type === 'equipmentType') return displayModality(String(claim.value))
-  if (claim.type === 'location') return displayLocation(String(claim.value))
-  return String(claim.value)
+  const value = claim.reviewedValue ?? claim.value
+  if (claim.type === 'equipmentType') return displayModality(String(value))
+  if (claim.type === 'location') return displayLocation(String(value))
+  return String(value)
 }
 function displayModality(value) { return modalityLabels[value] ?? value }
 function displayLocation(value) { return locationLabels[value] ?? value }
