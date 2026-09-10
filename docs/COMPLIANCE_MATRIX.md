@@ -1,0 +1,22 @@
+# Competition compliance matrix
+
+Status: Incomplete and unverified for final submission. This matrix separates stored challenge evidence, user-provided organizer text, and self-imposed project commitments. Add authoritative organizer sources and completed project evidence before marking any mandatory submission requirement compliant.
+
+| Requirement | Authority | Source and exact section | Required project evidence | Status |
+| --- | --- | --- | --- | --- |
+| Installed-base problem, conversational capture, structured extraction/storage, incomplete-information handling, customer view, and basic aggregation | Stored Philips challenge brief | `docs/references/PHILIPS_CHALLENGE_BRIEF.docx`: Challenge Statement, The Problem, Your Mission, Minimum Viable Prototype, Intelligent Validation | Working end-to-end prototype, synthetic seed, customer and aggregate views | Source verified; implementation not started |
+| Synthetic data; no confidential customer or real competitive information | Stored Philips challenge brief | `docs/references/PHILIPS_CHALLENGE_BRIEF.docx`: Minimum Viable Prototype | Fully fictional universe, visible synthetic labels, published synthetic datasets/exports | Source verified; implementation not started |
+| QVAC inference on-device or permitted peer; cloud inference disqualifying; interface form flexible | User-provided organizer text | `docs/references/TRACK_01_USER_PROVIDED_TEXT.md`; official Track 01 source missing | Same-computer QVAC execution evidence and zero cloud inference | User-provided text recorded; organizer source unverified |
+| Same-computer `@qvac/sdk`, no delegated/cloud inference | Binding project rule and accepted project decision | `AGENTS.md`; ADR 0003 | Pinned tested SDK/runtime/model and E4/E6 results | Decision recorded; validation not run |
+| Demonstration video no more than five minutes | Self-imposed until sourced | Official project plan, section 15 | Approximately 4:30 demo video and script | Organizer requirement unverified; artifact not created |
+| Public repository | Self-imposed until sourced | Official project plan, section 16 | Accessible repository at required deadline | Organizer requirement and target tracker/repository unverified |
+| Permissive repository license | Self-imposed until sourced | `LICENSE` (Apache-2.0); official project plan, section 16 | License plus compatible third-party inventory/notices | Organizer requirement unverified; dependency/model audit not run |
+| Structured performance/evaluation results | Self-imposed until sourced | Official project plan, sections 12 and 16 | Versioned results, checksums, prompts/configuration, limits | Organizer requirement unverified; experiments not run |
+| External-component disclosure | Self-imposed until sourced | Official project plan, section 16 | Third-party inventory and notices | Organizer requirement unverified; audit not run |
+| Submission deadline, timezone, portal, formats, repository access, judging rubric | Unknown | No authoritative source stored | Exact organizer sources and mapped project artifacts | Missing; blocks final compliance/submission readiness |
+
+## Required source verification
+
+The project owner is assigned to obtain the event name, organizer URL or official email, Track 01 page, general rules, deadline/timezone, portal, repository-access requirement, video duration/format, license requirement, QVAC SDK/runtime requirement, required metrics/disclosures, and judging rubric. Store exact source files or stable URLs with access dates under `docs/references/`, then update every matrix row with an exact section and status.
+
+Final compliance remains incomplete until each mandatory requirement has both an authoritative source and corresponding project evidence.

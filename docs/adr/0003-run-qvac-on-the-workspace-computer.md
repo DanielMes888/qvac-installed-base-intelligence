@@ -1,0 +1,5 @@
+# Run QVAC on the workspace computer
+
+Accepted during grill-with-docs round 4 (Q16-Q17). Run all evaluated AI inference through a pinned, tested `@qvac/sdk` on the same physical computer that holds the local workspace; exclude cloud and delegated inference. This gives up cross-device compute in exchange for a simpler offline execution and privacy boundary, and avoids depending on delegated inference removed in the official [v0.19.0 release notes](https://docs.qvac.tether.io/reference/release-notes/#delegated-inference-removed); do not downgrade the SDK just to restore it.
+
+The first spike targets the inspected Windows laptop, using a minimal harness before selecting Electron or a same-computer browser UI/native QVAC host. In the browser route, inference runs in the native host, not inside the browser; model downloads from peers are distinct from peer inference. The exact SDK/model versions and execution backend remain untested and will be pinned and recorded through the approved spike ticket.
