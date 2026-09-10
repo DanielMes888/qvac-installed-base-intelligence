@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Field Evidence · QVAC prototype</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#capture"><span class="brand-mark">F</span><span>Field Evidence</span></a>
+    <div class="runtime"><span class="pulse"></span><span>Local QVAC · same computer</span></div>
+  </header>
+
+  <main>
+    <section class="notice"><strong>Synthetic demonstration data.</strong> Use fictional data only. Do not enter patient information, confidential customer data, or real competitive information.</section>
+
+    <section class="hero" id="capture">
+      <div>
+        <p class="eyebrow">Post-visit equipment capture</p>
+        <h1>Turn field notes into evidence,<br><em>without false certainty.</em></h1>
+        <p class="lede">QVAC extracts compact draft claims locally. You decide what enters the working view and whether repeated evidence links to an existing record.</p>
+      </div>
+      <div class="privacy-card">
+        <span>LOCAL WORKSPACE</span>
+        <strong>No cloud inference</strong>
+        <small>Browser and QVAC host run on this laptop.</small>
+      </div>
+    </section>
+
+    <section class="workspace-grid">
+      <article class="panel capture-panel">
+        <div class="step"><span>01</span><div><b>Capture observation</b><small>Saved before inference</small></div></div>
+        <label for="customer">Fictional customer</label>
+        <select id="customer"></select>
+        <label for="note">Describe the medical equipment you observed or were told about.</label>
+        <textarea id="note" rows="5">I saw one DemoScan MRI scanner, model DS-One, in Radiology.</textarea>
+        <button id="extract" class="primary">Save &amp; run local QVAC <span>→</span></button>
+        <div id="capture-status" class="status" aria-live="polite"></div>
+      </article>
+
+      <article class="panel review-panel">
+        <div class="step"><span>02</span><div><b>Review draft claims</b><small>Nothing enters the view yet</small></div></div>
+        <div id="draft-empty" class="empty">Run an observation to inspect claims and their evidence.</div>
+        <div id="drafts"></div>
+        <button id="review" class="primary hidden">Apply review decisions <span>→</span></button>
+        <div id="reconcile" class="reconcile"></div>
+      </article>
+    </section>
+
+    <section class="results">
+      <div class="section-heading"><div><p class="eyebrow">Evidence-backed working view</p><h2 id="customer-title">Customer equipment</h2></div><button id="reset" class="ghost">Reset demo</button></div>
+      <div class="metric-row" id="customer-metrics"></div>
+      <div class="result-grid">
+        <article class="panel"><h3>Equipment records</h3><p class="caption">Verified and provisional records remain separate.</p><div id="equipment"></div></article>
+        <article class="panel"><h3>Verify next visit</h3><p class="caption">Top open items, ordered by material impact.</p><div id="verification"></div></article>
+        <article class="panel aggregate"><h3>Workspace aggregate</h3><p class="caption">Evidence status across fictional customers.</p><div id="aggregate"></div></article>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>Synthetic demonstration data.</span><span id="footer-runtime">@qvac/sdk 0.19.0 · Qwen3 1.7B Q4</span></footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

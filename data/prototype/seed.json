@@ -1,0 +1,24 @@
+{
+  "synthetic": true,
+  "label": "Synthetic demonstration data.",
+  "customers": [
+    { "id": "northbridge", "name": "Northbridge General", "site": "Central Campus" },
+    { "id": "meadow", "name": "Meadow Health", "site": "River Campus" },
+    { "id": "harbor", "name": "Harborview Clinic", "site": "West Campus" }
+  ],
+  "equipmentRecords": [
+    { "id": "nb-mri-01", "customerId": "northbridge", "status": "verified", "modality": "MRI", "manufacturer": "DemoScan", "model": "DS-One", "location": "Radiology", "evidenceObservationIds": [] },
+    { "id": "nb-ct-02", "customerId": "northbridge", "status": "provisional", "modality": "CT", "manufacturer": "Aster Imaging", "model": "AX-4", "location": "Emergency", "evidenceObservationIds": [] },
+    { "id": "meadow-us-01", "customerId": "meadow", "status": "verified", "modality": "Ultrasound", "manufacturer": "LumaCare", "model": "Sonora", "location": "Imaging", "evidenceObservationIds": [] },
+    { "id": "meadow-mon-02", "customerId": "meadow", "status": "provisional", "modality": "Patient monitoring", "manufacturer": "NovaPulse", "model": "NP-9", "location": "Critical Care", "evidenceObservationIds": [] },
+    { "id": "harbor-mri-01", "customerId": "harbor", "status": "verified", "modality": "MRI", "manufacturer": "HelioView", "model": "HV-One", "location": "Room 2", "evidenceObservationIds": [] }
+  ],
+  "observations": [],
+  "verificationItems": [
+    { "id": "v1", "customerId": "northbridge", "priority": 1, "reason": "Confirm whether the CT observation refers to AX-4", "status": "open" },
+    { "id": "v2", "customerId": "northbridge", "priority": 2, "reason": "Verify the MRI serial number on the next visit", "status": "open" },
+    { "id": "v3", "customerId": "northbridge", "priority": 3, "reason": "Clarify whether Radiology's reported quantity is a total", "status": "open" },
+    { "id": "v4", "customerId": "meadow", "priority": 1, "reason": "Resolve conflicting patient-monitor quantities", "status": "open" },
+    { "id": "v5", "customerId": "harbor", "priority": 2, "reason": "Confirm current MRI room", "status": "open" }
+  ]
+}

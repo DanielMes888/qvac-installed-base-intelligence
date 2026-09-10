@@ -1,0 +1,660 @@
+{
+  "schemaVersion": "emergency-demo-smoke-v1",
+  "startedAt": "2026-09-10T21:08:15.305Z",
+  "completedAt": "2026-09-10T21:08:42.733Z",
+  "synthetic": true,
+  "note": "I saw one DemoScan MRI scanner, model DS-One, in Radiology.",
+  "environment": {
+    "sameComputer": true,
+    "cloudInference": false,
+    "delegatedInference": false,
+    "networkProbe": {
+      "reachable": false,
+      "error": "TypeError"
+    },
+    "loopbackOrigin": "http://127.0.0.1:65364"
+  },
+  "extraction": {
+    "id": "c6240a10-577e-4e99-ac24-6ed805a27e20",
+    "customerId": "northbridge",
+    "originalText": "I saw one DemoScan MRI scanner, model DS-One, in Radiology.",
+    "recordedAt": "2026-09-10T21:08:15.386Z",
+    "status": "succeeded",
+    "attempts": [
+      {
+        "attemptNumber": 1,
+        "status": "succeeded",
+        "failureCategory": null,
+        "errors": [],
+        "stopReason": null,
+        "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"DemoScan\",\"d\":\"DS-One\",\"q\":1,\"qs\":\"o\",\"l\":\"Radiology\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+        "toolCalls": [],
+        "validatedDraft": {
+          "version": 1,
+          "subjects": [
+            {
+              "subjectId": "s1",
+              "kind": "provisionalIndividual",
+              "label": "DemoScan DS-One"
+            }
+          ],
+          "claims": [
+            {
+              "claimId": "c1",
+              "type": "equipmentType",
+              "value": "MRI",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              }
+            },
+            {
+              "claimId": "c2",
+              "type": "manufacturer",
+              "value": "DemoScan",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              }
+            },
+            {
+              "claimId": "c3",
+              "type": "model",
+              "value": "DS-One",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              }
+            },
+            {
+              "claimId": "c4",
+              "type": "quantity",
+              "value": 1,
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              },
+              "quantityScope": "observed"
+            },
+            {
+              "claimId": "c5",
+              "type": "location",
+              "value": "Radiology",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              }
+            }
+          ],
+          "clarification": null
+        },
+        "metrics": {
+          "totalMs": 22368.408199999998,
+          "promptTokens": 245,
+          "generatedTokens": 60,
+          "emittedTokens": 60,
+          "timeToFirstToken": 20422.841,
+          "tokensPerSecond": 70.73211273284127,
+          "backendDevice": "gpu"
+        }
+      }
+    ],
+    "subjects": [
+      {
+        "subjectId": "s1",
+        "kind": "provisionalIndividual",
+        "label": "DemoScan DS-One"
+      }
+    ],
+    "draftClaims": [
+      {
+        "claimId": "c1",
+        "type": "equipmentType",
+        "value": "MRI",
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 59,
+          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+        },
+        "decision": "pending"
+      },
+      {
+        "claimId": "c2",
+        "type": "manufacturer",
+        "value": "DemoScan",
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 59,
+          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+        },
+        "decision": "pending"
+      },
+      {
+        "claimId": "c3",
+        "type": "model",
+        "value": "DS-One",
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 59,
+          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+        },
+        "decision": "pending"
+      },
+      {
+        "claimId": "c4",
+        "type": "quantity",
+        "value": 1,
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 59,
+          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+        },
+        "quantityScope": "observed",
+        "decision": "pending"
+      },
+      {
+        "claimId": "c5",
+        "type": "location",
+        "value": "Radiology",
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 59,
+          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+        },
+        "decision": "pending"
+      }
+    ],
+    "clarification": null,
+    "reviewedAt": null,
+    "reconciliation": null,
+    "model": {
+      "sdk": "0.19.0",
+      "modelExport": "QWEN3_1_7B_INST_Q4",
+      "quantization": "Q4_0",
+      "modelConfig": {
+        "device": "gpu",
+        "gpu_layers": 99,
+        "ctx_size": 4096,
+        "tools": true,
+        "verbosity": 0
+      },
+      "generationParams": {
+        "temp": 0,
+        "top_p": 1,
+        "seed": 20260910,
+        "predict": 250
+      }
+    },
+    "load": {
+      "loadMs": 4918.469599999999,
+      "info": {
+        "modelId": "13dd17f190cd6438",
+        "modelType": "llamacpp-completion",
+        "handlers": [
+          "batchCompletionStream",
+          "completionStream",
+          "finetune",
+          "translate"
+        ],
+        "displayName": "LLM (llama.cpp)",
+        "addonPackage": "@qvac/llm-llamacpp",
+        "loadedAt": "2026-09-10T21:08:20.300Z",
+        "name": "QWEN3_1_7B_INST_Q4",
+        "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+        "toolDialect": "hermes"
+      }
+    },
+    "candidates": []
+  },
+  "review": {
+    "kind": "deterministic smoke-test simulation of explicit human review",
+    "decisions": [
+      {
+        "claimId": "c1",
+        "decision": "accepted"
+      },
+      {
+        "claimId": "c2",
+        "decision": "accepted"
+      },
+      {
+        "claimId": "c3",
+        "decision": "accepted"
+      },
+      {
+        "claimId": "c4",
+        "decision": "accepted"
+      },
+      {
+        "claimId": "c5",
+        "decision": "accepted"
+      }
+    ],
+    "accepted": 5,
+    "rejected": 0,
+    "candidates": [
+      {
+        "id": "nb-mri-01",
+        "score": 3
+      }
+    ]
+  },
+  "reconciliation": {
+    "recordId": "nb-mri-01",
+    "equipmentRecordCountBefore": 2,
+    "equipmentRecordCountAfter": 2,
+    "duplicateGrowthPrevented": true
+  },
+  "views": {
+    "customer": {
+      "customer": {
+        "id": "northbridge",
+        "name": "Northbridge General",
+        "site": "Central Campus"
+      },
+      "equipmentRecords": [
+        {
+          "id": "nb-mri-01",
+          "customerId": "northbridge",
+          "status": "verified",
+          "modality": "MRI",
+          "manufacturer": "DemoScan",
+          "model": "DS-One",
+          "location": "Radiology",
+          "evidenceObservationIds": [
+            "c6240a10-577e-4e99-ac24-6ed805a27e20"
+          ]
+        },
+        {
+          "id": "nb-ct-02",
+          "customerId": "northbridge",
+          "status": "provisional",
+          "modality": "CT",
+          "manufacturer": "Aster Imaging",
+          "model": "AX-4",
+          "location": "Emergency",
+          "evidenceObservationIds": []
+        }
+      ],
+      "observations": [
+        {
+          "id": "c6240a10-577e-4e99-ac24-6ed805a27e20",
+          "customerId": "northbridge",
+          "originalText": "I saw one DemoScan MRI scanner, model DS-One, in Radiology.",
+          "recordedAt": "2026-09-10T21:08:15.386Z",
+          "status": "succeeded",
+          "attempts": [
+            {
+              "attemptNumber": 1,
+              "status": "succeeded",
+              "failureCategory": null,
+              "errors": [],
+              "stopReason": null,
+              "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"DemoScan\",\"d\":\"DS-One\",\"q\":1,\"qs\":\"o\",\"l\":\"Radiology\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+              "toolCalls": [],
+              "validatedDraft": {
+                "version": 1,
+                "subjects": [
+                  {
+                    "subjectId": "s1",
+                    "kind": "provisionalIndividual",
+                    "label": "DemoScan DS-One"
+                  }
+                ],
+                "claims": [
+                  {
+                    "claimId": "c1",
+                    "type": "equipmentType",
+                    "value": "MRI",
+                    "subjectId": "s1",
+                    "locationScope": "dept",
+                    "sourceType": "directObservation",
+                    "certainty": "reported",
+                    "negated": false,
+                    "evidence": {
+                      "id": "e0",
+                      "start": 0,
+                      "end": 59,
+                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                    }
+                  },
+                  {
+                    "claimId": "c2",
+                    "type": "manufacturer",
+                    "value": "DemoScan",
+                    "subjectId": "s1",
+                    "locationScope": "dept",
+                    "sourceType": "directObservation",
+                    "certainty": "reported",
+                    "negated": false,
+                    "evidence": {
+                      "id": "e0",
+                      "start": 0,
+                      "end": 59,
+                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                    }
+                  },
+                  {
+                    "claimId": "c3",
+                    "type": "model",
+                    "value": "DS-One",
+                    "subjectId": "s1",
+                    "locationScope": "dept",
+                    "sourceType": "directObservation",
+                    "certainty": "reported",
+                    "negated": false,
+                    "evidence": {
+                      "id": "e0",
+                      "start": 0,
+                      "end": 59,
+                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                    }
+                  },
+                  {
+                    "claimId": "c4",
+                    "type": "quantity",
+                    "value": 1,
+                    "subjectId": "s1",
+                    "locationScope": "dept",
+                    "sourceType": "directObservation",
+                    "certainty": "reported",
+                    "negated": false,
+                    "evidence": {
+                      "id": "e0",
+                      "start": 0,
+                      "end": 59,
+                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                    },
+                    "quantityScope": "observed"
+                  },
+                  {
+                    "claimId": "c5",
+                    "type": "location",
+                    "value": "Radiology",
+                    "subjectId": "s1",
+                    "locationScope": "dept",
+                    "sourceType": "directObservation",
+                    "certainty": "reported",
+                    "negated": false,
+                    "evidence": {
+                      "id": "e0",
+                      "start": 0,
+                      "end": 59,
+                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                    }
+                  }
+                ],
+                "clarification": null
+              },
+              "metrics": {
+                "totalMs": 22368.408199999998,
+                "promptTokens": 245,
+                "generatedTokens": 60,
+                "emittedTokens": 60,
+                "timeToFirstToken": 20422.841,
+                "tokensPerSecond": 70.73211273284127,
+                "backendDevice": "gpu"
+              }
+            }
+          ],
+          "subjects": [
+            {
+              "subjectId": "s1",
+              "kind": "provisionalIndividual",
+              "label": "DemoScan DS-One"
+            }
+          ],
+          "draftClaims": [
+            {
+              "claimId": "c1",
+              "type": "equipmentType",
+              "value": "MRI",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              },
+              "decision": "accepted"
+            },
+            {
+              "claimId": "c2",
+              "type": "manufacturer",
+              "value": "DemoScan",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              },
+              "decision": "accepted"
+            },
+            {
+              "claimId": "c3",
+              "type": "model",
+              "value": "DS-One",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              },
+              "decision": "accepted"
+            },
+            {
+              "claimId": "c4",
+              "type": "quantity",
+              "value": 1,
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              },
+              "quantityScope": "observed",
+              "decision": "accepted"
+            },
+            {
+              "claimId": "c5",
+              "type": "location",
+              "value": "Radiology",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 59,
+                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+              },
+              "decision": "accepted"
+            }
+          ],
+          "clarification": null,
+          "reviewedAt": "2026-09-10T21:08:42.721Z",
+          "reconciliation": {
+            "recordId": "nb-mri-01",
+            "reason": "Smoke-test reviewer confirmed modality and supported identifying details",
+            "actor": "Local demo user",
+            "decidedAt": "2026-09-10T21:08:42.727Z"
+          },
+          "model": {
+            "sdk": "0.19.0",
+            "modelExport": "QWEN3_1_7B_INST_Q4",
+            "quantization": "Q4_0",
+            "modelConfig": {
+              "device": "gpu",
+              "gpu_layers": 99,
+              "ctx_size": 4096,
+              "tools": true,
+              "verbosity": 0
+            },
+            "generationParams": {
+              "temp": 0,
+              "top_p": 1,
+              "seed": 20260910,
+              "predict": 250
+            }
+          },
+          "load": {
+            "loadMs": 4918.469599999999,
+            "info": {
+              "modelId": "13dd17f190cd6438",
+              "modelType": "llamacpp-completion",
+              "handlers": [
+                "batchCompletionStream",
+                "completionStream",
+                "finetune",
+                "translate"
+              ],
+              "displayName": "LLM (llama.cpp)",
+              "addonPackage": "@qvac/llm-llamacpp",
+              "loadedAt": "2026-09-10T21:08:20.300Z",
+              "name": "QWEN3_1_7B_INST_Q4",
+              "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+              "toolDialect": "hermes"
+            }
+          }
+        }
+      ],
+      "acceptedClaimCount": 5,
+      "unlinkedClaims": 0,
+      "reportedTotals": [],
+      "verificationItems": [
+        {
+          "id": "v1",
+          "customerId": "northbridge",
+          "priority": 1,
+          "reason": "Confirm whether the CT observation refers to AX-4",
+          "status": "open"
+        },
+        {
+          "id": "v2",
+          "customerId": "northbridge",
+          "priority": 2,
+          "reason": "Verify the MRI serial number on the next visit",
+          "status": "open"
+        },
+        {
+          "id": "v3",
+          "customerId": "northbridge",
+          "priority": 3,
+          "reason": "Clarify whether Radiology's reported quantity is a total",
+          "status": "open"
+        }
+      ]
+    },
+    "aggregate": {
+      "customers": 3,
+      "observations": 1,
+      "verifiedRecords": 3,
+      "provisionalRecords": 2,
+      "openVerificationItems": 5,
+      "byModality": [
+        {
+          "modality": "MRI",
+          "count": 2
+        },
+        {
+          "modality": "CT",
+          "count": 1
+        },
+        {
+          "modality": "Ultrasound",
+          "count": 1
+        },
+        {
+          "modality": "Patient monitoring",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

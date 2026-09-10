@@ -1,0 +1,379 @@
+{
+  "schemaVersion": "emergency-simple-json-probe-v1",
+  "startedAt": "2026-09-10T20:49:09.831Z",
+  "endedAt": "2026-09-10T20:49:43.970Z",
+  "model": "@qvac/sdk 0.19.0 / QWEN3_1_7B_INST_Q4 / Q4_0",
+  "sameComputer": true,
+  "cloudInference": false,
+  "delegatedInference": false,
+  "cases": [
+    {
+      "id": "E4-007",
+      "note": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5.",
+      "manualChecks": [
+        "two equipment subjects",
+        "quantity 2 attaches only to ultrasound",
+        "Room 5 attaches only to MRI"
+      ],
+      "status": "failed",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 5309.084400000001,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:49:15.137Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "x Invalid input: expected object, received undefined"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"LumaCare\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"Room 5\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}]}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 23497.082300000002,
+            "promptTokens": 255,
+            "generatedTokens": 55,
+            "emittedTokens": 55,
+            "timeToFirstToken": 21667.445,
+            "tokensPerSecond": 72.01677074181202,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "x Invalid input: expected object, received undefined"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"LumaCare\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"Room 5\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}]}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 3292.730199999998,
+            "promptTokens": 276,
+            "generatedTokens": 55,
+            "emittedTokens": 55,
+            "timeToFirstToken": 2754.205,
+            "tokensPerSecond": 112.04367666232073,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-006",
+      "note": "I did not see a CT scanner in the East Wing.",
+      "manualChecks": [
+        "negated presence",
+        "must not create positive CT presence",
+        "direct observation"
+      ],
+      "status": "failed",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 5309.084400000001,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:49:15.137Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "x Invalid input: expected object, received undefined"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"CT\",\"m\":\"DemoScan\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"Radiology\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"e\",\"n\":false,\"r\":\"e0\"}]}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 509.2244000000028,
+            "promptTokens": 244,
+            "generatedTokens": 53,
+            "emittedTokens": 53,
+            "timeToFirstToken": 40.206,
+            "tokensPerSecond": 125.53173347481312,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "x Invalid input: expected object, received undefined"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"CT\",\"m\":\"DemoScan\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"Radiology\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}]}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 511.1886999999988,
+            "promptTokens": 265,
+            "generatedTokens": 53,
+            "emittedTokens": 53,
+            "timeToFirstToken": 54.626,
+            "tokensPerSecond": 128.937771712026,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-003",
+      "note": "The department lead said there are three MRI scanners.",
+      "manualChecks": [
+        "quantity 3 with unknown completeness",
+        "attributed statement",
+        "unknown location scope"
+      ],
+      "status": "succeeded",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 5309.084400000001,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:49:15.137Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.ls Invalid option: expected one of \"room\"|\"dept\"|\"site\"|\"customer\"|\"unknown\"",
+            "x Invalid input: expected object, received undefined"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"\",\"ls\":\"\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}]}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 455.7780999999959,
+            "promptTokens": 242,
+            "generatedTokens": 48,
+            "emittedTokens": 48,
+            "timeToFirstToken": 40.992,
+            "tokensPerSecond": 129.77497559960094,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "succeeded",
+          "failureCategory": null,
+          "errors": [],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+          "toolCalls": [],
+          "validatedDraft": {
+            "version": 1,
+            "subjects": [
+              {
+                "subjectId": "s1",
+                "kind": "provisionalIndividual",
+                "label": "MRI"
+              }
+            ],
+            "claims": [
+              {
+                "claimId": "c1",
+                "type": "equipmentType",
+                "value": "MRI",
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "reported",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 54,
+                  "text": "The department lead said there are three MRI scanners."
+                }
+              },
+              {
+                "claimId": "c2",
+                "type": "quantity",
+                "value": 1,
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "reported",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 54,
+                  "text": "The department lead said there are three MRI scanners."
+                },
+                "quantityScope": "observed"
+              }
+            ],
+            "clarification": null
+          },
+          "metrics": {
+            "totalMs": 504.793700000002,
+            "promptTokens": 263,
+            "generatedTokens": 51,
+            "emittedTokens": 51,
+            "timeToFirstToken": 55.21,
+            "tokensPerSecond": 126.84042976522086,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": {
+        "version": 1,
+        "subjects": [
+          {
+            "subjectId": "s1",
+            "kind": "provisionalIndividual",
+            "label": "MRI"
+          }
+        ],
+        "claims": [
+          {
+            "claimId": "c1",
+            "type": "equipmentType",
+            "value": "MRI",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 54,
+              "text": "The department lead said there are three MRI scanners."
+            }
+          },
+          {
+            "claimId": "c2",
+            "type": "quantity",
+            "value": 1,
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 54,
+              "text": "The department lead said there are three MRI scanners."
+            },
+            "quantityScope": "observed"
+          }
+        ],
+        "clarification": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,640 @@
+{
+  "schemaVersion": "emergency-simple-json-probe-v1",
+  "startedAt": "2026-09-10T20:50:43.317Z",
+  "endedAt": "2026-09-10T20:51:15.274Z",
+  "model": "@qvac/sdk 0.19.0 / QWEN3_1_7B_INST_Q4 / Q4_0",
+  "sameComputer": true,
+  "cloudInference": false,
+  "delegatedInference": false,
+  "cases": [
+    {
+      "id": "E4-007",
+      "note": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5.",
+      "manualChecks": [
+        "two equipment subjects",
+        "quantity 2 attaches only to ultrasound",
+        "Room 5 attaches only to MRI"
+      ],
+      "status": "succeeded",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 4892.592900000001,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:50:48.206Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "succeeded",
+          "failureCategory": null,
+          "errors": [],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"LumaCare\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"Room 5\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}]}",
+          "toolCalls": [],
+          "validatedDraft": {
+            "version": 1,
+            "subjects": [
+              {
+                "subjectId": "s1",
+                "kind": "provisionalIndividual",
+                "label": "LumaCare MRI"
+              }
+            ],
+            "claims": [
+              {
+                "claimId": "c1",
+                "type": "equipmentType",
+                "value": "MRI",
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "reported",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 95,
+                  "text": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5."
+                }
+              },
+              {
+                "claimId": "c2",
+                "type": "manufacturer",
+                "value": "LumaCare",
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "reported",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 95,
+                  "text": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5."
+                }
+              },
+              {
+                "claimId": "c3",
+                "type": "quantity",
+                "value": 1,
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "reported",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 95,
+                  "text": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5."
+                },
+                "quantityScope": "observed"
+              },
+              {
+                "claimId": "c4",
+                "type": "location",
+                "value": "Room 5",
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "reported",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 95,
+                  "text": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5."
+                }
+              }
+            ],
+            "clarification": null
+          },
+          "metrics": {
+            "totalMs": 22429.0012,
+            "promptTokens": 255,
+            "generatedTokens": 55,
+            "emittedTokens": 55,
+            "timeToFirstToken": 20410.103,
+            "tokensPerSecond": 62.15595267558774,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": {
+        "version": 1,
+        "subjects": [
+          {
+            "subjectId": "s1",
+            "kind": "provisionalIndividual",
+            "label": "LumaCare MRI"
+          }
+        ],
+        "claims": [
+          {
+            "claimId": "c1",
+            "type": "equipmentType",
+            "value": "MRI",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 95,
+              "text": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5."
+            }
+          },
+          {
+            "claimId": "c2",
+            "type": "manufacturer",
+            "value": "LumaCare",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 95,
+              "text": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5."
+            }
+          },
+          {
+            "claimId": "c3",
+            "type": "quantity",
+            "value": 1,
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 95,
+              "text": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5."
+            },
+            "quantityScope": "observed"
+          },
+          {
+            "claimId": "c4",
+            "type": "location",
+            "value": "Room 5",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 95,
+              "text": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5."
+            }
+          }
+        ],
+        "clarification": null
+      }
+    },
+    {
+      "id": "E4-006",
+      "note": "I did not see a CT scanner in the East Wing.",
+      "manualChecks": [
+        "negated presence",
+        "must not create positive CT presence",
+        "direct observation"
+      ],
+      "status": "succeeded",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 4892.592900000001,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:50:48.206Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "succeeded",
+          "failureCategory": null,
+          "errors": [],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"CT\",\"m\":\"DemoScan\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"Radiology\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"e\",\"n\":false,\"r\":\"e0\"}]}",
+          "toolCalls": [],
+          "validatedDraft": {
+            "version": 1,
+            "subjects": [
+              {
+                "subjectId": "s1",
+                "kind": "provisionalIndividual",
+                "label": "DemoScan CT"
+              }
+            ],
+            "claims": [
+              {
+                "claimId": "c1",
+                "type": "equipmentType",
+                "value": "CT",
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "estimated",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 44,
+                  "text": "I did not see a CT scanner in the East Wing."
+                }
+              },
+              {
+                "claimId": "c2",
+                "type": "manufacturer",
+                "value": "DemoScan",
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "estimated",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 44,
+                  "text": "I did not see a CT scanner in the East Wing."
+                }
+              },
+              {
+                "claimId": "c3",
+                "type": "quantity",
+                "value": 1,
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "estimated",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 44,
+                  "text": "I did not see a CT scanner in the East Wing."
+                },
+                "quantityScope": "observed"
+              },
+              {
+                "claimId": "c4",
+                "type": "location",
+                "value": "Radiology",
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "estimated",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 44,
+                  "text": "I did not see a CT scanner in the East Wing."
+                }
+              }
+            ],
+            "clarification": null
+          },
+          "metrics": {
+            "totalMs": 519.8237999999983,
+            "promptTokens": 244,
+            "generatedTokens": 53,
+            "emittedTokens": 53,
+            "timeToFirstToken": 39.808,
+            "tokensPerSecond": 122.54165260135119,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": {
+        "version": 1,
+        "subjects": [
+          {
+            "subjectId": "s1",
+            "kind": "provisionalIndividual",
+            "label": "DemoScan CT"
+          }
+        ],
+        "claims": [
+          {
+            "claimId": "c1",
+            "type": "equipmentType",
+            "value": "CT",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "estimated",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 44,
+              "text": "I did not see a CT scanner in the East Wing."
+            }
+          },
+          {
+            "claimId": "c2",
+            "type": "manufacturer",
+            "value": "DemoScan",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "estimated",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 44,
+              "text": "I did not see a CT scanner in the East Wing."
+            }
+          },
+          {
+            "claimId": "c3",
+            "type": "quantity",
+            "value": 1,
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "estimated",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 44,
+              "text": "I did not see a CT scanner in the East Wing."
+            },
+            "quantityScope": "observed"
+          },
+          {
+            "claimId": "c4",
+            "type": "location",
+            "value": "Radiology",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "estimated",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 44,
+              "text": "I did not see a CT scanner in the East Wing."
+            }
+          }
+        ],
+        "clarification": null
+      }
+    },
+    {
+      "id": "E4-003",
+      "note": "The department lead said there are three MRI scanners.",
+      "manualChecks": [
+        "quantity 3 with unknown completeness",
+        "attributed statement",
+        "unknown location scope"
+      ],
+      "status": "succeeded",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 4892.592900000001,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:50:48.206Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.ls Invalid option: expected one of \"room\"|\"dept\"|\"site\"|\"customer\"|\"unknown\""
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"\",\"ls\":\"\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}]}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 487.33890000000247,
+            "promptTokens": 242,
+            "generatedTokens": 48,
+            "emittedTokens": 48,
+            "timeToFirstToken": 41.083,
+            "tokensPerSecond": 122.1781306236939,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "succeeded",
+          "failureCategory": null,
+          "errors": [],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+          "toolCalls": [],
+          "validatedDraft": {
+            "version": 1,
+            "subjects": [
+              {
+                "subjectId": "s1",
+                "kind": "provisionalIndividual",
+                "label": "MRI"
+              }
+            ],
+            "claims": [
+              {
+                "claimId": "c1",
+                "type": "equipmentType",
+                "value": "MRI",
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "reported",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 54,
+                  "text": "The department lead said there are three MRI scanners."
+                }
+              },
+              {
+                "claimId": "c2",
+                "type": "quantity",
+                "value": 1,
+                "subjectId": "s1",
+                "locationScope": "dept",
+                "sourceType": "directObservation",
+                "certainty": "reported",
+                "negated": false,
+                "evidence": {
+                  "id": "e0",
+                  "start": 0,
+                  "end": 54,
+                  "text": "The department lead said there are three MRI scanners."
+                },
+                "quantityScope": "observed"
+              }
+            ],
+            "clarification": null
+          },
+          "metrics": {
+            "totalMs": 3565.654599999998,
+            "promptTokens": 263,
+            "generatedTokens": 51,
+            "emittedTokens": 51,
+            "timeToFirstToken": 3007.907,
+            "tokensPerSecond": 100.35300645801112,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": {
+        "version": 1,
+        "subjects": [
+          {
+            "subjectId": "s1",
+            "kind": "provisionalIndividual",
+            "label": "MRI"
+          }
+        ],
+        "claims": [
+          {
+            "claimId": "c1",
+            "type": "equipmentType",
+            "value": "MRI",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 54,
+              "text": "The department lead said there are three MRI scanners."
+            }
+          },
+          {
+            "claimId": "c2",
+            "type": "quantity",
+            "value": 1,
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 54,
+              "text": "The department lead said there are three MRI scanners."
+            },
+            "quantityScope": "observed"
+          }
+        ],
+        "clarification": null
+      }
+    }
+  ]
+}

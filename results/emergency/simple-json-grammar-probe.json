@@ -1,0 +1,254 @@
+{
+  "schemaVersion": "emergency-simple-json-probe-v1",
+  "startedAt": "2026-09-10T20:46:52.727Z",
+  "endedAt": "2026-09-10T20:46:57.879Z",
+  "model": "@qvac/sdk 0.19.0 / QWEN3_1_7B_INST_Q4 / Q4_0",
+  "sameComputer": true,
+  "cloudInference": false,
+  "delegatedInference": false,
+  "cases": [
+    {
+      "id": "E4-007",
+      "note": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5.",
+      "manualChecks": [
+        "two equipment subjects",
+        "quantity 2 attaches only to ultrasound",
+        "Room 5 attaches only to MRI"
+      ],
+      "status": "failed",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 5041.3654,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:46:57.763Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "sdk",
+          "errors": [
+            "RPCError: failed to parse grammar"
+          ],
+          "stopReason": null,
+          "rawOutput": "",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 26.93539999999939
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "sdk",
+          "errors": [
+            "RPCError: failed to parse grammar"
+          ],
+          "stopReason": null,
+          "rawOutput": "",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 4.495499999999993
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-006",
+      "note": "I did not see a CT scanner in the East Wing.",
+      "manualChecks": [
+        "negated presence",
+        "must not create positive CT presence",
+        "direct observation"
+      ],
+      "status": "failed",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 5041.3654,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:46:57.763Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "sdk",
+          "errors": [
+            "RPCError: failed to parse grammar"
+          ],
+          "stopReason": null,
+          "rawOutput": "",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 7.025800000000345
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "sdk",
+          "errors": [
+            "RPCError: failed to parse grammar"
+          ],
+          "stopReason": null,
+          "rawOutput": "",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 4.442600000000311
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-003",
+      "note": "The department lead said there are three MRI scanners.",
+      "manualChecks": [
+        "quantity 3 with unknown completeness",
+        "attributed statement",
+        "unknown location scope"
+      ],
+      "status": "failed",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 5041.3654,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:46:57.763Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "sdk",
+          "errors": [
+            "RPCError: failed to parse grammar"
+          ],
+          "stopReason": null,
+          "rawOutput": "",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 6.8400000000001455
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "sdk",
+          "errors": [
+            "RPCError: failed to parse grammar"
+          ],
+          "stopReason": null,
+          "rawOutput": "",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 5.463600000000042
+          }
+        }
+      ],
+      "draft": null
+    }
+  ]
+}

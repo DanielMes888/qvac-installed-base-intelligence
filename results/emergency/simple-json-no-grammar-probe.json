@@ -1,0 +1,290 @@
+{
+  "schemaVersion": "emergency-simple-json-probe-v1",
+  "startedAt": "2026-09-10T20:47:23.488Z",
+  "endedAt": "2026-09-10T20:47:56.545Z",
+  "model": "@qvac/sdk 0.19.0 / QWEN3_1_7B_INST_Q4 / Q4_0",
+  "sameComputer": true,
+  "cloudInference": false,
+  "delegatedInference": false,
+  "cases": [
+    {
+      "id": "E4-007",
+      "note": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5.",
+      "manualChecks": [
+        "two equipment subjects",
+        "quantity 2 attaches only to ultrasound",
+        "Room 5 attaches only to MRI"
+      ],
+      "status": "failed",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 5038.6437000000005,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:47:28.521Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "parse",
+          "errors": [
+            "Unexpected token '<', \"<think>\n\n<\"... is not valid JSON"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"e\":\"In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5.\",\"m\":null,\"d\":\"Northstar MedTech\",\"q\":null,\"ls\":\"Room 5\",\"src\":\"d\",\"c\":\"r\",\"n\":null,\"r\":\"e0\"}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 25156.6329,
+            "promptTokens": 180,
+            "generatedTokens": 68,
+            "emittedTokens": 68,
+            "timeToFirstToken": 20566.439000000002,
+            "tokensPerSecond": 81.08472280352814,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "parse",
+          "errors": [
+            "Unexpected token '<', \"<think>\n\n<\"... is not valid JSON"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"e\":\"In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5.\"}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 1475.4140000000007,
+            "promptTokens": 201,
+            "generatedTokens": 31,
+            "emittedTokens": 31,
+            "timeToFirstToken": 180.012,
+            "tokensPerSecond": 116.12922560537041,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-006",
+      "note": "I did not see a CT scanner in the East Wing.",
+      "manualChecks": [
+        "negated presence",
+        "must not create positive CT presence",
+        "direct observation"
+      ],
+      "status": "failed",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 5038.6437000000005,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:47:28.521Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "parse",
+          "errors": [
+            "Unexpected token '<', \"<think>\n\n<\"... is not valid JSON"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"e\":\"e0\",\"t\":\"I did not see a CT scanner in the East Wing.\",\"q\":\"i\",\"r\":\"e0\"}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 335.3866999999991,
+            "promptTokens": 169,
+            "generatedTokens": 33,
+            "emittedTokens": 33,
+            "timeToFirstToken": 37.158,
+            "tokensPerSecond": 127.02469668042124,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "parse",
+          "errors": [
+            "Unexpected token '<', \"<think>\n\n<\"... is not valid JSON"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"e\":\"I did not see a CT scanner in the East Wing.\"}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 228.293700000002,
+            "promptTokens": 190,
+            "generatedTokens": 20,
+            "emittedTokens": 20,
+            "timeToFirstToken": 39.145,
+            "tokensPerSecond": 130.48272082569466,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-003",
+      "note": "The department lead said there are three MRI scanners.",
+      "manualChecks": [
+        "quantity 3 with unknown completeness",
+        "attributed statement",
+        "unknown location scope"
+      ],
+      "status": "failed",
+      "mode": "simple-json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 5038.6437000000005,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:47:28.521Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "parse",
+          "errors": [
+            "Unexpected token '<', \"<think>\n\n<\"... is not valid JSON"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"e\":\"e0\",\"t\":\"three\",\"m\":\"null\",\"d\":\"MRI\",\"q\":\"null\",\"ls\":\"null\",\"src\":\"d\",\"c\":\"null\",\"n\":\"null\",\"r\":\"null\",\"x\":\"null\"}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 464.31890000000203,
+            "promptTokens": 167,
+            "generatedTokens": 50,
+            "emittedTokens": 50,
+            "timeToFirstToken": 37.993,
+            "tokensPerSecond": 131.33390594916327,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "parse",
+          "errors": [
+            "Unexpected token '<', \"<think>\n\n<\"... is not valid JSON"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n{\"e\":\"e0\",\"q\":\"3\",\"r\":\"e0\",\"x\":{\"i\":1,\"q\":\"3\"}}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 300.5683999999965,
+            "promptTokens": 188,
+            "generatedTokens": 29,
+            "emittedTokens": 29,
+            "timeToFirstToken": 37.489000000000004,
+            "tokensPerSecond": 128.25332242443005,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    }
+  ]
+}

@@ -1,0 +1,669 @@
+{
+  "schemaVersion": "emergency-compact-contract-probe-v1",
+  "startedAt": "2026-09-10T20:43:33.503Z",
+  "endedAt": "2026-09-10T20:44:34.393Z",
+  "model": "@qvac/sdk 0.19.0 / QWEN3_1_7B_INST_Q4 / Q4_0",
+  "sameComputer": true,
+  "cloudInference": false,
+  "delegatedInference": false,
+  "toolCases": [
+    {
+      "id": "E4-007",
+      "note": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5.",
+      "manualChecks": [
+        "two equipment subjects",
+        "quantity 2 attaches only to ultrasound",
+        "Room 5 attaches only to MRI"
+      ],
+      "status": "failed",
+      "mode": "tool",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 7235.4414,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:43:40.735Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "v Invalid input: expected 1",
+            "s.0 Invalid input: expected object, received string",
+            "c.0 Invalid input: expected object, received string",
+            "c.1 Invalid input: expected object, received string",
+            "x Invalid input: expected object, received string"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n<tool_call>\n{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"Room 5\"], \"c\": [\"Northstar MedTech ultrasound units\", \"LumaCare MRI scanner\"], \"x\": \"2\"}}\n</tool_call>",
+          "toolCalls": [
+            {
+              "id": "call_xtdfty_0",
+              "name": "record_equipment",
+              "arguments": {
+                "v": "1",
+                "s": [
+                  "Room 5"
+                ],
+                "c": [
+                  "Northstar MedTech ultrasound units",
+                  "LumaCare MRI scanner"
+                ],
+                "x": "2"
+              },
+              "raw": "{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"Room 5\"], \"c\": [\"Northstar MedTech ultrasound units\", \"LumaCare MRI scanner\"], \"x\": \"2\"}}"
+            }
+          ],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 24591.8251,
+            "promptTokens": 375,
+            "generatedTokens": 56,
+            "emittedTokens": 56,
+            "timeToFirstToken": 20687.904,
+            "tokensPerSecond": 61.60209447121202,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "parse",
+          "errors": [
+            "expected one record_equipment call; received 0"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n<tool_call>\n{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5\"], \"c\": [\"eq\", \"Northstar MedTech\", \"ultrasound\", \"2\", \"Room 5\"], [\"eq\", \"LumaCare\", \"MRI\", \"1\", \"Room 5\"], [\"eq\", \"Northstar MedTech\", \"ultrasound\", \"2\", \"Room 5\"], [\"eq\", \"LumaCare\", \"MRI\", \"1\", \"Room 5\"]}, \"x\": \"null\"}}\n</tool_call>",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 5601.773499999996,
+            "promptTokens": 396,
+            "generatedTokens": 141,
+            "emittedTokens": 141,
+            "timeToFirstToken": 217.56900000000002,
+            "tokensPerSecond": 117.17337920546477,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-006",
+      "note": "I did not see a CT scanner in the East Wing.",
+      "manualChecks": [
+        "negated presence",
+        "must not create positive CT presence",
+        "direct observation"
+      ],
+      "status": "failed",
+      "mode": "tool",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 7235.4414,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:43:40.735Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "v Invalid input: expected 1",
+            "s.0 Invalid input: expected object, received string",
+            "c.0 Invalid input: expected object, received string",
+            "x Invalid input: expected object, received string"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n<tool_call>\n{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"East Wing\"], \"c\": [\"CT scanner\"], \"x\": \"o\"}}\n</tool_call>",
+          "toolCalls": [
+            {
+              "id": "call_e0v3kx_2",
+              "name": "record_equipment",
+              "arguments": {
+                "v": "1",
+                "s": [
+                  "East Wing"
+                ],
+                "c": [
+                  "CT scanner"
+                ],
+                "x": "o"
+              },
+              "raw": "{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"East Wing\"], \"c\": [\"CT scanner\"], \"x\": \"o\"}}"
+            }
+          ],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 643.7396999999983,
+            "promptTokens": 364,
+            "generatedTokens": 44,
+            "emittedTokens": 44,
+            "timeToFirstToken": 135.255,
+            "tokensPerSecond": 96.54479349288093,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "v Invalid input: expected 1",
+            "s.0 Invalid input: expected object, received string",
+            "c.0 Invalid input: expected object, received string",
+            "x Invalid input: expected object, received string"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n<tool_call>\n{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"East Wing\"], \"c\": [\"CT scanner\"], \"x\": \"null\"}}\n</tool_call>",
+          "toolCalls": [
+            {
+              "id": "call_fp71pp_4",
+              "name": "record_equipment",
+              "arguments": {
+                "v": "1",
+                "s": [
+                  "East Wing"
+                ],
+                "c": [
+                  "CT scanner"
+                ],
+                "x": "null"
+              },
+              "raw": "{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"East Wing\"], \"c\": [\"CT scanner\"], \"x\": \"null\"}}"
+            }
+          ],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 565.6777000000002,
+            "promptTokens": 385,
+            "generatedTokens": 44,
+            "emittedTokens": 44,
+            "timeToFirstToken": 82.217,
+            "tokensPerSecond": 102.18347507419914,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-003",
+      "note": "The department lead said there are three MRI scanners.",
+      "manualChecks": [
+        "quantity 3 with unknown completeness",
+        "attributed statement",
+        "unknown location scope"
+      ],
+      "status": "failed",
+      "mode": "tool",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 7235.4414,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:43:40.735Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "v Invalid input: expected 1",
+            "s.0 Invalid input: expected object, received string",
+            "c.0 Invalid input: expected object, received string",
+            "x Invalid input: expected object, received string"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n<tool_call>\n{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"MRI\"], \"c\": [\"scanners\"], \"x\": \"3\"}}\n</tool_call>",
+          "toolCalls": [
+            {
+              "id": "call_7plw8j_6",
+              "name": "record_equipment",
+              "arguments": {
+                "v": "1",
+                "s": [
+                  "MRI"
+                ],
+                "c": [
+                  "scanners"
+                ],
+                "x": "3"
+              },
+              "raw": "{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"MRI\"], \"c\": [\"scanners\"], \"x\": \"3\"}}"
+            }
+          ],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 520.4176999999981,
+            "promptTokens": 362,
+            "generatedTokens": 43,
+            "emittedTokens": 43,
+            "timeToFirstToken": 67.236,
+            "tokensPerSecond": 107.47125144023974,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "v Invalid input: expected 1",
+            "s.0 Invalid input: expected object, received string",
+            "c.0 Invalid input: expected object, received string",
+            "x Invalid input: expected object, received string"
+          ],
+          "stopReason": null,
+          "rawOutput": "<think>\n\n</think>\n\n<tool_call>\n{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"three MRI scanners\"], \"c\": [\"scanners\"], \"x\": \"null\"}}\n</tool_call>",
+          "toolCalls": [
+            {
+              "id": "call_sdnkxu_8",
+              "name": "record_equipment",
+              "arguments": {
+                "v": "1",
+                "s": [
+                  "three MRI scanners"
+                ],
+                "c": [
+                  "scanners"
+                ],
+                "x": "null"
+              },
+              "raw": "{\"name\": \"record_equipment\", \"arguments\": {\"v\": \"1\", \"s\": [\"three MRI scanners\"], \"c\": [\"scanners\"], \"x\": \"null\"}}"
+            }
+          ],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 515.5308999999979,
+            "promptTokens": 383,
+            "generatedTokens": 45,
+            "emittedTokens": 45,
+            "timeToFirstToken": 72.244,
+            "tokensPerSecond": 115.2371709018461,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    }
+  ],
+  "fallbackCases": [
+    {
+      "id": "E4-007",
+      "note": "In Imaging I saw two Northstar MedTech ultrasound units and one LumaCare MRI scanner in Room 5.",
+      "manualChecks": [
+        "two equipment subjects",
+        "quantity 2 attaches only to ultrasound",
+        "Room 5 attaches only to MRI"
+      ],
+      "status": "failed",
+      "mode": "json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 7235.4414,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:43:40.735Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "length",
+          "errors": [
+            "Unterminated string in JSON at position 860 (line 87 column 15)"
+          ],
+          "stopReason": "length",
+          "rawOutput": "{\n\n    \"v\": 1,\n\n    \"s\": [\n\n        {\n\n            \"i\": \"eq\",\n\n            \"k\": \"x\"\n\n        },\n\n        {\n\n            \"i\": \"eq\",\n\n            \"k\": \"x\"\n\n        }\n\n    ],\n\n    \"c\": [\n\n        {\n\n            \"i\": \"eq\",\n\n            \"s\": \"Northcar\",\n\n            \"t\": \"qt\",\n\n            \"v\": \"2\",\n\n            \"l\": \"room\",\n\n            \"src\": \"a\",\n\n            \"c\": \"r\",\n\n            \"n\": false,\n\n            \"a\": 1,\n\n            \"b\": 1\n\n        },\n\n        {\n\n            \"i\": \"eq\",\n\n            \"s\": \"LumaCare\",\n\n            \"t\": \"qt\",\n\n            \"v\": \"1\",\n\n            \"l\": \"room\",\n\n            \"src\": \"a\",\n\n            \"c\": \"r\",\n\n            \"n\": false,\n\n            \"a\": 1,\n\n            \"b\": 1\n\n        },\n\n        {\n\n            \"i\": \"eq\",\n\n            \"s\": \"MRI\",\n\n            \"t\": \"qt\",\n\n            \"v\": \"1\",\n\n            \"l\": \"room\",\n\n            \"s",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 3241.131500000003,
+            "promptTokens": 190,
+            "generatedTokens": 250,
+            "emittedTokens": 250,
+            "timeToFirstToken": 36.512,
+            "tokensPerSecond": 126.78256283343813,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "c.0 quantity claims require numeric v and q"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\"v\": 1, \"s\": [{ \"i\": \"eq\", \"k\": \"x\" }], \"c\": [{ \"i\": \"eq\", \"s\": \"two\", \"t\": \"qt\",\"v\": \"2\",\"l\": \"unknown\",\"src\": \"a\",\"c\": \"c\",\"n\": false,\"a\": 1,\"b\": 1,\"q\": \"o\" }], \"x\": {\"k\": \"loc\", \"s\": \"Room 5\", \"a\": 1,\"b\": 2,\"q\": \"} }</think>##</think>##</think>##</think>##</think>##</think>##</think>##</think>##</think>##</think>##</think>##</think>##</think>##</think>##</think>##<think>\"\n\n}\n\n    \t\t\t\t\t\t\t\t\t\t}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 5106.158499999998,
+            "promptTokens": 211,
+            "generatedTokens": 170,
+            "emittedTokens": 170,
+            "timeToFirstToken": 44.191,
+            "tokensPerSecond": 123.92007301079124,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-006",
+      "note": "I did not see a CT scanner in the East Wing.",
+      "manualChecks": [
+        "negated presence",
+        "must not create positive CT presence",
+        "direct observation"
+      ],
+      "status": "failed",
+      "mode": "json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 7235.4414,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:43:40.735Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "c.0 quantity claims require numeric v and q"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n\n  \"v\": 1,\n\n  \"s\": [\n\n    {\n\n      \"i\": \"eq\",\n\n      \"k\": \"x\"\n\n    }\n\n  ],\n\n  \"c\": [\n\n    {\n\n      \"i\": \"eq\",\n\n      \"s\": \"ct scan\",\n\n      \"t\": \"qt\",\n\n      \"v\": \"o\",\n\n      \"l\": \"room\",\n\n      \"src\": \"a\",\n\n      \"c\": \"r\",\n\n      \"n\": true,\n\n      \"a\": 0,\n\n      \"b\": 1\n\n    }\n\n  ],\n\n  \"x\": {\n\n    \"k\": \"loc\",\n\n    \"s\": \"East\",\n\n    \"a\": 0,\n\n      \"b\": 1,\n\n    \"q\": \"o\"\n\n  }\n\n}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 2789.3717000000033,
+            "promptTokens": 179,
+            "generatedTokens": 161,
+            "emittedTokens": 161,
+            "timeToFirstToken": 71.662,
+            "tokensPerSecond": 126.57600889334044,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "c.0 quantity claims require numeric v and q"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\"v\": 1, \"s\": [{ \"i\": \"eq\", \"k\": \"x\" }], \"c\": [{ \"i\": \"eq\", \"s\": \"CT_SCANN\",\"t\": \"qt\",\"v\": \"o=1\",\"l\": \"dept\",\"src\": \"a\",\"c\": \"r\",\"n\": false,\"a\": 1,\"b\": 1 }], \"x\": {\"k\": \"attach\",\"s\": \"CT_SCANN\",\"a\": 1,\"b\": 1,\"q\": \"{eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:CT_SCANN,eq:\"} }",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 3803.585699999996,
+            "promptTokens": 200,
+            "generatedTokens": 214,
+            "emittedTokens": 214,
+            "timeToFirstToken": 44.764,
+            "tokensPerSecond": 125.46904315196998,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    },
+    {
+      "id": "E4-003",
+      "note": "The department lead said there are three MRI scanners.",
+      "manualChecks": [
+        "quantity 3 with unknown completeness",
+        "attributed statement",
+        "unknown location scope"
+      ],
+      "status": "failed",
+      "mode": "json",
+      "model": {
+        "sdk": "0.19.0",
+        "modelExport": "QWEN3_1_7B_INST_Q4",
+        "quantization": "Q4_0",
+        "modelConfig": {
+          "device": "gpu",
+          "gpu_layers": 99,
+          "ctx_size": 4096,
+          "tools": true,
+          "verbosity": 0
+        },
+        "generationParams": {
+          "temp": 0,
+          "top_p": 1,
+          "seed": 20260910,
+          "predict": 250
+        }
+      },
+      "load": {
+        "loadMs": 7235.4414,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-10T20:43:40.735Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "c.0 quantity claims require numeric v and q"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n\n  \"v\": 1,\n\n  \"s\": [\n\n    {\n\n      \"i\": \"eq\",\n\n      \"k\": \"x\"\n\n    },\n\n    {\n\n      \"i\": \"eq\",\n\n      \"k\": \"x\"\n\n    },\n\n    {\n\n      \"i\": \"eq\",\n\n      \"k\": \"x\"\n\n    }\n\n  ],\n\n  \"c\": [\n\n    {\n\n      \"i\": \"eq\",\n\n      \"s\": \"MRI\",\n\n      \"t\": \"qt\",\n\n      \"v\": \"3\",\n\n      \"l\": \"room\",\n\n      \"src\": \"a\",\n\n      \"c\": \"e\",\n\n      \"n\": false,\n\n      \"a\": 0,\n\n      \"b\": 3\n\n    }\n\n  ],\n\n  \"x\": {\n\n    \"k\": \"id\",\n\n    \"s\": \"MRI_001\",\n\n    \"a\": 0,\n\n    \"b\": 3,\n\n    \"q\": \"3\"\n\n  }\n\n}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 3215.7279000000053,
+            "promptTokens": 177,
+            "generatedTokens": 201,
+            "emittedTokens": 201,
+            "timeToFirstToken": 45.84,
+            "tokensPerSecond": 126.42582860808936,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "c.0 quantity claims require numeric v and q"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n\n    \"v\": 1,\n\n    \"s\": [\n        {\n            \"i\": \"eq\",\n            \"k\": \"x\"\n        }\n    ],\n    \"c\": [\n        {\n            \"i\": \"eq\",\n            \"s\": \"eq\",\n            \"t\": \"qt\",\n            \"v\": \"3\",\n            \"l\": \"room\",\n            \"src\": \"a\",\n            \"c\": \"c\",\n            \"n\": false,\n            \"a\": 3,\n            \"b\": 3\n        }\n    ],\n    \"x\": {\n        \"k\": \"loc\",\n        \"s\": \"room\",\n        \"a\": 3,\n        \"b\": 3,\n        \"q\": \"/room\"\n    }\n}",
+          "toolCalls": [],
+          "validatedDraft": null,
+          "metrics": {
+            "totalMs": 2983.1457999999984,
+            "promptTokens": 198,
+            "generatedTokens": 161,
+            "emittedTokens": 161,
+            "timeToFirstToken": 44.257,
+            "tokensPerSecond": 127.3666664820773,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null
+    }
+  ],
+  "selectedMode": null
+}
