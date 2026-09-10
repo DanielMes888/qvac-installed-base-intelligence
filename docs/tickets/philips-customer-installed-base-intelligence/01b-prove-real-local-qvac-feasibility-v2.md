@@ -2,7 +2,9 @@
 
 Type: E4 Feasibility Gate
 
-Status: ready
+Status: done
+
+Outcome: E4-v2 failed at the Stage 0 pre-download fit gate. `assessModelFit()` returned `likely-too-large`; no new model was downloaded or loaded, Stages 1-3 were not run, and Ticket 02 remains blocked.
 
 Owner decision: One bounded E4-v2 experiment is approved. E4-v1 remains the immutable baseline, and Ticket 02 remains blocked unless E4-v2 passes every original gate.
 
@@ -17,8 +19,8 @@ Determine whether one stronger model and a compact extraction contract can satis
 ## Pre-execution State
 
 - Exact proposed model: SDK export `QWEN3_4B_INST_Q4_K_M` (`Qwen3-4B`, Q4_K_M).
-- `assessModelFit()` result: pending. It was intentionally not run while publishing this ticket because the owner has not authorized E4-v2 execution yet.
-- New model acquisition: not started. The fit assessment is the first executable action and controls whether acquisition is allowed.
+- `assessModelFit()` result: `likely-too-large` for the declared 4096-token workload under `interactive-v1`; recorded in `results/feasibility/e4-v2-model-fit.json`.
+- New model acquisition: not started. The failed fit gate prohibited downloading or loading the candidate.
 
 ## Scope
 
@@ -92,9 +94,9 @@ Ticket 02 requires this ticket to finish with `Outcome: E4-v2 passed`; a complet
 
 ## Acceptance Criteria
 
-- [ ] Active development stops by two hours; active, dependency/download, and total elapsed times are reported separately.
-- [ ] E4-v1 remains byte-for-byte unchanged and is used only as baseline and diagnostic/development evidence.
-- [ ] `assessModelFit()` runs and is recorded before any new model download; only a `likely-fits` 4B result with sufficient recorded Windows device budget permits acquisition.
+- [x] Active development stops by two hours; active, dependency/download, and total elapsed times are reported separately.
+- [x] E4-v1 remains byte-for-byte unchanged and is used only as baseline and diagnostic/development evidence.
+- [x] `assessModelFit()` runs and is recorded before any new model download; only a `likely-fits` 4B result with sufficient recorded Windows device budget permits acquisition.
 - [ ] Exactly one stronger model, `QWEN3_4B_INST_Q4_K_M`, is evaluated; the 1.7B model remains baseline only and no 8B model is attempted.
 - [ ] The compact contract uses one extraction tool first, records its parser reliability, and uses compact raw JSON only as the documented fallback when the three-case tool probe fails.
 - [ ] Returned output repeats no evidence text or explanations, contains at most one clarification candidate, targets no more than 400 generated tokens, and treats every length stop as invalid.
@@ -114,7 +116,7 @@ Ticket 02 requires this ticket to finish with `Outcome: E4-v2 passed`; a complet
 - [ ] Invalid or length-stopped output is excluded from every working dataset.
 - [ ] The cached selected path completes all 20 cases under restricted/offline execution after model acquisition.
 - [ ] Every evaluated inference is real `@qvac/sdk` 0.19.0 on the same computer and records GPU backend; no cloud, delegation, or hidden deterministic extraction fallback is used.
-- [ ] The final report declares E4-v2 PASS only if every original E4 gate passes without threshold relaxation; otherwise it declares a bounded failure and recommends the smallest next owner decision.
+- [x] The final report declares E4-v2 PASS only if every original E4 gate passes without threshold relaxation; otherwise it declares a bounded failure and recommends the smallest next owner decision.
 
 ## Unchanged Success Thresholds
 
@@ -149,6 +151,11 @@ The acceptance checklist above is authoritative. Its original numeric thresholds
 - Preserved staged-probe and 20-note results, when Stage 3 is reached.
 - Bounded pass/failure report with exact commands and time accounting.
 - Recommendation to proceed to Ticket 02 only on an owner-accepted E4-v2 pass.
+
+Published artifacts:
+
+- `results/feasibility/e4-v2-model-fit.json`
+- `results/feasibility/E4_V2_FAILURE_REPORT.md`
 
 ## Estimated Execution Time
 

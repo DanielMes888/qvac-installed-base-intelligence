@@ -1,0 +1,583 @@
+{
+  "schemaVersion": "e4-v2-model-fit-v1",
+  "ticket": "01b-prove-real-local-qvac-feasibility-v2",
+  "startedAt": "2026-09-10T20:27:46.152Z",
+  "endedAt": "2026-09-10T20:27:47.860Z",
+  "elapsedMs": 1707.8699000000001,
+  "sdkVersion": "0.19.0",
+  "candidateExport": "QWEN3_4B_INST_Q4_K_M",
+  "candidateDescriptor": {
+    "name": "QWEN3_4B_INST_Q4_K_M",
+    "src": "registry://s3/qvac_models_compiled/ggml/Qwen3-4B/2025-06-27/Qwen3-4B-Q4_K_M.gguf",
+    "registryPath": "qvac_models_compiled/ggml/Qwen3-4B/2025-06-27/Qwen3-4B-Q4_K_M.gguf",
+    "registrySource": "s3",
+    "blobCoreKey": "4035e66388340ff7c1f291e7c0101855f5d0b2c7085f3ff62213573a2cd5dd17",
+    "blobBlockOffset": 28460,
+    "blobBlockLength": 38106,
+    "blobByteOffset": 1864824888,
+    "modelId": "Qwen3-4B-Q4_K_M.gguf",
+    "expectedSize": 2497280256,
+    "sha256Checksum": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5",
+    "addon": "llm",
+    "engine": "llamacpp-completion",
+    "quantization": "q4_K_M",
+    "params": "4B"
+  },
+  "request": {
+    "workload": {
+      "kind": "llm",
+      "contextTokens": 4096
+    },
+    "execution": "sequential",
+    "policy": "interactive-v1"
+  },
+  "resources": {
+    "capabilities": {
+      "cpu": {
+        "status": "supported",
+        "value": {
+          "name": {
+            "status": "supported",
+            "value": "AMD Ryzen 5 8645HS w/ Radeon 760M Graphics",
+            "provenance": {
+              "source": "bare-cpu-info"
+            }
+          },
+          "vendor": {
+            "status": "supported",
+            "value": "AMD",
+            "provenance": {
+              "source": "bare-cpu-info"
+            }
+          },
+          "architecture": {
+            "status": "supported",
+            "value": 2,
+            "provenance": {
+              "source": "bare-cpu-info"
+            }
+          },
+          "physicalCores": {
+            "status": "supported",
+            "value": 6,
+            "provenance": {
+              "source": "bare-cpu-info"
+            }
+          },
+          "logicalCores": {
+            "status": "supported",
+            "value": 12,
+            "provenance": {
+              "source": "bare-cpu-info"
+            }
+          },
+          "performanceCores": {
+            "status": "supported",
+            "value": 0,
+            "provenance": {
+              "source": "bare-cpu-info"
+            }
+          },
+          "efficiencyCores": {
+            "status": "supported",
+            "value": 0,
+            "provenance": {
+              "source": "bare-cpu-info"
+            }
+          },
+          "frequencyHz": {
+            "status": "supported",
+            "value": 4292000000,
+            "provenance": {
+              "source": "bare-cpu-info"
+            }
+          },
+          "cacheLineBytes": {
+            "status": "supported",
+            "value": 64,
+            "provenance": {
+              "source": "bare-cpu-info"
+            }
+          }
+        },
+        "provenance": {
+          "source": "bare-cpu-info"
+        }
+      },
+      "memory": {
+        "totalBytes": {
+          "status": "supported",
+          "value": 16390729728,
+          "provenance": {
+            "source": "bare-cpu-info",
+            "scope": "system"
+          }
+        }
+      },
+      "gpus": {
+        "status": "supported",
+        "value": [
+          {
+            "id": "181ee3ee-101c-49dd-a8a0-61809308201c",
+            "name": {
+              "status": "supported",
+              "value": "NVIDIA GeForce RTX 4050 Laptop GPU",
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "vendor": {
+              "status": "supported",
+              "value": "NVIDIA",
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "type": {
+              "status": "supported",
+              "value": 2,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "driverName": {
+              "status": "unavailable",
+              "reason": "Metric is unavailable"
+            },
+            "driverVersion": {
+              "status": "supported",
+              "value": "32.0.15.9282",
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "drivers": {
+              "vulkan": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "opencl": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "opengl": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "webgpu": {
+                "status": "supported",
+                "value": false,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "metal": {
+                "status": "supported",
+                "value": false,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "direct3d11": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "direct3d12": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "cuda": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "levelZero": {
+                "status": "supported",
+                "value": false,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "rocm": {
+                "status": "supported",
+                "value": false,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              }
+            },
+            "unifiedMemory": {
+              "status": "supported",
+              "value": false,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "memoryTotalBytes": {
+              "status": "supported",
+              "value": 6207569920,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            }
+          },
+          {
+            "id": "60a36c94-4b03-4b63-b25e-d259b6748ce9",
+            "name": {
+              "status": "supported",
+              "value": "AMD Radeon(TM) Graphics",
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "vendor": {
+              "status": "supported",
+              "value": "AMD",
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "type": {
+              "status": "supported",
+              "value": 2,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "driverName": {
+              "status": "unavailable",
+              "reason": "Metric is unavailable"
+            },
+            "driverVersion": {
+              "status": "supported",
+              "value": "32.0.11020.6003",
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "drivers": {
+              "vulkan": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "opencl": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "opengl": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "webgpu": {
+                "status": "supported",
+                "value": false,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "metal": {
+                "status": "supported",
+                "value": false,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "direct3d11": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "direct3d12": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "cuda": {
+                "status": "supported",
+                "value": false,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "levelZero": {
+                "status": "supported",
+                "value": false,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              },
+              "rocm": {
+                "status": "supported",
+                "value": true,
+                "provenance": {
+                  "source": "bare-gpu-info"
+                }
+              }
+            },
+            "unifiedMemory": {
+              "status": "supported",
+              "value": false,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "memoryTotalBytes": {
+              "status": "supported",
+              "value": 437723136,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            }
+          }
+        ],
+        "provenance": {
+          "source": "bare-gpu-info"
+        }
+      }
+    },
+    "sample": {
+      "sampledAt": 1789072067832,
+      "cpu": {
+        "status": "supported",
+        "value": 1.1648743340205e-311,
+        "provenance": {
+          "source": "bare-cpu-info",
+          "scope": "system"
+        }
+      },
+      "memory": {
+        "usedBytes": {
+          "status": "supported",
+          "value": 12663332864,
+          "provenance": {
+            "source": "bare-cpu-info",
+            "scope": "system"
+          }
+        },
+        "totalBytes": {
+          "status": "supported",
+          "value": 16390729728,
+          "provenance": {
+            "source": "bare-cpu-info",
+            "scope": "system"
+          }
+        },
+        "processUsedBytes": {
+          "status": "supported",
+          "value": 252235776,
+          "provenance": {
+            "source": "bare-os",
+            "scope": "process"
+          }
+        },
+        "processAvailableBytes": {
+          "status": "unavailable",
+          "reason": "the per-process allowance is not exposed on this platform"
+        }
+      },
+      "gpus": {
+        "status": "supported",
+        "value": [
+          {
+            "id": "181ee3ee-101c-49dd-a8a0-61809308201c",
+            "compute": {
+              "status": "supported",
+              "value": 1.1648743340205e-311,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "encode": {
+              "status": "supported",
+              "value": 0,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "decode": {
+              "status": "supported",
+              "value": 0,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "memoryUsedBytes": {
+              "status": "supported",
+              "value": 0,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "budget"
+              }
+            },
+            "memoryTotalBytes": {
+              "status": "supported",
+              "value": 5402263552,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "budget"
+              }
+            },
+            "powerWatts": {
+              "status": "unavailable",
+              "reason": "Metric is unavailable"
+            },
+            "temperatureCelsius": {
+              "status": "unavailable",
+              "reason": "Metric is unavailable"
+            }
+          },
+          {
+            "id": "60a36c94-4b03-4b63-b25e-d259b6748ce9",
+            "compute": {
+              "status": "supported",
+              "value": 0.01926737317794997,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "encode": {
+              "status": "supported",
+              "value": 0,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "decode": {
+              "status": "supported",
+              "value": 0,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "device"
+              }
+            },
+            "memoryUsedBytes": {
+              "status": "supported",
+              "value": 0,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "budget"
+              }
+            },
+            "memoryTotalBytes": {
+              "status": "supported",
+              "value": 7932998144,
+              "provenance": {
+                "source": "bare-gpu-info",
+                "scope": "budget"
+              }
+            },
+            "powerWatts": {
+              "status": "unavailable",
+              "reason": "Metric is unavailable"
+            },
+            "temperatureCelsius": {
+              "status": "unavailable",
+              "reason": "Metric is unavailable"
+            }
+          }
+        ],
+        "provenance": {
+          "source": "bare-gpu-info"
+        }
+      }
+    }
+  },
+  "assessment": {
+    "verdict": "likely-too-large",
+    "basis": "device-budget",
+    "execution": "sequential",
+    "budget": {
+      "totalBytes": 5402263552,
+      "usedBytes": 0,
+      "availableBytes": 5402263552,
+      "reservedBytes": 1080452710,
+      "availableAfterReserveBytes": 4321810842
+    },
+    "estimate": {
+      "lowerBoundBytes": 3049241072,
+      "upperBoundBytes": 3517776461
+    },
+    "models": [
+      {
+        "name": "QWEN3_4B_INST_Q4_K_M",
+        "verdict": "likely-too-large",
+        "estimate": {
+          "lowerBoundBytes": 3049241072,
+          "upperBoundBytes": 3517776461
+        },
+        "estimatorVersion": "llm-v1",
+        "reasons": [
+          "KV cache sized for all 36 blocks at 4096 tokens"
+        ]
+      }
+    ],
+    "reasons": [
+      "a GPU load is also paid for in system RAM, so every verdict is the more pessimistic of the GPU and system budgets",
+      "all models counted as resident with only the largest working peak added"
+    ],
+    "assumptions": [
+      "execution mode 'sequential' is a declared assumption used for aggregation only; the SDK does not schedule, serialize, or reserve anything",
+      "the verdict is advisory and based on the GPU memory this process is budgeted alone; it does not block loadModel and makes no performance claim",
+      "the model is assumed to execute on NVIDIA GeForce RTX 4050 Laptop GPU via vulkan, and the budget is that device's own memory",
+      "win32-x64 coefficients were calibrated on 2026-09-04 against a vulkan backend (NVIDIA RTX 4000 SFF Ada Generation), at 1.0625 bytes per KV element",
+      "weights are counted at full artifact size; llama.cpp maps them by default, so those pages are file-backed and evictable rather than anonymous RAM",
+      "a GPU is present, so the engine may default the KV cache to q8_0 (lower bound) or keep f16 on a CPU or OpenCL backend (upper bound)",
+      "the KV cache, engine overhead and compute buffers count as resident for the model’s whole lifetime; llama.cpp allocates them when the model loads, not per operation",
+      "one operation is assumed in flight per model; the working peak is what a single completion was measured to add on top of the resident cost",
+      "default KV-cache types are assumed; an explicit `cache-type-k`/`cache-type-v` in `modelConfig` is not expressible in a workload and would change these numbers"
+    ]
+  },
+  "gate": {
+    "candidateVerdict": "likely-too-large",
+    "budgetCoversUpperBound": true,
+    "pass": false
+  },
+  "modelDownloadedOrLoaded": false
+}

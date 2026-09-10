@@ -15,7 +15,8 @@
     "e4:topologies": "node scripts/e4/probe-topologies.mjs",
     "e4:interruption": "node scripts/e4/probe-interruption.mjs",
     "e4:offline": "node scripts/e4/probe-offline.mjs",
-    "e4:finalize": "node scripts/e4/finalize-results.mjs"
+    "e4:finalize": "node scripts/e4/finalize-results.mjs",
+    "e4:v2:fit": "node scripts/e4-v2/probe-model-fit.mjs"
   },
   "dependencies": {
     "@qvac/sdk": "0.19.0"
