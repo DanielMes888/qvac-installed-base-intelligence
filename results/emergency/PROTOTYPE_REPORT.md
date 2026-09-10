@@ -40,17 +40,18 @@ The preferred one-tool contract failed in the bounded probe: none of three diagn
 - `simple-json-no-grammar-probe.json` and `simple-json-strict-probe.json`: preserved fallback iterations.
 - `simple-json-probe.json`: final three-note diagnostic probe; 3/3 structurally valid, with serious semantic errors on two complex cases.
 - `demo-smoke.json`: final real-QVAC vertical-slice evidence.
+- `clarification-smoke.json`: dedicated real-QVAC clarification attempt; initial extraction succeeded but produced no question, so the bounded workflow stopped before a second inference.
 
 The smoke note was: `Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.` The real local run produced one compact item and five supported atomic claims. Its single attempt recorded:
 
 | Metric | Result |
 | --- | ---: |
-| Cached model load | 4,815.58 ms |
-| End-to-end extraction | 19,634.80 ms |
+| Cached model load | 5,496.60 ms |
+| End-to-end extraction | 23,597.98 ms |
 | Prompt tokens | 247 |
 | Generated/emitted tokens | 60 / 60 |
-| TTFT | 17,860.55 ms |
-| Throughput | 73.82 tokens/s |
+| TTFT | 21,739.99 ms |
+| Throughput | 71.91 tokens/s |
 | Backend | GPU |
 | Retry | None |
 
@@ -59,6 +60,12 @@ The scripted smoke used the actual loopback HTTP endpoints with the production r
 The Spanish product-clarity pass keeps this adapter, compact raw-JSON contract, canonical values, and reconciliation behavior unchanged. It translates the browser presentation and rehearsed observation, adds the problem/solution/value framing, and exposes the same workflow as six narrated steps. The same real adapter returned all five supported claims for the Spanish note in one attempt.
 
 The subsequent operational UI pass moves the pitch into the README and demo guide. The application now separates capture, review and reconciliation, installed-base records, and prioritized verification into focused workspaces. The normal workflow hides tokens, source offsets, internal IDs, and raw model output. Each extracted datum begins without a selected decision, and the completion action remains disabled until a person explicitly accepts or rejects every datum. This changes presentation and interaction only; the QVAC adapter, prompt, compact contract, persistence, and reconciliation rules remain unchanged.
+
+## Bounded clarification result
+
+The clarification lifecycle stores one substantive answer as a dated Evidence Entry before one final local extraction. Skip and unknown outcomes make the initial drafts final without another inference. A successful final extraction replaces active drafts while both attempt records remain available; a failed final extraction exposes no active drafts. Review is blocked while clarification is pending and is always required after it finishes. No clarification action updates the installed-base working view.
+
+`npm.cmd run smoke:clarification` exercised the unchanged real adapter with a synthetic quantity-scope ambiguity. The initial GPU extraction succeeded structurally in 19,663.81 ms with 272 prompt tokens, 64 generated tokens, 16,476.83 ms TTFT, and 74.24 tokens/s. It returned `x: null`, so deterministic logic presented no question and the smoke stopped before a second inference. This is a preserved failed real-model result, not a clarification pass. The controlled public-seam tests establish workflow behavior; they do not prove that the current model will emit a useful clarification in practice.
 
 ## Offline result
 

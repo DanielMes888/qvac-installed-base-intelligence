@@ -45,6 +45,18 @@ El smoke test usa un espacio de trabajo ignorado y separado; no modifica el esta
 
 Trate siempre la salida como un borrador. Rechace cualquier valor que la observación no respalde. No reconcilie si no aparece el candidato esperado.
 
+## Flujo acotado de aclaración
+
+Cuando QVAC devuelve una ambigüedad material, **Revisar** muestra una sola pregunta en español antes de habilitar las decisiones finales. El usuario puede:
+
+- Responder y ejecutar el segundo y último análisis local.
+- Elegir **No lo sé** y revisar los borradores iniciales sin otra inferencia.
+- Elegir **Omitir** y revisar los borradores iniciales sin otra inferencia.
+
+Una respuesta aparece debajo de la observación original como evidencia separada y fechada. Los borradores iniciales se reemplazan; la revisión explícita sigue siendo obligatoria y la base instalada no cambia hasta después de la revisión y una reconciliación humana.
+
+El smoke real dedicado usó: **La directora de radiología dijo que hay tres escáneres MRI DemoScan. No quedó claro si eran los observados o el total de la sede.** La extracción inicial terminó en 19.66 segundos, pero el modelo de 1.7B no formuló una aclaración. El script se detuvo de forma segura sin segunda inferencia. No dependa de este caso para la demostración principal y no describa la aclaración real como validada con el modelo actual.
+
 ## Guion de presentación: entre tres y cinco minutos
 
 ### 0:00–0:35 — Presentar el problema y el producto
@@ -67,7 +79,7 @@ Trate siempre la salida como un borrador. Rechace cualquier valor que la observa
 
 **Qué hacer:** pulse **Guardar y analizar con QVAC**.
 
-**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 20–25 segundos por la carga del modelo. El smoke test de esta versión tardó 19.63 segundos de extremo a extremo, incluidos 4.82 segundos de carga desde la caché.
+**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 20–25 segundos por la carga del modelo. El smoke test principal final tardó 23.60 segundos de extremo a extremo, incluidos 5.50 segundos de carga desde la caché.
 
 **Resultado visible:** el botón queda bloqueado durante la inferencia, la barra superior indica que QVAC está analizando y luego vuelve a mostrar **QVAC local disponible**.
 
@@ -116,6 +128,8 @@ El botón **Restablecer demostración** recupera el mismo conjunto semilla sint�
 
 Si la extracción falla o devuelve JSON inválido, la interfaz debe indicar que la observación se guardó localmente y que ningún dato extraído entró en la base instalada. No improvise valores aceptados. Restablezca la demostración, confirme la nota ensayada y haga un nuevo intento. Si la estructura es válida pero algún dato es incorrecto, rechácelo, declare la limitación del modelo y no lo reconcilie.
 
+Si el segundo análisis falla, confirme que la observación y la respuesta fechada siguen visibles, que los borradores iniciales ya no pueden revisarse y que no aparece otra pregunta. No vuelva a ejecutar QVAC para esa observación.
+
 Si el puerto 4173 está en uso, cierre la terminal anterior del prototipo. Si no puede localizarla, ejecute `$env:PROTOTYPE_PORT=4174`, luego `npm.cmd start`, y abra `http://127.0.0.1:4174`. Para otros errores, confirme Node 22.17.0, ejecute `npm.cmd ci` con conexión y compruebe que el modelo descrito en `data/feasibility/e4-manifest-v1.json` continúe en caché. No seleccione ni descargue otro modelo durante la recuperación.
 
 ## Comprobación manual del propietario
@@ -132,10 +146,12 @@ Si el puerto 4173 está en uso, cierre la terminal anterior del prototipo. Si no
 - [ ] Se ven tres verificaciones; el agregado muestra tres registros verificados y dos provisionales.
 - [ ] Restablecer devuelve las observaciones y los nuevos vínculos a cero.
 - [ ] Una salida inválida conserva la nota, no muestra datos para aceptar y no modifica la base instalada.
+- [ ] Cuando exista una aclaración, solo aparece una pregunta; responder conserva evidencia y **No lo sé** u **Omitir** no ejecutan otra inferencia.
 
 ## Afirmaciones que deben evitarse
 
 - No diga que E4 pasó ni que el modelo es preciso para notas de campo en general.
 - No afirme que la inferencia ocurre dentro del navegador; QVAC se ejecuta en el host Node del mismo computador.
 - No afirme que se trata de un inventario auditado, un flujo de Philips validado, seguridad o privacidad de producción, captura más rápida, adopción, integración con CRM o preparación para envío.
-- El ciclo de aclaración, exportación, eliminación, empaquetado, ejecución móvil, evaluación E7 completa, experimentos con usuarios, recuperación avanzada y tableros ampliados siguen aplazados.
+- La disponibilidad de una pregunta depende de que el modelo actual produzca un candidato válido; el smoke real dedicado no lo consiguió.
+- La edición, exportación, eliminación, empaquetado, ejecución móvil, evaluación E7 completa, experimentos con usuarios, recuperación avanzada y tableros ampliados siguen aplazados.

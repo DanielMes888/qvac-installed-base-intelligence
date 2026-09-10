@@ -1,7 +1,7 @@
 {
   "schemaVersion": "emergency-demo-smoke-v1",
-  "startedAt": "2026-09-10T22:11:38.477Z",
-  "completedAt": "2026-09-10T22:12:03.067Z",
+  "startedAt": "2026-09-10T22:43:08.444Z",
+  "completedAt": "2026-09-10T22:43:37.757Z",
   "synthetic": true,
   "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
   "environment": {
@@ -12,13 +12,14 @@
       "reachable": false,
       "error": "TypeError"
     },
-    "loopbackOrigin": "http://127.0.0.1:63155"
+    "loopbackOrigin": "http://127.0.0.1:64409"
   },
   "extraction": {
-    "id": "89f3ead9-a2c5-4027-995d-9a0cb86fb028",
+    "id": "7e5a6949-79cf-4ac9-a4b1-b6b7bdbc95da",
     "customerId": "northbridge",
     "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
-    "recordedAt": "2026-09-10T22:11:38.557Z",
+    "recordedAt": "2026-09-10T22:43:08.598Z",
+    "revision": 0,
     "status": "succeeded",
     "attempts": [
       {
@@ -124,16 +125,23 @@
           "clarification": null
         },
         "metrics": {
-          "totalMs": 19634.8049,
+          "totalMs": 23597.9849,
           "promptTokens": 247,
           "generatedTokens": 60,
           "emittedTokens": 60,
-          "timeToFirstToken": 17860.546000000002,
-          "tokensPerSecond": 73.82153152610022,
+          "timeToFirstToken": 21739.993000000002,
+          "tokensPerSecond": 71.90735456437925,
           "backendDevice": "gpu"
-        }
+        },
+        "attemptId": "4559d76d-029f-4604-9532-7ddf8886da13",
+        "phase": "initial",
+        "observationRevision": 0,
+        "startedAt": "2026-09-10T22:43:08.600Z",
+        "completedAt": "2026-09-10T22:43:37.740Z",
+        "draftStatus": "active"
       }
     ],
+    "evidenceEntryIds": [],
     "subjects": [
       {
         "subjectId": "s1",
@@ -251,7 +259,7 @@
       }
     },
     "load": {
-      "loadMs": 4815.581700000001,
+      "loadMs": 5496.5983,
       "info": {
         "modelId": "13dd17f190cd6438",
         "modelType": "llamacpp-completion",
@@ -263,12 +271,13 @@
         ],
         "displayName": "LLM (llama.cpp)",
         "addonPackage": "@qvac/llm-llamacpp",
-        "loadedAt": "2026-09-10T22:11:43.370Z",
+        "loadedAt": "2026-09-10T22:43:14.090Z",
         "name": "QWEN3_1_7B_INST_Q4",
         "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
         "toolDialect": "hermes"
       }
     },
+    "evidenceEntries": [],
     "candidates": []
   },
   "review": {
@@ -327,7 +336,7 @@
           "model": "DS-One",
           "location": "Radiology",
           "evidenceObservationIds": [
-            "89f3ead9-a2c5-4027-995d-9a0cb86fb028"
+            "7e5a6949-79cf-4ac9-a4b1-b6b7bdbc95da"
           ]
         },
         {
@@ -343,10 +352,11 @@
       ],
       "observations": [
         {
-          "id": "89f3ead9-a2c5-4027-995d-9a0cb86fb028",
+          "id": "7e5a6949-79cf-4ac9-a4b1-b6b7bdbc95da",
           "customerId": "northbridge",
           "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
-          "recordedAt": "2026-09-10T22:11:38.557Z",
+          "recordedAt": "2026-09-10T22:43:08.598Z",
+          "revision": 0,
           "status": "succeeded",
           "attempts": [
             {
@@ -452,16 +462,23 @@
                 "clarification": null
               },
               "metrics": {
-                "totalMs": 19634.8049,
+                "totalMs": 23597.9849,
                 "promptTokens": 247,
                 "generatedTokens": 60,
                 "emittedTokens": 60,
-                "timeToFirstToken": 17860.546000000002,
-                "tokensPerSecond": 73.82153152610022,
+                "timeToFirstToken": 21739.993000000002,
+                "tokensPerSecond": 71.90735456437925,
                 "backendDevice": "gpu"
-              }
+              },
+              "attemptId": "4559d76d-029f-4604-9532-7ddf8886da13",
+              "phase": "initial",
+              "observationRevision": 0,
+              "startedAt": "2026-09-10T22:43:08.600Z",
+              "completedAt": "2026-09-10T22:43:37.740Z",
+              "draftStatus": "active"
             }
           ],
+          "evidenceEntryIds": [],
           "subjects": [
             {
               "subjectId": "s1",
@@ -558,12 +575,12 @@
             }
           ],
           "clarification": null,
-          "reviewedAt": "2026-09-10T22:12:03.057Z",
+          "reviewedAt": "2026-09-10T22:43:37.746Z",
           "reconciliation": {
             "recordId": "nb-mri-01",
             "reason": "La revisión del smoke test confirmó la modalidad y los datos de identificación respaldados",
             "actor": "Usuario local de demostración",
-            "decidedAt": "2026-09-10T22:12:03.062Z"
+            "decidedAt": "2026-09-10T22:43:37.751Z"
           },
           "model": {
             "sdk": "0.19.0",
@@ -584,7 +601,7 @@
             }
           },
           "load": {
-            "loadMs": 4815.581700000001,
+            "loadMs": 5496.5983,
             "info": {
               "modelId": "13dd17f190cd6438",
               "modelType": "llamacpp-completion",
@@ -596,7 +613,7 @@
               ],
               "displayName": "LLM (llama.cpp)",
               "addonPackage": "@qvac/llm-llamacpp",
-              "loadedAt": "2026-09-10T22:11:43.370Z",
+              "loadedAt": "2026-09-10T22:43:14.090Z",
               "name": "QWEN3_1_7B_INST_Q4",
               "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
               "toolDialect": "hermes"

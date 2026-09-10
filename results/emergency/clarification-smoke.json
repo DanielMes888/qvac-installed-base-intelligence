@@ -1,0 +1,282 @@
+{
+  "schemaVersion": "emergency-clarification-smoke-v1",
+  "startedAt": "2026-09-10T22:37:06.168Z",
+  "completedAt": "2026-09-10T22:37:30.878Z",
+  "synthetic": true,
+  "note": "La directora de radiología dijo que hay tres escáneres MRI DemoScan. No quedó claro si eran los observados o el total de la sede.",
+  "answer": "La directora confirmó que son todos los equipos MRI de esta sede.",
+  "sameComputer": true,
+  "cloudInference": false,
+  "delegatedInference": false,
+  "initial": {
+    "id": "dfc345c9-2768-4982-b175-fb40db7896ad",
+    "customerId": "northbridge",
+    "originalText": "La directora de radiología dijo que hay tres escáneres MRI DemoScan. No quedó claro si eran los observados o el total de la sede.",
+    "recordedAt": "2026-09-10T22:37:06.202Z",
+    "revision": 0,
+    "status": "succeeded",
+    "attempts": [
+      {
+        "attemptNumber": 1,
+        "status": "succeeded",
+        "failureCategory": null,
+        "errors": [],
+        "stopReason": null,
+        "rawOutput": "<think>\n\n</think>\n\n{\"i\":[{\"e\":\"MRI\",\"m\":\"La directora de radiología\",\"d\":\"DemoScan\",\"q\":3,\"qs\":\"o\",\"l\":\"Radiology\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+        "toolCalls": [],
+        "validatedDraft": {
+          "version": 1,
+          "subjects": [
+            {
+              "subjectId": "s1",
+              "kind": "observedGroup",
+              "label": "La directora de radiología DemoScan"
+            }
+          ],
+          "claims": [
+            {
+              "claimId": "c1",
+              "type": "equipmentType",
+              "value": "MRI",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 68,
+                "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+              }
+            },
+            {
+              "claimId": "c2",
+              "type": "manufacturer",
+              "value": "La directora de radiología",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 68,
+                "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+              }
+            },
+            {
+              "claimId": "c3",
+              "type": "model",
+              "value": "DemoScan",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 68,
+                "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+              }
+            },
+            {
+              "claimId": "c4",
+              "type": "quantity",
+              "value": 3,
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 68,
+                "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+              },
+              "quantityScope": "observed"
+            },
+            {
+              "claimId": "c5",
+              "type": "location",
+              "value": "Radiology",
+              "subjectId": "s1",
+              "locationScope": "dept",
+              "sourceType": "directObservation",
+              "certainty": "reported",
+              "negated": false,
+              "evidence": {
+                "id": "e0",
+                "start": 0,
+                "end": 68,
+                "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+              }
+            }
+          ],
+          "clarification": null
+        },
+        "metrics": {
+          "totalMs": 19663.8129,
+          "promptTokens": 272,
+          "generatedTokens": 64,
+          "emittedTokens": 64,
+          "timeToFirstToken": 16476.828,
+          "tokensPerSecond": 74.24378643310808,
+          "backendDevice": "gpu"
+        },
+        "attemptId": "695d1a12-eb76-46f8-9ff6-a139693e927e",
+        "phase": "initial",
+        "observationRevision": 0,
+        "startedAt": "2026-09-10T22:37:06.203Z",
+        "completedAt": "2026-09-10T22:37:30.874Z",
+        "draftStatus": "active"
+      }
+    ],
+    "evidenceEntryIds": [],
+    "subjects": [
+      {
+        "subjectId": "s1",
+        "kind": "observedGroup",
+        "label": "La directora de radiología DemoScan"
+      }
+    ],
+    "draftClaims": [
+      {
+        "claimId": "c1",
+        "type": "equipmentType",
+        "value": "MRI",
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 68,
+          "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+        },
+        "decision": "pending"
+      },
+      {
+        "claimId": "c2",
+        "type": "manufacturer",
+        "value": "La directora de radiología",
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 68,
+          "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+        },
+        "decision": "pending"
+      },
+      {
+        "claimId": "c3",
+        "type": "model",
+        "value": "DemoScan",
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 68,
+          "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+        },
+        "decision": "pending"
+      },
+      {
+        "claimId": "c4",
+        "type": "quantity",
+        "value": 3,
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 68,
+          "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+        },
+        "quantityScope": "observed",
+        "decision": "pending"
+      },
+      {
+        "claimId": "c5",
+        "type": "location",
+        "value": "Radiology",
+        "subjectId": "s1",
+        "locationScope": "dept",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "negated": false,
+        "evidence": {
+          "id": "e0",
+          "start": 0,
+          "end": 68,
+          "text": "La directora de radiología dijo que hay tres escáneres MRI DemoScan."
+        },
+        "decision": "pending"
+      }
+    ],
+    "clarification": null,
+    "reviewedAt": null,
+    "reconciliation": null,
+    "model": {
+      "sdk": "0.19.0",
+      "modelExport": "QWEN3_1_7B_INST_Q4",
+      "quantization": "Q4_0",
+      "modelConfig": {
+        "device": "gpu",
+        "gpu_layers": 99,
+        "ctx_size": 4096,
+        "tools": true,
+        "verbosity": 0
+      },
+      "generationParams": {
+        "temp": 0,
+        "top_p": 1,
+        "seed": 20260910,
+        "predict": 250
+      }
+    },
+    "load": {
+      "loadMs": 4967.3071,
+      "info": {
+        "modelId": "13dd17f190cd6438",
+        "modelType": "llamacpp-completion",
+        "handlers": [
+          "batchCompletionStream",
+          "completionStream",
+          "finetune",
+          "translate"
+        ],
+        "displayName": "LLM (llama.cpp)",
+        "addonPackage": "@qvac/llm-llamacpp",
+        "loadedAt": "2026-09-10T22:37:11.167Z",
+        "name": "QWEN3_1_7B_INST_Q4",
+        "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+        "toolDialect": "hermes"
+      }
+    },
+    "evidenceEntries": [],
+    "candidates": []
+  },
+  "clarified": null,
+  "review": null,
+  "safety": null,
+  "loopbackOrigin": "http://127.0.0.1:52569",
+  "failure": "Error: QVAC no produjo una aclaración material válida en español"
+}

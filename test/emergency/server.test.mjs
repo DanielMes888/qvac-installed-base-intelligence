@@ -58,7 +58,11 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
     'El análisis ocurre localmente.',
     'Observación original',
     'Datos extraídos pendientes de revisión',
-    'Información pendiente de verificar'
+    'Información pendiente de verificar',
+    'Aclaración única',
+    'Responder y volver a analizar',
+    'No lo sé',
+    'Omitir'
   ]) assert.match(page, new RegExp(expectedCopy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
   assert.doesNotMatch(page, /Problema|Solución|Valor/)
   const rejectedOrigin = await fetch(`${origin}/api/bootstrap`, { headers: { origin: 'http://example.invalid' } })
@@ -139,4 +143,51 @@ test('invalid QVAC output leaves a visible failed observation and cannot affect 
   assert.equal(after.observations.length, before.observations.length + 1)
   assert.equal(after.acceptedClaimCount, before.acceptedClaimCount)
   assert.equal(after.equipmentRecords.length, before.equipmentRecords.length)
+})
+
+test('HTTP clarification answer preserves evidence and replaces drafts before review', async (t) => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'qvac-prototype-clarification-'))
+  let calls = 0
+  const app = await createPrototypeServer({
+    workspacePath: path.join(directory, 'workspace.json'),
+    extractor: async (input) => {
+      calls += 1
+      return {
+        status: 'succeeded',
+        attempts: [{ attemptNumber: 1, status: 'succeeded', rawOutput: `attempt-${calls}`, metrics: { totalMs: 1 } }],
+        draft: {
+          ...draft,
+          claims: draft.claims.map((claim) => ({ ...claim, value: claim.type === 'model' && calls === 2 ? 'DS-Two' : claim.value, evidence: { ...claim.evidence, end: input.length, text: input } })),
+          clarification: calls === 1 ? { kind: 'id', subjectId: 's1', question: '¿Cuál es el modelo exacto del equipo?', evidence: draft.claims[0].evidence } : null
+        },
+        model: { sdk: 'controlled-test-adapter' }
+      }
+    }
+  })
+  await new Promise((resolve) => app.server.listen(0, '127.0.0.1', resolve))
+  const { port } = app.server.address()
+  const origin = `http://127.0.0.1:${port}`
+  t.after(async () => {
+    await app.close()
+    await rm(directory, { recursive: true, force: true })
+  })
+
+  const captured = await fetch(`${origin}/api/observations`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ customerId: 'northbridge', text: note })
+  }).then((response) => response.json())
+  assert.equal(captured.clarification.status, 'pending')
+
+  const clarified = await fetch(`${origin}/api/observations/${captured.id}/clarification`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ outcome: 'answered', answer: 'El modelo es DS-Two.' })
+  }).then((response) => response.json())
+
+  assert.equal(calls, 2)
+  assert.equal(clarified.evidenceEntries[0].text, 'El modelo es DS-Two.')
+  assert.equal(clarified.attempts.length, 2)
+  assert.equal(clarified.draftClaims.find(({ type }) => type === 'model').value, 'DS-Two')
+  assert.equal(clarified.reviewedAt, null)
 })

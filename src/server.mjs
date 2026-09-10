@@ -13,7 +13,7 @@ const publicDirectory = path.join(root, 'public')
 
 export async function createPrototypeServer({
   workspacePath = path.join(root, '.local', 'workspace.json'),
-  extractor = (note) => extractEquipmentDraft(note, { mode: 'simple-json', maxAttempts: 2 })
+  extractor = (note) => extractEquipmentDraft(note, { mode: 'simple-json', maxAttempts: 1 })
 } = {}) {
   const store = new FileStore({ seedPath: path.join(root, 'data', 'prototype', 'seed.json'), workspacePath })
   let workspace = new WorkspaceService(await store.load(), (state) => store.save(state))
@@ -34,6 +34,10 @@ export async function createPrototypeServer({
       }
       const viewMatch = url.pathname.match(/^\/api\/customers\/([^/]+)\/view$/)
       if (viewMatch && request.method === 'GET') return json(response, 200, workspace.customerView(viewMatch[1]))
+      const clarificationMatch = url.pathname.match(/^\/api\/observations\/([^/]+)\/clarification$/)
+      if (clarificationMatch && request.method === 'POST') {
+        return json(response, 200, await workspace.clarify(clarificationMatch[1], await bodyJson(request), extractor))
+      }
       const reviewMatch = url.pathname.match(/^\/api\/observations\/([^/]+)\/review$/)
       if (reviewMatch && request.method === 'POST') return json(response, 200, await workspace.review(reviewMatch[1], (await bodyJson(request)).decisions))
       const reconcileMatch = url.pathname.match(/^\/api\/observations\/([^/]+)\/reconcile$/)

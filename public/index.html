@@ -75,11 +75,24 @@
         <aside class="surface source-panel">
           <div class="surface-heading"><div><span class="icon-tile" aria-hidden="true">“</span><div><h2>Observación original</h2><p>Referencia guardada antes del análisis</p></div></div></div>
           <blockquote id="original-note">Todavía no hay una observación para revisar.</blockquote>
+          <div id="clarification-evidence"></div>
           <div id="observation-state" class="observation-state">Registre una observación desde Capturar.</div>
         </aside>
 
         <div class="surface claims-panel">
           <div class="surface-heading"><div><span class="icon-tile" aria-hidden="true">✓</span><div><h2>Datos extraídos pendientes de revisión</h2><p>Debe aprobar o rechazar cada fila.</p></div></div></div>
+          <div id="clarification" class="clarification-card hidden">
+            <div class="clarification-heading"><span aria-hidden="true">?</span><div><p>Aclaración única</p><h3 id="clarification-question"></h3></div></div>
+            <p class="clarification-help">Su respuesta se guardará como evidencia separada y QVAC analizará una vez más la observación completa.</p>
+            <label for="clarification-answer">Respuesta</label>
+            <textarea id="clarification-answer" rows="3" placeholder="Escriba una respuesta breve y concreta"></textarea>
+            <div class="clarification-actions">
+              <button id="answer-clarification" class="button primary" type="button"><span>Responder y volver a analizar</span><span aria-hidden="true">→</span></button>
+              <button id="unknown-clarification" class="button secondary" type="button">No lo sé</button>
+              <button id="skip-clarification" class="button text-button" type="button">Omitir</button>
+            </div>
+            <div id="clarification-status" class="feedback" aria-live="polite"></div>
+          </div>
           <div id="draft-empty" class="empty-state"><strong>No hay datos para revisar</strong><span>Analice una observación para comenzar.</span><button class="button secondary workspace-link" data-target="capture" type="button">Ir a Capturar</button></div>
           <div id="drafts"></div>
           <button id="review" class="button primary hidden" type="button" disabled><span>Completar revisión</span><span aria-hidden="true">→</span></button>

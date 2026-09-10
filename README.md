@@ -28,6 +28,16 @@ npm.cmd run smoke:demo
 
 The smoke command invokes the real cached QVAC model and writes reviewable evidence to [demo-smoke.json](results/emergency/demo-smoke.json). Follow the [demo guide](docs/DEMO_GUIDE.md), and see the [prototype report](results/emergency/PROTOTYPE_REPORT.md), [emergency scope status](docs/EMERGENCY_DEMO_STATUS.md), and [deadline ADR](docs/adr/0006-use-time-constrained-browser-prototype.md) for the bounded result and limitations.
 
+The application also supports one bounded clarification. When the initial QVAC output contains a material Spanish question, the user may answer, select **No lo sé**, or omit it. An answer is stored as a dated Evidence Entry and triggers one final local extraction; the initial drafts are superseded and the final drafts still require explicit review. Skipping and **No lo sé** use the initial drafts without another inference. The installed base never changes during clarification.
+
+The dedicated command below preserves the current real-model result in [clarification-smoke.json](results/emergency/clarification-smoke.json):
+
+```powershell
+npm.cmd run smoke:clarification
+```
+
+On the recorded run, the 1.7B model completed the initial extraction but returned no clarification candidate, so the command stopped before a second inference. Controlled-adapter tests cover the complete lifecycle; this real-model limitation must remain visible and must not be presented as a successful clarification demonstration.
+
 ## Problem
 
 Hospital equipment observations remain scattered across field employees' notes and memory. Incomplete, estimated, repeated, or contradictory reports can produce unreliable installed-base records without clear supporting evidence.
@@ -50,7 +60,7 @@ Initial [platform research](docs/references/QVAC_PLATFORM_RESEARCH.md) found tha
 
 The original E4 spike failed its structured-output and latency gates, and E4-v2 stopped at its mandatory model-fit gate. Those results remain authoritative. The emergency prototype evidence is a one-case demonstration smoke test, not a replacement feasibility evaluation.
 
-Original notes are saved before inference. The emergency slice preserves a note when extraction fails; retry, human-authored manual recovery, and clarification-answer processing remain deferred.
+Original notes are saved before inference. A clarification answer is saved separately before the optional second and final inference. The emergency slice preserves both when extraction fails; ordinary retry and human-authored manual recovery remain deferred.
 
 QVAC-generated claims remain drafts until explicit review and never affect customer views or aggregates beforehand. The prototype accepts fictional demonstration data only, includes no application telemetry or automatic upload, and relies on the operating-system account for access. It does not claim enterprise authentication, encrypted storage, or production security.
 

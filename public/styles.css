@@ -120,9 +120,26 @@ textarea { min-height: 154px; resize: vertical; }
 blockquote { margin: 0; padding: 15px; border: 0; border-radius: 9px; background: var(--surface-subtle); color: #33433a; font-size: 14px; }
 .observation-state { margin-top: 12px; color: var(--muted); font-size: 11px; }
 .observation-state.saved { color: var(--success); }
+.saved-answer { margin-top: 12px; padding: 11px 12px; border: 1px solid #cfe1d7; border-radius: 8px; background: #f5fbf7; }
+.saved-answer span, .saved-answer strong { display: block; }
+.saved-answer span { color: var(--muted); font-size: 9px; font-weight: 750; letter-spacing: 0.05em; text-transform: uppercase; }
+.saved-answer strong { margin-top: 3px; font-size: 12px; }
 .empty-state { min-height: 190px; padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border: 1px dashed var(--line-strong); border-radius: 10px; color: var(--muted); text-align: center; }
 .empty-state strong { color: var(--ink); }
 .empty-state .button { margin-top: 8px; }
+.clarification-card { margin-bottom: 18px; padding: 17px; border: 1px solid #c8daca; border-radius: 11px; background: #f5faf7; }
+.clarification-heading { display: flex; align-items: flex-start; gap: 11px; }
+.clarification-heading > span { display: grid; place-items: center; flex: 0 0 29px; height: 29px; border-radius: 50%; background: var(--brand); color: #fff; font-weight: 800; }
+.clarification-heading p, .clarification-heading h3 { margin: 0; }
+.clarification-heading p { color: var(--brand); font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.clarification-heading h3 { margin-top: 2px; font-size: 15px; }
+.clarification-help { margin: 9px 0 13px 40px; color: var(--muted); font-size: 11px; }
+.clarification-card > label { display: block; margin-bottom: 6px; font-size: 11px; font-weight: 750; }
+.clarification-card textarea { min-height: 78px; }
+.clarification-actions { margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+.clarification-actions .button.primary { width: auto; margin: 0; }
+.text-button { min-height: 36px; border: 0; background: transparent; color: var(--muted); }
+.text-button:hover { color: var(--ink); text-decoration: underline; }
 .claim { padding: 16px 0; border-bottom: 1px solid var(--line); }
 .claim:first-child { padding-top: 0; }
 .claim:last-child { border-bottom: 0; }
@@ -251,6 +268,8 @@ details p { margin: 4px 0 0; }
   .claim-footer { align-items: flex-start; flex-direction: column; }
   .decision { width: 100%; }
   .decision label { flex: 1; }
+  .clarification-actions { align-items: stretch; flex-direction: column; }
+  .clarification-actions .button.primary { width: 100%; }
   .summary-grid { grid-template-columns: repeat(2, 1fr); }
   .equipment-row { grid-template-columns: 38px minmax(0, 1fr) auto; }
   .equipment-evidence { grid-column: 2; text-align: left; }
