@@ -1,10 +1,10 @@
 {
   "synthetic": true,
-  "label": "Synthetic demonstration data.",
+  "label": "Datos completamente sintéticos para demostración.",
   "customers": [
-    { "id": "northbridge", "name": "Northbridge General", "site": "Central Campus" },
-    { "id": "meadow", "name": "Meadow Health", "site": "River Campus" },
-    { "id": "harbor", "name": "Harborview Clinic", "site": "West Campus" }
+    { "id": "northbridge", "name": "Hospital General Northbridge", "site": "Campus Central" },
+    { "id": "meadow", "name": "Centro de Salud Meadow", "site": "Campus Río" },
+    { "id": "harbor", "name": "Clínica Harborview", "site": "Campus Oeste" }
   ],
   "equipmentRecords": [
     { "id": "nb-mri-01", "customerId": "northbridge", "status": "verified", "modality": "MRI", "manufacturer": "DemoScan", "model": "DS-One", "location": "Radiology", "evidenceObservationIds": [] },
@@ -15,10 +15,10 @@
   ],
   "observations": [],
   "verificationItems": [
-    { "id": "v1", "customerId": "northbridge", "priority": 1, "reason": "Confirm whether the CT observation refers to AX-4", "status": "open" },
-    { "id": "v2", "customerId": "northbridge", "priority": 2, "reason": "Verify the MRI serial number on the next visit", "status": "open" },
-    { "id": "v3", "customerId": "northbridge", "priority": 3, "reason": "Clarify whether Radiology's reported quantity is a total", "status": "open" },
-    { "id": "v4", "customerId": "meadow", "priority": 1, "reason": "Resolve conflicting patient-monitor quantities", "status": "open" },
-    { "id": "v5", "customerId": "harbor", "priority": 2, "reason": "Confirm current MRI room", "status": "open" }
+    { "id": "v1", "customerId": "northbridge", "priority": 1, "reason": "Confirmar si la observación de CT corresponde al equipo AX-4", "status": "open" },
+    { "id": "v2", "customerId": "northbridge", "priority": 2, "reason": "Verificar el número de serie del equipo MRI en la próxima visita", "status": "open" },
+    { "id": "v3", "customerId": "northbridge", "priority": 3, "reason": "Aclarar si la cantidad reportada en Radiología representa un total", "status": "open" },
+    { "id": "v4", "customerId": "meadow", "priority": 1, "reason": "Resolver las cantidades contradictorias de monitores de pacientes", "status": "open" },
+    { "id": "v5", "customerId": "harbor", "priority": 2, "reason": "Confirmar la sala actual del equipo MRI", "status": "open" }
   ]
 }

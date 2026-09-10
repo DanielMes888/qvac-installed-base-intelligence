@@ -9,4 +9,4 @@ const store = new FileStore({
   workspacePath: path.join(root, '.local', 'workspace.json')
 })
 await store.reset()
-console.log('Synthetic workspace reset.')
+console.log('Espacio de trabajo sintético restablecido.')

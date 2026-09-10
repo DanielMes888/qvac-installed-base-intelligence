@@ -1,9 +1,9 @@
 {
   "schemaVersion": "emergency-demo-smoke-v1",
-  "startedAt": "2026-09-10T21:26:54.819Z",
-  "completedAt": "2026-09-10T21:27:20.688Z",
+  "startedAt": "2026-09-10T21:52:16.265Z",
+  "completedAt": "2026-09-10T21:52:43.786Z",
   "synthetic": true,
-  "note": "I saw one DemoScan MRI scanner, model DS-One, in Radiology.",
+  "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
   "environment": {
     "sameComputer": true,
     "cloudInference": false,
@@ -12,13 +12,13 @@
       "reachable": false,
       "error": "TypeError"
     },
-    "loopbackOrigin": "http://127.0.0.1:53860"
+    "loopbackOrigin": "http://127.0.0.1:62864"
   },
   "extraction": {
-    "id": "66c6887b-5e57-4887-887c-872e024b18bf",
+    "id": "389f9344-1b9f-4b83-969f-5f77e146937a",
     "customerId": "northbridge",
-    "originalText": "I saw one DemoScan MRI scanner, model DS-One, in Radiology.",
-    "recordedAt": "2026-09-10T21:26:54.921Z",
+    "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
+    "recordedAt": "2026-09-10T21:52:16.935Z",
     "status": "succeeded",
     "attempts": [
       {
@@ -51,8 +51,8 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               }
             },
             {
@@ -67,8 +67,8 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               }
             },
             {
@@ -83,8 +83,8 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               }
             },
             {
@@ -99,8 +99,8 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
               "quantityScope": "observed"
             },
@@ -116,20 +116,20 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               }
             }
           ],
           "clarification": null
         },
         "metrics": {
-          "totalMs": 20693.4766,
-          "promptTokens": 245,
+          "totalMs": 21856.2195,
+          "promptTokens": 247,
           "generatedTokens": 60,
           "emittedTokens": 60,
-          "timeToFirstToken": 18899.785,
-          "tokensPerSecond": 73.11990445665816,
+          "timeToFirstToken": 19995.841,
+          "tokensPerSecond": 70.60983359615884,
           "backendDevice": "gpu"
         }
       }
@@ -154,8 +154,8 @@
         "evidence": {
           "id": "e0",
           "start": 0,
-          "end": 59,
-          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+          "end": 62,
+          "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
         "decision": "pending"
       },
@@ -171,8 +171,8 @@
         "evidence": {
           "id": "e0",
           "start": 0,
-          "end": 59,
-          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+          "end": 62,
+          "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
         "decision": "pending"
       },
@@ -188,8 +188,8 @@
         "evidence": {
           "id": "e0",
           "start": 0,
-          "end": 59,
-          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+          "end": 62,
+          "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
         "decision": "pending"
       },
@@ -205,8 +205,8 @@
         "evidence": {
           "id": "e0",
           "start": 0,
-          "end": 59,
-          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+          "end": 62,
+          "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
         "quantityScope": "observed",
         "decision": "pending"
@@ -223,8 +223,8 @@
         "evidence": {
           "id": "e0",
           "start": 0,
-          "end": 59,
-          "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+          "end": 62,
+          "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
         },
         "decision": "pending"
       }
@@ -251,7 +251,7 @@
       }
     },
     "load": {
-      "loadMs": 5014.9826,
+      "loadMs": 4934.1854,
       "info": {
         "modelId": "13dd17f190cd6438",
         "modelType": "llamacpp-completion",
@@ -263,7 +263,7 @@
         ],
         "displayName": "LLM (llama.cpp)",
         "addonPackage": "@qvac/llm-llamacpp",
-        "loadedAt": "2026-09-10T21:26:59.934Z",
+        "loadedAt": "2026-09-10T21:52:21.866Z",
         "name": "QWEN3_1_7B_INST_Q4",
         "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
         "toolDialect": "hermes"
@@ -314,8 +314,8 @@
     "customer": {
       "customer": {
         "id": "northbridge",
-        "name": "Northbridge General",
-        "site": "Central Campus"
+        "name": "Hospital General Northbridge",
+        "site": "Campus Central"
       },
       "equipmentRecords": [
         {
@@ -327,7 +327,7 @@
           "model": "DS-One",
           "location": "Radiology",
           "evidenceObservationIds": [
-            "66c6887b-5e57-4887-887c-872e024b18bf"
+            "389f9344-1b9f-4b83-969f-5f77e146937a"
           ]
         },
         {
@@ -343,10 +343,10 @@
       ],
       "observations": [
         {
-          "id": "66c6887b-5e57-4887-887c-872e024b18bf",
+          "id": "389f9344-1b9f-4b83-969f-5f77e146937a",
           "customerId": "northbridge",
-          "originalText": "I saw one DemoScan MRI scanner, model DS-One, in Radiology.",
-          "recordedAt": "2026-09-10T21:26:54.921Z",
+          "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
+          "recordedAt": "2026-09-10T21:52:16.935Z",
           "status": "succeeded",
           "attempts": [
             {
@@ -379,8 +379,8 @@
                     "evidence": {
                       "id": "e0",
                       "start": 0,
-                      "end": 59,
-                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                      "end": 62,
+                      "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
                     }
                   },
                   {
@@ -395,8 +395,8 @@
                     "evidence": {
                       "id": "e0",
                       "start": 0,
-                      "end": 59,
-                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                      "end": 62,
+                      "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
                     }
                   },
                   {
@@ -411,8 +411,8 @@
                     "evidence": {
                       "id": "e0",
                       "start": 0,
-                      "end": 59,
-                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                      "end": 62,
+                      "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
                     }
                   },
                   {
@@ -427,8 +427,8 @@
                     "evidence": {
                       "id": "e0",
                       "start": 0,
-                      "end": 59,
-                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                      "end": 62,
+                      "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
                     },
                     "quantityScope": "observed"
                   },
@@ -444,20 +444,20 @@
                     "evidence": {
                       "id": "e0",
                       "start": 0,
-                      "end": 59,
-                      "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                      "end": 62,
+                      "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
                     }
                   }
                 ],
                 "clarification": null
               },
               "metrics": {
-                "totalMs": 20693.4766,
-                "promptTokens": 245,
+                "totalMs": 21856.2195,
+                "promptTokens": 247,
                 "generatedTokens": 60,
                 "emittedTokens": 60,
-                "timeToFirstToken": 18899.785,
-                "tokensPerSecond": 73.11990445665816,
+                "timeToFirstToken": 19995.841,
+                "tokensPerSecond": 70.60983359615884,
                 "backendDevice": "gpu"
               }
             }
@@ -482,8 +482,8 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
               "decision": "accepted"
             },
@@ -499,8 +499,8 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
               "decision": "accepted"
             },
@@ -516,8 +516,8 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
               "decision": "accepted"
             },
@@ -533,8 +533,8 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
               "quantityScope": "observed",
               "decision": "accepted"
@@ -551,19 +551,19 @@
               "evidence": {
                 "id": "e0",
                 "start": 0,
-                "end": 59,
-                "text": "I saw one DemoScan MRI scanner, model DS-One, in Radiology."
+                "end": 62,
+                "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
               },
               "decision": "accepted"
             }
           ],
           "clarification": null,
-          "reviewedAt": "2026-09-10T21:27:20.677Z",
+          "reviewedAt": "2026-09-10T21:52:43.774Z",
           "reconciliation": {
             "recordId": "nb-mri-01",
-            "reason": "Smoke-test reviewer confirmed modality and supported identifying details",
-            "actor": "Local demo user",
-            "decidedAt": "2026-09-10T21:27:20.682Z"
+            "reason": "La revisión del smoke test confirmó la modalidad y los datos de identificación respaldados",
+            "actor": "Usuario local de demostración",
+            "decidedAt": "2026-09-10T21:52:43.780Z"
           },
           "model": {
             "sdk": "0.19.0",
@@ -584,7 +584,7 @@
             }
           },
           "load": {
-            "loadMs": 5014.9826,
+            "loadMs": 4934.1854,
             "info": {
               "modelId": "13dd17f190cd6438",
               "modelType": "llamacpp-completion",
@@ -596,7 +596,7 @@
               ],
               "displayName": "LLM (llama.cpp)",
               "addonPackage": "@qvac/llm-llamacpp",
-              "loadedAt": "2026-09-10T21:26:59.934Z",
+              "loadedAt": "2026-09-10T21:52:21.866Z",
               "name": "QWEN3_1_7B_INST_Q4",
               "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
               "toolDialect": "hermes"
@@ -612,21 +612,21 @@
           "id": "v1",
           "customerId": "northbridge",
           "priority": 1,
-          "reason": "Confirm whether the CT observation refers to AX-4",
+          "reason": "Confirmar si la observación de CT corresponde al equipo AX-4",
           "status": "open"
         },
         {
           "id": "v2",
           "customerId": "northbridge",
           "priority": 2,
-          "reason": "Verify the MRI serial number on the next visit",
+          "reason": "Verificar el número de serie del equipo MRI en la próxima visita",
           "status": "open"
         },
         {
           "id": "v3",
           "customerId": "northbridge",
           "priority": 3,
-          "reason": "Clarify whether Radiology's reported quantity is a total",
+          "reason": "Aclarar si la cantidad reportada en Radiología representa un total",
           "status": "open"
         }
       ]

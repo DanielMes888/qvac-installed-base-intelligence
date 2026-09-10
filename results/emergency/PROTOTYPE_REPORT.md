@@ -41,20 +41,22 @@ The preferred one-tool contract failed in the bounded probe: none of three diagn
 - `simple-json-probe.json`: final three-note diagnostic probe; 3/3 structurally valid, with serious semantic errors on two complex cases.
 - `demo-smoke.json`: final real-QVAC vertical-slice evidence.
 
-The smoke note was: `I saw one DemoScan MRI scanner, model DS-One, in Radiology.` The real local run produced one compact item and five supported atomic claims. Its single attempt recorded:
+The smoke note was: `Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.` The real local run produced one compact item and five supported atomic claims. Its single attempt recorded:
 
 | Metric | Result |
 | --- | ---: |
-| Cached model load | 5,014.98 ms |
-| End-to-end extraction | 20,693.48 ms |
-| Prompt tokens | 245 |
+| Cached model load | 4,934.19 ms |
+| End-to-end extraction | 21,856.22 ms |
+| Prompt tokens | 247 |
 | Generated/emitted tokens | 60 / 60 |
-| TTFT | 18,899.79 ms |
-| Throughput | 73.12 tokens/s |
+| TTFT | 19,995.84 ms |
+| Throughput | 70.61 tokens/s |
 | Backend | GPU |
 | Retry | None |
 
 The scripted smoke used the actual loopback HTTP endpoints with the production real-QVAC adapter. Its reviewer accepted only exact supported values, found seeded record `nb-mri-01` with a match score of 3, and explicitly reconciled it. Northbridge remained at two equipment records before and after reconciliation. This scripted reviewer is test evidence for the seam; the browser requires a person to make the decisions.
+
+The Spanish product-clarity pass keeps this adapter, compact raw-JSON contract, canonical values, and reconciliation behavior unchanged. It translates the browser presentation and rehearsed observation, adds the problem/solution/value framing, and exposes the same workflow as six narrated steps. The same real adapter returned all five supported claims for the Spanish note in one attempt.
 
 ## Offline result
 

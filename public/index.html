@@ -1,65 +1,84 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Field Evidence · QVAC prototype</title>
+  <title>Evidencia de campo · Prototipo QVAC</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#capture"><span class="brand-mark">F</span><span>Field Evidence</span></a>
-    <div class="runtime"><span class="pulse"></span><span>Local QVAC · same computer</span></div>
+    <a class="brand" href="#captura"><span class="brand-mark">E</span><span>Evidencia de campo</span></a>
+    <div class="runtime"><span class="pulse"></span><span>QVAC local · mismo equipo</span></div>
   </header>
 
   <main>
-    <section class="notice"><strong>Synthetic demonstration data.</strong> Use fictional data only. Do not enter patient information, confidential customer data, or real competitive information.</section>
+    <section class="notice"><strong>Datos completamente sintéticos para demostración.</strong> Use solo información ficticia. No introduzca datos de pacientes, información confidencial de clientes ni información competitiva real.</section>
 
-    <section class="hero" id="capture">
+    <section class="hero" id="captura">
       <div>
-        <p class="eyebrow">Post-visit equipment capture</p>
-        <h1>Turn field notes into evidence,<br><em>without false certainty.</em></h1>
-        <p class="lede">QVAC extracts compact draft claims locally. You decide what enters the working view and whether repeated evidence links to an existing record.</p>
+        <p class="eyebrow">Inteligencia de equipos instalados</p>
+        <h1>De observaciones de campo<br><em>a evidencia confiable.</em></h1>
+        <p class="lede">Convierta una nota breve en datos estructurados, revíselos antes de usarlos y evite duplicar equipos cuando una visita aporta evidencia repetida.</p>
       </div>
       <div class="privacy-card">
-        <span>LOCAL WORKSPACE</span>
-        <strong>No cloud inference</strong>
-        <small>Browser and QVAC host run on this laptop.</small>
+        <span>ESPACIO DE TRABAJO LOCAL</span>
+        <strong>Inferencia local con QVAC: los datos no se envían a la nube.</strong>
+        <small>El navegador, QVAC y los datos permanecen en este computador.</small>
       </div>
+    </section>
+
+    <section class="story-grid" aria-label="Problema, solución y valor">
+      <article class="story-card problem"><p class="eyebrow">Problema</p><h2>Las observaciones llegan sin estructura.</h2><p>La información sobre equipos instalados puede quedar sin registrar, duplicarse o contener datos inciertos.</p></article>
+      <article class="story-card solution"><p class="eyebrow">Solución</p><h2>QVAC propone; la persona decide.</h2><p>La inferencia local transforma la nota en datos pendientes de revisión, exige aprobación humana y reconcilia evidencia repetida.</p></article>
+      <article class="story-card value"><p class="eyebrow">Valor</p><h2>Una vista más útil y responsable.</h2><ul><li>Mayor visibilidad de la base instalada.</li><li>Menos interpretación manual de notas.</li><li>Prevención de registros duplicados.</li><li>Información sensible en el computador local.</li></ul></article>
+    </section>
+
+    <section class="workflow-overview" aria-labelledby="workflow-title">
+      <div class="section-intro"><p class="eyebrow">Flujo visible</p><h2 id="workflow-title">Seis pasos para convertir una nota en evidencia</h2><p>Observe qué sucede, realice la acción indicada y compruebe por qué cada control protege la calidad de la información.</p></div>
+      <ol class="workflow-steps">
+        <li><span>1</span><div><strong>Seleccionar cliente ficticio</strong><p>Elija el contexto correcto para evitar mezclar observaciones entre clientes.</p></div></li>
+        <li><span>2</span><div><strong>Registrar observación</strong><p>Describa lo observado; la nota original se guarda antes de procesarla.</p></div></li>
+        <li><span>3</span><div><strong>Extraer información localmente con QVAC</strong><p>Ejecute la inferencia en este computador para estructurar la nota sin enviarla a la nube.</p></div></li>
+        <li><span>4</span><div><strong>Revisar y aprobar los datos</strong><p>Compare cada dato con su evidencia y apruebe únicamente lo que la nota respalda.</p></div></li>
+        <li><span>5</span><div><strong>Reconciliar con equipos existentes</strong><p>Vincule evidencia repetida para evitar crear un registro duplicado.</p></div></li>
+        <li><span>6</span><div><strong>Consultar base instalada y verificaciones</strong><p>Revise el resultado consolidado y la información que debe confirmarse después.</p></div></li>
+      </ol>
     </section>
 
     <section class="workspace-grid">
       <article class="panel capture-panel">
-        <div class="step"><span>01</span><div><b>Capture observation</b><small>Saved before inference</small></div></div>
-        <label for="customer">Fictional customer</label>
+        <div class="step"><span>1–3</span><div><b>Seleccionar, registrar y extraer</b><small>Seleccione el cliente, revise la nota y ejecute QVAC. Guardarla primero evita perder la observación.</small></div></div>
+        <label for="customer">Cliente ficticio</label>
         <select id="customer"></select>
-        <label for="note">Describe the medical equipment you observed or were told about.</label>
-        <textarea id="note" rows="5">I saw one DemoScan MRI scanner, model DS-One, in Radiology.</textarea>
-        <button id="extract" class="primary">Save &amp; run local QVAC <span>→</span></button>
+        <label for="note">Describa el equipo médico que observó o sobre el que recibió información.</label>
+        <textarea id="note" rows="5">Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.</textarea>
+        <button id="extract" class="primary">Guardar y ejecutar QVAC local <span>→</span></button>
         <div id="capture-status" class="status" aria-live="polite"></div>
       </article>
 
       <article class="panel review-panel">
-        <div class="step"><span>02</span><div><b>Review draft claims</b><small>Nothing enters the view yet</small></div></div>
-        <div id="draft-empty" class="empty">Run an observation to inspect claims and their evidence.</div>
+        <div class="step"><span>4–5</span><div><b>Revisar y reconciliar</b><small>Valide cada dato y vincule solo la evidencia que corresponda a un equipo existente.</small></div></div>
+        <h2 class="panel-title">Datos extraídos pendientes de revisión.</h2>
+        <div id="draft-empty" class="empty">Ejecute una observación para ver los datos propuestos y la evidencia que los respalda.</div>
         <div id="drafts"></div>
-        <button id="review" class="primary hidden">Apply review decisions <span>→</span></button>
+        <button id="review" class="primary hidden">Aplicar decisiones de revisión <span>→</span></button>
         <div id="reconcile" class="reconcile"></div>
       </article>
     </section>
 
     <section class="results">
-      <div class="section-heading"><div><p class="eyebrow">Evidence-backed working view</p><h2 id="customer-title">Customer equipment</h2></div><button id="reset" class="ghost">Reset demo</button></div>
+      <div class="section-heading"><div><p class="eyebrow">Paso 6 · Resultado revisado</p><h2 id="customer-title">Base instalada consolidada.</h2><p class="section-note">Consulte los registros sin mezclar estados y use las verificaciones para saber qué información necesita confirmación.</p></div><button id="reset" class="ghost">Restablecer demostración</button></div>
       <div class="metric-row" id="customer-metrics"></div>
       <div class="result-grid">
-        <article class="panel"><h3>Equipment records</h3><p class="caption">Verified and provisional records remain separate.</p><div id="equipment"></div></article>
-        <article class="panel"><h3>Verify next visit</h3><p class="caption">Top open items, ordered by material impact.</p><div id="verification"></div></article>
-        <article class="panel aggregate"><h3>Workspace aggregate</h3><p class="caption">Evidence status across fictional customers.</p><div id="aggregate"></div></article>
+        <article class="panel"><h3>Base instalada consolidada.</h3><p class="caption">Revise equipos verificados y provisionales por separado para no presentar una falsa precisión.</p><div id="equipment"></div></article>
+        <article class="panel"><h3>Información pendiente de verificar.</h3><p class="caption">Use estas prioridades para orientar una futura comprobación sin convertir incertidumbre en hechos.</p><div id="verification"></div></article>
+        <article class="panel aggregate"><h3>Resumen del espacio local</h3><p class="caption">Compare únicamente métricas compatibles entre clientes ficticios.</p><div id="aggregate"></div></article>
       </div>
     </section>
   </main>
 
-  <footer><span>Synthetic demonstration data.</span><span id="footer-runtime">@qvac/sdk 0.19.0 · Qwen3 1.7B Q4</span></footer>
+  <footer><span>Datos completamente sintéticos para demostración.</span><span id="footer-runtime">@qvac/sdk 0.19.0 · Qwen3 1.7B Q4 · GPU local</span></footer>
   <script type="module" src="/app.js"></script>
 </body>
 </html>

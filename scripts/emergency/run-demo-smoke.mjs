@@ -7,7 +7,7 @@ import { createPrototypeServer } from '../../src/server.mjs'
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const workspacePath = path.join(root, '.local', 'offline-smoke-workspace.json')
 const resultPath = path.join(root, 'results', 'emergency', 'demo-smoke.json')
-const note = 'I saw one DemoScan MRI scanner, model DS-One, in Radiology.'
+const note = 'Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.'
 const expectedValues = new Map([
   ['equipmentType', 'MRI'],
   ['manufacturer', 'DemoScan'],
@@ -50,7 +50,7 @@ try {
   })
   record.extraction = observation
 
-  if (observation.status !== 'succeeded') throw new Error('Real QVAC extraction did not yield a structurally valid draft')
+  if (observation.status !== 'succeeded') throw new Error('La extracción real de QVAC no produjo un borrador estructuralmente válido')
   const decisions = observation.draftClaims.map((claim) => ({
     claimId: claim.claimId,
     decision: isSupported(claim) ? 'accepted' : 'rejected'
@@ -68,10 +68,10 @@ try {
   }
 
   const candidate = reviewed.candidates.find(({ id }) => id === 'nb-mri-01')
-  if (!candidate) throw new Error('Expected seeded reconciliation candidate was not produced')
+  if (!candidate) throw new Error('No se produjo el candidato de reconciliación esperado del conjunto semilla')
   const after = await request(origin, `/api/observations/${observation.id}/reconcile`, {
     method: 'POST',
-    body: { recordId: candidate.id, reason: 'Smoke-test reviewer confirmed modality and supported identifying details' }
+    body: { recordId: candidate.id, reason: 'La revisión del smoke test confirmó la modalidad y los datos de identificación respaldados' }
   })
   record.reconciliation = {
     recordId: candidate.id,

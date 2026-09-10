@@ -1,12 +1,22 @@
-# Emergency prototype demo guide
+# Guía de demostración del prototipo
 
-Status: ready for project-owner rehearsal
+Estado: listo para ensayo del propietario del proyecto
 
-This guide covers the bounded emergency vertical slice from [ADR 0006](adr/0006-use-time-constrained-browser-prototype.md). Both E4 attempts remain failed. The demo shows one real local-QVAC path and must not be presented as broad extraction validation or production readiness.
+Esta guía cubre el corte vertical de emergencia definido en [ADR 0006](adr/0006-use-time-constrained-browser-prototype.md). E4 y E4-v2 siguen fallidos. La demostración presenta una ruta acotada con QVAC local real; no demuestra precisión general ni preparación para producción.
 
-## Setup and startup
+## Problema, propuesta y valor
 
-Use the declared Windows 11 laptop with the cached `QWEN3_1_7B_INST_Q4` model. From the repository root:
+Las observaciones de campo sobre equipos instalados suelen llegar como texto sin estructura. Pueden quedar sin registrar, duplicarse o contener información incierta. El prototipo usa inferencia local con QVAC para convertir una observación en datos extraídos pendientes de revisión. Una persona decide qué aceptar y vincula la evidencia repetida con un equipo existente.
+
+Propuesta breve para presentar:
+
+> Convertimos observaciones de campo en evidencia estructurada y revisable. QVAC trabaja localmente, la persona conserva el control y la reconciliación evita aumentar la base instalada con equipos duplicados.
+
+El valor que muestra el prototipo es una base instalada más confiable, menos interpretación manual de notas, prevención de registros duplicados y permanencia de la información sensible en el computador local. Estas son capacidades demostradas del prototipo, no resultados medidos en un proceso real de Philips.
+
+## Preparación e inicio
+
+Use el portátil Windows 11 declarado y el modelo `QWEN3_1_7B_INST_Q4` ya almacenado en caché. Desde la raíz del repositorio:
 
 ```powershell
 npm.cmd ci
@@ -15,75 +25,117 @@ npm.cmd run reset
 npm.cmd start
 ```
 
-`npm.cmd ci` requires package access and is only needed when dependencies are absent or changed. Do not delete the QVAC model cache. When the server prints `Prototype ready at http://127.0.0.1:4173`, open that exact address on the laptop.
+`npm.cmd ci` necesita acceso al registro de paquetes y solo hace falta si las dependencias no están instaladas o cambiaron. No elimine la caché del modelo QVAC. Cuando la terminal muestre `Prototipo listo en http://127.0.0.1:4173`, abra esa dirección exacta en el portátil.
 
-Before presenting, run the real adapter smoke check once:
+Antes de presentar, ejecute una vez la verificación real del adaptador:
 
 ```powershell
 npm.cmd run smoke:demo
 ```
 
-The smoke command uses a separate ignored workspace, so it does not change the browser demo state.
+El smoke test usa un espacio de trabajo ignorado y separado; no modifica el estado de la demostración en el navegador.
 
-## Rehearsed input and expected result
+## Caso ensayado y resultado esperado
 
-- Customer: **Northbridge General · Central Campus**
-- Observation: **I saw one DemoScan MRI scanner, model DS-One, in Radiology.**
-- Expected compact extraction: one equipment subject and Draft Claims for equipment type `MRI`, manufacturer `DemoScan`, model `DS-One`, observed quantity `1`, and location `Radiology`.
-- Expected candidate after accepting all five supported claims: `DemoScan MRI`, model `DS-One`, location `Radiology`, seeded record `nb-mri-01`.
-- Expected reconciliation: Northbridge remains at **2 equipment records**; the MRI record gains one evidence link.
+- Cliente: **Hospital General Northbridge · Campus Central**
+- Observación: **Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.**
+- Extracción esperada: un equipo y cinco datos pendientes de revisión: tipo `MRI`, fabricante `DemoScan`, modelo `DS-One`, cantidad observada `1` y ubicación `Radiología`.
+- Candidato esperado después de aprobar los cinco datos respaldados: `DemoScan MRI`, modelo `DS-One`, ubicación `Radiología`, registro semilla `nb-mri-01`.
+- Reconciliación esperada: Northbridge conserva **2 registros de equipos** y el registro MRI recibe un vínculo de evidencia.
 
-Treat the output as a draft even when it matches this expectation. Reject any unsupported value. Do not reconcile if the expected candidate is absent.
+Trate siempre la salida como un borrador. Rechace cualquier valor que la observación no respalde. No reconcilie si no aparece el candidato esperado.
 
-## Presentation script: about four minutes
+## Guion de presentación: entre tres y cinco minutos
 
-**0:00–0:35 — Frame the problem.** Explain that field observations can be incomplete or repeated. State the bounded claim: this prototype turns one synthetic equipment note into reviewable local evidence without automatically creating another equipment record.
+### 0:00–0:40 — Problema, solución y límites
 
-**0:35–0:55 — Show the boundary.** Point to `127.0.0.1`, the persistent synthetic-data notice, “Local QVAC · same computer,” and “No cloud inference.” If practical, disconnect the laptop before the demo and reload the local page.
+**Qué mostrar:** las tarjetas Problema, Solución y Valor, el aviso de datos sintéticos y la dirección `127.0.0.1`.
 
-**0:55–1:15 — Capture.** Select Northbridge General, leave the rehearsed observation unchanged, and click **Save & run local QVAC**. Say: “The original note is saved first. QVAC is now extracting on this laptop’s RTX 4050.”
+**Qué explicar:** la información de campo puede quedar sin estructura, repetirse o conservar incertidumbre. QVAC propone datos, la persona los revisa y la reconciliación evita duplicados. Señale: **“Inferencia local con QVAC: los datos no se envían a la nube.”**
 
-**1:15–1:45 — Use the wait.** The first inference after startup usually takes about 20–25 seconds; the latest recorded smoke run took 20.69 seconds, including a 5.01-second cached model load. Point out that the button is disabled and the status says extraction is local. Subsequent runs can be much faster after model loading.
+**Resultado visible:** el público entiende el problema antes de ver controles y reconoce que el caso es ficticio y local.
 
-**1:45–2:35 — Review.** Confirm the five expected Draft Claims and their supporting sentence offsets. Explain that schema validity does not prove semantic correctness. Change each supported claim from the safe Reject default to **Accept**, then click **Apply review decisions**.
+### 0:40–1:10 — Pasos 1 y 2: seleccionar y registrar
 
-**2:35–3:10 — Reconcile.** Show the existing DemoScan DS-One candidate and Northbridge’s two equipment records. Click **Link repeated evidence**. Point out the success message and that the count remains two while the MRI record gains an evidence link.
+**Qué mostrar:** **Hospital General Northbridge · Campus Central** y la observación ensayada.
 
-**3:10–3:45 — Show useful views.** Show verified and provisional records separately, the three “Verify next visit” items, and the aggregate’s separate verified/provisional counts and modality bars.
+**Qué hacer:** confirme el cliente y lea la nota. Explique que el contexto evita mezclar clientes y que la observación original se guarda antes de inferir.
 
-**3:45–4:10 — State the limit.** Say: “This is bounded prototype evidence. E4 and E4-v2 failed, complex-note semantic quality remains weak, and this workflow depends on human review.”
+**Resultado visible:** un cliente ficticio y una nota breve, sin formulario extenso.
 
-## Reset and recovery
+### 1:10–1:50 — Paso 3: extraer localmente
 
-For a clean rehearsal, stop the server with `Ctrl+C`, then run:
+**Qué hacer:** pulse **Guardar y ejecutar QVAC local**.
+
+**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 20–25 segundos por la carga del modelo. El smoke test de esta versión tardó 21.86 segundos de extremo a extremo, incluidos 4.93 segundos de carga desde la caché.
+
+**Resultado visible:** el botón queda bloqueado durante la inferencia y luego aparece un estado verde con GPU, latencia y tokens generados.
+
+### 1:50–2:40 — Paso 4: revisar y aprobar
+
+**Qué mostrar:** **Datos extraídos pendientes de revisión.**, su evidencia y sus alcances.
+
+**Qué hacer:** compare los cinco datos esperados con la frase original y cambie cada decisión respaldada de **Rechazar** a **Aprobar**. Pulse **Aplicar decisiones de revisión**.
+
+**Por qué importa:** una salida válida en estructura todavía puede ser incorrecta. Solo los datos aprobados entran en la vista de trabajo.
+
+**Resultado visible:** cinco decisiones explícitas y un candidato de equipo existente.
+
+### 2:40–3:20 — Paso 5: reconciliar
+
+**Qué mostrar:** el candidato DemoScan DS-One y los dos registros existentes de Northbridge.
+
+**Qué hacer:** pulse **Vincular evidencia repetida**.
+
+**Por qué importa:** una observación repetida debe enriquecer el registro existente sin crear otro equipo automáticamente.
+
+**Resultado visible:** el mensaje confirma que el número de registros no aumentó; Northbridge sigue con dos equipos y el MRI muestra una nueva evidencia vinculada.
+
+### 3:20–4:10 — Paso 6: consultar el resultado
+
+**Qué mostrar:** **Base instalada consolidada.**, **Información pendiente de verificar.** y el resumen agregado.
+
+**Qué explicar:** los registros verificados y provisionales permanecen separados; las tres verificaciones indican qué conviene confirmar después; el agregado solo combina métricas compatibles.
+
+**Resultado visible:** tres registros verificados y dos provisionales en el espacio local, sin presentarlos como un inventario físico auditado.
+
+### 4:10–4:30 — Cierre honesto
+
+Diga: “Esta es evidencia acotada de un prototipo. E4 y E4-v2 fallaron, la calidad semántica en notas complejas sigue limitada y el flujo depende de revisión humana.”
+
+## Restablecimiento y recuperación
+
+Para un ensayo limpio, detenga el servidor con `Ctrl+C` y ejecute:
 
 ```powershell
 npm.cmd run reset
 npm.cmd start
 ```
 
-The **Reset demo** button restores the same synthetic seed while the server is running.
+El botón **Restablecer demostración** recupera el mismo conjunto semilla sintético mientras el servidor está activo.
 
-If extraction fails or produces invalid JSON, the UI must say that the note was saved locally and that no Draft Claims entered the working view. Do not improvise accepted values. Use **Reset demo**, confirm the rehearsed input, and try one fresh capture. If QVAC returns structurally valid but semantically wrong claims, reject those claims and state the model limitation; do not reconcile them.
+Si la extracción falla o devuelve JSON inválido, la interfaz debe indicar que la observación se guardó localmente y que ningún dato extraído entró en la base instalada. No improvise valores aceptados. Restablezca la demostración, confirme la nota ensayada y haga un nuevo intento. Si la estructura es válida pero algún dato es incorrecto, rechácelo, declare la limitación del modelo y no lo reconcilie.
 
-If startup says port 4173 is already in use, close the earlier prototype terminal. If it cannot be found, use `$env:PROTOTYPE_PORT=4174` and run `npm.cmd start`, then open `http://127.0.0.1:4174`. For other startup failures, confirm Node 22.17.0, run `npm.cmd ci` while connected, and verify that the cached model described in `data/feasibility/e4-manifest-v1.json` remains available. Do not download or select another model during demo recovery.
+Si el puerto 4173 está en uso, cierre la terminal anterior del prototipo. Si no puede localizarla, ejecute `$env:PROTOTYPE_PORT=4174`, luego `npm.cmd start`, y abra `http://127.0.0.1:4174`. Para otros errores, confirme Node 22.17.0, ejecute `npm.cmd ci` con conexión y compruebe que el modelo descrito en `data/feasibility/e4-manifest-v1.json` continúe en caché. No seleccione ni descargue otro modelo durante la recuperación.
 
-## Project-owner visual checklist
+## Comprobación manual del propietario
 
-- [ ] With internet disconnected, `npm.cmd start` reaches the ready message and `http://127.0.0.1:4173` loads.
-- [ ] The synthetic-data notice, local-QVAC badge, no-cloud card, customer selector, note field, capture button, and all three result panels are visible without broken layout.
-- [ ] Northbridge General is selected and the exact rehearsed note is present.
-- [ ] Clicking capture immediately shows that the original note was saved, disables the button during inference, and ends with a green local-QVAC/GPU/latency status.
-- [ ] Exactly five supported Draft Claims appear with evidence and numeric offsets; every claim is deliberately changed from Reject to Accept.
-- [ ] Applying decisions reveals `DemoScan MRI · DS-One · Radiology` as the candidate.
-- [ ] Linking repeated evidence leaves Northbridge at two equipment records and changes the MRI evidence-link count to one.
-- [ ] Three verification items are visible and the aggregate shows three verified and two provisional records.
-- [ ] **Reset demo** returns Northbridge to zero captured notes and zero new evidence links.
-- [ ] If any claim is wrong, rejecting it keeps it out of the working view; if extraction fails, the red status says the note was saved and no Draft Claims entered.
+- [ ] Con internet desconectado, `npm.cmd start` muestra la dirección local y la página carga.
+- [ ] Todo el texto de navegación, acciones, estados, resultados y errores visibles está en español.
+- [ ] Los avisos **Datos completamente sintéticos para demostración.** e **Inferencia local con QVAC: los datos no se envían a la nube.** permanecen visibles.
+- [ ] Los seis pasos explican la vista, la acción y su importancia sin extender la demostración.
+- [ ] Northbridge y la observación ensayada aparecen al iniciar.
+- [ ] La captura guarda la nota antes de inferir y termina con un estado local de QVAC, GPU, latencia y tokens.
+- [ ] Aparecen exactamente cinco datos respaldados con evidencia y desplazamientos numéricos.
+- [ ] Aprobarlos muestra `DemoScan MRI · DS-One · Radiología` como candidato.
+- [ ] Vincular la evidencia mantiene dos registros y aumenta a uno el vínculo de evidencia del MRI.
+- [ ] Se ven tres verificaciones; el agregado muestra tres registros verificados y dos provisionales.
+- [ ] Restablecer devuelve las observaciones y los nuevos vínculos a cero.
+- [ ] Una salida inválida conserva la nota, no muestra datos para aceptar y no modifica la base instalada.
 
-## Claims to avoid
+## Afirmaciones que deben evitarse
 
-- Do not say E4 passed or that the model is accurate on general field notes.
-- Do not claim browser-local inference; QVAC runs in the same-computer Node host.
-- Do not claim audited inventory, Philips workflow validation, production privacy/security, faster capture, adoption, CRM integration, or submission readiness.
-- Clarification processing, export, deletion, packaging, mobile execution, full E7 evaluation, user experiments, advanced recovery, and expanded dashboards remain deferred.
+- No diga que E4 pasó ni que el modelo es preciso para notas de campo en general.
+- No afirme que la inferencia ocurre dentro del navegador; QVAC se ejecuta en el host Node del mismo computador.
+- No afirme que se trata de un inventario auditado, un flujo de Philips validado, seguridad o privacidad de producción, captura más rápida, adopción, integración con CRM o preparación para envío.
+- El ciclo de aclaración, exportación, eliminación, empaquetado, ejecución móvil, evaluación E7 completa, experimentos con usuarios, recuperación avanzada y tableros ampliados siguen aplazados.

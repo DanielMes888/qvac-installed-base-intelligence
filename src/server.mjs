@@ -20,7 +20,7 @@ export async function createPrototypeServer({
 
   const server = createServer(async (request, response) => {
     try {
-      if (!isLocalRequest(request)) return json(response, 403, { error: 'Local origin required' })
+      if (!isLocalRequest(request)) return json(response, 403, { error: 'Se requiere un origen local' })
       const url = new URL(request.url, 'http://127.0.0.1')
       if (url.pathname === '/api/health') return json(response, 200, { ok: true, localOnly: true, qvac: QVAC_CONFIGURATION })
       if (url.pathname === '/api/bootstrap' && request.method === 'GET') {
@@ -45,7 +45,7 @@ export async function createPrototypeServer({
         workspace = new WorkspaceService(await store.reset(), (state) => store.save(state))
         return json(response, 200, { reset: true })
       }
-      if (url.pathname.startsWith('/api/')) return json(response, 404, { error: 'Not found' })
+      if (url.pathname.startsWith('/api/')) return json(response, 404, { error: 'No encontrado' })
       return staticFile(response, url.pathname)
     } catch (error) {
       return json(response, 400, { error: error instanceof Error ? error.message : String(error) })
@@ -56,9 +56,9 @@ export async function createPrototypeServer({
 
 export function startupErrorMessage(error, host, port) {
   if (error?.code === 'EADDRINUSE') {
-    return `Prototype could not start: http://${host}:${port} is already in use. Close the existing prototype terminal, or choose another loopback port with $env:PROTOTYPE_PORT=4174 before npm.cmd start.`
+    return `No se pudo iniciar el prototipo: http://${host}:${port} ya está en uso. Cierre la terminal donde se ejecuta el prototipo o seleccione otro puerto local con $env:PROTOTYPE_PORT=4174 antes de ejecutar npm.cmd start.`
   }
-  return `Prototype could not start: ${error instanceof Error ? error.message : String(error)}`
+  return `No se pudo iniciar el prototipo: ${error instanceof Error ? error.message : String(error)}`
 }
 
 function isLocalRequest(request) {
@@ -82,15 +82,15 @@ function json(response, status, value) {
 async function staticFile(response, pathname) {
   const relative = pathname === '/' ? 'index.html' : pathname.slice(1)
   const filePath = path.resolve(publicDirectory, relative)
-  if (!filePath.startsWith(`${publicDirectory}${path.sep}`) && filePath !== path.join(publicDirectory, 'index.html')) return json(response, 403, { error: 'Forbidden' })
+  if (!filePath.startsWith(`${publicDirectory}${path.sep}`) && filePath !== path.join(publicDirectory, 'index.html')) return json(response, 403, { error: 'Acceso denegado' })
   try {
     const info = await stat(filePath)
-    if (!info.isFile()) throw new Error('Not a file')
+    if (!info.isFile()) throw new Error('La ruta no corresponde a un archivo')
     const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml' }
     response.writeHead(200, { 'content-type': `${types[path.extname(filePath)] ?? 'application/octet-stream'}; charset=utf-8` })
     createReadStream(filePath).pipe(response)
   } catch {
-    json(response, 404, { error: 'Not found' })
+    json(response, 404, { error: 'No encontrado' })
   }
 }
 
@@ -103,7 +103,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     await closeQvac()
     process.exitCode = 1
   })
-  app.server.listen(port, host, () => console.log(`Prototype ready at http://${host}:${port}`))
+  app.server.listen(port, host, () => console.log(`Prototipo listo en http://${host}:${port}`))
   const shutdown = async () => { await app.close(); process.exit(0) }
   process.on('SIGINT', shutdown)
   process.on('SIGTERM', shutdown)

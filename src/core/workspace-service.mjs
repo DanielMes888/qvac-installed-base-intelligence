@@ -11,8 +11,8 @@ export class WorkspaceService {
   }
 
   async capture(customerId, originalText, extractor) {
-    if (!this.state.customers.some((customer) => customer.id === customerId)) throw new Error('Unknown customer')
-    if (!originalText?.trim()) throw new Error('Observation text is required')
+    if (!this.state.customers.some((customer) => customer.id === customerId)) throw new Error('Cliente desconocido')
+    if (!originalText?.trim()) throw new Error('El texto de la observación es obligatorio')
     const observation = {
       id: randomUUID(),
       customerId,
@@ -52,16 +52,16 @@ export class WorkspaceService {
 
   async review(observationId, decisions) {
     const observation = this.requireObservation(observationId)
-    if (!Array.isArray(decisions)) throw new Error('Review decisions are required')
+    if (!Array.isArray(decisions)) throw new Error('Se requieren las decisiones de revisión')
     const claimIds = new Set(observation.draftClaims.map(({ claimId }) => claimId))
     const decisionIds = new Set(decisions.map(({ claimId }) => claimId))
     if (decisions.length !== claimIds.size || decisionIds.size !== claimIds.size || [...decisionIds].some((id) => !claimIds.has(id))) {
-      throw new Error('Review requires one explicit decision for every draft claim')
+      throw new Error('La revisión requiere una decisión explícita para cada dato extraído')
     }
     const byId = new Map(decisions.map((decision) => [decision.claimId, decision.decision]))
     for (const claim of observation.draftClaims) {
       const decision = byId.get(claim.claimId)
-      if (!['accepted', 'rejected'].includes(decision)) throw new Error('Invalid review decision')
+      if (!['accepted', 'rejected'].includes(decision)) throw new Error('Decisión de revisión inválida')
       claim.decision = decision
     }
     observation.reviewedAt = new Date().toISOString()
@@ -88,11 +88,11 @@ export class WorkspaceService {
 
   async reconcile(observationId, recordId, reason) {
     const observation = this.requireObservation(observationId)
-    if (!observation.reviewedAt) throw new Error('Review claims before reconciliation')
+    if (!observation.reviewedAt) throw new Error('Revise los datos extraídos antes de reconciliar')
     const candidateIds = new Set(this.candidates(observationId).map(({ id }) => id))
-    if (!candidateIds.has(recordId)) throw new Error('Record is not an evidence-based candidate')
+    if (!candidateIds.has(recordId)) throw new Error('El registro no es un candidato respaldado por la evidencia')
     const record = this.state.equipmentRecords.find((item) => item.id === recordId)
-    observation.reconciliation = { recordId, reason: reason || 'User linked repeated evidence', actor: 'Local demo user', decidedAt: new Date().toISOString() }
+    observation.reconciliation = { recordId, reason: reason || 'El usuario vinculó la evidencia repetida', actor: 'Usuario local de demostración', decidedAt: new Date().toISOString() }
     if (!record.evidenceObservationIds.includes(observation.id)) record.evidenceObservationIds.push(observation.id)
     await this.persist(this.state)
     return this.customerView(observation.customerId)
@@ -140,7 +140,7 @@ export class WorkspaceService {
 
   requireObservation(id) {
     const observation = this.state.observations.find((item) => item.id === id)
-    if (!observation) throw new Error('Unknown observation')
+    if (!observation) throw new Error('Observación desconocida')
     return observation
   }
 }

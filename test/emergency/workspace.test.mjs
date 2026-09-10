@@ -62,12 +62,12 @@ test('reconciliation refuses a record that is not an evidence-based candidate', 
   const service = new WorkspaceService(seed(), async () => {})
   const observation = await service.capture('c1', 'I saw one MRI unit.', async () => ({ status: 'succeeded', attempts: [], draft, model: {} }))
   await service.review(observation.id, [{ claimId: 'c1', decision: 'accepted' }])
-  await assert.rejects(() => service.reconcile(observation.id, 'a2', 'Not actually a match'), /candidate/)
+  await assert.rejects(() => service.reconcile(observation.id, 'a2', 'No corresponde al mismo equipo'), /candidato/)
 })
 
 test('review remains incomplete until every draft claim has an explicit decision', async () => {
   const service = new WorkspaceService(seed(), async () => {})
   const observation = await service.capture('c1', 'I saw one MRI unit.', async () => ({ status: 'succeeded', attempts: [], draft, model: {} }))
-  await assert.rejects(() => service.review(observation.id, []), /every draft claim/)
+  await assert.rejects(() => service.review(observation.id, []), /cada dato extraído/)
   assert.equal(service.observation(observation.id).reviewedAt, null)
 })

@@ -7,7 +7,7 @@ import path from 'node:path'
 
 import { createPrototypeServer, startupErrorMessage } from '../../src/server.mjs'
 
-const note = 'I saw one DemoScan MRI scanner, model DS-One, in Radiology.'
+const note = 'Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.'
 const draft = {
   version: 1,
   subjects: [{ subjectId: 's1', kind: 'provisionalIndividual', label: 'DemoScan MRI' }],
@@ -21,7 +21,7 @@ const draft = {
 
 test('startup port conflicts produce an actionable local recovery message', () => {
   const error = Object.assign(new Error('busy'), { code: 'EADDRINUSE' })
-  assert.match(startupErrorMessage(error, '127.0.0.1', 4173), /already running|already in use/i)
+  assert.match(startupErrorMessage(error, '127.0.0.1', 4173), /ya está en uso/i)
   assert.match(startupErrorMessage(error, '127.0.0.1', 4173), /PROTOTYPE_PORT/)
 })
 
@@ -45,7 +45,19 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
   })
 
   const page = await fetch(origin).then((response) => response.text())
-  assert.match(page, /Synthetic demonstration data/)
+  for (const expectedCopy of [
+    'Datos completamente sintéticos para demostración.',
+    'Inferencia local con QVAC: los datos no se envían a la nube.',
+    'Seleccionar cliente ficticio',
+    'Registrar observación',
+    'Extraer información localmente con QVAC',
+    'Revisar y aprobar los datos',
+    'Reconciliar con equipos existentes',
+    'Consultar base instalada y verificaciones',
+    'Datos extraídos pendientes de revisión.',
+    'Información pendiente de verificar.',
+    'Base instalada consolidada.'
+  ]) assert.match(page, new RegExp(expectedCopy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
   const rejectedOrigin = await fetch(`${origin}/api/bootstrap`, { headers: { origin: 'http://example.invalid' } })
   assert.equal(rejectedOrigin.status, 403)
   const rejectedHostStatus = await new Promise((resolve, reject) => {
@@ -60,7 +72,7 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
 
   const before = await fetch(`${origin}/api/customers/northbridge/view`).then((response) => response.json())
   const clientScript = await fetch(`${origin}/app.js`).then((response) => response.text())
-  assert.match(clientScript, /Note saved locally.*no Draft Claims entered the working view/)
+  assert.match(clientScript, /Observación guardada localmente.*ningún dato extraído entró en la base instalada/)
   const observation = await fetch(`${origin}/api/observations`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -109,12 +121,12 @@ test('invalid QVAC output leaves a visible failed observation and cannot affect 
   const observation = await fetch(`${origin}/api/observations`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ customerId: 'northbridge', text: 'Synthetic invalid-output test note.' })
+    body: JSON.stringify({ customerId: 'northbridge', text: 'Nota sintética para probar una salida inválida.' })
   }).then((response) => response.json())
   const after = await fetch(`${origin}/api/customers/northbridge/view`).then((response) => response.json())
 
   assert.equal(observation.status, 'failed')
-  assert.equal(observation.originalText, 'Synthetic invalid-output test note.')
+  assert.equal(observation.originalText, 'Nota sintética para probar una salida inválida.')
   assert.equal(observation.draftClaims.length, 0)
   assert.equal(after.observations.length, before.observations.length + 1)
   assert.equal(after.acceptedClaimCount, before.acceptedClaimCount)
