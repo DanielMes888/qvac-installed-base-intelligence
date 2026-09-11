@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "analytics-deterministic-smoke-v2",
+  "synthetic": true,
+  "execution": "deterministic semantic anchoring plus executor; no QVAC",
+  "cases": [
+    {
+      "question": "Equipos por modalidad",
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [],
+      "count": 5
+    },
+    {
+      "question": "Equipos en Brasil",
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "country",
+            "operator": "eq",
+            "value": "Brazil"
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [
+        "Se conservó el país explícito “Brasil” como “Brazil”.",
+        "Se retiró la agrupación no solicitada por modalidad."
+      ],
+      "count": 0
+    },
+    {
+      "question": "Equipos con evidencia desactualizada",
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "freshnessBand",
+            "operator": "eq",
+            "value": "old"
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [
+        "Vigencia “evidencia desactualizada” interpretada como old.",
+        "Se retiró la agrupación no solicitada por modalidad."
+      ],
+      "count": 2
+    },
+    {
+      "question": "Registros de confianza alta",
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "confidenceBand",
+            "operator": "eq",
+            "value": "alta"
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "confidenceBand",
+            "operator": "eq",
+            "value": "high"
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [
+        "Se normalizó confidenceBand “alta” como “high”."
+      ],
+      "count": 0
+    },
+    {
+      "question": "Señales por tipo",
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "opportunities",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "opportunityType",
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "opportunities",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "opportunityType",
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [],
+      "count": 6
+    }
+  ],
+  "rejectedCases": [
+    {
+      "question": "contradicción explícita",
+      "status": "rejected"
+    },
+    {
+      "question": "consulta mutante",
+      "status": "rejected"
+    }
+  ],
+  "assertions": {
+    "validPlans": true,
+    "semanticAnchoring": true,
+    "contradictionsRejected": true,
+    "exactLocalResults": true,
+    "workspaceMutation": false,
+    "qvacCalls": 0
+  },
+  "failure": null
+}

@@ -42,6 +42,8 @@ $('#open-delete').addEventListener('click', openDeleteConfirmation)
 $('#cancel-delete').addEventListener('click', cancelDelete)
 $('#delete-phrase').addEventListener('input', updateDeleteConfirmation)
 $('#confirm-delete').addEventListener('click', deleteWorkspace)
+$('#analytics-form').addEventListener('submit', runAnalytics)
+$$('.analytics-examples button').forEach((button) => button.addEventListener('click', () => { $('#analytics-question').value = button.dataset.question }))
 for (const id of ['#verification-priority', '#verification-customer', '#verification-equipment', '#verification-reason']) {
   $(id).addEventListener('change', applyVerificationFilters)
 }
@@ -62,6 +64,7 @@ async function bootstrap() {
   customerSelect.disabled = data.customers.length === 0
   $('#extract').disabled = data.customers.length === 0
   $('#footer-runtime').textContent = `${data.qvac.sdk} · ${data.qvac.modelExport} · GPU local`
+  renderAnalyticsRuntime(data.analyticsRuntime)
   updateNoteLength()
   if (!data.customers.length) {
     renderEmptyWorkspace(data.aggregate)
@@ -70,6 +73,44 @@ async function bootstrap() {
   }
   await loadView({ syncVerificationCustomer: true })
   setRuntime('QVAC local disponible', 'ready')
+}
+
+function renderAnalyticsRuntime(runtime) {
+  const target = $('#analytics-runtime')
+  if (runtime?.status === 'failed') {
+    target.className = 'feedback error'
+    target.textContent = 'Falló el calentamiento analítico local. El Workspace no cambió.'
+    $('#run-analytics').disabled = true
+    return
+  }
+  target.className = 'feedback success'
+  target.textContent = runtime?.status === 'controlled' ? 'Analítica lista en entorno controlado.' : `Analítica local lista. Carga ${Math.round(runtime.loadMs)} ms · calentamiento ${Math.round(runtime.warmupMs)} ms.`
+  $('#run-analytics').disabled = false
+}
+
+async function runAnalytics(event) {
+  event.preventDefault()
+  const button = $('#run-analytics')
+  button.disabled = true
+  $('#analytics-status').className = 'feedback loading'
+  $('#analytics-status').textContent = 'Interpretando localmente y validando el plan…'
+  $('#analytics-result').innerHTML = ''
+  try {
+    const response = await api('/api/analytics', { method: 'POST', body: JSON.stringify({ question: $('#analytics-question').value }) })
+    if (response.status !== 'succeeded') {
+      $('#analytics-status').className = 'feedback error'
+      $('#analytics-status').textContent = response.error
+      return
+    }
+    const filters = response.result.filters.length ? response.result.filters.map(({ field, operator, value }) => `${field} ${operator} ${value}`).join('; ') : 'ninguno'
+    const repairs = response.repairs?.length ? `<p><strong>Normalizaciones aplicadas:</strong></p><ul>${response.repairs.map((repair) => `<li>${escapeHtml(repair)}</li>`).join('')}</ul>` : '<p><strong>Normalizaciones aplicadas:</strong> ninguna.</p>'
+    $('#analytics-status').className = 'feedback success'
+    $('#analytics-status').textContent = 'Respuesta calculada desde el Workspace local.'
+    $('#analytics-result').innerHTML = `<article class="analytics-result"><h2>${escapeHtml(response.answer)}</h2><p><strong>Filtros interpretados:</strong> ${escapeHtml(filters)}</p>${repairs}<p><strong>Fuentes:</strong> ${response.result.sourceCollections.map(escapeHtml).join(', ')}</p>${response.result.groups.length ? `<ul>${response.result.groups.map(({ value, count }) => `<li>${escapeHtml(value)}: ${count}</li>`).join('')}</ul>` : `<ul>${response.result.rows.map((row) => `<li>${escapeHtml(row.customerName)} · ${escapeHtml(row.modality ?? row.opportunityType ?? '')} · ${row.observationDate ? formatObservationDate(row.observationDate) : 'fecha desconocida'} · evidencia ${row.evidenceIds.map(escapeHtml).join(', ') || 'no disponible'}</li>`).join('')}</ul>`}<p>${escapeHtml(response.result.disclaimer)}</p></article>`
+  } catch (error) {
+    $('#analytics-status').className = 'feedback error'
+    $('#analytics-status').textContent = error.message
+  } finally { button.disabled = false }
 }
 
 function activateWorkspace(name) {

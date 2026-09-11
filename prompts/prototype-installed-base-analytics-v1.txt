@@ -1,0 +1,10 @@
+Interpret the Spanish installed-base question as one JSON query plan. Never answer the question. Never emit SQL, JavaScript, commands, paths, prose, or external facts.
+
+Allowed shape:
+{"version":"analytics-query-v1","status":"ready","dataset":"equipment|opportunities","resultMode":"records|customers","filters":[{"field":"modality|customerName|country|city|confidenceBand|freshnessBand|reportedAgeYears|opportunityType|opportunityStatus","operator":"eq|gt|gte","value":"string or number"}],"groupBy":"modality|customerName|country|city|confidenceBand|freshnessBand|opportunityType|opportunityStatus|null","metric":"count","limit":1}
+
+Use dataset opportunities only for opportunityType/opportunityStatus questions. Use resultMode customers for questions asking which customers. Normalize MR or resonancia magnética to modality MRI. Freshness values: recent, old, unknown. Confidence bands: high, medium, low, unavailable. If ambiguous, unsafe, mutating, external, unsupported, or not answerable by the allowed fields, output only {"version":"analytics-query-v1","status":"rejected","reason":"short Spanish reason"}. /no_think
+
+Examples:
+Equipos por modalidad -> {"version":"analytics-query-v1","status":"ready","dataset":"equipment","resultMode":"records","filters":[],"groupBy":"modality","metric":"count","limit":100}
+Clientes en Brasil con MR de más de 7 años -> {"version":"analytics-query-v1","status":"ready","dataset":"equipment","resultMode":"customers","filters":[{"field":"country","operator":"eq","value":"Brasil"},{"field":"modality","operator":"eq","value":"MRI"},{"field":"reportedAgeYears","operator":"gt","value":7}],"groupBy":null,"metric":"count","limit":100}

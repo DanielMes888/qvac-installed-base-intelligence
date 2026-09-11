@@ -25,6 +25,7 @@
       <button class="nav-item" data-workspace="review" type="button">Revisar <span id="review-nav-count" class="nav-count hidden">0</span></button>
       <button class="nav-item" data-workspace="installed" type="button">Base instalada</button>
       <button class="nav-item" data-workspace="verification" type="button">Verificaciones <span id="verification-nav-count" class="nav-count">0</span></button>
+      <button class="nav-item" data-workspace="analytics" type="button">Analítica</button>
       <button class="nav-item" data-workspace="privacy" type="button">Datos y privacidad</button>
     </nav>
   </header>
@@ -150,6 +151,11 @@
         <div class="verification-header"><span>Prioridad</span><span>Qué debe confirmarse</span><span>Equipo relacionado</span><span>Estado</span></div>
         <div id="verification"></div>
       </div>
+    </section>
+
+    <section id="workspace-analytics" class="workspace" aria-labelledby="analytics-title">
+      <div class="workspace-heading"><div><p class="section-kicker">Consulta local de solo lectura</p><h1 id="analytics-title">Preguntar a la base instalada</h1><p>QVAC local interpreta un plan permitido; el Workspace calcula la respuesta con datos sintéticos.</p></div><span class="step-badge">Sin SQL ni servicios externos</span></div>
+      <form id="analytics-form" class="surface analytics-panel"><p id="analytics-runtime" class="feedback loading" aria-live="polite">Calentando analítica local…</p><label for="analytics-question">Pregunta analítica</label><input id="analytics-question" maxlength="500" required placeholder="Ej.: Equipos por modalidad"><div class="analytics-examples"><button type="button" data-question="Equipos por modalidad">Equipos por modalidad</button><button type="button" data-question="Clientes con MRI">Clientes con MRI</button><button type="button" data-question="Señales por tipo">Señales por tipo</button></div><button id="run-analytics" class="button primary" type="submit" disabled>Consultar localmente</button><div id="analytics-status" class="feedback" aria-live="polite"></div><div id="analytics-result"></div></form>
     </section>
 
     <section id="workspace-privacy" class="workspace" aria-labelledby="privacy-title">

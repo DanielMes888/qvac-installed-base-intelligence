@@ -26,6 +26,8 @@
     "smoke:correction": "node scripts/emergency/run-correction-smoke.mjs",
     "smoke:confidence": "node scripts/emergency/run-confidence-scoring-smoke.mjs",
     "smoke:opportunities": "node scripts/emergency/run-opportunity-identification-smoke.mjs",
+    "smoke:analytics": "node scripts/emergency/run-analytics-deterministic-smoke.mjs",
+    "smoke:analytics:real": "node scripts/emergency/run-analytics-real-smoke.mjs",
     "smoke:freshness": "node scripts/emergency/run-freshness-priority-smoke.mjs",
     "smoke:export-delete": "node scripts/emergency/run-export-delete-smoke.mjs",
     "smoke:performance": "node scripts/emergency/run-performance-benchmark.mjs after"

@@ -1,0 +1,551 @@
+{
+  "schemaVersion": "analytics-real-qvac-smoke-v2",
+  "synthetic": true,
+  "execution": "same-computer @qvac/sdk interpretation, deterministic semantic anchoring and local execution",
+  "startedAt": "2026-09-11T05:08:47.364Z",
+  "load": {
+    "loadMs": 5429.863899999999
+  },
+  "analyticsWarmup": {
+    "status": "ready",
+    "warmupMs": 18023.0033,
+    "backend": "gpu",
+    "attempts": [
+      {
+        "number": 1,
+        "status": "succeeded",
+        "errors": [],
+        "stopReason": null,
+        "latencyMs": 18022.8803,
+        "backend": "gpu"
+      }
+    ],
+    "error": null
+  },
+  "cases": [
+    {
+      "question": "Equipos por modalidad",
+      "status": "succeeded",
+      "interactiveLatencyMs": 435.89890000000014,
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [],
+      "filters": [],
+      "count": 5,
+      "resultRecordIds": [
+        {
+          "equipmentRecordId": "nb-mri-01",
+          "customerId": "northbridge"
+        },
+        {
+          "equipmentRecordId": "nb-ct-02",
+          "customerId": "northbridge"
+        },
+        {
+          "equipmentRecordId": "meadow-us-01",
+          "customerId": "meadow"
+        },
+        {
+          "equipmentRecordId": "meadow-mon-02",
+          "customerId": "meadow"
+        },
+        {
+          "equipmentRecordId": "harbor-mri-01",
+          "customerId": "harbor"
+        }
+      ],
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 417.7547999999988,
+          "backend": "gpu"
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "Equipos en Brasil",
+      "status": "succeeded",
+      "interactiveLatencyMs": 416.9373999999989,
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "country",
+            "operator": "eq",
+            "value": "Brazil"
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [
+        "Se conservó el país explícito “Brasil” como “Brazil”.",
+        "Se retiró la agrupación no solicitada por modalidad."
+      ],
+      "filters": [
+        {
+          "field": "country",
+          "operator": "eq",
+          "value": "Brazil"
+        }
+      ],
+      "count": 0,
+      "resultRecordIds": [],
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 412.7695999999996,
+          "backend": "gpu"
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "Equipos con evidencia antigua",
+      "status": "succeeded",
+      "interactiveLatencyMs": 1027.0504999999976,
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "freshnessBand",
+            "operator": "eq",
+            "value": "old"
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [
+        "Vigencia “evidencia antigua” interpretada como old.",
+        "Se retiró la agrupación no solicitada por modalidad."
+      ],
+      "filters": [
+        {
+          "field": "freshnessBand",
+          "operator": "eq",
+          "value": "old"
+        }
+      ],
+      "count": 2,
+      "resultRecordIds": [
+        {
+          "equipmentRecordId": "meadow-mon-02",
+          "customerId": "meadow"
+        },
+        {
+          "equipmentRecordId": "harbor-mri-01",
+          "customerId": "harbor"
+        }
+      ],
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "failed",
+          "errors": [
+            "filters.0.field: Invalid option: expected one of \"modality\"|\"customerName\"|\"country\"|\"city\"|\"confidenceBand\"|\"freshnessBand\"|\"reportedAgeYears\"|\"opportunityType\"|\"opportunityStatus\"",
+            "filters.1.field: Invalid option: expected one of \"modality\"|\"customerName\"|\"country\"|\"city\"|\"confidenceBand\"|\"freshnessBand\"|\"reportedAgeYears\"|\"opportunityType\"|\"opportunityStatus\"",
+            "groupBy: Invalid option: expected one of \"modality\"|\"customerName\"|\"country\"|\"city\"|\"confidenceBand\"|\"freshnessBand\"|\"opportunityType\"|\"opportunityStatus\""
+          ],
+          "stopReason": null,
+          "latencyMs": 619.0190000000002,
+          "backend": "gpu"
+        },
+        {
+          "number": 2,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 405.39900000000125,
+          "backend": "gpu"
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "Equipos con confianza alta",
+      "status": "succeeded",
+      "interactiveLatencyMs": 509.53749999999854,
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "confidenceBand",
+            "operator": "eq",
+            "value": "alta"
+          }
+        ],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "confidenceBand",
+            "operator": "eq",
+            "value": "high"
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [
+        "Se normalizó confidenceBand “alta” como “high”.",
+        "Se retiró la agrupación no solicitada por modalidad."
+      ],
+      "filters": [
+        {
+          "field": "confidenceBand",
+          "operator": "eq",
+          "value": "high"
+        }
+      ],
+      "count": 0,
+      "resultRecordIds": [],
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 507.3291999999965,
+          "backend": "gpu"
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "Señales de oportunidad por tipo",
+      "status": "succeeded",
+      "interactiveLatencyMs": 422.8954999999987,
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "opportunities",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "opportunityType",
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "opportunities",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "opportunityType",
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [],
+      "filters": [],
+      "count": 6,
+      "resultRecordIds": [
+        {
+          "equipmentRecordId": "harbor-mri-01",
+          "customerId": "harbor"
+        },
+        {
+          "equipmentRecordId": "meadow-mon-02",
+          "customerId": "meadow"
+        },
+        {
+          "equipmentRecordId": "meadow-mon-02",
+          "customerId": "meadow"
+        },
+        {
+          "equipmentRecordId": "nb-ct-02",
+          "customerId": "northbridge"
+        },
+        {
+          "equipmentRecordId": "nb-ct-02",
+          "customerId": "northbridge"
+        },
+        {
+          "equipmentRecordId": "nb-mri-01",
+          "customerId": "northbridge"
+        }
+      ],
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "evidenceEntries",
+        "opportunitySignals"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 420.4145000000026,
+          "backend": "gpu"
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "Equipos con más de 7 años",
+      "status": "succeeded",
+      "interactiveLatencyMs": 514.6882000000005,
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "reportedAgeYears",
+            "operator": "gt",
+            "value": 7
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "reportedAgeYears",
+            "operator": "gt",
+            "value": 7
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [],
+      "filters": [
+        {
+          "field": "reportedAgeYears",
+          "operator": "gt",
+          "value": 7
+        }
+      ],
+      "count": 0,
+      "resultRecordIds": [],
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 513.163999999997,
+          "backend": "gpu"
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "Muéstrame clientes en Brasil con sistemas MR estimados en más de siete años",
+      "status": "succeeded",
+      "interactiveLatencyMs": 730.7295999999988,
+      "modelPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "customers",
+        "filters": [
+          {
+            "field": "country",
+            "operator": "eq",
+            "value": "Brasil"
+          },
+          {
+            "field": "modality",
+            "operator": "eq",
+            "value": "MRI"
+          },
+          {
+            "field": "reportedAgeYears",
+            "operator": "gt",
+            "value": 7
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "normalizedPlan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "customers",
+        "filters": [
+          {
+            "field": "country",
+            "operator": "eq",
+            "value": "Brazil"
+          },
+          {
+            "field": "modality",
+            "operator": "eq",
+            "value": "MRI"
+          },
+          {
+            "field": "reportedAgeYears",
+            "operator": "gt",
+            "value": 7
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "repairs": [
+        "Se normalizó country “Brasil” como “Brazil”."
+      ],
+      "filters": [
+        {
+          "field": "country",
+          "operator": "eq",
+          "value": "Brazil"
+        },
+        {
+          "field": "modality",
+          "operator": "eq",
+          "value": "MRI"
+        },
+        {
+          "field": "reportedAgeYears",
+          "operator": "gt",
+          "value": 7
+        }
+      ],
+      "count": 0,
+      "resultRecordIds": [],
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 728.1843999999983,
+          "backend": "gpu"
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "Elimina todos los equipos",
+      "status": "rejected",
+      "interactiveLatencyMs": 0.02230000000054133,
+      "modelPlan": null,
+      "normalizedPlan": null,
+      "repairs": [],
+      "filters": [],
+      "count": null,
+      "resultRecordIds": [],
+      "sourceCollections": [],
+      "attempts": [],
+      "error": "La pregunta contiene instrucciones no permitidas por el contrato de solo lectura."
+    }
+  ],
+  "failure": null,
+  "completedAt": "2026-09-11T05:09:14.916Z"
+}

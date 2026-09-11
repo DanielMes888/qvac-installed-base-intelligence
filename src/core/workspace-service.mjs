@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto'
 
 import { calculateEquipmentConfidence, CONFIDENCE_SCORE_POLICY } from './confidence-score.mjs'
 import { identifyOpportunitySignals, OPPORTUNITY_SIGNAL_POLICY } from './opportunity-signals.mjs'
+import { anchorAnalyticsPlan, analyticsAnswer, executeAnalyticsPlan, rejectUnsafeQuestion, validateAnalyticsPlan } from './analytics.mjs'
 import { createWorkspaceExport, DELETE_CONFIRMATION, emptyWorkspaceState } from './workspace-export.mjs'
 
 export class WorkspaceService {
@@ -351,6 +352,31 @@ export class WorkspaceService {
       dismissed: signals.filter(({ review }) => review.status === 'dismissed').length,
       byType: Object.entries(signals.reduce((counts, { type }) => ({ ...counts, [type]: (counts[type] ?? 0) + 1 }), {})).sort(([left], [right]) => left.localeCompare(right)).map(([type, count]) => ({ type, count }))
     }
+  }
+
+  analyticsSource() {
+    return {
+      customers: structuredClone(this.state.customers),
+      equipmentRecords: this.state.equipmentRecords.map((record) => this.equipmentRecordWithFreshness(record)),
+      opportunitySignals: this.opportunitySignals()
+    }
+  }
+
+  async runAnalytics(question, interpreter) {
+    const rejection = rejectUnsafeQuestion(question)
+    if (rejection) return { status: 'rejected', error: rejection, synthetic: true }
+    const before = this.snapshot()
+    const interpretation = await interpreter(question.trim())
+    if (interpretation.status !== 'succeeded') return { status: 'rejected', error: 'QVAC local no produjo un plan analítico válido después del único reintento permitido.', interpretation: safeInterpretation(interpretation), synthetic: true }
+    const validation = validateAnalyticsPlan(interpretation.plan)
+    if (!validation.valid) return { status: 'rejected', error: 'El plan fue rechazado por el contrato de solo lectura.', validationErrors: validation.errors, interpretation: safeInterpretation(interpretation), synthetic: true }
+    if (validation.plan.status === 'rejected') return { status: 'rejected', error: validation.plan.reason, interpretation: safeInterpretation(interpretation), synthetic: true }
+    const source = this.analyticsSource()
+    const anchored = anchorAnalyticsPlan(question.trim(), validation.plan, source)
+    if (!anchored.valid) return { status: 'rejected', error: 'No se pudo reconciliar el plan con las restricciones explícitas de la pregunta. Reformule la consulta.', semanticErrors: anchored.errors, modelPlan: anchored.modelPlan, interpretation: safeInterpretation(interpretation), synthetic: true }
+    const result = executeAnalyticsPlan(anchored.plan, source)
+    if (JSON.stringify(this.snapshot()) !== JSON.stringify(before)) throw new Error('La consulta analítica intentó modificar el Workspace')
+    return { status: 'succeeded', modelPlan: anchored.modelPlan, plan: anchored.plan, repairs: anchored.repairs, result, answer: analyticsAnswer(result), interpretation: safeInterpretation(interpretation), synthetic: true, localWorkspace: true }
   }
 
   async dismissOpportunitySignal(signalId, reason) {
@@ -754,4 +780,13 @@ function selectMaterialClarification(draft) {
 
 function looksSpanish(question) {
   return question.startsWith('¿') || /\b(qué|cuál|cuánt|dónde|son|es|representa|corresponde|total|sede|equipo)\b/i.test(question)
+}
+
+function safeInterpretation(interpretation) {
+  return {
+    status: interpretation.status,
+    attempts: structuredClone(interpretation.attempts ?? []).map(({ rawOutput, ...attempt }) => attempt),
+    load: structuredClone(interpretation.load ?? null),
+    configuration: structuredClone(interpretation.configuration ?? null)
+  }
 }

@@ -8,17 +8,23 @@ import { FileStore } from './core/file-store.mjs'
 import { WorkspaceService } from './core/workspace-service.mjs'
 import { exportFilename } from './core/workspace-export.mjs'
 import { QVAC_CONFIGURATION, closeQvac, ensureQvacReady, extractEquipmentDraft } from './qvac/adapter.mjs'
+import { ensureAnalyticsReady, interpretAnalyticsQuestion } from './qvac/analytics-adapter.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const publicDirectory = path.join(root, 'public')
 
 export async function createPrototypeServer({
   workspacePath = path.join(root, '.local', 'workspace.json'),
-  extractor
+  extractor,
+  analyticsInterpreter = interpretAnalyticsQuestion
 } = {}) {
   const usesLocalQvac = extractor === undefined
   const activeExtractor = extractor ?? ((note) => extractEquipmentDraft(note, { mode: 'simple-json-object', maxAttempts: 2 }))
   if (usesLocalQvac) await ensureQvacReady()
+  const analyticsRuntime = usesLocalQvac ? await ensureAnalyticsReady() : { status: 'controlled', loadMs: null, warmupMs: null, backend: null, error: null }
+  const activeAnalyticsInterpreter = analyticsRuntime.status === 'failed'
+    ? async () => ({ status: 'failed', plan: null, attempts: [], configuration: null })
+    : analyticsInterpreter
   const store = new FileStore({ seedPath: path.join(root, 'data', 'prototype', 'seed.json'), workspacePath })
   let workspace = new WorkspaceService(await store.load(), (state) => store.save(state))
 
@@ -29,7 +35,7 @@ export async function createPrototypeServer({
       if (url.pathname === '/api/health') return json(response, 200, { ok: true, localOnly: true, qvac: QVAC_CONFIGURATION })
       if (url.pathname === '/api/bootstrap' && request.method === 'GET') {
         const state = workspace.snapshot()
-        return json(response, 200, { label: state.label, customers: state.customers, aggregate: workspace.aggregate(), opportunityAggregate: workspace.opportunitySignalAggregate(), qvac: QVAC_CONFIGURATION })
+        return json(response, 200, { label: state.label, customers: state.customers, aggregate: workspace.aggregate(), opportunityAggregate: workspace.opportunitySignalAggregate(), qvac: QVAC_CONFIGURATION, analyticsRuntime })
       }
       if (url.pathname === '/api/workspace/export' && request.method === 'GET') {
         const payload = workspace.exportWorkspace()
@@ -59,6 +65,9 @@ export async function createPrototypeServer({
           type: url.searchParams.get('type') || undefined,
           status: url.searchParams.get('status') || undefined
         }))
+      }
+      if (url.pathname === '/api/analytics' && request.method === 'POST') {
+        return json(response, 200, await workspace.runAnalytics((await bodyJson(request)).question, activeAnalyticsInterpreter))
       }
       const opportunityReviewMatch = url.pathname.match(/^\/api\/opportunities\/([^/]+)\/dismiss$/)
       if (opportunityReviewMatch && request.method === 'POST') {

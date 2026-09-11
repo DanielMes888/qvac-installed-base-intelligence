@@ -2,7 +2,13 @@
 
 Type: Official Stretch Goal
 
-Status: ready
+Status: done
+
+Implementation note (2026-09-11): deterministic tests and smoke passed, but the first real local smoke produced schema-valid plans that did not preserve the requested country, freshness, and normalized confidence semantics. That failure remains under `results/emergency/analytics-real-qvac-smoke-v1-failed.json`.
+
+Bounded corrective note (2026-09-11): one approved corrective cycle added deterministic semantic anchoring and a separate analytical warmup without changing prompt v1 or extraction v9. The sole corrected real round passed and is retained under `results/emergency/analytics-real-qvac-smoke-v2-corrected.json`.
+
+Owner validation note (2026-09-11): the owner approved Ticket 03 visually and functionally after observing correct modality aggregation, confidence normalization, removal of an unrequested grouping, an honest zero-result response, and visible filters, normalizations, sources, and local provenance. Known limitations remain the initial analytical warmup, the deliberately closed vocabulary, validation by one corrected real round, and zero results when the synthetic Workspace has no applicable data.
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 

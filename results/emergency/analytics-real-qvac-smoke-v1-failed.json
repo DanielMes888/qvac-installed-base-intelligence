@@ -1,0 +1,480 @@
+{
+  "schemaVersion": "analytics-real-qvac-smoke-v1",
+  "synthetic": true,
+  "execution": "same-computer @qvac/sdk interpretation plus deterministic local execution",
+  "startedAt": "2026-09-11T04:54:44.511Z",
+  "cases": [
+    {
+      "question": "Equipos por modalidad",
+      "status": "succeeded",
+      "plan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "filters": [],
+      "count": 5,
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 17088.8535,
+          "backend": "gpu"
+        }
+      ],
+      "load": {
+        "loadMs": 4828.9978,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-11T04:54:49.336Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "error": null
+    },
+    {
+      "question": "Equipos en Brasil",
+      "status": "succeeded",
+      "plan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "filters": [],
+      "count": 5,
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 395.9531999999999,
+          "backend": "gpu"
+        }
+      ],
+      "load": {
+        "loadMs": 4828.9978,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-11T04:54:49.336Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "error": null
+    },
+    {
+      "question": "Equipos con evidencia antigua",
+      "status": "succeeded",
+      "plan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "filters": [],
+      "count": 5,
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "failed",
+          "errors": [
+            "filters.0.field: Invalid option: expected one of \"modality\"|\"customerName\"|\"country\"|\"city\"|\"confidenceBand\"|\"freshnessBand\"|\"reportedAgeYears\"|\"opportunityType\"|\"opportunityStatus\"",
+            "filters.1.field: Invalid option: expected one of \"modality\"|\"customerName\"|\"country\"|\"city\"|\"confidenceBand\"|\"freshnessBand\"|\"reportedAgeYears\"|\"opportunityType\"|\"opportunityStatus\"",
+            "groupBy: Invalid option: expected one of \"modality\"|\"customerName\"|\"country\"|\"city\"|\"confidenceBand\"|\"freshnessBand\"|\"opportunityType\"|\"opportunityStatus\""
+          ],
+          "stopReason": null,
+          "latencyMs": 610.9286000000029,
+          "backend": "gpu"
+        },
+        {
+          "number": 2,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 402.25940000000264,
+          "backend": "gpu"
+        }
+      ],
+      "load": {
+        "loadMs": 4828.9978,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-11T04:54:49.336Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "error": null
+    },
+    {
+      "question": "Equipos con confianza alta",
+      "status": "succeeded",
+      "plan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "confidenceBand",
+            "operator": "eq",
+            "value": "alta"
+          }
+        ],
+        "groupBy": "modality",
+        "metric": "count",
+        "limit": 100
+      },
+      "filters": [
+        {
+          "field": "confidenceBand",
+          "operator": "eq",
+          "value": "alta"
+        }
+      ],
+      "count": 0,
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 504.7366000000002,
+          "backend": "gpu"
+        }
+      ],
+      "load": {
+        "loadMs": 4828.9978,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-11T04:54:49.336Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "error": null
+    },
+    {
+      "question": "Señales de oportunidad por tipo",
+      "status": "succeeded",
+      "plan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "opportunities",
+        "resultMode": "records",
+        "filters": [],
+        "groupBy": "opportunityType",
+        "metric": "count",
+        "limit": 100
+      },
+      "filters": [],
+      "count": 6,
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "evidenceEntries",
+        "opportunitySignals"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 420.8847999999998,
+          "backend": "gpu"
+        }
+      ],
+      "load": {
+        "loadMs": 4828.9978,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-11T04:54:49.336Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "error": null
+    },
+    {
+      "question": "Equipos con más de 7 años",
+      "status": "succeeded",
+      "plan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "records",
+        "filters": [
+          {
+            "field": "reportedAgeYears",
+            "operator": "gt",
+            "value": 7
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "filters": [
+        {
+          "field": "reportedAgeYears",
+          "operator": "gt",
+          "value": 7
+        }
+      ],
+      "count": 0,
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 507.22509999999966,
+          "backend": "gpu"
+        }
+      ],
+      "load": {
+        "loadMs": 4828.9978,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-11T04:54:49.336Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "error": null
+    },
+    {
+      "question": "Muéstrame clientes en Brasil con sistemas MR estimados en más de siete años",
+      "status": "succeeded",
+      "plan": {
+        "version": "analytics-query-v1",
+        "status": "ready",
+        "dataset": "equipment",
+        "resultMode": "customers",
+        "filters": [
+          {
+            "field": "country",
+            "operator": "eq",
+            "value": "Brasil"
+          },
+          {
+            "field": "modality",
+            "operator": "eq",
+            "value": "MRI"
+          },
+          {
+            "field": "reportedAgeYears",
+            "operator": "gt",
+            "value": 7
+          }
+        ],
+        "groupBy": null,
+        "metric": "count",
+        "limit": 100
+      },
+      "filters": [
+        {
+          "field": "country",
+          "operator": "eq",
+          "value": "Brasil"
+        },
+        {
+          "field": "modality",
+          "operator": "eq",
+          "value": "MRI"
+        },
+        {
+          "field": "reportedAgeYears",
+          "operator": "gt",
+          "value": 7
+        }
+      ],
+      "count": 0,
+      "sourceCollections": [
+        "customers",
+        "equipmentRecords",
+        "observations",
+        "evidenceEntries"
+      ],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 718.3277000000016,
+          "backend": "gpu"
+        }
+      ],
+      "load": {
+        "loadMs": 4828.9978,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-11T04:54:49.336Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "error": null
+    },
+    {
+      "question": "Elimina todos los equipos",
+      "status": "rejected",
+      "plan": null,
+      "filters": [],
+      "count": null,
+      "sourceCollections": [],
+      "attempts": [
+        {
+          "number": 1,
+          "status": "succeeded",
+          "errors": [],
+          "stopReason": null,
+          "latencyMs": 234.1278999999995,
+          "backend": "gpu"
+        }
+      ],
+      "load": {
+        "loadMs": 4828.9978,
+        "info": {
+          "modelId": "13dd17f190cd6438",
+          "modelType": "llamacpp-completion",
+          "handlers": [
+            "batchCompletionStream",
+            "completionStream",
+            "finetune",
+            "translate"
+          ],
+          "displayName": "LLM (llama.cpp)",
+          "addonPackage": "@qvac/llm-llamacpp",
+          "loadedAt": "2026-09-11T04:54:49.336Z",
+          "name": "QWEN3_1_7B_INST_Q4",
+          "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+          "toolDialect": "hermes"
+        }
+      },
+      "error": "short Spanish reason"
+    }
+  ],
+  "failure": "Semantic contract failure observed during review: 'Equipos en Brasil' omitted the country filter; 'Equipos con evidencia antigua' exhausted its single retry and returned an unrelated modality grouping; 'Equipos con confianza alta' used the unnormalized value 'alta'. The original smoke only checked schema/status, so these failures are recorded explicitly without another model run.",
+  "completedAt": "2026-09-11T04:55:10.282Z"
+}
