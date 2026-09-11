@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { calculateEquipmentConfidence, CONFIDENCE_SCORE_POLICY } from './confidence-score.mjs'
 import { identifyOpportunitySignals, OPPORTUNITY_SIGNAL_POLICY } from './opportunity-signals.mjs'
 import { anchorAnalyticsPlan, analyticsAnswer, executeAnalyticsPlan, rejectUnsafeQuestion, validateAnalyticsPlan } from './analytics.mjs'
+import { buildGeographicInstalledBase } from './geographic-installed-base.mjs'
 import { createWorkspaceExport, DELETE_CONFIRMATION, emptyWorkspaceState } from './workspace-export.mjs'
 
 export class WorkspaceService {
@@ -360,6 +361,13 @@ export class WorkspaceService {
       equipmentRecords: this.state.equipmentRecords.map((record) => this.equipmentRecordWithFreshness(record)),
       opportunitySignals: this.opportunitySignals()
     }
+  }
+
+  geographicInstalledBase(filters = {}) {
+    return buildGeographicInstalledBase({
+      customers: this.state.customers,
+      equipmentRecords: this.state.equipmentRecords.map((record) => this.equipmentRecordWithFreshness(record))
+    }, filters)
   }
 
   async runAnalytics(question, interpreter) {

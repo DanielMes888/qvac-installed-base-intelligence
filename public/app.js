@@ -6,6 +6,7 @@ let currentView = null
 let allVerificationItems = []
 let allOpportunitySignals = []
 let allCustomers = []
+let geographicView = null
 
 const claimLabels = {
   equipmentType: 'Tipo de equipo',
@@ -44,6 +45,8 @@ $('#delete-phrase').addEventListener('input', updateDeleteConfirmation)
 $('#confirm-delete').addEventListener('click', deleteWorkspace)
 $('#analytics-form').addEventListener('submit', runAnalytics)
 $$('.analytics-examples button').forEach((button) => button.addEventListener('click', () => { $('#analytics-question').value = button.dataset.question }))
+for (const id of ['#geographic-region', '#geographic-country', '#geographic-city', '#geographic-modality']) $(id).addEventListener('change', () => loadGeography())
+$('#clear-geographic-filters').addEventListener('click', clearGeographicFilters)
 for (const id of ['#verification-priority', '#verification-customer', '#verification-equipment', '#verification-reason']) {
   $(id).addEventListener('change', applyVerificationFilters)
 }
@@ -72,6 +75,7 @@ async function bootstrap() {
     return
   }
   await loadView({ syncVerificationCustomer: true })
+  await loadGeography()
   setRuntime('QVAC local disponible', 'ready')
 }
 
@@ -122,7 +126,62 @@ function activateWorkspace(name) {
   })
   document.querySelector(`#workspace-${name}`)?.focus({ preventScroll: true })
   window.scrollTo({ top: 0, behavior: 'smooth' })
+  if (name === 'geographic') loadGeography().catch(() => { $('#geographic-disclaimer').textContent = 'No fue posible cargar la vista geográfica local.' })
 }
+
+async function loadGeography() {
+  const params = new URLSearchParams()
+  for (const [key, selector] of Object.entries({ region: '#geographic-region', country: '#geographic-country', city: '#geographic-city', modality: '#geographic-modality' })) {
+    if ($(selector).value) params.set(key, $(selector).value)
+  }
+  geographicView = await api(`/api/geography${params.size ? `?${params}` : ''}`)
+  populateGeographicSelect('#geographic-region', geographicView.availableFilters.regions, 'Todas')
+  populateGeographicSelect('#geographic-country', geographicView.availableFilters.countries, 'Todos')
+  populateGeographicSelect('#geographic-city', geographicView.availableFilters.cities, 'Todas')
+  populateGeographicSelect('#geographic-modality', geographicView.availableFilters.modalities, 'Todas')
+  renderGeographicView(geographicView)
+}
+
+function populateGeographicSelect(selector, values, emptyLabel) {
+  const select = $(selector)
+  const selected = select.value
+  select.innerHTML = `<option value="">${emptyLabel}</option>${values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(displayGeography(value))}</option>`).join('')}`
+  if (values.includes(selected)) select.value = selected
+}
+
+function renderGeographicView(view) {
+  $('#geographic-focus').textContent = `Enfoque inicial: ${displayGeography(view.initialFocus.country)}`
+  $('#geographic-summary').innerHTML = [
+    summaryMetric(view.totals.customers, 'Clientes visibles', 'Datos sintéticos'),
+    summaryMetric(view.totals.equipment, 'Equipos instalados', 'Conteo del Workspace'),
+    summaryMetric(view.cityNodes.length, 'Ciudades o niveles', 'Ubicación aproximada'),
+    summaryMetric(view.byModality.length, 'Modalidades', view.byModality.map(({ modality, count }) => `${displayModality(modality)} ${count}`).join(' · ') || 'Sin coincidencias')
+  ].join('')
+  $('#geographic-map').innerHTML = view.cityNodes.length ? view.cityNodes.map((node) => `<article class="map-city ${node.country === 'Panama' ? 'preferred' : ''}" aria-label="${escapeHtml(`${displayGeography(node.city)}, ${displayGeography(node.country)}: ${node.customerCount} clientes y ${node.equipmentCount} equipos`)}"><button class="map-city-filter" type="button" data-region="${escapeHtml(node.region)}" data-country="${escapeHtml(node.country)}" data-city="${escapeHtml(node.city)}"><strong>${escapeHtml(displayGeography(node.city))}</strong><span>${escapeHtml(displayGeography(node.country))}</span><small>${node.customerCount} cliente${node.customerCount === 1 ? '' : 's'} · ${node.equipmentCount} equipo${node.equipmentCount === 1 ? '' : 's'}</small></button><div class="map-city-customers">${node.customers.map((customer) => `<button class="map-customer-link" type="button" data-customer="${escapeHtml(customer.customer360Target)}">${escapeHtml(customer.name)} · abrir Customer 360</button>`).join('')}</div></article>`).join('') : '<div class="empty-state"><strong>Sin coincidencias</strong><span>Ajuste los filtros para explorar otra parte del Workspace.</span></div>'
+  $('#geographic-tree').innerHTML = view.hierarchy.length ? view.hierarchy.map((region) => `<li><strong>${escapeHtml(displayGeography(region.name))}</strong><ul>${region.countries.map((country) => `<li><strong>${escapeHtml(displayGeography(country.name))}</strong><ul>${country.cities.map((city) => `<li><strong>${escapeHtml(displayGeography(city.name))} · ${city.equipmentCount} equipos</strong><ul>${city.customers.map((customer) => `<li><div class="tree-customer"><span><strong>${escapeHtml(customer.name)}</strong><small>${customer.equipmentCount} equipo${customer.equipmentCount === 1 ? '' : 's'} · ${customer.geographicPrecision === 'unknown' ? 'Ubicación no especificada' : 'Ubicación aproximada'}</small></span><button class="button secondary open-customer-360" type="button" data-customer="${escapeHtml(customer.id)}">Abrir Customer 360</button></div><ul>${customer.equipment.map((record) => `<li>${escapeHtml(displayModality(record.modality))} · estado ${escapeHtml(translate(record.status, statusLabels))} · confianza ${escapeHtml(record.confidenceBand)} · vigencia ${record.latestObservationDate ? escapeHtml(formatObservationDate(record.latestObservationDate)) : 'fecha desconocida'}<small>Procedencia: ${[...record.evidenceObservationIds, ...record.evidenceEntryIds].map(escapeHtml).join(', ') || 'sin evidencia vinculada'}. La certeza de claims no se resume: se consulta en Customer 360.</small></li>`).join('')}</ul></li>`).join('')}</ul></li>`).join('')}</ul></li>`).join('')}</ul></li>`).join('') : '<li>Sin coincidencias para los filtros seleccionados.</li>'
+  $('#geographic-disclaimer').textContent = view.disclaimer
+  $$('.map-city-filter').forEach((button) => button.addEventListener('click', () => {
+    $('#geographic-region').value = button.dataset.region
+    $('#geographic-country').value = button.dataset.country
+    $('#geographic-city').value = button.dataset.city
+    loadGeography()
+  }))
+  $$('.open-customer-360, .map-customer-link').forEach((button) => button.addEventListener('click', () => openCustomer360(button.dataset.customer)))
+}
+
+function clearGeographicFilters() {
+  for (const selector of ['#geographic-region', '#geographic-country', '#geographic-city', '#geographic-modality']) $(selector).value = ''
+  loadGeography()
+}
+
+async function openCustomer360(customerId) {
+  $('#customer').value = customerId
+  await loadView({ syncVerificationCustomer: true })
+  activateWorkspace('installed')
+  $('#installed-title').focus({ preventScroll: true })
+}
+
+function displayGeography(value) { return ({ Panama: 'Panamá', Brazil: 'Brasil', 'Latin America': 'América Latina', 'Panama City': 'Ciudad de Panamá' })[value] ?? value }
 
 async function changeCustomer() {
   if (currentObservation && currentObservation.customerId !== $('#customer').value) clearReviewWorkspace()
@@ -478,7 +537,7 @@ async function loadView({ syncVerificationCustomer = false } = {}) {
   allVerificationItems = verificationItems
   $('#header-customer').textContent = view.customer.name
   $('#installed-title').textContent = `Base instalada de ${view.customer.name}`
-  $('#installed-description').textContent = `${view.customer.site} · vista de trabajo basada en evidencia sintética revisada.`
+  $('#installed-description').textContent = `${view.customer.site} · ${view.customer.city ? `${displayGeography(view.customer.city)}, ${displayGeography(view.customer.country)}` : 'Ubicación no especificada'} · vista de trabajo basada en evidencia sintética revisada.`
   renderCustomerMetrics(view)
   renderEquipment(view.equipmentRecords)
   allOpportunitySignals = view.opportunitySignals ?? []

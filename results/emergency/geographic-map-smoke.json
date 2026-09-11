@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "geographic-installed-base-smoke-v1",
+  "synthetic": true,
+  "execution": "deterministic local read model; no QVAC and no network",
+  "initialFocus": {
+    "country": "Panama",
+    "reason": "preferred-country-with-applicable-data"
+  },
+  "totals": {
+    "customers": 3,
+    "equipment": 5
+  },
+  "byModality": [
+    {
+      "modality": "CT",
+      "count": 1
+    },
+    {
+      "modality": "MRI",
+      "count": 2
+    },
+    {
+      "modality": "Patient monitoring",
+      "count": 1
+    },
+    {
+      "modality": "Ultrasound",
+      "count": 1
+    }
+  ],
+  "hierarchy": [
+    {
+      "region": "Latin America",
+      "countries": [
+        {
+          "country": "Panama",
+          "cities": [
+            {
+              "city": "David",
+              "equipmentCount": 2,
+              "customers": [
+                {
+                  "id": "meadow",
+                  "name": "Centro de Salud Meadow",
+                  "equipmentCount": 2,
+                  "customer360Target": "meadow"
+                }
+              ]
+            },
+            {
+              "city": "Panama City",
+              "equipmentCount": 2,
+              "customers": [
+                {
+                  "id": "northbridge",
+                  "name": "Hospital General Northbridge",
+                  "equipmentCount": 2,
+                  "customer360Target": "northbridge"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "country": "Brazil",
+          "cities": [
+            {
+              "city": "Curitiba",
+              "equipmentCount": 1,
+              "customers": [
+                {
+                  "id": "harbor",
+                  "name": "Clínica Harborview",
+                  "equipmentCount": 1,
+                  "customer360Target": "harbor"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filteredCase": {
+    "filters": {
+      "region": null,
+      "country": "Panama",
+      "city": null,
+      "modality": "MRI"
+    },
+    "totals": {
+      "customers": 1,
+      "equipment": 1
+    },
+    "byModality": [
+      {
+        "modality": "MRI",
+        "count": 1
+      }
+    ]
+  },
+  "navigation": {
+    "visualTarget": "meadow",
+    "hierarchyTarget": "meadow",
+    "openedCustomerId": "meadow",
+    "customerContextPreserved": true
+  },
+  "missingGeographyLabel": "Ubicación no especificada",
+  "assertions": {
+    "hierarchy": true,
+    "aggregations": true,
+    "filters": true,
+    "visualAndHierarchyCustomer360Navigation": true,
+    "keyboardAccessibleActions": true,
+    "panamaInitialFocus": true,
+    "missingGeography": true,
+    "externalRequests": 0,
+    "qvacCalls": 0,
+    "workspaceMutation": false
+  },
+  "failure": null
+}

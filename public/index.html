@@ -24,6 +24,7 @@
       <button class="nav-item active" data-workspace="capture" type="button">Capturar</button>
       <button class="nav-item" data-workspace="review" type="button">Revisar <span id="review-nav-count" class="nav-count hidden">0</span></button>
       <button class="nav-item" data-workspace="installed" type="button">Base instalada</button>
+      <button class="nav-item" data-workspace="geographic" type="button">Mapa</button>
       <button class="nav-item" data-workspace="verification" type="button">Verificaciones <span id="verification-nav-count" class="nav-count">0</span></button>
       <button class="nav-item" data-workspace="analytics" type="button">Analítica</button>
       <button class="nav-item" data-workspace="privacy" type="button">Datos y privacidad</button>
@@ -114,7 +115,7 @@
 
     <section id="workspace-installed" class="workspace" aria-labelledby="installed-title">
       <div class="workspace-heading">
-        <div><p class="section-kicker">Vista de trabajo</p><h1 id="installed-title">Base instalada consolidada</h1><p id="installed-description">Consulte los registros del cliente sin mezclar equipos verificados y provisionales.</p></div>
+        <div><p class="section-kicker">Vista de trabajo</p><h1 id="installed-title" tabindex="-1">Base instalada consolidada</h1><p id="installed-description">Consulte los registros del cliente sin mezclar equipos verificados y provisionales.</p></div>
         <span class="step-badge">Información revisada</span>
       </div>
       <div id="customer-metrics" class="summary-grid"></div>
@@ -133,6 +134,27 @@
         <div class="opportunity-filters" aria-label="Filtros de oportunidades"><label>Tipo<select id="opportunity-type"><option value="">Todos</option><option value="reportedAgeReview">Antigüedad reportada</option><option value="incompleteInformationReview">Información incompleta</option><option value="staleEvidenceReview">Vigencia</option><option value="unknownObservationDateReview">Fecha desconocida</option><option value="invalidObservationDateReview">Fecha no aplicable</option><option value="materialVerificationReview">Verificación material</option></select></label><label>Estado<select id="opportunity-status"><option value="">Todos</option><option value="unreviewed">Por revisar</option><option value="dismissed">Descartadas</option></select></label></div>
         <div id="opportunities" aria-live="polite"></div>
       </section>
+    </section>
+
+    <section id="workspace-geographic" class="workspace" aria-labelledby="geographic-title" tabindex="-1">
+      <div class="workspace-heading">
+        <div><p class="section-kicker">Exploración local y multinacional</p><h1 id="geographic-title">Mapa de base instalada</h1><p>Explore Región → País → Ciudad → Cliente → Equipos instalados con datos completamente sintéticos.</p></div>
+        <span id="geographic-focus" class="step-badge">Enfoque inicial: Panamá</span>
+      </div>
+      <div class="surface geographic-filters" aria-label="Filtros geográficos y de modalidad">
+        <label>Región<select id="geographic-region"><option value="">Todas</option></select></label>
+        <label>País<select id="geographic-country"><option value="">Todos</option></select></label>
+        <label>Ciudad<select id="geographic-city"><option value="">Todas</option></select></label>
+        <label>Modalidad<select id="geographic-modality"><option value="">Todas</option></select></label>
+        <button id="clear-geographic-filters" class="button secondary" type="button">Limpiar filtros</button>
+      </div>
+      <p class="geographic-limitation"><strong>Ubicación aproximada.</strong> Mapa esquemático sin coordenadas, tiles, geocodificación ni servicios externos. Datos sintéticos del Workspace local.</p>
+      <div id="geographic-summary" class="summary-grid" aria-live="polite"></div>
+      <div class="geographic-layout">
+        <section class="surface schematic-panel" aria-labelledby="schematic-title"><div class="surface-heading"><div><span class="icon-tile" aria-hidden="true">◎</span><div><h2 id="schematic-title">Mapa esquemático</h2><p>Los nodos representan ciudades, no posiciones exactas.</p></div></div></div><div id="geographic-map" class="schematic-map" role="group" aria-label="Mapa esquemático de ciudades sintéticas"></div></section>
+        <section class="surface geographic-tree-panel" aria-labelledby="tree-title"><div class="surface-heading"><div><span class="icon-tile" aria-hidden="true">⌘</span><div><h2 id="tree-title">Vista jerárquica accesible</h2><p>Lista estructurada con acciones navegables mediante teclado.</p></div></div></div><ul id="geographic-tree" class="geographic-tree" aria-label="Jerarquía de región, país, ciudad, cliente y equipos"></ul></section>
+      </div>
+      <p id="geographic-disclaimer" class="geographic-disclaimer"></p>
     </section>
 
     <section id="workspace-verification" class="workspace" aria-labelledby="verification-title">

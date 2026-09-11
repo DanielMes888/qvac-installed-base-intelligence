@@ -2,7 +2,7 @@
 
 Type: Optional Expected-Output Experience
 
-Status: ready
+Status: done
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 

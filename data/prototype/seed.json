@@ -2,9 +2,9 @@
   "synthetic": true,
   "label": "Datos completamente sintéticos para demostración.",
   "customers": [
-    { "id": "northbridge", "name": "Hospital General Northbridge", "site": "Campus Central" },
-    { "id": "meadow", "name": "Centro de Salud Meadow", "site": "Campus Río" },
-    { "id": "harbor", "name": "Clínica Harborview", "site": "Campus Oeste" }
+    { "id": "northbridge", "name": "Hospital General Northbridge", "site": "Campus Central", "region": "Latin America", "country": "Panama", "city": "Panama City" },
+    { "id": "meadow", "name": "Centro de Salud Meadow", "site": "Campus Río", "region": "Latin America", "country": "Panama", "city": "David" },
+    { "id": "harbor", "name": "Clínica Harborview", "site": "Campus Oeste", "region": "Latin America", "country": "Brazil", "city": "Curitiba" }
   ],
   "equipmentRecords": [
     { "id": "nb-mri-01", "customerId": "northbridge", "status": "verified", "modality": "MRI", "manufacturer": "DemoScan", "model": "DS-One", "location": "Radiology", "evidenceObservationIds": [], "evidenceEntryIds": ["seed-e-nb-mri"] },

@@ -99,3 +99,15 @@ The owner functionally approved Ticket 01 after visual validation. The owner did
 The owner also approved Ticket 02 visually and functionally. Future integration must explain the purpose of **Posibles oportunidades para revisar**, distinguish data follow-up from a commercial opportunity, and make the relationship among Confidence scoring, Verification Items, and opportunity signals evident. This is non-blocking for Ticket 02 and no redesign is authorized as part of its closure.
 
 The owner approved Ticket 03 visually and functionally on 2026-09-11. Future integration must label the three quick analytics actions as **Preguntas sugeridas** or **Ejemplos de consulta**, explain that the field accepts other questions within the permitted vocabulary, and communicate more clearly that QVAC interprets a bounded query plan while the deterministic local Workspace produces the answer. This is non-blocking for Ticket 03 and no general redesign is authorized as part of its closure.
+
+The owner approved Ticket 04 functionally on 2026-09-11 and confirmed that its filters and Customer 360 navigation work. Future integration must improve orientation without changing the approved geographic semantics:
+
+- Replace or improve the city cards with a more recognizable local SVG representation of Panama and Latin America while retaining the hierarchical list as the equivalent accessible alternative.
+- Separate visually joined copy such as dates and provenance, and explain clearly that every location is approximate and synthetic.
+- Replace **Abrir Customer 360** with a clearer action such as **Ver ficha del cliente**.
+- Show navigation context when arriving from the map and provide **Volver al mapa**.
+- Add a visible customer selector to Installed Base so users can change customers without returning to Capture or the map.
+- Synchronize the active customer across the map, Installed Base, Customer 360, Verification Items, opportunities, and analytics when applicable; preserve that selection across sections.
+- Changing customer or section must not mutate records or discard in-progress work.
+
+These are non-blocking Ticket 09 acceptance criteria. No general redesign is authorized as part of Ticket 04 closure.

@@ -69,6 +69,14 @@ export async function createPrototypeServer({
       if (url.pathname === '/api/analytics' && request.method === 'POST') {
         return json(response, 200, await workspace.runAnalytics((await bodyJson(request)).question, activeAnalyticsInterpreter))
       }
+      if (url.pathname === '/api/geography' && request.method === 'GET') {
+        return json(response, 200, workspace.geographicInstalledBase({
+          region: url.searchParams.get('region'),
+          country: url.searchParams.get('country'),
+          city: url.searchParams.get('city'),
+          modality: url.searchParams.get('modality')
+        }))
+      }
       const opportunityReviewMatch = url.pathname.match(/^\/api\/opportunities\/([^/]+)\/dismiss$/)
       if (opportunityReviewMatch && request.method === 'POST') {
         return json(response, 200, await workspace.dismissOpportunitySignal(decodeURIComponent(opportunityReviewMatch[1]), (await bodyJson(request)).reason))

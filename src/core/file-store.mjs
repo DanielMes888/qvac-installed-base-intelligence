@@ -13,7 +13,9 @@ export class FileStore {
 
   async load() {
     try {
-      return JSON.parse(await readFile(this.workspacePath, 'utf8'))
+      const workspace = JSON.parse(await readFile(this.workspacePath, 'utf8'))
+      const seed = JSON.parse(await readFile(this.seedPath, 'utf8'))
+      return applySyntheticGeographyDefaults(workspace, seed)
     } catch (error) {
       if (error.code !== 'ENOENT') throw error
       return this.reset()
@@ -33,6 +35,20 @@ export class FileStore {
     await this.save(seed)
     return structuredClone(seed)
   }
+}
+
+function applySyntheticGeographyDefaults(workspace, seed) {
+  if (workspace.synthetic !== true || seed.synthetic !== true) return workspace
+  const seedCustomers = new Map((seed.customers ?? []).map((customer) => [customer.id, customer]))
+  const migrated = structuredClone(workspace)
+  for (const customer of migrated.customers ?? []) {
+    const seedCustomer = seedCustomers.get(customer.id)
+    if (!seedCustomer) continue
+    for (const field of ['region', 'country', 'city']) {
+      if (!Object.hasOwn(customer, field) && seedCustomer[field]) customer[field] = seedCustomer[field]
+    }
+  }
+  return migrated
 }
 
 function safeJsonPath(value, label) {
