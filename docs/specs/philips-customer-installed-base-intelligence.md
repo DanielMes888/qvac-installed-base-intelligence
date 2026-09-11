@@ -377,6 +377,20 @@ These gates validate claims and release states. They are not additional product 
 - **Competition-compliance gate:** E8 must map authoritative organizer sources before any requirement is described as verified competition compliance.
 - **Release gate:** E10 must clear required/distributed components, and E9 must pass from a clean directory before reproducibility or final submission readiness is claimed.
 
+## Dated amendment for the official Stretch Goals
+
+**Amendment recorded 2026-09-11:** the accepted base specification and its twelve published tickets remain historically valid. Their statuses and blocking edges do not change. E4 and E4-v2 remain failed, and the emergency implementation does not complete Tickets 03-06.
+
+The stored Philips challenge brief identifies eight optional Stretch Goals. Repository evidence classifies conservative Duplicate detection, Data freshness, and the bounded AI follow-up question as implemented only within the emergency-prototype boundary. Confidence scoring is partial because the product has no explainable completeness, freshness, and independent-corroboration score. Voice capture, Photo-assisted capture, Natural-language analytics, and Opportunity identification are pending.
+
+ADR 0007 records the owner's voluntary decision to attempt the five unfinished goals without making them Minimum Viable Prototype requirements. `docs/STRETCH_GOALS_IMPLEMENTATION_PLAN.md` defines future implementation units, observable acceptance boundaries, feature-specific tests and smokes, feasibility stages for fully local OCR and transcription, and stop conditions. The owner approved that plan on 2026-09-11; this amendment still does not authorize implementation or ticket publication, and separate extension tickets are required.
+
+For this extension, the earlier deferred classification is narrowed only for those five goals. Cross-device synchronization remains deferred. Prompt v9, the selected model and adapter, conservative reconciliation, same-computer processing, synthetic-only data, no cloud/delegated inference, no telemetry/automatic upload, and non-production limitations remain unchanged. Opportunity identification is limited to evidence-backed potential engagement signals and does not authorize market share, revenue, sales probability, purchase-intent, or replacement-as-fact claims.
+
+Full manual regression and final rehearsal are deferred until the extension and UI/UX integration are complete. Every feature implementation still requires automated tests and a dedicated smoke. Clean reproduction, compliance authority, third-party review, and final-delivery readiness remain separate gates.
+
+**Owner closure note, 2026-09-11:** the initial Confidence scoring weights are completeness 40, freshness 30, and independent corroboration 30, with deterministic subthresholds deferred to implementation. Multiple Draft Claims or human review from one Observation do not establish independent corroboration, and the score stays separate from certainty, verification priority, acceptance, and identity. Opportunity signals cannot assert purchase intent, clinical need, obsolescence, or recommendations. Analytics is read-only and uses a separate contract/prompt. Photo and voice media are temporary; only reviewed submitted text persists as an Observation with `photo-assisted` or `voice` provenance.
+
 ## Out of Scope
 
 - A validated Philips role, CRM process, service workflow, reporting obligation, installed-base owner, or data-steward handoff.

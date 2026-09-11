@@ -1,6 +1,6 @@
 # Emergency demo scope status
 
-Status: awaiting project-owner demo approval
+Status: emergency core preserved; final owner rehearsal deferred by decision dated 2026-09-11
 
 Checkpoint `demo-core-v1` preserves the owner-approved operational demo immediately before the bounded clarification workflow.
 
@@ -13,7 +13,9 @@ ADR 0006 authorizes a deadline-bounded prototype outside the failed E4 gate sequ
 | 05 — Reconcile | Evidence-based candidate suggestion; explicit link decision with actor, date, and reason; repeated evidence adds no equipment record | Full identity-state model; alternative provisional decisions; unidentified members; quantity comparability; conflicts, changes, and temporal behavior | Remains `blocked`; not complete |
 | 06 — Working views | Separate verified/provisional seeded records; captured-note and unlinked counts; separately displayed observation/recorded/latest-evidence dates; deterministic Alta/Media/Baja verification priority with visible reasons, four filters, evidence relationships, and top-three default; limited whitelisted aggregate; continuous emergency path | Reported-total and scope views; resolution/dismissal lifecycle; complete customer evidence history; complete aggregate whitelist tests; full canonical scenario | Remains `blocked`; not complete |
 
-The essential demo awaits the manual checks in [DEMO_GUIDE.md](DEMO_GUIDE.md). Until the project owner approves that rehearsal, implementation remains limited to this emergency subset.
+The essential demo manual checks in [DEMO_GUIDE.md](DEMO_GUIDE.md) were not completed or approved. On 2026-09-11 the project owner deferred the full manual regression and final rehearsal until a separately planned five-feature Stretch Goal extension and general UI/UX integration are complete. This scheduling decision does not change the evidence below, approve the demo, or broaden the emergency subset itself.
+
+ADR 0007 authorizes planning an attempt to add explainable Confidence scoring, bounded Opportunity identification, Natural-language analytics, Photo-assisted capture with fully local OCR, and Voice capture with fully local transcription. These are optional official Stretch Goals, not Minimum Viable Prototype requirements. The owner approved the separate implementation plan on 2026-09-11, but no extension implementation or ticket publication is authorized by this status document. The original twelve tickets remain in their recorded states; Ticket 02 and dependent tickets remain blocked. Cross-device synchronization remains deferred.
 
 Automated readiness evidence on 2026-09-10:
 
@@ -31,7 +33,9 @@ Automated readiness evidence on 2026-09-10:
 - Real-QVAC clarification smoke with v9: the initial local GPU extraction produced one useful Spanish question in 768.09 ms; the answer was preserved as a separate Evidence Entry and the second inference completed in 760.54 ms. The application enforced one question/two inferences, conservative review admitted zero claims, and the installed base remained unchanged. The second model output did not apply the answer as an explicit total and retained unknown quantity scope; this remains a semantic limitation.
 - Final reset: zero captured Northbridge observations and zero new evidence links.
 
-## Deferred until essential-demo approval
+## Deferred from the emergency subset
+
+This list preserves the earlier emergency checkpoint's deferred work. The 2026-09-11 Stretch Goal plan authorizes only future planning units and does not implicitly authorize any item below.
 
 - Observation-level deletion and its advanced recovery behavior.
 - Packaging.
@@ -40,5 +44,6 @@ Automated readiness evidence on 2026-09-10:
 - User experiments.
 - Advanced interruption, stale-result, and manual-recovery behavior.
 - Expanded dashboard, reported-total, conflict, history, and verification-lifecycle features.
+- Cross-device synchronization, shared accounts, backend synchronization, and CRM ingestion.
 
-No optional or deferred ticket should begin automatically after the readiness pass.
+No optional or deferred ticket should begin automatically after the readiness pass. The owner-approved future Stretch Goal units are defined in `docs/STRETCH_GOALS_IMPLEMENTATION_PLAN.md` and require separately published tickets before implementation.

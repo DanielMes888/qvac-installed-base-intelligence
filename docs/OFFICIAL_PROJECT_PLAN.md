@@ -223,13 +223,26 @@ Every application screen, export, screenshot, evaluation result, and demonstrati
 
 ### Stretch Features
 
-1. Local voice transcription.
-2. Photo and OCR capture of equipment labels.
-3. Stale-information alerts.
-4. Natural-language queries over the local dataset.
-5. Synchronization between devices.
+The original internal priority list named local voice transcription, photo/OCR, stale-information alerts, natural-language queries, and cross-device synchronization. The following dated amendment preserves that history while aligning future work with the stored official challenge brief.
 
-Stretch features will only be added after the core workflow is complete and measured.
+**Project-owner amendment, 2026-09-11:** the brief lists eight optional Stretch Goals, separately from the Minimum Viable Prototype. Duplicate detection, Data freshness, and AI follow-up questions are implemented only within the bounded emergency-prototype evidence described below. Confidence scoring is partial. Voice capture, Photo-assisted capture, Natural-language analytics, and Opportunity identification are pending.
+
+| Official Stretch Goal | Current classification | Boundary |
+| --- | --- | --- |
+| Voice capture | Pending | Requires a bounded fully local transcription feasibility stage. |
+| Photo-assisted capture | Pending | Requires a bounded fully local OCR feasibility stage. |
+| Duplicate detection | Implemented in the bounded prototype | Conservative candidate matching and explicit reconciliation prevent duplicate record growth; this is not generalized automatic identity resolution. |
+| Confidence scoring | Partial | Certainty, candidate score, freshness, and priority exist; an explainable completeness/freshness/corroboration score does not. |
+| Data freshness | Implemented in the bounded prototype | Dates, evidence age, a configurable threshold, and verification priority are visible; this is not Philips policy. |
+| AI follow-up questions | Implemented in the bounded prototype | One bounded Spanish clarification is supported; the v9 answer-incorporation limitation remains. |
+| Natural-language analytics | Pending | No natural-language query path exists. |
+| Opportunity identification | Pending | Verification Items are not commercial opportunities. |
+
+The owner voluntarily authorizes planning an attempt to complete the five unfinished goals: Confidence scoring, Opportunity identification, Natural-language analytics, Photo-assisted capture, and Voice capture. [ADR 0007](adr/0007-attempt-five-remaining-official-stretch-goals.md) records the decision and [the implementation plan](STRETCH_GOALS_IMPLEMENTATION_PLAN.md) defines the future units and stop conditions. This extension is not a minimum challenge requirement, does not alter the failed E4/E4-v2 results, and does not complete or unblock the formal tickets.
+
+**Planning closure note, 2026-09-11:** the owner approved the implementation plan and its conservative decisions. Confidence scoring begins with an explainable configurable 40/30/30 completeness/freshness/independent-corroboration rule; opportunity outputs remain evidence-backed possibility signals; natural-language analytics uses a separate read-only contract and prompt without modifying extraction prompt v9; original photo and audio media remain temporary while only reviewed submitted text is persisted with `photo-assisted` or `voice` provenance. Implementation still waits for separately published extension tickets.
+
+Cross-device synchronization is not an official Stretch Goal in the stored brief and remains deferred under ADR 0002. Full manual testing and final rehearsal move after the five-feature extension and UI/UX integration; each feature still requires automated tests and a specific smoke during implementation.
 
 Automatic asset lifecycle management, complete visit-note capture, a general-purpose knowledge graph, and a full event-sourcing framework are outside the MVP. Supporting seeded labels or references does not add photo/document ingestion to the required scope.
 
@@ -366,7 +379,9 @@ Choose between Electron and a same-computer browser/native-host interface using 
 
 Initial [platform research](references/QVAC_PLATFORM_RESEARCH.md) identifies this Windows computer as a plausible native execution candidate, not a validated runtime. Official [v0.19.0 release notes](https://docs.qvac.tether.io/reference/release-notes/#delegated-inference-removed) remove delegated inference, supporting the decision to exclude it rather than downgrade to older APIs. Exact SDK/model versions and the execution path must be pinned and tested; no release is yet recorded as tested.
 
-The final model, quantization, and parameters will be selected through measurements on the declared hardware and documented accurately.
+**Status amendment, 2026-09-11:** the paragraph above preserves the pre-E4 planning state. E4 and E4-v2 subsequently failed and remain authoritative failures. ADR 0006 then authorized the bounded emergency exception, and the prototype evidence now records `@qvac/sdk` 0.19.0, cached `QWEN3_1_7B_INST_Q4`, prompt v9, GPU execution, and the loopback browser/Node path. This bounded validation does not retroactively pass E4, complete the formal tickets, or establish production or final-delivery readiness.
+
+The pre-E4 plan expected final model, quantization, and parameter selection through measurements. For the emergency prototype, ADR 0006 and the recorded v9 evidence now freeze that choice; the Stretch Goal extension does not reopen it.
 
 ---
 
