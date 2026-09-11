@@ -1,0 +1,758 @@
+{
+  "schemaVersion": "prototype-performance-result-v1",
+  "benchmarkVersion": "prototype-performance-benchmark-v1",
+  "label": "prompt-v8-warm",
+  "startedAt": "2026-09-11T01:01:34.674Z",
+  "completedAt": "2026-09-11T01:02:10.069Z",
+  "synthetic": true,
+  "environment": {
+    "sdk": "0.19.0",
+    "modelExport": "QWEN3_1_7B_INST_Q4",
+    "quantization": "Q4_0",
+    "modelConfig": {
+      "device": "gpu",
+      "gpu_layers": 99,
+      "ctx_size": 4096,
+      "tools": true,
+      "verbosity": 0
+    },
+    "generationParams": {
+      "temp": 0,
+      "top_p": 1,
+      "seed": 20260910,
+      "predict": 250,
+      "reasoning_budget": 0
+    },
+    "promptVersion": "prototype-equipment-extraction-v8"
+  },
+  "load": {
+    "loadMs": 4881.222,
+    "info": {
+      "modelId": "13dd17f190cd6438",
+      "modelType": "llamacpp-completion",
+      "handlers": [
+        "batchCompletionStream",
+        "completionStream",
+        "finetune",
+        "translate"
+      ],
+      "displayName": "LLM (llama.cpp)",
+      "addonPackage": "@qvac/llm-llamacpp",
+      "loadedAt": "2026-09-11T01:01:39.551Z",
+      "name": "QWEN3_1_7B_INST_Q4",
+      "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+      "toolDialect": "hermes"
+    }
+  },
+  "warmup": {
+    "status": "succeeded",
+    "failureCategory": null,
+    "metrics": {
+      "totalMs": 27572.2222,
+      "promptTokens": 632,
+      "generatedTokens": 54,
+      "emittedTokens": 54,
+      "timeToFirstToken": 26720.297000000002,
+      "tokensPerSecond": 67.62781657332357,
+      "backendDevice": "gpu"
+    }
+  },
+  "cases": [
+    {
+      "id": "explicit-single",
+      "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
+      "expected": {
+        "equipmentType": "MRI",
+        "manufacturer": "DemoScan",
+        "model": "DS-One",
+        "quantity": 1,
+        "quantityScope": "observed",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "clarification": false
+      },
+      "status": "succeeded",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "succeeded",
+          "failureCategory": null,
+          "errors": [],
+          "stopReason": null,
+          "rawOutput": "{\"i\":[{\"e\":\"MRI\",\"m\":\"DemoScan\",\"d\":\"DS-One\",\"q\":1,\"qs\":\"o\",\"l\":\"Radiología\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+          "metrics": {
+            "totalMs": 580.4003999999986,
+            "promptTokens": 639,
+            "generatedTokens": 56,
+            "emittedTokens": 56,
+            "timeToFirstToken": 104.293,
+            "tokensPerSecond": 126.65671506762564,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": {
+        "version": 1,
+        "subjects": [
+          {
+            "subjectId": "s1",
+            "kind": "provisionalIndividual",
+            "label": "DemoScan DS-One"
+          }
+        ],
+        "claims": [
+          {
+            "claimId": "c1",
+            "type": "equipmentType",
+            "value": "MRI",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 62,
+              "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
+            }
+          },
+          {
+            "claimId": "c2",
+            "type": "manufacturer",
+            "value": "DemoScan",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 62,
+              "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
+            }
+          },
+          {
+            "claimId": "c3",
+            "type": "model",
+            "value": "DS-One",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 62,
+              "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
+            }
+          },
+          {
+            "claimId": "c4",
+            "type": "quantity",
+            "value": 1,
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 62,
+              "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
+            },
+            "quantityScope": "observed"
+          },
+          {
+            "claimId": "c5",
+            "type": "location",
+            "value": "Radiología",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 62,
+              "text": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología."
+            }
+          }
+        ],
+        "clarification": null
+      },
+      "semantic": {
+        "passed": true,
+        "checks": {
+          "equipmentType": true,
+          "manufacturer": true,
+          "model": true,
+          "quantity": true,
+          "quantityScope": true,
+          "sourceType": true,
+          "certainty": true,
+          "evidenceLinkage": true,
+          "clarification": true,
+          "noUnsupportedIdentityOrQuantity": true
+        },
+        "errors": []
+      }
+    },
+    {
+      "id": "explicit-quantity",
+      "note": "Observé tres escáneres CT Aster Imaging en Urgencias.",
+      "expected": {
+        "equipmentType": "CT",
+        "manufacturer": "Aster Imaging",
+        "model": null,
+        "quantity": 3,
+        "quantityScope": "observed",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "clarification": false
+      },
+      "status": "succeeded",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "succeeded",
+          "failureCategory": null,
+          "errors": [],
+          "stopReason": null,
+          "rawOutput": "{\"i\":[{\"e\":\"CT\",\"m\":\"Aster Imaging\",\"d\":\"\",\"q\":3,\"qs\":\"o\",\"l\":\"Urgencias\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+          "metrics": {
+            "totalMs": 574.3600000000006,
+            "promptTokens": 635,
+            "generatedTokens": 55,
+            "emittedTokens": 55,
+            "timeToFirstToken": 106.544,
+            "tokensPerSecond": 126.35835228708618,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": {
+        "version": 1,
+        "subjects": [
+          {
+            "subjectId": "s1",
+            "kind": "observedGroup",
+            "label": "Aster Imaging CT"
+          }
+        ],
+        "claims": [
+          {
+            "claimId": "c1",
+            "type": "equipmentType",
+            "value": "CT",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 53,
+              "text": "Observé tres escáneres CT Aster Imaging en Urgencias."
+            }
+          },
+          {
+            "claimId": "c2",
+            "type": "manufacturer",
+            "value": "Aster Imaging",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 53,
+              "text": "Observé tres escáneres CT Aster Imaging en Urgencias."
+            }
+          },
+          {
+            "claimId": "c3",
+            "type": "quantity",
+            "value": 3,
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 53,
+              "text": "Observé tres escáneres CT Aster Imaging en Urgencias."
+            },
+            "quantityScope": "observed"
+          },
+          {
+            "claimId": "c4",
+            "type": "location",
+            "value": "Urgencias",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 53,
+              "text": "Observé tres escáneres CT Aster Imaging en Urgencias."
+            }
+          }
+        ],
+        "clarification": null
+      },
+      "semantic": {
+        "passed": true,
+        "checks": {
+          "equipmentType": true,
+          "manufacturer": true,
+          "model": true,
+          "quantity": true,
+          "quantityScope": true,
+          "sourceType": true,
+          "certainty": true,
+          "evidenceLinkage": true,
+          "clarification": true,
+          "noUnsupportedIdentityOrQuantity": true
+        },
+        "errors": []
+      }
+    },
+    {
+      "id": "known-missing-identity",
+      "note": "Vi un equipo de ultrasonido en Diagnóstico por imágenes; no pude identificar fabricante ni modelo.",
+      "expected": {
+        "equipmentType": "Ultrasound",
+        "manufacturer": null,
+        "model": null,
+        "quantity": 1,
+        "quantityScope": "observed",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "clarification": false
+      },
+      "status": "succeeded",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "succeeded",
+          "failureCategory": null,
+          "errors": [],
+          "stopReason": null,
+          "rawOutput": "{\"i\":[{\"e\":\"Ultrasound\",\"m\":\"\",\"d\":\"\",\"q\":1,\"qs\":\"o\",\"l\":\"Diagnóstico por imágenes\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+          "metrics": {
+            "totalMs": 606.7111999999979,
+            "promptTokens": 646,
+            "generatedTokens": 55,
+            "emittedTokens": 55,
+            "timeToFirstToken": 116.294,
+            "tokensPerSecond": 119.79230192887388,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": {
+        "version": 1,
+        "subjects": [
+          {
+            "subjectId": "s1",
+            "kind": "provisionalIndividual",
+            "label": "Ultrasound"
+          }
+        ],
+        "claims": [
+          {
+            "claimId": "c1",
+            "type": "equipmentType",
+            "value": "Ultrasound",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 98,
+              "text": "Vi un equipo de ultrasonido en Diagnóstico por imágenes; no pude identificar fabricante ni modelo."
+            }
+          },
+          {
+            "claimId": "c2",
+            "type": "quantity",
+            "value": 1,
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 98,
+              "text": "Vi un equipo de ultrasonido en Diagnóstico por imágenes; no pude identificar fabricante ni modelo."
+            },
+            "quantityScope": "observed"
+          },
+          {
+            "claimId": "c3",
+            "type": "location",
+            "value": "Diagnóstico por imágenes",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 98,
+              "text": "Vi un equipo de ultrasonido en Diagnóstico por imágenes; no pude identificar fabricante ni modelo."
+            }
+          }
+        ],
+        "clarification": null
+      },
+      "semantic": {
+        "passed": true,
+        "checks": {
+          "equipmentType": true,
+          "manufacturer": true,
+          "model": true,
+          "quantity": true,
+          "quantityScope": true,
+          "sourceType": true,
+          "certainty": true,
+          "evidenceLinkage": true,
+          "clarification": true,
+          "noUnsupportedIdentityOrQuantity": true
+        },
+        "errors": []
+      }
+    },
+    {
+      "id": "repeated-evidence",
+      "note": "Volví a observar el escáner MRI DemoScan DS-One de Radiología que ya estaba registrado.",
+      "expected": {
+        "equipmentType": "MRI",
+        "manufacturer": "DemoScan",
+        "model": "DS-One",
+        "quantity": 1,
+        "quantityScope": "observed",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "clarification": false
+      },
+      "status": "succeeded",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "succeeded",
+          "failureCategory": null,
+          "errors": [],
+          "stopReason": null,
+          "rawOutput": "{\"i\":[{\"e\":\"MRI\",\"m\":\"DemoScan\",\"d\":\"DS-One\",\"q\":1,\"qs\":\"o\",\"l\":\"unknown\",\"ls\":\"dept\",\"src\":\"d\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+          "metrics": {
+            "totalMs": 582.6102000000028,
+            "promptTokens": 644,
+            "generatedTokens": 55,
+            "emittedTokens": 55,
+            "timeToFirstToken": 117.5,
+            "tokensPerSecond": 127.51701192863685,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": {
+        "version": 1,
+        "subjects": [
+          {
+            "subjectId": "s1",
+            "kind": "provisionalIndividual",
+            "label": "DemoScan DS-One"
+          }
+        ],
+        "claims": [
+          {
+            "claimId": "c1",
+            "type": "equipmentType",
+            "value": "MRI",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 87,
+              "text": "Volví a observar el escáner MRI DemoScan DS-One de Radiología que ya estaba registrado."
+            }
+          },
+          {
+            "claimId": "c2",
+            "type": "manufacturer",
+            "value": "DemoScan",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 87,
+              "text": "Volví a observar el escáner MRI DemoScan DS-One de Radiología que ya estaba registrado."
+            }
+          },
+          {
+            "claimId": "c3",
+            "type": "model",
+            "value": "DS-One",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 87,
+              "text": "Volví a observar el escáner MRI DemoScan DS-One de Radiología que ya estaba registrado."
+            }
+          },
+          {
+            "claimId": "c4",
+            "type": "quantity",
+            "value": 1,
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 87,
+              "text": "Volví a observar el escáner MRI DemoScan DS-One de Radiología que ya estaba registrado."
+            },
+            "quantityScope": "observed"
+          },
+          {
+            "claimId": "c5",
+            "type": "location",
+            "value": "unknown",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "directObservation",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 87,
+              "text": "Volví a observar el escáner MRI DemoScan DS-One de Radiología que ya estaba registrado."
+            }
+          }
+        ],
+        "clarification": null
+      },
+      "semantic": {
+        "passed": true,
+        "checks": {
+          "equipmentType": true,
+          "manufacturer": true,
+          "model": true,
+          "quantity": true,
+          "quantityScope": true,
+          "sourceType": true,
+          "certainty": true,
+          "evidenceLinkage": true,
+          "clarification": true,
+          "noUnsupportedIdentityOrQuantity": true
+        },
+        "errors": []
+      }
+    },
+    {
+      "id": "material-quantity-ambiguity",
+      "note": "La responsable de radiología dijo que hay tres escáneres MRI DemoScan en la sede, pero no quedó claro si vio tres o si eran el total.",
+      "expected": {
+        "equipmentType": "MRI",
+        "manufacturer": "DemoScan",
+        "model": null,
+        "quantity": 3,
+        "quantityScope": "unknown",
+        "sourceType": "attributedStatement",
+        "certainty": "reported",
+        "clarification": true,
+        "clarificationKind": "qty"
+      },
+      "status": "succeeded",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "succeeded",
+          "failureCategory": null,
+          "errors": [],
+          "stopReason": null,
+          "rawOutput": "{\"i\":[{\"e\":\"MRI\",\"m\":\"DemoScan\",\"d\":\"\",\"q\":3,\"qs\":\"u\",\"l\":\"\",\"ls\":\"dept\",\"src\":\"a\",\"c\":\"r\",\"n\":false,\"r\":\"e0\"}],\"x\":null}",
+          "metrics": {
+            "totalMs": 548.0884000000005,
+            "promptTokens": 657,
+            "generatedTokens": 50,
+            "emittedTokens": 50,
+            "timeToFirstToken": 117.33800000000001,
+            "tokensPerSecond": 125.67171531837671,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": {
+        "version": 1,
+        "subjects": [
+          {
+            "subjectId": "s1",
+            "kind": "observedGroup",
+            "label": "DemoScan MRI"
+          }
+        ],
+        "claims": [
+          {
+            "claimId": "c1",
+            "type": "equipmentType",
+            "value": "MRI",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "attributedStatement",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 133,
+              "text": "La responsable de radiología dijo que hay tres escáneres MRI DemoScan en la sede, pero no quedó claro si vio tres o si eran el total."
+            }
+          },
+          {
+            "claimId": "c2",
+            "type": "manufacturer",
+            "value": "DemoScan",
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "attributedStatement",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 133,
+              "text": "La responsable de radiología dijo que hay tres escáneres MRI DemoScan en la sede, pero no quedó claro si vio tres o si eran el total."
+            }
+          },
+          {
+            "claimId": "c3",
+            "type": "quantity",
+            "value": 3,
+            "subjectId": "s1",
+            "locationScope": "dept",
+            "sourceType": "attributedStatement",
+            "certainty": "reported",
+            "negated": false,
+            "evidence": {
+              "id": "e0",
+              "start": 0,
+              "end": 133,
+              "text": "La responsable de radiología dijo que hay tres escáneres MRI DemoScan en la sede, pero no quedó claro si vio tres o si eran el total."
+            },
+            "quantityScope": "unknown"
+          }
+        ],
+        "clarification": null
+      },
+      "semantic": {
+        "passed": false,
+        "checks": {
+          "equipmentType": true,
+          "manufacturer": true,
+          "model": true,
+          "quantity": true,
+          "quantityScope": true,
+          "sourceType": true,
+          "certainty": true,
+          "evidenceLinkage": true,
+          "clarification": false,
+          "noUnsupportedIdentityOrQuantity": true
+        },
+        "errors": [
+          "clarification"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "schemaValid": {
+      "numerator": 5,
+      "denominator": 5
+    },
+    "semanticPass": {
+      "numerator": 4,
+      "denominator": 5
+    },
+    "zeroUnsupportedIdentitiesOrQuantities": true,
+    "explicitCasesWithoutQuestion": {
+      "numerator": 4,
+      "denominator": 4
+    },
+    "ambiguousCaseHasValidQuestion": false,
+    "under15Seconds": {
+      "numerator": 5,
+      "denominator": 5
+    },
+    "retries": 0,
+    "failures": 0,
+    "latencyMs": {
+      "count": 5,
+      "min": 548.0884000000005,
+      "median": 580.4003999999986,
+      "max": 606.7111999999979
+    },
+    "ttftMs": {
+      "count": 5,
+      "min": 104.293,
+      "median": 116.294,
+      "max": 117.5
+    },
+    "promptTokens": {
+      "count": 5,
+      "min": 635,
+      "median": 644,
+      "max": 657
+    },
+    "outputTokens": {
+      "count": 5,
+      "min": 50,
+      "median": 55,
+      "max": 56
+    },
+    "throughputTokensPerSecond": {
+      "count": 5,
+      "min": 119.79230192887388,
+      "median": 126.35835228708618,
+      "max": 127.51701192863685
+    }
+  },
+  "failure": null
+}

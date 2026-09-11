@@ -7,15 +7,18 @@ import path from 'node:path'
 import { FileStore } from './core/file-store.mjs'
 import { WorkspaceService } from './core/workspace-service.mjs'
 import { exportFilename } from './core/workspace-export.mjs'
-import { QVAC_CONFIGURATION, closeQvac, extractEquipmentDraft } from './qvac/adapter.mjs'
+import { QVAC_CONFIGURATION, closeQvac, ensureQvacReady, extractEquipmentDraft } from './qvac/adapter.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const publicDirectory = path.join(root, 'public')
 
 export async function createPrototypeServer({
   workspacePath = path.join(root, '.local', 'workspace.json'),
-  extractor = (note) => extractEquipmentDraft(note, { mode: 'simple-json', maxAttempts: 1 })
+  extractor
 } = {}) {
+  const usesLocalQvac = extractor === undefined
+  const activeExtractor = extractor ?? ((note) => extractEquipmentDraft(note, { mode: 'simple-json-object', maxAttempts: 2 }))
+  if (usesLocalQvac) await ensureQvacReady()
   const store = new FileStore({ seedPath: path.join(root, 'data', 'prototype', 'seed.json'), workspacePath })
   let workspace = new WorkspaceService(await store.load(), (state) => store.save(state))
 
@@ -38,7 +41,7 @@ export async function createPrototypeServer({
       }
       if (url.pathname === '/api/observations' && request.method === 'POST') {
         const body = await bodyJson(request)
-        const observation = await workspace.capture(body.customerId, body.text, extractor, { observationDate: body.observationDate })
+        const observation = await workspace.capture(body.customerId, body.text, activeExtractor, { observationDate: body.observationDate })
         return json(response, 201, observation)
       }
       if (url.pathname === '/api/verifications' && request.method === 'GET') {
@@ -53,7 +56,7 @@ export async function createPrototypeServer({
       if (viewMatch && request.method === 'GET') return json(response, 200, workspace.customerView(viewMatch[1]))
       const clarificationMatch = url.pathname.match(/^\/api\/observations\/([^/]+)\/clarification$/)
       if (clarificationMatch && request.method === 'POST') {
-        return json(response, 200, await workspace.clarify(clarificationMatch[1], await bodyJson(request), extractor))
+        return json(response, 200, await workspace.clarify(clarificationMatch[1], await bodyJson(request), activeExtractor))
       }
       const correctionMatch = url.pathname.match(/^\/api\/observations\/([^/]+)\/claims\/([^/]+)\/correction$/)
       if (correctionMatch && request.method === 'POST') {

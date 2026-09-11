@@ -1,4 +1,5 @@
 import { performance } from 'node:perf_hooks'
+import { readFileSync } from 'node:fs'
 
 import {
   QWEN3_1_7B_INST_Q4,
@@ -25,14 +26,17 @@ export const QVAC_CONFIGURATION = Object.freeze({
   sdk: '0.19.0',
   modelExport: 'QWEN3_1_7B_INST_Q4',
   quantization: 'Q4_0',
+  promptVersion: 'prototype-equipment-extraction-v9',
+  outputContract: 'json-object-with-compact-raw-json-fallback',
   modelConfig: { device: 'gpu', gpu_layers: 99, ctx_size: 4096, tools: true, verbosity: VERBOSITY.ERROR },
-  generationParams: { temp: 0, top_p: 1, seed: 20260910, predict: 250 }
+  generationParams: { temp: 0, top_p: 1, seed: 20260910, predict: 250, reasoning_budget: 0 }
 })
 
 const SYSTEM_PROMPT = `Extract only equipment facts supported by the observation. Call record_equipment exactly once. Use short IDs. Source offsets a/b are zero-based JavaScript string offsets, b exclusive. Never repeat evidence. eq=equipment type, mk=manufacturer, md=model, qt=quantity, ag=age, loc=location, id=identifier. q: o=observed, t=explicit total, u=unknown. src: d=direct observation, a=attributed statement, u=unattributed statement, r=record/label. c: r=reported, e=estimated, u=unknown; model output cannot confirm facts. n marks negation. x is null or one material clarification. Do not explain. /no_think`
-const SIMPLE_PROMPT = `Return only one JSON object in this exact shape: {"i":[{"e":"MRI","m":"DemoScan","d":"","q":1,"qs":"o","l":"Radiology","ls":"dept","src":"d","c":"r","n":false,"r":"e0"}],"x":null}. One i item per equipment subject. e=equipment type; m=manufacturer or empty; d=model or empty; q=number or null; qs=o observed,t explicit total,u unknown; l=location or empty; ls=room,dept,site,customer,unknown; src=d direct,a attributed,u unattributed,r record-label; c=r reported,e estimated,u unknown; never confirm; n=negated; r=supplied source ID. x is null or one {"k":"qty","i":0,"q":"short question","r":"e0"}; k may be qty,loc,attach,id,detail. Never copy source text. No explanation. /no_think`
+const SIMPLE_PROMPT = readFileSync(new URL('../../prompts/prototype-equipment-extraction-v9.txt', import.meta.url), 'utf8').trim()
 
 let loaded
+let warmed
 
 export async function ensureQvacLoaded() {
   if (!loaded) {
@@ -55,11 +59,22 @@ export async function ensureQvacLoaded() {
   return loaded
 }
 
+export async function ensureQvacReady() {
+  const model = await ensureQvacLoaded()
+  if (!warmed) {
+    warmed = runAttempt(model.modelId, 'Observé un equipo XRAY NovaMed X7.', 'simple-json-object', 1, null)
+      .then((attempt) => ({ status: attempt.status, failureCategory: attempt.failureCategory, metrics: attempt.metrics }))
+      .catch((error) => ({ status: 'failed', failureCategory: 'sdk', error: error instanceof Error ? error.message : String(error) }))
+  }
+  return { ...model, warmup: await warmed }
+}
+
 export async function extractEquipmentDraft(note, { mode = 'simple-json', maxAttempts = 2 } = {}) {
   const model = await ensureQvacLoaded()
   const attempts = []
   for (let attemptNumber = 1; attemptNumber <= maxAttempts; attemptNumber += 1) {
-    const attempt = await runAttempt(model.modelId, note, mode, attemptNumber, attempts.at(-1)?.failureCategory)
+    const attemptMode = mode === 'simple-json-object' && attemptNumber > 1 ? 'simple-json' : mode
+    const attempt = await runAttempt(model.modelId, note, attemptMode, attemptNumber, attempts.at(-1)?.failureCategory)
     attempts.push(attempt)
     if (attempt.status === 'succeeded') break
   }
@@ -78,6 +93,7 @@ export async function closeQvac() {
     const model = await loaded
     await unloadModel({ modelId: model.modelId, clearStorage: false }).catch(() => {})
     loaded = null
+    warmed = null
   }
   await close().catch(() => {})
 }
@@ -85,9 +101,9 @@ export async function closeQvac() {
 async function runAttempt(modelId, note, mode, attemptNumber, priorFailure) {
   const evidenceSegments = buildEvidenceSegments(note)
   const history = [
-    { role: 'system', content: mode === 'simple-json' ? SIMPLE_PROMPT : SYSTEM_PROMPT },
-    { role: 'user', content: mode === 'simple-json'
-      ? `Sources:\n${JSON.stringify(evidenceSegments.map(({ id, text }) => ({ id, text })))}`
+    { role: 'system', content: mode.startsWith('simple-json') ? SIMPLE_PROMPT : SYSTEM_PROMPT },
+    { role: 'user', content: mode.startsWith('simple-json')
+      ? `Fuentes:\n${evidenceSegments.map(({ id, text }) => `${id}|${text}`).join('\n')}`
       : `Observation:\n${note}` }
   ]
   if (priorFailure) history.push({ role: 'user', content: `Retry once. Fix only ${priorFailure}. Use the same evidence. /no_think` })
@@ -106,6 +122,7 @@ async function runAttempt(modelId, note, mode, attemptNumber, priorFailure) {
       }
     }
     if (mode === 'tool') request.tools = [extractionTool]
+    else if (mode === 'simple-json-object') request.responseFormat = { type: 'json_object' }
     else if (mode === 'json') request.responseFormat = {
       type: 'json_schema',
       json_schema: {
@@ -138,7 +155,7 @@ async function runAttempt(modelId, note, mode, attemptNumber, priorFailure) {
 
     const validation = parseError
       ? { valid: false, errors: [parseError], expanded: null }
-      : mode === 'simple-json'
+      : mode.startsWith('simple-json')
         ? (() => {
             const result = validateSimpleDraft(candidate, evidenceSegments, stopReason)
             return { valid: result.valid, errors: result.errors, expanded: result.draft }

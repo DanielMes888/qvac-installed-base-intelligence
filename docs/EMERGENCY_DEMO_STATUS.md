@@ -17,9 +17,10 @@ The essential demo awaits the manual checks in [DEMO_GUIDE.md](DEMO_GUIDE.md). U
 
 Automated readiness evidence on 2026-09-10:
 
-- `npm.cmd test`: 47/47 passing after the bounded local export and Workspace-deletion workflow.
+- `npm.cmd test`: 50/50 passing after the v9 configuration and recorded-evidence scope checks.
 - Reset/start: loopback server and every required page control loaded.
-- Real-QVAC smoke: succeeded with 60 output tokens on GPU while the external network probe was unreachable.
+- QVAC v9 benchmark: 5/5 schema-valid, 5/5 semantic-checklist passes, zero unsupported identities or quantities, 4/4 explicit cases without a question, one useful ambiguity question, and five warm extractions between 578.72 and 855.50 ms. The four department cases retained `dept`; the ambiguous site case retained `site`.
+- Real-QVAC primary smoke with v9: succeeded on GPU while the external network probe was unreachable; extraction took 558.78 ms, returned `dept` for Radiología, accepted all five supported claims, produced the expected candidate, and reconciliation kept Northbridge at two equipment records.
 - Live port-4173 API path: saved one observation, produced and reviewed five Draft Claims, linked `nb-mri-01`, retained two Northbridge equipment records, exposed three verification items, and returned aggregate counts of three verified and two provisional records.
 - Invalid-output test: saved the original observation, admitted zero Draft Claims, and changed neither accepted evidence nor equipment-record count.
 - Controlled clarification tests: answer, omit, **No lo sé**, one-question/two-inference limits, second-inference failure, draft replacement, attempt metadata, Spanish-question filtering, and final human review passed.
@@ -27,7 +28,7 @@ Automated readiness evidence on 2026-09-10:
 - Deterministic correction smoke: changed the controlled model value `DS-Zero` to `DS-One`, preserved both values and the source reference, required explicit acceptance, matched `nb-mri-01`, and retained two Northbridge equipment records. It is workflow evidence, not real-QVAC quality evidence.
 - Deterministic freshness/priority smoke: preserved observation and recorded dates separately, exposed latest record evidence, produced explained Alta/Media/Baja items, exercised priority/customer/equipment/reason filters, retained evidence relationships, kept items Open after reconciliation, and retained the equipment-record count.
 - Deterministic export/deletion smoke: validated `workspace-export-v1` before and after deletion; preserved stable provenance references; excluded internal invalid model output; required explicit confirmation; persisted an empty Workspace across restart; kept protected source, fixtures, tests, and both E4 failure reports unchanged; restored the synthetic seed only through the separate reset action; and recorded zero unexpected external requests.
-- Real-QVAC clarification smoke: the initial local GPU extraction succeeded in 19.66 seconds, but `QWEN3_1_7B_INST_Q4` returned no clarification candidate. The smoke stopped before a second inference and remains failed evidence in `results/emergency/clarification-smoke.json`.
+- Real-QVAC clarification smoke with v9: the initial local GPU extraction produced one useful Spanish question in 768.09 ms; the answer was preserved as a separate Evidence Entry and the second inference completed in 760.54 ms. The application enforced one question/two inferences, conservative review admitted zero claims, and the installed base remained unchanged. The second model output did not apply the answer as an explicit total and retained unknown quantity scope; this remains a semantic limitation.
 - Final reset: zero captured Northbridge observations and zero new evidence links.
 
 ## Deferred until essential-demo approval

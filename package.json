@@ -25,7 +25,8 @@
     "smoke:clarification": "node scripts/emergency/run-clarification-smoke.mjs",
     "smoke:correction": "node scripts/emergency/run-correction-smoke.mjs",
     "smoke:freshness": "node scripts/emergency/run-freshness-priority-smoke.mjs",
-    "smoke:export-delete": "node scripts/emergency/run-export-delete-smoke.mjs"
+    "smoke:export-delete": "node scripts/emergency/run-export-delete-smoke.mjs",
+    "smoke:performance": "node scripts/emergency/run-performance-benchmark.mjs after"
   },
   "dependencies": {
     "@qvac/sdk": "0.19.0",

@@ -1,0 +1,440 @@
+{
+  "schemaVersion": "prototype-performance-result-v1",
+  "benchmarkVersion": "prototype-performance-benchmark-v1",
+  "label": "prompt-v3",
+  "startedAt": "2026-09-11T00:47:19.680Z",
+  "completedAt": "2026-09-11T00:47:48.005Z",
+  "synthetic": true,
+  "environment": {
+    "sdk": "0.19.0",
+    "modelExport": "QWEN3_1_7B_INST_Q4",
+    "quantization": "Q4_0",
+    "modelConfig": {
+      "device": "gpu",
+      "gpu_layers": 99,
+      "ctx_size": 4096,
+      "tools": true,
+      "verbosity": 0
+    },
+    "generationParams": {
+      "temp": 0,
+      "top_p": 1,
+      "seed": 20260910,
+      "predict": 250,
+      "reasoning_budget": 0
+    },
+    "promptVersion": "prototype-equipment-extraction-v3"
+  },
+  "load": {
+    "loadMs": 4608.718699999999,
+    "info": {
+      "modelId": "13dd17f190cd6438",
+      "modelType": "llamacpp-completion",
+      "handlers": [
+        "batchCompletionStream",
+        "completionStream",
+        "finetune",
+        "translate"
+      ],
+      "displayName": "LLM (llama.cpp)",
+      "addonPackage": "@qvac/llm-llamacpp",
+      "loadedAt": "2026-09-11T00:47:24.284Z",
+      "name": "QWEN3_1_7B_INST_Q4",
+      "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
+      "toolDialect": "hermes"
+    }
+  },
+  "cases": [
+    {
+      "id": "explicit-single",
+      "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
+      "expected": {
+        "equipmentType": "MRI",
+        "manufacturer": "DemoScan",
+        "model": "DS-One",
+        "quantity": 1,
+        "quantityScope": "observed",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "clarification": false
+      },
+      "status": "failed",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.q Invalid input: expected number, received string",
+            "i.0.r Invalid string: must match pattern /^e\\d+$/"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"escáner\",\n      \"m\": \"\",\n      \"d\": \"DS-One\",\n      \"q\": \"un escáner\",\n      \"r\": \"d\",\n      \"c\": \"r\",\n      \"n\": false\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 17321.8165,
+            "promptTokens": 327,
+            "generatedTokens": 71,
+            "emittedTokens": 71,
+            "timeToFirstToken": 16365.942000000001,
+            "tokensPerSecond": 78.6926818022619,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.q Invalid input: expected number, received string"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"escáner\",\n      \"m\": \"MRI\",\n      \"d\": \"DemoScan\",\n      \"q\": \"un escáner\",\n      \"r\": \"e0\",\n      \"c\": \"r\",\n      \"n\": false\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 666.9016999999985,
+            "promptTokens": 348,
+            "generatedTokens": 74,
+            "emittedTokens": 74,
+            "timeToFirstToken": 65.106,
+            "tokensPerSecond": 130.10394250109005,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null,
+      "semantic": {
+        "passed": false,
+        "checks": {
+          "validDraft": false
+        },
+        "errors": [
+          "No valid Draft Claim set"
+        ]
+      }
+    },
+    {
+      "id": "explicit-quantity",
+      "note": "Observé tres escáneres CT Aster Imaging en Urgencias.",
+      "expected": {
+        "equipmentType": "CT",
+        "manufacturer": "Aster Imaging",
+        "model": null,
+        "quantity": 3,
+        "quantityScope": "observed",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "clarification": false
+      },
+      "status": "failed",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.q Invalid input: expected number, received string",
+            "i.0.r Invalid string: must match pattern /^e\\d+$/"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"escáneres CT\",\n      \"m\": \"\",\n      \"d\": \"Aster Imaging\",\n      \"q\": \"tres\",\n      \"r\": \"u\",\n      \"c\": \"r\",\n      \"n\": false\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 644.4989999999998,
+            "promptTokens": 323,
+            "generatedTokens": 71,
+            "emittedTokens": 71,
+            "timeToFirstToken": 63.775,
+            "tokensPerSecond": 130.11193291355437,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.q Invalid input: expected number, received string"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"escáneres\",\n      \"m\": \"\",\n      \"d\": \"CT\",\n      \"q\": \"tres\",\n      \"r\": \"e0\",\n      \"c\": \"r\",\n      \"n\": false\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 629.2196000000004,
+            "promptTokens": 344,
+            "generatedTokens": 69,
+            "emittedTokens": 69,
+            "timeToFirstToken": 65.836,
+            "tokensPerSecond": 130.3106303257388,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null,
+      "semantic": {
+        "passed": false,
+        "checks": {
+          "validDraft": false
+        },
+        "errors": [
+          "No valid Draft Claim set"
+        ]
+      }
+    },
+    {
+      "id": "known-missing-identity",
+      "note": "Vi un equipo de ultrasonido en Diagnóstico por imágenes; no pude identificar fabricante ni modelo.",
+      "expected": {
+        "equipmentType": "Ultrasound",
+        "manufacturer": null,
+        "model": null,
+        "quantity": 1,
+        "quantityScope": "observed",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "clarification": false
+      },
+      "status": "failed",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.q Invalid input: expected number, received string",
+            "i.0.r Invalid string: must match pattern /^e\\d+$/"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"ultrasonido\",\n      \"m\": \"\",\n      \"d\": \"\",\n      \"q\": \"¿Cuál es el fabricante y el modelo del equipo de ultrasonido?\",\n      \"r\": \"u\",\n      \"c\": \"r\",\n      \"n\": false\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 730.7268000000004,
+            "promptTokens": 334,
+            "generatedTokens": 81,
+            "emittedTokens": 81,
+            "timeToFirstToken": 64.896,
+            "tokensPerSecond": 129.61182059803855,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.q Invalid input: expected number, received string",
+            "i.0.r Invalid input: expected string, received undefined",
+            "i.0 Unrecognized key: \"rs\""
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"ultrasonido\",\n      \"m\": \"\",\n      \"d\": \"\",\n      \"q\": \"un\",\n      \"rs\": \"d\",\n      \"l\": \"\",\n      \"ls\": \"unknown\",\n      \"src\": \"d\",\n      \"c\": \"u\",\n      \"n\": false\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 753.4243999999999,
+            "promptTokens": 355,
+            "generatedTokens": 85,
+            "emittedTokens": 85,
+            "timeToFirstToken": 65.434,
+            "tokensPerSecond": 130.47515983207077,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null,
+      "semantic": {
+        "passed": false,
+        "checks": {
+          "validDraft": false
+        },
+        "errors": [
+          "No valid Draft Claim set"
+        ]
+      }
+    },
+    {
+      "id": "repeated-evidence",
+      "note": "Volví a observar el escáner MRI DemoScan DS-One de Radiología que ya estaba registrado.",
+      "expected": {
+        "equipmentType": "MRI",
+        "manufacturer": "DemoScan",
+        "model": "DS-One",
+        "quantity": 1,
+        "quantityScope": "observed",
+        "sourceType": "directObservation",
+        "certainty": "reported",
+        "clarification": false
+      },
+      "status": "failed",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.q Invalid input: expected number, received string",
+            "i.0.r Invalid input: expected string, received undefined",
+            "i.0 Unrecognized key: \"t\""
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"escáner\",\n      \"m\": \"\",\n      \"d\": \"MRI DemoScan DS-One\",\n      \"q\": \"un\",\n      \"qs\": \"u\",\n      \"t\": null,\n      \"l\": \"\",\n      \"ls\": \"unknown\",\n      \"src\": \"d\",\n      \"c\": \"r\",\n      \"n\": false\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 851.6422999999995,
+            "promptTokens": 332,
+            "generatedTokens": 96,
+            "emittedTokens": 96,
+            "timeToFirstToken": 66.191,
+            "tokensPerSecond": 129.23670914874742,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.q Invalid input: expected number, received string",
+            "i.0.r Invalid string: must match pattern /^e\\d+$/"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"escáner\",\n      \"m\": \"Radiología\",\n      \"d\": \"DS-One\",\n      \"q\": \"un/una\",\n      \"r\": \"d\",\n      \"c\": \"r\",\n      \"n\": false\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 659.3883000000023,
+            "promptTokens": 353,
+            "generatedTokens": 73,
+            "emittedTokens": 73,
+            "timeToFirstToken": 66.126,
+            "tokensPerSecond": 129.77247152560872,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null,
+      "semantic": {
+        "passed": false,
+        "checks": {
+          "validDraft": false
+        },
+        "errors": [
+          "No valid Draft Claim set"
+        ]
+      }
+    },
+    {
+      "id": "material-quantity-ambiguity",
+      "note": "La responsable de radiología dijo que hay tres escáneres MRI DemoScan en la sede, pero no quedó claro si vio tres o si eran el total.",
+      "expected": {
+        "equipmentType": "MRI",
+        "manufacturer": "DemoScan",
+        "model": null,
+        "quantity": 3,
+        "quantityScope": "unknown",
+        "sourceType": "attributedStatement",
+        "certainty": "reported",
+        "clarification": true,
+        "clarificationKind": "qty"
+      },
+      "status": "failed",
+      "attempts": [
+        {
+          "attemptNumber": 1,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.q Invalid input: expected number, received string",
+            "i.0.ls Invalid option: expected one of \"room\"|\"dept\"|\"site\"|\"customer\"|\"unknown\"",
+            "i.0.r Invalid input: expected string, received undefined",
+            "i.0 Unrecognized key: \"t\""
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"escáneres MRI\",\n      \"m\": \"\",\n      \"d\": \"DemoScan\",\n      \"q\": \"tres\",\n      \"qs\": \"u\",\n      \"t\": \"u\",\n      \"l\": \"\",\n      \"ls\": \"sede\",\n      \"src\": \"d\",\n      \"c\": \"r\",\n      \"n\": false\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 851.6221000000005,
+            "promptTokens": 345,
+            "generatedTokens": 97,
+            "emittedTokens": 97,
+            "timeToFirstToken": 63.417,
+            "tokensPerSecond": 129.4222032462291,
+            "backendDevice": "gpu"
+          }
+        },
+        {
+          "attemptNumber": 2,
+          "status": "failed",
+          "failureCategory": "validation",
+          "errors": [
+            "i.0.e Too big: expected string to have <=40 characters",
+            "i.0.r Invalid input: expected string, received undefined"
+          ],
+          "stopReason": null,
+          "rawOutput": "{\n  \"i\": [\n    {\n      \"e\": \"La responsable de radiología dijo que hay tres escáneres MRI DemoScan en la sede, pero no quedó claro si vio tres o si eran el total.\"\n    }\n  ],\n  \"x\": null\n}",
+          "metrics": {
+            "totalMs": 556.9419000000016,
+            "promptTokens": 366,
+            "generatedTokens": 60,
+            "emittedTokens": 60,
+            "timeToFirstToken": 68.75,
+            "tokensPerSecond": 130.18996886289912,
+            "backendDevice": "gpu"
+          }
+        }
+      ],
+      "draft": null,
+      "semantic": {
+        "passed": false,
+        "checks": {
+          "validDraft": false
+        },
+        "errors": [
+          "No valid Draft Claim set"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "schemaValid": {
+      "numerator": 0,
+      "denominator": 5
+    },
+    "semanticPass": {
+      "numerator": 0,
+      "denominator": 5
+    },
+    "zeroUnsupportedIdentitiesOrQuantities": false,
+    "explicitCasesWithoutQuestion": {
+      "numerator": 0,
+      "denominator": 4
+    },
+    "ambiguousCaseHasValidQuestion": false,
+    "under15Seconds": {
+      "numerator": 4,
+      "denominator": 5
+    },
+    "retries": 5,
+    "failures": 10,
+    "latencyMs": {
+      "count": 5,
+      "min": 1273.7186000000002,
+      "median": 1484.1512000000002,
+      "max": 17988.7182
+    },
+    "ttftMs": {
+      "count": 0,
+      "min": null,
+      "median": null,
+      "max": null
+    },
+    "promptTokens": {
+      "count": 0,
+      "min": null,
+      "median": null,
+      "max": null
+    },
+    "outputTokens": {
+      "count": 0,
+      "min": null,
+      "median": null,
+      "max": null
+    },
+    "throughputTokensPerSecond": {
+      "count": 0,
+      "min": null,
+      "median": null,
+      "max": null
+    }
+  },
+  "failure": null
+}

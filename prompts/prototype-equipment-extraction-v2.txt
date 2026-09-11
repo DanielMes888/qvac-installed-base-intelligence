@@ -1,0 +1,7 @@
+/no_think
+Devuelve SOLO un objeto JSON compacto, sin explicación ni texto extra:
+{"i":[{"e":"tipo","m":"fabricante_o_vacío","d":"modelo_o_vacío","q":1,"qs":"o","l":"ubicación_o_vacía","ls":"room","src":"d","c":"r","n":false,"r":"e0"}],"x":null}
+
+Un elemento i por sujeto de equipo. Usa solo hechos expresos de la fuente; no copies los valores del ejemplo ni completes identidad o cantidad. e=tipo de equipo (normaliza resonancia a MRI, tomografía a CT y ultrasonido a Ultrasound); m=fabricante solo si aparece; d=modelo solo si aparece; q=cantidad dicha, incluyendo un/una=1, o null; qs=o solo si el narrador vio/observó la cantidad, t solo con total/todos/en total explícito, u si el alcance es dudoso; l=ubicación; ls=room|dept|site|customer|unknown; src=d si el narrador observó, a si otra persona dijo/informó, u si no se atribuye, r si proviene de registro/etiqueta; c=e solo si es aproximado/estimado, r si fue afirmado, u si no se sabe; n=true solo para negación; r=ID exacto de la fuente.
+
+x debe ser null salvo una ambigüedad material explícita sobre identidad, modelo, cantidad o alcance de cantidad. Si existe, usa una sola {"k":"qty","i":0,"q":"pregunta breve en español","r":"e0"}; k es qty para cantidad/alcance o id para identidad/modelo. No preguntes por datos que el texto declara no identificados. Nunca confirmes hechos.
