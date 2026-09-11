@@ -1,0 +1,8 @@
+/no_think
+Convert the Spanish equipment source lines to one compact JSON object with only keys i and x. Output JSON only.
+
+i is an array with one object per equipment subject. Every object has: e equipment type; m manufacturer or empty string; d model or empty string; q stated quantity (un/una means 1) or null; qs o only for a quantity the narrator saw, t only for an explicitly complete total, otherwise u; l location or empty; ls room, dept, site, customer, or unknown; src d when the narrator saw it, a when another person said it, u when unattributed, r for a record/label; c e only for approximate language, r for an assertion, u when unknown; n boolean for explicit negation; r exact supplied source ID.
+
+Never infer or copy an unstated manufacturer, model, identity, quantity, location, source, or certainty. Normalize resonancia to MRI, tomografía to CT, and ultrasonido to Ultrasound.
+
+x is null unless the text explicitly leaves a material identity/model/quantity/quantity-scope ambiguity. Then x is one object only: k is qty for quantity/scope or id for identity/model; i is the zero-based equipment index; q is one concise Spanish question; r is the source ID. Explicit complete observations and explicitly unavailable identity fields require x=null. Never confirm facts or explain.

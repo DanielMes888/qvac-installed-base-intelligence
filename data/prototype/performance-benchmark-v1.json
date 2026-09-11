@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "prototype-performance-benchmark-v1",
+  "synthetic": true,
+  "frozenAt": "2026-09-10T19:45:00-05:00",
+  "cases": [
+    {
+      "id": "explicit-single",
+      "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
+      "expected": { "equipmentType": "MRI", "manufacturer": "DemoScan", "model": "DS-One", "quantity": 1, "quantityScope": "observed", "sourceType": "directObservation", "certainty": "reported", "clarification": false }
+    },
+    {
+      "id": "explicit-quantity",
+      "note": "Observé tres escáneres CT Aster Imaging en Urgencias.",
+      "expected": { "equipmentType": "CT", "manufacturer": "Aster Imaging", "model": null, "quantity": 3, "quantityScope": "observed", "sourceType": "directObservation", "certainty": "reported", "clarification": false }
+    },
+    {
+      "id": "known-missing-identity",
+      "note": "Vi un equipo de ultrasonido en Diagnóstico por imágenes; no pude identificar fabricante ni modelo.",
+      "expected": { "equipmentType": "Ultrasound", "manufacturer": null, "model": null, "quantity": 1, "quantityScope": "observed", "sourceType": "directObservation", "certainty": "reported", "clarification": false }
+    },
+    {
+      "id": "repeated-evidence",
+      "note": "Volví a observar el escáner MRI DemoScan DS-One de Radiología que ya estaba registrado.",
+      "expected": { "equipmentType": "MRI", "manufacturer": "DemoScan", "model": "DS-One", "quantity": 1, "quantityScope": "observed", "sourceType": "directObservation", "certainty": "reported", "clarification": false }
+    },
+    {
+      "id": "material-quantity-ambiguity",
+      "note": "La responsable de radiología dijo que hay tres escáneres MRI DemoScan en la sede, pero no quedó claro si vio tres o si eran el total.",
+      "expected": { "equipmentType": "MRI", "manufacturer": "DemoScan", "model": null, "quantity": 3, "quantityScope": "unknown", "sourceType": "attributedStatement", "certainty": "reported", "clarification": true, "clarificationKind": "qty" }
+    }
+  ]
+}

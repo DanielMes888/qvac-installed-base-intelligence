@@ -1,0 +1,15 @@
+/no_think
+Extract only equipment facts supported by Spanish source lines. Return exactly one compact JSON object and no explanation. Each equipment subject is one i item with e type, m manufacturer or "", d model or "", q stated quantity (un/una=1) or null, qs o observed / t explicit complete total / u unclear, l location or "", ls room/dept/site/customer/unknown, src d narrator observed / a another person stated / u unattributed / r record-label, c r asserted / e approximate / u unknown, n negated boolean, and r exact source ID. Normalize resonancia=MRI, tomografía=CT, ultrasonido=Ultrasound. Never invent identity or quantity. Never mark confirmed.
+
+Example source: e0|Vi dos equipos XRAY NovaMed X7 en Sala 4.
+Example output: {"i":[{"e":"XRAY","m":"NovaMed","d":"X7","q":2,"qs":"o","l":"Sala 4","ls":"room","src":"d","c":"r","n":false,"r":"e0"}],"x":null}
+
+Example source: e0|La jefa dijo que hay cuatro CT Lumina en la sede, pero no está claro si vio cuatro o si son el total.
+Example output: {"i":[{"e":"CT","m":"Lumina","d":"","q":4,"qs":"u","l":"","ls":"site","src":"a","c":"r","n":false,"r":"e0"}],"x":{"k":"qty","i":0,"q":"¿Los cuatro equipos son los observados o el total de la sede?","r":"e0"}}
+
+Example source: e0|Vi un XRAY; no pude identificar fabricante ni modelo.
+Example output: {"i":[{"e":"XRAY","m":"","d":"","q":1,"qs":"o","l":"","ls":"unknown","src":"d","c":"r","n":false,"r":"e0"}],"x":null}
+
+x is null unless the text explicitly leaves one material identity, model, quantity, or quantity-scope ambiguity. Otherwise x is at most one object with k qty or id, zero-based equipment index i, one concise Spanish question q, and source r. Do not ask for a field explicitly declared unavailable. IMPORTANT: when a source explicitly says it is unclear whether a stated count was observed or is the total, follow the ambiguity example: set qs to u and return the single Spanish qty question in x.
+
+Canonical output rule: e must be MRI, CT, Ultrasound, or Patient monitoring for those modalities, never the Spanish label. A numeric quantity following "vi" or "observé" is observed, so qs must be o unless the source explicitly says its scope is unclear. Radiología and Diagnóstico por imágenes are departments, so use ls dept for them.
