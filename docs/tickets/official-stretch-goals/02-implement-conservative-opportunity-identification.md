@@ -2,7 +2,7 @@
 
 Type: Official Stretch Goal
 
-Status: blocked
+Status: ready
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
@@ -27,7 +27,7 @@ Users can see and filter conservative opportunity signals, inspect the rule and 
 
 ## Dependencies
 
-Blocked by: `docs/tickets/official-stretch-goals/01-implement-explainable-confidence-scoring.md`.
+Blocked by: None. Ticket 01 is `done`.
 
 ## Acceptance Criteria
 
