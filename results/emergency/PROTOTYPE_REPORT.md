@@ -25,7 +25,10 @@ The project owner authorized a deadline exception on 2026-09-10. [ADR 0006](../.
 | Quantization | Q4_0 |
 | Model checksum | `c876f159707a4e4f70e045106c69db15bfc935a4981706fd4f65c6e7ea1e81c5` |
 | Runtime | Node 22.17.0; GPU request with 99 GPU layers; 4096-token context |
-| Generation | temperature 0, top-p 1, seed 20260910, maximum 250 generated tokens, at most one retry |
+| Prompt | `prototype-equipment-extraction-v9` |
+| Generation | temperature 0, top-p 1, seed 20260910, maximum 250 generated tokens, `reasoning_budget: 0`, at most one retry |
+| Output path | `json_object` first attempt; compact raw JSON for the single allowed retry |
+| Lifecycle | One model load is reused; startup performs one local warmup before capture |
 | Hardware | Windows 11 Home 10.0.26200; Ryzen 5 8645HS; about 16 GB RAM; RTX 4050 Laptop GPU with 6,141 MiB VRAM |
 | Topology | Responsive browser UI; loopback-only Node host; local JSON workspace; same computer |
 
@@ -40,20 +43,23 @@ The preferred one-tool contract failed in the bounded probe: none of three diagn
 - `simple-json-no-grammar-probe.json` and `simple-json-strict-probe.json`: preserved fallback iterations.
 - `simple-json-probe.json`: final three-note diagnostic probe; 3/3 structurally valid, with serious semantic errors on two complex cases.
 - `demo-smoke.json`: final real-QVAC vertical-slice evidence.
-- `clarification-smoke.json`: dedicated real-QVAC clarification attempt; initial extraction succeeded but produced no question, so the bounded workflow stopped before a second inference.
+- `clarification-smoke.json`: successful bounded real-QVAC v9 clarification workflow with one question, two inferences, separate answer evidence, conservative review, and unchanged installed base; answer incorporation remains limited.
+- `performance-baseline.json`: preserved five-case baseline.
+- `performance-prompt-v9-warm.json`: selected five-case v9 benchmark result.
 - `correction-smoke.json`: deterministic public-seam correction workflow using a controlled Draft Claim; it is provenance and workflow evidence rather than model-quality evidence.
 - `freshness-priority-smoke.json`: deterministic evidence-freshness, prioritization, filtering, recalculation, and relationship workflow using a controlled adapter.
 
-The smoke note was: `Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.` The real local run produced one compact item and five supported atomic claims. Its single attempt recorded:
+The smoke note was: `Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.` The selected v9 real local run produced one compact item and five supported atomic claims with department scope. Its single attempt recorded:
 
 | Metric | Result |
 | --- | ---: |
-| Cached model load | 5,048.09 ms |
-| End-to-end extraction | 23,196.61 ms |
-| Prompt tokens | 247 |
-| Generated/emitted tokens | 60 / 60 |
-| TTFT | 21,346.45 ms |
-| Throughput | 71.68 tokens/s |
+| Cached model load | 4,732.31 ms |
+| Startup warmup | Completed before capture |
+| End-to-end extraction | 557.60 ms |
+| Prompt tokens | 639 |
+| Generated/emitted tokens | 56 / 56 |
+| TTFT | 100.87 ms |
+| Throughput | 131.05 tokens/s |
 | Backend | GPU |
 | Retry | None |
 
@@ -63,11 +69,29 @@ The Spanish product-clarity pass keeps this adapter, compact raw-JSON contract, 
 
 The subsequent operational UI pass moves the pitch into the README and demo guide. The application now separates capture, review and reconciliation, installed-base records, and prioritized verification into focused workspaces. The normal workflow hides tokens, source offsets, internal IDs, and raw model output. Each extracted datum begins without a selected decision, and the completion action remains disabled until a person explicitly accepts or rejects every datum. This changes presentation and interaction only; the QVAC adapter, prompt, compact contract, persistence, and reconciliation rules remain unchanged.
 
+## Bounded QVAC v9 optimization result
+
+The optimization used the five fixed synthetic cases in `performance-benchmark-v1.json`; it does not replace E4 or constitute a held-out accuracy evaluation. The selected candidate retains startup warmup, loaded-model reuse, `reasoning_budget: 0`, `json_object` output, and one compact raw-JSON retry only after an invalid first attempt.
+
+| Measure | Preserved baseline | Selected v9 |
+| --- | ---: | ---: |
+| Schema-valid cases | 5/5 | 5/5 |
+| Semantic-checklist passes | 2/5 | 5/5 |
+| Unsupported identities or quantities | Present | 0 |
+| Explicit cases without a question | 4/4 | 4/4 |
+| Useful ambiguity question | 0/1 | 1/1 |
+| Location-scope inspection | Not a selection gate | Four department cases `dept`; ambiguous site case `site` |
+| First measured extraction | 20,662.13 ms | Startup warmup separated from capture |
+| Five warm extraction range | 480.58–20,662.13 ms | 578.72–855.50 ms |
+| Warm median | 555.60 ms | 600.34 ms |
+
+Prompt/configuration iterations remain preserved rather than overwritten. v2–v6 failed one or more structural, semantic, unsupported-value, clarification, or latency checks. v7 with `json_object` was the previous best at 5/5 structural and semantic checklist passes with five sub-second warm runs, but the primary smoke exposed `site` where Radiología required `dept`. v8 corrected the department scopes but lost the ambiguity question. v9 retained the v8 scope correction and restored the single useful clarification, so v9 is selected. The failed v7 primary smoke remains in `demo-smoke-prompt-v7-failed.json`; E4 and E4-v2 remain failed and unchanged.
+
 ## Bounded clarification result
 
 The clarification lifecycle stores one substantive answer as a dated Evidence Entry before one final local extraction. Skip and unknown outcomes make the initial drafts final without another inference. A successful final extraction replaces active drafts while both attempt records remain available; a failed final extraction exposes no active drafts. Review is blocked while clarification is pending and is always required after it finishes. No clarification action updates the installed-base working view.
 
-`npm.cmd run smoke:clarification` exercised the unchanged real adapter with a synthetic quantity-scope ambiguity. The initial GPU extraction succeeded structurally in 19,663.81 ms with 272 prompt tokens, 64 generated tokens, 16,476.83 ms TTFT, and 74.24 tokens/s. It returned `x: null`, so deterministic logic presented no question and the smoke stopped before a second inference. This is a preserved failed real-model result, not a clarification pass. The controlled public-seam tests establish workflow behavior; they do not prove that the current model will emit a useful clarification in practice.
+`npm.cmd run smoke:clarification` exercised v9 with a synthetic quantity-scope ambiguity. The initial GPU extraction succeeded in 768.09 ms, returned one concise Spanish question, and identified unknown quantity scope. The answer was stored as a dated Evidence Entry before a second and final 760.54 ms inference. The application exposed no second question, retained both attempt records, conservatively rejected the three final claims, and kept accepted-claim and equipment-record counts unchanged. The second output repeated the initial unknown quantity scope instead of applying the answer as an explicit site total; therefore the real smoke validates question generation, lifecycle bounds, provenance, and safety, but not complete semantic incorporation of the answer.
 
 ## Reviewer-correction result
 
@@ -97,7 +121,7 @@ Whole-Workspace deletion requires the exact confirmation `ELIMINAR`, offers expo
 
 ## Essential demo-readiness pass
 
-On 2026-09-10, the application was reset and started at `127.0.0.1:4173`. The page, synthetic notice, capture/review controls, customer view, verification panel, aggregate panel, and data-control workspace loaded. The complete test suite now passes 47/47, including focused clarification, reviewer-correction, freshness, priority, export, confirmed deletion, restart persistence, path safety, filtering, and no-side-effect coverage.
+The application was reset and started at `127.0.0.1:4173`. The page, synthetic notice, capture/review controls, customer view, verification panel, aggregate panel, and data-control workspace loaded. The complete suite now passes 50/50, including the v9 configuration, recorded semantic/clarification/location-scope gates, focused clarification, reviewer correction, freshness, priority, export, confirmed deletion, restart persistence, path safety, filtering, and no-side-effect coverage.
 
 The running application then processed the rehearsed note through its production loopback API and real QVAC adapter. It saved the note, produced five Draft Claims, required review of all five, suggested `nb-mri-01`, and linked the repeated evidence. Northbridge had two equipment records before and after the link, the selected MRI gained one evidence reference, three verification items were returned, and the aggregate reported three verified and two provisional records. Reset restored zero observations and zero new evidence links.
 
@@ -141,7 +165,7 @@ npm.cmd run smoke:export-delete
 - The successful smoke uses one deliberately simple synthetic sentence and cannot support an accuracy claim.
 - Deterministic validation establishes structure and evidence bounds, not semantic truth. Human review is the semantic gate, and no choice is preselected.
 - The raw fallback applies one source type, certainty, location scope, and evidence reference to all atomic claims derived from an equipment row. It is suitable for the rehearsed uniform sentence but can flatten mixed-certainty statements; those outputs require rejection in this prototype.
-- The accepted second-inference clarification lifecycle is implemented, but its dedicated real-model smoke did not receive a clarification candidate from the current 1.7B model.
+- The dedicated v9 real-model clarification smoke produced one useful question and completed the bounded two-inference lifecycle, but its second output did not incorporate the answer as an explicit total; human review remains necessary.
 - Reviewer correction supports only the six approved fields and a single local reviewer attribution. It does not provide general record editing, identity verification, or multi-user authorization.
 - Freshness has one configurable 90-day prototype band and date-based tie-breaking. No real Philips freshness policy or operational threshold has been validated.
 - Local persistence is a single JSON file written through a completed temporary file followed by replacement. The prototype now supports validated local JSON export and explicit whole-Workspace deletion; it still has no migrations, encryption, authentication, synchronization, import, observation-level deletion, or production recovery guarantees.

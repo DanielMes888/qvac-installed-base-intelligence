@@ -64,7 +64,7 @@ Cuando QVAC devuelve una ambigüedad material, **Revisar** muestra una sola preg
 
 Una respuesta aparece debajo de la observación original como evidencia separada y fechada. Los borradores iniciales se reemplazan; la revisión explícita sigue siendo obligatoria y la base instalada no cambia hasta después de la revisión y una reconciliación humana.
 
-El smoke real dedicado usó: **La directora de radiología dijo que hay tres escáneres MRI DemoScan. No quedó claro si eran los observados o el total de la sede.** La extracción inicial terminó en 19.66 segundos, pero el modelo de 1.7B no formuló una aclaración. El script se detuvo de forma segura sin segunda inferencia. No dependa de este caso para la demostración principal y no describa la aclaración real como validada con el modelo actual.
+El smoke real dedicado con el prompt v9 usó: **La directora de radiología dijo que hay tres escáneres MRI DemoScan. No quedó claro si eran los observados o el total de la sede.** La extracción inicial formuló una pregunta útil en español en 768.09 ms. La respuesta se guardó como evidencia separada y el segundo y último análisis terminó en 760.54 ms. La aplicación impidió otra pregunta y una revisión conservadora dejó la base instalada sin cambios. Sin embargo, la segunda salida conservó el alcance de cantidad como desconocido en vez de incorporar la respuesta como total explícito. Presente esto como validación del flujo acotado y sus barreras, no como resolución semántica completa de la aclaración.
 
 ## Guion de presentación: entre tres y cinco minutos
 
@@ -88,7 +88,7 @@ El smoke real dedicado usó: **La directora de radiología dijo que hay tres esc
 
 **Qué hacer:** pulse **Guardar y analizar con QVAC**.
 
-**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 20–30 segundos por la carga del modelo. El smoke test principal final tardó 23.20 segundos de extremo a extremo, incluidos 5.05 segundos de carga desde la caché.
+**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. El inicio carga el modelo y ejecuta un calentamiento antes de habilitar la captura; el calentamiento v9 registrado tardó 27.01 segundos después de una carga de 4.52 segundos. Una vez listo, las cinco extracciones del benchmark quedaron entre 578.72 y 855.50 ms, y el smoke principal v9 extrajo el caso ensayado en 557.60 ms.
 
 **Resultado visible:** el botón queda bloqueado durante la inferencia, la barra superior indica que QVAC está analizando y luego vuelve a mostrar **QVAC local disponible**.
 

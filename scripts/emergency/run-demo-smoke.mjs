@@ -13,7 +13,7 @@ const expectedValues = new Map([
   ['manufacturer', 'DemoScan'],
   ['model', 'DS-One'],
   ['quantity', 1],
-  ['location', 'Radiology']
+  ['location', 'Radiología']
 ])
 
 const record = {

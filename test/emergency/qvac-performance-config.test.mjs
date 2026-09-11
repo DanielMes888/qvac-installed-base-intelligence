@@ -26,3 +26,19 @@ test('benchmark and prompt history remain versioned and fixed', async () => {
     assert.ok(prompt.trim().length > 0)
   }
 })
+
+test('recorded v9 evidence preserves semantic, clarification, and location-scope gates', async () => {
+  const result = JSON.parse(await readFile(new URL('../../results/emergency/performance-prompt-v9-warm.json', import.meta.url), 'utf8'))
+  assert.deepEqual(result.summary.schemaValid, { numerator: 5, denominator: 5 })
+  assert.deepEqual(result.summary.semanticPass, { numerator: 5, denominator: 5 })
+  assert.equal(result.summary.zeroUnsupportedIdentitiesOrQuantities, true)
+  assert.deepEqual(result.summary.explicitCasesWithoutQuestion, { numerator: 4, denominator: 4 })
+  assert.equal(result.summary.ambiguousCaseHasValidQuestion, true)
+
+  const cases = new Map(result.cases.map((item) => [item.id, item]))
+  for (const id of ['explicit-single', 'explicit-quantity', 'known-missing-identity', 'repeated-evidence']) {
+    assert.ok(cases.get(id).draft.claims.every(({ locationScope }) => locationScope === 'dept'))
+  }
+  assert.ok(cases.get('material-quantity-ambiguity').draft.claims.every(({ locationScope }) => locationScope === 'site'))
+  assert.ok(result.cases.every((item) => item.attempts.reduce((total, attempt) => total + attempt.metrics.totalMs, 0) < 1_000))
+})

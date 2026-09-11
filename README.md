@@ -36,7 +36,11 @@ The dedicated command below preserves the current real-model result in [clarific
 npm.cmd run smoke:clarification
 ```
 
-On the recorded run, the 1.7B model completed the initial extraction but returned no clarification candidate, so the command stopped before a second inference. Controlled-adapter tests cover the complete lifecycle; this real-model limitation must remain visible and must not be presented as a successful clarification demonstration.
+With prompt `prototype-equipment-extraction-v9`, the recorded local-GPU smoke produced one useful Spanish quantity-scope question in 768.09 ms. The answer was saved as a separate Evidence Entry and one final inference ran in 760.54 ms. The application enforced one question and two inferences, then a conservative review rejected every final draft and left the installed base unchanged. The second model output repeated `quantityScope: unknown` instead of applying the answer as an explicit total, so the workflow and safety gates passed but answer incorporation remains a semantic limitation.
+
+## QVAC v9 optimization result
+
+The bounded five-case prototype benchmark retains startup warmup, one reused loaded model, `reasoning_budget: 0`, `json_object` output, and at most one compact raw-JSON retry. Compared with the preserved baseline, v9 improved schema-valid results from 5/5 to 5/5, semantic checklist passes from 2/5 to 5/5, the useful clarification result from 0/1 to 1/1, and the first measured extraction from 20.66 seconds to five warm extractions between 578.72 and 855.50 ms. It produced zero unsupported identities or quantities in the five cases. The recorded evidence also verifies department scope for the four explicit department cases and site scope for the ambiguous site case. This small tuned synthetic benchmark is prototype evidence, not general accuracy evidence.
 
 ## Corrección durante la revisión
 
