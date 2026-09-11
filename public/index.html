@@ -127,6 +127,11 @@
           <div id="aggregate"></div>
         </aside>
       </div>
+      <section class="surface opportunity-panel" aria-labelledby="opportunity-title">
+        <div class="surface-heading"><div><span class="icon-tile" aria-hidden="true">?</span><div><h2 id="opportunity-title">Posibles oportunidades para revisar</h2><p>Señales explicables del prototipo; no son conclusiones comerciales.</p></div></div></div>
+        <div class="opportunity-filters" aria-label="Filtros de oportunidades"><label>Tipo<select id="opportunity-type"><option value="">Todos</option><option value="reportedAgeReview">Antigüedad reportada</option><option value="incompleteInformationReview">Información incompleta</option><option value="staleEvidenceReview">Vigencia</option><option value="unknownObservationDateReview">Fecha desconocida</option><option value="invalidObservationDateReview">Fecha no aplicable</option><option value="materialVerificationReview">Verificación material</option></select></label><label>Estado<select id="opportunity-status"><option value="">Todos</option><option value="unreviewed">Por revisar</option><option value="dismissed">Descartadas</option></select></label></div>
+        <div id="opportunities" aria-live="polite"></div>
+      </section>
     </section>
 
     <section id="workspace-verification" class="workspace" aria-labelledby="verification-title">

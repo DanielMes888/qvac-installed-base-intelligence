@@ -93,3 +93,5 @@ Run one local/offline integrated demonstration over synthetic data: core explici
 ## Owner validation note, 2026-09-11
 
 The owner functionally approved Ticket 01 after visual validation. The owner did not immediately understand what the Equipment Records section represents or how Confidence scoring fits the application journey. This is non-blocking for Ticket 01 and is deliberately deferred to this ticket; no general redesign is authorized before its dependencies resolve.
+
+The owner also approved Ticket 02 visually and functionally. Future integration must explain the purpose of **Posibles oportunidades para revisar**, distinguish data follow-up from a commercial opportunity, and make the relationship among Confidence scoring, Verification Items, and opportunity signals evident. This is non-blocking for Ticket 02 and no redesign is authorized as part of its closure.

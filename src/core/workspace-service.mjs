@@ -1,15 +1,18 @@
 import { randomUUID } from 'node:crypto'
 
 import { calculateEquipmentConfidence, CONFIDENCE_SCORE_POLICY } from './confidence-score.mjs'
+import { identifyOpportunitySignals, OPPORTUNITY_SIGNAL_POLICY } from './opportunity-signals.mjs'
 import { createWorkspaceExport, DELETE_CONFIRMATION, emptyWorkspaceState } from './workspace-export.mjs'
 
 export class WorkspaceService {
-  constructor(state, persist, { now = () => new Date(), confidencePolicy = CONFIDENCE_SCORE_POLICY } = {}) {
+  constructor(state, persist, { now = () => new Date(), confidencePolicy = CONFIDENCE_SCORE_POLICY, opportunityPolicy = OPPORTUNITY_SIGNAL_POLICY } = {}) {
     this.state = structuredClone(state)
     this.state.evidenceEntries ??= []
     this.state.verificationItems ??= []
+    this.state.opportunitySignalReviews ??= []
     this.now = now
     this.confidencePolicy = confidencePolicy
+    this.opportunityPolicy = opportunityPolicy
     for (const record of this.state.equipmentRecords) {
       record.evidenceObservationIds ??= []
       record.evidenceEntryIds ??= []
@@ -316,8 +319,51 @@ export class WorkspaceService {
       unlinkedClaims: unlinkedSubjects.size,
       reportedTotals: acceptedClaims.filter((claim) => claim.type === 'quantity' && claim.quantityScope === 'reportedTotal'),
       verificationItems: this.verificationItems({ customerId }).slice(0, 3),
+      opportunitySignals: this.opportunitySignals({ customerId }),
       freshnessPolicy: structuredClone(FRESHNESS_POLICY)
     }
+  }
+
+  opportunitySignals({ customerId, equipmentRecordId, type, status } = {}) {
+    this.recalculateVerificationItems()
+    return this.state.equipmentRecords
+      .filter((record) => !customerId || record.customerId === customerId)
+      .filter((record) => !equipmentRecordId || record.id === equipmentRecordId)
+      .flatMap((record) => identifyOpportunitySignals({
+        record: this.equipmentRecordWithFreshness(record),
+        observations: this.state.observations,
+        evidenceEntries: this.state.evidenceEntries,
+        verificationItems: this.state.verificationItems,
+        evaluatedAt: this.now(),
+        policy: this.opportunityPolicy
+      }))
+      .map((signal) => ({ ...signal, review: structuredClone(this.state.opportunitySignalReviews.find(({ signalId }) => signalId === signal.id) ?? signal.review) }))
+      .filter((signal) => !type || signal.type === type)
+      .filter((signal) => !status || signal.review.status === status)
+      .sort((left, right) => left.id.localeCompare(right.id))
+  }
+
+  opportunitySignalAggregate() {
+    const signals = this.opportunitySignals()
+    return {
+      total: signals.length,
+      unreviewed: signals.filter(({ review }) => review.status === 'unreviewed').length,
+      dismissed: signals.filter(({ review }) => review.status === 'dismissed').length,
+      byType: Object.entries(signals.reduce((counts, { type }) => ({ ...counts, [type]: (counts[type] ?? 0) + 1 }), {})).sort(([left], [right]) => left.localeCompare(right)).map(([type, count]) => ({ type, count }))
+    }
+  }
+
+  async dismissOpportunitySignal(signalId, reason) {
+    if (!this.opportunitySignals().some(({ id }) => id === signalId)) throw new Error('Señal de oportunidad desconocida')
+    const normalizedReason = reason?.trim()
+    if (!normalizedReason) throw new Error('El motivo de descarte es obligatorio')
+    if (normalizedReason.length > 200) throw new Error('El motivo de descarte no puede exceder 200 caracteres')
+    const review = { signalId, status: 'dismissed', reason: normalizedReason, actor: 'Usuario local de demostración', reviewedAt: this.timestamp() }
+    const index = this.state.opportunitySignalReviews.findIndex((item) => item.signalId === signalId)
+    if (index === -1) this.state.opportunitySignalReviews.push(review)
+    else this.state.opportunitySignalReviews[index] = review
+    await this.persist(this.state)
+    return this.opportunitySignals().find(({ id }) => id === signalId)
   }
 
   verificationItems({ priority, customerId, equipmentRecordId, reasonCode, observationId } = {}) {

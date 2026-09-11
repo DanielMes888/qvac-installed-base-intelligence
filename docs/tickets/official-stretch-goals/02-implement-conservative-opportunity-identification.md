@@ -2,7 +2,7 @@
 
 Type: Official Stretch Goal
 
-Status: ready
+Status: done
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 

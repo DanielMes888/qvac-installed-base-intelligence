@@ -1,0 +1,465 @@
+{
+  "schemaVersion": "opportunity-identification-smoke-v1",
+  "synthetic": true,
+  "evaluatedAt": "2026-09-10T12:00:00.000Z",
+  "execution": "local deterministic rules; no QVAC inference",
+  "signals": [
+    {
+      "id": "incomplete:incomplete-information-review:22310a33abf6",
+      "type": "incompleteInformationReview",
+      "label": "Posible oportunidad para completar información",
+      "reason": "El registro conserva 2 campos básicos sin información: fabricante, modelo.",
+      "suggestedVerification": "Revisar estos campos con la evidencia disponible o confirmarlos en una futura conversación.",
+      "facts": [
+        {
+          "key": "missingFields",
+          "label": "Campos sin información",
+          "value": [
+            "manufacturer",
+            "model"
+          ],
+          "evidenceIds": [
+            "e-incomplete"
+          ]
+        }
+      ],
+      "evidenceIds": [
+        "e-incomplete"
+      ],
+      "evidence": [
+        {
+          "id": "e-incomplete",
+          "type": "seedReference",
+          "text": "CT sintético sin fabricante ni modelo.",
+          "author": "Fuente B",
+          "observationDate": "2026-01-01",
+          "locationScope": "unknown"
+        }
+      ],
+      "rule": {
+        "id": "incomplete-information-review",
+        "version": "opportunity-signals-v1",
+        "thresholds": {
+          "minimumMissingFields": 2,
+          "fields": [
+            "manufacturer",
+            "model",
+            "location"
+          ]
+        }
+      },
+      "context": {
+        "customerId": "c1",
+        "equipmentRecordId": "incomplete",
+        "confidence": {
+          "available": true,
+          "total": 20,
+          "band": {
+            "key": "low",
+            "label": "Baja"
+          },
+          "version": "equipment-confidence-v1",
+          "components": {
+            "completeness": {
+              "points": 20,
+              "maximum": 40,
+              "availableFields": [
+                "modality",
+                "location"
+              ],
+              "missingFields": [
+                "manufacturer",
+                "model"
+              ],
+              "reason": "2 de 4 campos completos; faltan fabricante, modelo."
+            },
+            "freshness": {
+              "points": 0,
+              "maximum": 30,
+              "latestObservationDate": "2026-01-01",
+              "ageDays": 252,
+              "unknownDateSourceCount": 0,
+              "futureDateSourceCount": 0,
+              "reason": "Evidencia muy antigua: la observación aplicable más reciente tiene 252 días de antigüedad."
+            },
+            "corroboration": {
+              "points": 0,
+              "maximum": 30,
+              "distinctSourceCount": 1,
+              "sourceIds": [
+                "evidence:e-incomplete"
+              ],
+              "excludedSourceIds": [],
+              "incompatibleSourceIds": [],
+              "unestablishedCompatibilitySourceIds": [],
+              "unknownScopeSourceIds": [],
+              "duplicateSourceIds": [],
+              "possibleChangeSourceIds": [],
+              "reason": "Una sola procedencia respalda el registro; no existe corroboración independiente."
+            }
+          }
+        },
+        "freshness": {
+          "latestObservationDate": "2026-01-01",
+          "evaluatedOn": "2026-09-10"
+        },
+        "verificationItemIds": [
+          "verify-incomplete"
+        ]
+      },
+      "review": {
+        "status": "unreviewed"
+      },
+      "synthetic": true,
+      "disclaimer": "Regla configurable del prototipo sobre datos sintéticos. Es una señal para revisión, no una conclusión comercial ni una regla oficial de Philips."
+    },
+    {
+      "id": "incomplete:material-verification-review:411d3e0edc35",
+      "type": "materialVerificationReview",
+      "label": "Posible oportunidad para resolver información material",
+      "reason": "Existe una necesidad de verificación material abierta y respaldada por evidencia visible; no se elige una versión como verdadera.",
+      "suggestedVerification": "Revisar la evidencia relacionada y confirmar o conservar explícitamente la incertidumbre.",
+      "facts": [
+        {
+          "key": "reasonCodes",
+          "label": "Motivos de verificación",
+          "value": [
+            "unknownIdentity"
+          ],
+          "evidenceIds": [
+            "e-incomplete"
+          ]
+        }
+      ],
+      "evidenceIds": [
+        "e-incomplete"
+      ],
+      "evidence": [
+        {
+          "id": "e-incomplete",
+          "type": "seedReference",
+          "text": "CT sintético sin fabricante ni modelo.",
+          "author": "Fuente B",
+          "observationDate": "2026-01-01",
+          "locationScope": "unknown"
+        }
+      ],
+      "rule": {
+        "id": "material-verification-review",
+        "version": "opportunity-signals-v1",
+        "thresholds": {
+          "allowedReasonCodes": [
+            "conflictingEvidence",
+            "conflictingReportedAge",
+            "conflictingQuantity",
+            "ambiguousQuantity",
+            "unknownQuantity",
+            "unknownIdentity",
+            "unresolvedReconciliationConflict"
+          ]
+        }
+      },
+      "context": {
+        "customerId": "c1",
+        "equipmentRecordId": "incomplete",
+        "confidence": {
+          "available": true,
+          "total": 20,
+          "band": {
+            "key": "low",
+            "label": "Baja"
+          },
+          "version": "equipment-confidence-v1",
+          "components": {
+            "completeness": {
+              "points": 20,
+              "maximum": 40,
+              "availableFields": [
+                "modality",
+                "location"
+              ],
+              "missingFields": [
+                "manufacturer",
+                "model"
+              ],
+              "reason": "2 de 4 campos completos; faltan fabricante, modelo."
+            },
+            "freshness": {
+              "points": 0,
+              "maximum": 30,
+              "latestObservationDate": "2026-01-01",
+              "ageDays": 252,
+              "unknownDateSourceCount": 0,
+              "futureDateSourceCount": 0,
+              "reason": "Evidencia muy antigua: la observación aplicable más reciente tiene 252 días de antigüedad."
+            },
+            "corroboration": {
+              "points": 0,
+              "maximum": 30,
+              "distinctSourceCount": 1,
+              "sourceIds": [
+                "evidence:e-incomplete"
+              ],
+              "excludedSourceIds": [],
+              "incompatibleSourceIds": [],
+              "unestablishedCompatibilitySourceIds": [],
+              "unknownScopeSourceIds": [],
+              "duplicateSourceIds": [],
+              "possibleChangeSourceIds": [],
+              "reason": "Una sola procedencia respalda el registro; no existe corroboración independiente."
+            }
+          }
+        },
+        "freshness": {
+          "latestObservationDate": "2026-01-01",
+          "evaluatedOn": "2026-09-10"
+        },
+        "verificationItemIds": [
+          "verify-incomplete"
+        ]
+      },
+      "review": {
+        "status": "unreviewed"
+      },
+      "synthetic": true,
+      "disclaimer": "Regla configurable del prototipo sobre datos sintéticos. Es una señal para revisión, no una conclusión comercial ni una regla oficial de Philips."
+    },
+    {
+      "id": "incomplete:stale-evidence-review:be3997efdb04",
+      "type": "staleEvidenceReview",
+      "label": "Posible oportunidad para revisar vigencia",
+      "reason": "La evidencia revisada más reciente tiene 252 días, igual o superior al umbral configurable de 90 días.",
+      "suggestedVerification": "Confirmar si la información sigue vigente antes de usarla en una conversación.",
+      "facts": [
+        {
+          "key": "latestObservationDate",
+          "label": "Fecha de observación más reciente",
+          "value": "2026-01-01",
+          "evidenceIds": [
+            "e-incomplete"
+          ]
+        },
+        {
+          "key": "evidenceAgeDays",
+          "label": "Antigüedad de la evidencia",
+          "value": 252,
+          "evidenceIds": [
+            "e-incomplete"
+          ]
+        }
+      ],
+      "evidenceIds": [
+        "e-incomplete"
+      ],
+      "evidence": [
+        {
+          "id": "e-incomplete",
+          "type": "seedReference",
+          "text": "CT sintético sin fabricante ni modelo.",
+          "author": "Fuente B",
+          "observationDate": "2026-01-01",
+          "locationScope": "unknown"
+        }
+      ],
+      "rule": {
+        "id": "stale-evidence-review",
+        "version": "opportunity-signals-v1",
+        "thresholds": {
+          "minimumAgeDays": 90
+        }
+      },
+      "context": {
+        "customerId": "c1",
+        "equipmentRecordId": "incomplete",
+        "confidence": {
+          "available": true,
+          "total": 20,
+          "band": {
+            "key": "low",
+            "label": "Baja"
+          },
+          "version": "equipment-confidence-v1",
+          "components": {
+            "completeness": {
+              "points": 20,
+              "maximum": 40,
+              "availableFields": [
+                "modality",
+                "location"
+              ],
+              "missingFields": [
+                "manufacturer",
+                "model"
+              ],
+              "reason": "2 de 4 campos completos; faltan fabricante, modelo."
+            },
+            "freshness": {
+              "points": 0,
+              "maximum": 30,
+              "latestObservationDate": "2026-01-01",
+              "ageDays": 252,
+              "unknownDateSourceCount": 0,
+              "futureDateSourceCount": 0,
+              "reason": "Evidencia muy antigua: la observación aplicable más reciente tiene 252 días de antigüedad."
+            },
+            "corroboration": {
+              "points": 0,
+              "maximum": 30,
+              "distinctSourceCount": 1,
+              "sourceIds": [
+                "evidence:e-incomplete"
+              ],
+              "excludedSourceIds": [],
+              "incompatibleSourceIds": [],
+              "unestablishedCompatibilitySourceIds": [],
+              "unknownScopeSourceIds": [],
+              "duplicateSourceIds": [],
+              "possibleChangeSourceIds": [],
+              "reason": "Una sola procedencia respalda el registro; no existe corroboración independiente."
+            }
+          }
+        },
+        "freshness": {
+          "latestObservationDate": "2026-01-01",
+          "evaluatedOn": "2026-09-10"
+        },
+        "verificationItemIds": [
+          "verify-incomplete"
+        ]
+      },
+      "review": {
+        "status": "unreviewed"
+      },
+      "synthetic": true,
+      "disclaimer": "Regla configurable del prototipo sobre datos sintéticos. Es una señal para revisión, no una conclusión comercial ni una regla oficial de Philips."
+    },
+    {
+      "id": "old:reported-age-review:b3185521cb78",
+      "type": "reportedAgeReview",
+      "label": "Posible oportunidad para revisar antigüedad reportada",
+      "reason": "La evidencia revisada conserva una antigüedad reportada de 8 años, igual o superior al umbral configurable de 7 años.",
+      "suggestedVerification": "Confirmar la antigüedad reportada, su fecha y que continúa aplicando al mismo equipo.",
+      "facts": [
+        {
+          "key": "reportedAgeYears",
+          "label": "Antigüedad reportada",
+          "value": 8,
+          "evidenceIds": [
+            "e-age"
+          ]
+        },
+        {
+          "key": "observationDate",
+          "label": "Fecha de observación",
+          "value": "2026-09-09",
+          "evidenceIds": [
+            "e-age"
+          ]
+        },
+        {
+          "key": "locationScope",
+          "label": "Alcance",
+          "value": "dept",
+          "evidenceIds": [
+            "e-age"
+          ]
+        }
+      ],
+      "evidenceIds": [
+        "e-age"
+      ],
+      "evidence": [
+        {
+          "id": "e-age",
+          "type": "acceptedClaim",
+          "text": "8",
+          "author": "Fuente A",
+          "observationDate": "2026-09-09",
+          "locationScope": "dept"
+        }
+      ],
+      "rule": {
+        "id": "reported-age-review",
+        "version": "opportunity-signals-v1",
+        "thresholds": {
+          "minimumYears": 7
+        }
+      },
+      "context": {
+        "customerId": "c1",
+        "equipmentRecordId": "old",
+        "confidence": {
+          "available": true,
+          "total": 70,
+          "band": {
+            "key": "medium",
+            "label": "Media"
+          },
+          "version": "equipment-confidence-v1",
+          "components": {
+            "completeness": {
+              "points": 40,
+              "maximum": 40,
+              "availableFields": [
+                "modality",
+                "manufacturer",
+                "model",
+                "location"
+              ],
+              "missingFields": [],
+              "reason": "4 de 4 campos completos."
+            },
+            "freshness": {
+              "points": 30,
+              "maximum": 30,
+              "latestObservationDate": "2026-09-09",
+              "ageDays": 1,
+              "unknownDateSourceCount": 0,
+              "futureDateSourceCount": 0,
+              "reason": "Evidencia reciente: la observación aplicable más reciente tiene 1 día de antigüedad."
+            },
+            "corroboration": {
+              "points": 0,
+              "maximum": 30,
+              "distinctSourceCount": 1,
+              "sourceIds": [
+                "observation:o-age"
+              ],
+              "excludedSourceIds": [],
+              "incompatibleSourceIds": [],
+              "unestablishedCompatibilitySourceIds": [],
+              "unknownScopeSourceIds": [],
+              "duplicateSourceIds": [],
+              "possibleChangeSourceIds": [],
+              "reason": "Una sola procedencia respalda el registro; no existe corroboración independiente."
+            }
+          }
+        },
+        "freshness": {
+          "latestObservationDate": "2026-09-09",
+          "evaluatedOn": "2026-09-10"
+        },
+        "verificationItemIds": []
+      },
+      "review": {
+        "status": "unreviewed"
+      },
+      "synthetic": true,
+      "disclaimer": "Regla configurable del prototipo sobre datos sintéticos. Es una señal para revisión, no una conclusión comercial ni una regla oficial de Philips."
+    }
+  ],
+  "assertions": {
+    "exactScenarioSignals": true,
+    "inspectableEvidence": true,
+    "deterministicFiltering": true,
+    "stableRerun": true,
+    "inputMutation": false,
+    "equipmentRecordGrowth": 0,
+    "verificationItemsResolved": 0,
+    "claimsAcceptedOrChanged": 0,
+    "reconciliationChanges": 0,
+    "confidenceChanges": 0,
+    "qvacCalls": 0
+  },
+  "failure": null
+}

@@ -29,7 +29,7 @@ export async function createPrototypeServer({
       if (url.pathname === '/api/health') return json(response, 200, { ok: true, localOnly: true, qvac: QVAC_CONFIGURATION })
       if (url.pathname === '/api/bootstrap' && request.method === 'GET') {
         const state = workspace.snapshot()
-        return json(response, 200, { label: state.label, customers: state.customers, aggregate: workspace.aggregate(), qvac: QVAC_CONFIGURATION })
+        return json(response, 200, { label: state.label, customers: state.customers, aggregate: workspace.aggregate(), opportunityAggregate: workspace.opportunitySignalAggregate(), qvac: QVAC_CONFIGURATION })
       }
       if (url.pathname === '/api/workspace/export' && request.method === 'GET') {
         const payload = workspace.exportWorkspace()
@@ -51,6 +51,18 @@ export async function createPrototypeServer({
           equipmentRecordId: url.searchParams.get('equipmentRecordId') || undefined,
           reasonCode: url.searchParams.get('reasonCode') || undefined
         }))
+      }
+      if (url.pathname === '/api/opportunities' && request.method === 'GET') {
+        return json(response, 200, workspace.opportunitySignals({
+          customerId: url.searchParams.get('customerId') || undefined,
+          equipmentRecordId: url.searchParams.get('equipmentRecordId') || undefined,
+          type: url.searchParams.get('type') || undefined,
+          status: url.searchParams.get('status') || undefined
+        }))
+      }
+      const opportunityReviewMatch = url.pathname.match(/^\/api\/opportunities\/([^/]+)\/dismiss$/)
+      if (opportunityReviewMatch && request.method === 'POST') {
+        return json(response, 200, await workspace.dismissOpportunitySignal(decodeURIComponent(opportunityReviewMatch[1]), (await bodyJson(request)).reason))
       }
       const viewMatch = url.pathname.match(/^\/api\/customers\/([^/]+)\/view$/)
       if (viewMatch && request.method === 'GET') return json(response, 200, workspace.customerView(viewMatch[1]))

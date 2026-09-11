@@ -4,6 +4,7 @@ const $$ = (selector) => [...document.querySelectorAll(selector)]
 let currentObservation = null
 let currentView = null
 let allVerificationItems = []
+let allOpportunitySignals = []
 let allCustomers = []
 
 const claimLabels = {
@@ -44,6 +45,7 @@ $('#confirm-delete').addEventListener('click', deleteWorkspace)
 for (const id of ['#verification-priority', '#verification-customer', '#verification-equipment', '#verification-reason']) {
   $(id).addEventListener('change', applyVerificationFilters)
 }
+for (const id of ['#opportunity-type', '#opportunity-status']) $(id).addEventListener('change', applyOpportunityFilters)
 
 bootstrap().catch(() => {
   setRuntime('No se pudo conectar con QVAC local', 'error')
@@ -438,9 +440,11 @@ async function loadView({ syncVerificationCustomer = false } = {}) {
   $('#installed-description').textContent = `${view.customer.site} · vista de trabajo basada en evidencia sintética revisada.`
   renderCustomerMetrics(view)
   renderEquipment(view.equipmentRecords)
+  allOpportunitySignals = view.opportunitySignals ?? []
+  applyOpportunityFilters()
   renderVerificationFilters({ selectedCustomerId: syncVerificationCustomer ? customerId : undefined, freshnessPolicy: view.freshnessPolicy })
   applyVerificationFilters()
-  renderAggregate(bootstrapData.aggregate)
+  renderAggregate(bootstrapData.aggregate, bootstrapData.opportunityAggregate)
 }
 
 function renderCustomerMetrics(view) {
@@ -454,6 +458,38 @@ function renderCustomerMetrics(view) {
 
 function renderEquipment(records) {
   $('#equipment').innerHTML = records.length ? records.map((record) => `<article class="equipment-row"><span class="equipment-symbol" aria-hidden="true">${escapeHtml(record.modality.slice(0, 2).toUpperCase())}</span><div class="equipment-identity"><strong>${escapeHtml(record.manufacturer)} ${escapeHtml(displayModality(record.modality))}</strong><span>${escapeHtml(record.model)} · ${escapeHtml(displayLocation(record.location))}</span><small>Última evidencia: ${formatEvidenceAge(record.latestEvidenceAt)}${record.latestEvidenceAt ? ` · ${formatDateOnly(record.latestEvidenceAt)}` : ''}</small><small>${record.latestObservationDate ? `Fecha de observación: ${formatObservationDate(record.latestObservationDate)}` : 'Fecha de observación desconocida'}</small></div>${renderConfidenceScore(record.confidenceScore)}<div class="equipment-evidence"><strong>${record.evidenceObservationIds.length}</strong><span>observaciones nuevas</span></div><span class="status-pill ${record.status}">${translate(record.status, statusLabels)}</span></article>`).join('') : '<div class="empty-state"><strong>No hay equipos registrados</strong><span>Las observaciones revisadas aparecerán aquí.</span></div>'
+}
+
+function renderOpportunities(signals) {
+  $('#opportunities').innerHTML = signals.length ? signals.map((signal) => `<article class="opportunity-card">
+    <div><span class="status-pill ${signal.review.status === 'dismissed' ? 'provisional' : 'verified'}">${signal.review.status === 'dismissed' ? 'Descartada' : 'Por revisar'}</span><h3>${escapeHtml(signal.label)}</h3><p>${escapeHtml(signal.reason)}</p></div>
+    <details><summary>Ver razón y evidencia</summary><p><strong>Contexto:</strong> cliente ${escapeHtml(signal.context.customerId)}, equipo ${escapeHtml(signal.context.equipmentRecordId)}; confianza ${signal.context.confidence.available ? `${signal.context.confidence.total}/100 (${escapeHtml(signal.context.confidence.band.label)})` : 'no disponible'}; evidencia más reciente ${displayOpportunityDate(signal.context.freshness.latestObservationDate)}.</p>${renderOpportunityConfidence(signal.context.confidence)}<p><strong>Siguiente verificación:</strong> ${escapeHtml(signal.suggestedVerification)}</p><ul>${signal.facts.map((fact) => `<li><strong>${escapeHtml(fact.label)}:</strong> ${escapeHtml(Array.isArray(fact.value) ? fact.value.join(', ') : fact.value ?? 'desconocida')}</li>`).join('')}</ul><ol>${signal.evidence.map((entry) => `<li><strong>${escapeHtml(entry.author)}</strong>: ${escapeHtml(entry.text)} <small>${displayOpportunityDate(entry.observationDate)} · alcance ${escapeHtml(translate(entry.locationScope, locationScopeLabels))}</small></li>`).join('')}</ol><p>Regla ${escapeHtml(signal.rule.version)} / ${escapeHtml(signal.rule.id)}.</p><p>${escapeHtml(signal.disclaimer)}</p></details>
+    ${signal.review.status === 'unreviewed' ? `<button class="button secondary dismiss-opportunity" data-signal="${escapeHtml(signal.id)}" type="button">Descartar señal</button>` : `<small>Descartada por ${escapeHtml(signal.review.actor)}: ${escapeHtml(signal.review.reason)}</small>`}
+  </article>`).join('') : '<div class="empty-state"><strong>Sin señales para revisar</strong><span>Las reglas conservadoras no detectaron hechos suficientes.</span></div>'
+  $$('.dismiss-opportunity').forEach((button) => button.addEventListener('click', () => dismissOpportunity(button)))
+}
+
+function renderOpportunityConfidence(confidence) {
+  if (!confidence.components) return '<p>Desglose de confianza no disponible; no se infiere.</p>'
+  const labels = { completeness: 'Completitud', freshness: 'Vigencia', corroboration: 'Corroboración' }
+  return `<ul class="opportunity-confidence">${Object.entries(confidence.components).map(([key, component]) => `<li><strong>${labels[key]}: ${component.points}/${component.maximum}</strong> · ${escapeHtml(component.reason)}</li>`).join('')}</ul>`
+}
+
+function applyOpportunityFilters() {
+  const type = $('#opportunity-type').value
+  const status = $('#opportunity-status').value
+  renderOpportunities(allOpportunitySignals.filter((signal) => (!type || signal.type === type) && (!status || signal.review.status === status)))
+}
+
+async function dismissOpportunity(button) {
+  button.disabled = true
+  try {
+    await api(`/api/opportunities/${encodeURIComponent(button.dataset.signal)}/dismiss`, { method: 'POST', body: JSON.stringify({ reason: 'Descartada durante la revisión local del prototipo' }) })
+    await loadView()
+  } catch {
+    button.disabled = false
+    button.textContent = 'No se pudo descartar; reintentar'
+  }
 }
 
 function renderConfidenceScore(score) {
@@ -528,9 +564,9 @@ function renderVerification(items, total = items.length) {
   }).join('') : '<div class="empty-state"><strong>No hay verificaciones pendientes</strong><span>Los filtros actuales no contienen elementos abiertos.</span></div>'
 }
 
-function renderAggregate(data) {
+function renderAggregate(data, opportunityAggregate = { unreviewed: 0 }) {
   const max = Math.max(1, ...data.byModality.map((item) => item.count))
-  $('#aggregate').innerHTML = `<div class="aggregate-summary"><div><strong>${data.verifiedRecords}</strong><span>Verificados</span></div><div><strong>${data.provisionalRecords}</strong><span>Provisionales</span></div><div><strong>${data.customers}</strong><span>Clientes ficticios</span></div></div><div class="modality-list"><span class="comparison-label">Registros por modalidad</span>${data.byModality.map((item) => `<div class="bar-row"><div><span>${escapeHtml(displayModality(item.modality))}</span><strong>${item.count}</strong></div><div class="bar"><span style="width:${item.count / max * 100}%"></span></div></div>`).join('')}</div>`
+  $('#aggregate').innerHTML = `<div class="aggregate-summary"><div><strong>${data.verifiedRecords}</strong><span>Verificados</span></div><div><strong>${data.provisionalRecords}</strong><span>Provisionales</span></div><div><strong>${data.customers}</strong><span>Clientes ficticios</span></div><div><strong>${opportunityAggregate.unreviewed}</strong><span>Señales por revisar</span></div></div><div class="modality-list"><span class="comparison-label">Registros por modalidad</span>${data.byModality.map((item) => `<div class="bar-row"><div><span>${escapeHtml(displayModality(item.modality))}</span><strong>${item.count}</strong></div><div class="bar"><span style="width:${item.count / max * 100}%"></span></div></div>`).join('')}</div>`
 }
 
 async function reset() {
@@ -640,6 +676,8 @@ function renderEmptyWorkspace(aggregate) {
     summaryMetric(0, 'Observaciones', 'Sin datos')
   ].join('')
   renderEquipment([])
+  renderOpportunities([])
+  allOpportunitySignals = []
   renderAggregate(aggregate)
   $('#verification-customer').innerHTML = '<option value="">Todos</option>'
   $('#verification-equipment').innerHTML = '<option value="">Todos</option>'
@@ -697,6 +735,7 @@ function setRuntime(message, kind) { $('#runtime-status').className = `runtime-s
 function formatDate(value) { return new Intl.DateTimeFormat('es', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) }
 function formatDateOnly(value) { return new Intl.DateTimeFormat('es', { dateStyle: 'medium' }).format(new Date(value)) }
 function formatObservationDate(value) { return new Intl.DateTimeFormat('es', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(`${value}T00:00:00.000Z`)) }
+function displayOpportunityDate(value) { const parsed = new Date(`${value}T00:00:00.000Z`); const valid = /^\d{4}-\d{2}-\d{2}$/.test(value ?? '') && !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value; return valid ? formatObservationDate(value) : value ? `${escapeHtml(value)} (inválida)` : 'fecha de observación desconocida' }
 function formatEvidenceAge(value) {
   if (!value) return 'Evidencia sin fecha'
   const today = new Date()
