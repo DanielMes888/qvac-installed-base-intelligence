@@ -39,6 +39,7 @@ El smoke test usa un espacio de trabajo ignorado y separado; no modifica el esta
 
 - Cliente: **Hospital General Northbridge · Campus Central**
 - Observación: **Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.**
+- Fecha de observación: seleccione la fecha real del ensayo si desea mostrar **Registrada hoy**; déjela vacía para demostrar **Fecha de observación desconocida** sin inventarla.
 - Extracción esperada: un equipo y cinco datos pendientes de revisión: tipo `MRI`, fabricante `DemoScan`, modelo `DS-One`, cantidad observada `1` y ubicación `Radiología`.
 - Candidato esperado después de aprobar los cinco datos respaldados: `DemoScan MRI`, modelo `DS-One`, ubicación `Radiología`, registro semilla `nb-mri-01`.
 - Reconciliación esperada: Northbridge conserva **2 registros de equipos** y el registro MRI recibe un vínculo de evidencia.
@@ -81,13 +82,13 @@ El smoke real dedicado usó: **La directora de radiología dijo que hay tres esc
 
 **Qué hacer:** confirme el cliente y lea la nota. Explique que el contexto evita mezclar clientes y que la observación original se guarda antes de inferir.
 
-**Resultado visible:** un cliente ficticio y una nota breve, sin formulario extenso.
+**Resultado visible:** un cliente ficticio, una nota breve y una fecha de observación opcional que se conserva separada de la fecha de registro.
 
 ### 1:05–1:50 — Capturar: analizar localmente
 
 **Qué hacer:** pulse **Guardar y analizar con QVAC**.
 
-**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 25–30 segundos por la carga del modelo. El smoke test principal final tardó 28.10 segundos de extremo a extremo, incluidos 6.18 segundos de carga desde la caché.
+**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. Durante la espera, señale el estado de carga y explique que el primer arranque suele tardar unos 20–30 segundos por la carga del modelo. El smoke test principal final tardó 23.20 segundos de extremo a extremo, incluidos 5.05 segundos de carga desde la caché.
 
 **Resultado visible:** el botón queda bloqueado durante la inferencia, la barra superior indica que QVAC está analizando y luego vuelve a mostrar **QVAC local disponible**.
 
@@ -113,11 +114,11 @@ El smoke real dedicado usó: **La directora de radiología dijo que hay tres esc
 
 ### 3:20–4:10 — Base instalada y Verificaciones
 
-**Qué mostrar:** abra **Base instalada** para enseñar el resumen del cliente, la lista limpia de equipos y el resumen local. Después abra **Verificaciones**.
+**Qué mostrar:** abra **Base instalada** para enseñar el resumen del cliente, la lista limpia de equipos, la última evidencia y la fecha de observación. Después abra **Verificaciones**.
 
-**Qué explicar:** los registros verificados y provisionales permanecen separados; las tres verificaciones indican qué conviene confirmar después; el agregado solo combina métricas compatibles.
+**Qué explicar:** los registros verificados y provisionales permanecen separados. Las tres verificaciones principales muestran prioridad **Alta**, motivos concretos y la evidencia relacionada. Explique que las reglas son deterministas, que la fecha solo desempata dentro de una prioridad y que 90 días es un umbral configurable del prototipo, no una política oficial de Philips. Use los filtros de prioridad, cliente, equipo y motivo para abrir el backlog completo. El agregado solo combina métricas compatibles.
 
-**Resultado visible:** tres registros verificados y dos provisionales en el espacio local, sin presentarlos como un inventario físico auditado.
+**Resultado visible:** tres registros verificados y dos provisionales en el espacio local; fechas expresadas como **Registrada hoy**, **Hace X días** o **Fecha de observación desconocida**; y verificaciones Alta/Media/Baja con razones visibles, sin presentarlas como un inventario físico auditado.
 
 ### 4:10–4:30 — Cierre honesto
 
@@ -154,6 +155,10 @@ Si el puerto 4173 está en uso, cierre la terminal anterior del prototipo. Si no
 - [ ] Completar las cinco decisiones muestra una comparación entre la evidencia aceptada y `DemoScan MRI · DS-One · Radiología`.
 - [ ] Vincular la evidencia mantiene dos registros y aumenta a uno el vínculo de evidencia del MRI.
 - [ ] Se ven tres verificaciones; el agregado muestra tres registros verificados y dos provisionales.
+- [ ] Cada equipo muestra por separado su última evidencia y la fecha de observación disponible, sin fecha de expiración ni advertencia de que la información antigua sea incorrecta.
+- [ ] Las verificaciones muestran Alta, Media o Baja con motivos comprensibles y mantienen visible la relación con el equipo y su evidencia.
+- [ ] Los cuatro filtros restringen la lista por prioridad, cliente, equipo y motivo; no aparecen puntuaciones numéricas.
+- [ ] La interfaz declara que el umbral de 90 días es configurable y no es política oficial de Philips.
 - [ ] Restablecer devuelve las observaciones y los nuevos vínculos a cero.
 - [ ] Una salida inválida conserva la nota, no muestra datos para aceptar y no modifica la base instalada.
 - [ ] Cuando exista una aclaración, solo aparece una pregunta; responder conserva evidencia y **No lo sé** u **Omitir** no ejecutan otra inferencia.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "emergency-demo-smoke-v1",
-  "startedAt": "2026-09-10T23:39:15.742Z",
-  "completedAt": "2026-09-10T23:39:50.170Z",
+  "startedAt": "2026-09-11T00:11:19.643Z",
+  "completedAt": "2026-09-11T00:11:48.077Z",
   "synthetic": true,
   "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
   "environment": {
@@ -12,13 +12,14 @@
       "reachable": false,
       "error": "TypeError"
     },
-    "loopbackOrigin": "http://127.0.0.1:53058"
+    "loopbackOrigin": "http://127.0.0.1:61230"
   },
   "extraction": {
-    "id": "f35d0ec6-fc6d-451d-bae2-0a27a877751c",
+    "id": "b381a647-89e4-4faa-ac46-5637ba19d552",
     "customerId": "northbridge",
     "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
-    "recordedAt": "2026-09-10T23:39:15.824Z",
+    "observationDate": null,
+    "recordedAt": "2026-09-11T00:11:19.761Z",
     "revision": 0,
     "status": "succeeded",
     "attempts": [
@@ -125,19 +126,19 @@
           "clarification": null
         },
         "metrics": {
-          "totalMs": 28099.2039,
+          "totalMs": 23196.6098,
           "promptTokens": 247,
           "generatedTokens": 60,
           "emittedTokens": 60,
-          "timeToFirstToken": 26055.107,
-          "tokensPerSecond": 63.693456134316754,
+          "timeToFirstToken": 21346.453,
+          "tokensPerSecond": 71.67919260557449,
           "backendDevice": "gpu"
         },
-        "attemptId": "1720ba8f-71aa-468a-a14a-bee6f09ce72b",
+        "attemptId": "effe3b19-8654-4460-b26b-585caafb2fba",
         "phase": "initial",
         "observationRevision": 0,
-        "startedAt": "2026-09-10T23:39:15.826Z",
-        "completedAt": "2026-09-10T23:39:50.151Z",
+        "startedAt": "2026-09-11T00:11:19.763Z",
+        "completedAt": "2026-09-11T00:11:48.056Z",
         "draftStatus": "active"
       }
     ],
@@ -299,7 +300,7 @@
       }
     },
     "load": {
-      "loadMs": 6178.2022,
+      "loadMs": 5048.091899999999,
       "info": {
         "modelId": "13dd17f190cd6438",
         "modelType": "llamacpp-completion",
@@ -311,7 +312,7 @@
         ],
         "displayName": "LLM (llama.cpp)",
         "addonPackage": "@qvac/llm-llamacpp",
-        "loadedAt": "2026-09-10T23:39:22.000Z",
+        "loadedAt": "2026-09-11T00:11:24.806Z",
         "name": "QWEN3_1_7B_INST_Q4",
         "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
         "toolDialect": "hermes"
@@ -376,8 +377,18 @@
           "model": "DS-One",
           "location": "Radiology",
           "evidenceObservationIds": [
-            "f35d0ec6-fc6d-451d-bae2-0a27a877751c"
-          ]
+            "b381a647-89e4-4faa-ac46-5637ba19d552"
+          ],
+          "evidenceEntryIds": [
+            "seed-e-nb-mri",
+            "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84",
+            "f2889983-4ce7-4c3a-8896-faf6f2d20b5c",
+            "1f4778be-fe1f-41d3-bac3-a0587be56765",
+            "8babd88a-05b1-4f02-ac42-7acefcf81097",
+            "eb17637f-221e-4aac-ba15-899ead4f4803"
+          ],
+          "latestEvidenceAt": "2026-09-11T00:11:19.761Z",
+          "latestObservationDate": "2026-09-08"
         },
         {
           "id": "nb-ct-02",
@@ -387,15 +398,21 @@
           "manufacturer": "Aster Imaging",
           "model": "AX-4",
           "location": "Emergency",
-          "evidenceObservationIds": []
+          "evidenceObservationIds": [],
+          "evidenceEntryIds": [
+            "seed-e-nb-ct"
+          ],
+          "latestEvidenceAt": "2026-08-10T14:00:00.000Z",
+          "latestObservationDate": null
         }
       ],
       "observations": [
         {
-          "id": "f35d0ec6-fc6d-451d-bae2-0a27a877751c",
+          "id": "b381a647-89e4-4faa-ac46-5637ba19d552",
           "customerId": "northbridge",
           "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
-          "recordedAt": "2026-09-10T23:39:15.824Z",
+          "observationDate": null,
+          "recordedAt": "2026-09-11T00:11:19.761Z",
           "revision": 0,
           "status": "succeeded",
           "attempts": [
@@ -502,23 +519,29 @@
                 "clarification": null
               },
               "metrics": {
-                "totalMs": 28099.2039,
+                "totalMs": 23196.6098,
                 "promptTokens": 247,
                 "generatedTokens": 60,
                 "emittedTokens": 60,
-                "timeToFirstToken": 26055.107,
-                "tokensPerSecond": 63.693456134316754,
+                "timeToFirstToken": 21346.453,
+                "tokensPerSecond": 71.67919260557449,
                 "backendDevice": "gpu"
               },
-              "attemptId": "1720ba8f-71aa-468a-a14a-bee6f09ce72b",
+              "attemptId": "effe3b19-8654-4460-b26b-585caafb2fba",
               "phase": "initial",
               "observationRevision": 0,
-              "startedAt": "2026-09-10T23:39:15.826Z",
-              "completedAt": "2026-09-10T23:39:50.151Z",
+              "startedAt": "2026-09-11T00:11:19.763Z",
+              "completedAt": "2026-09-11T00:11:48.056Z",
               "draftStatus": "active"
             }
           ],
-          "evidenceEntryIds": [],
+          "evidenceEntryIds": [
+            "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84",
+            "f2889983-4ce7-4c3a-8896-faf6f2d20b5c",
+            "1f4778be-fe1f-41d3-bac3-a0587be56765",
+            "8babd88a-05b1-4f02-ac42-7acefcf81097",
+            "eb17637f-221e-4aac-ba15-899ead4f4803"
+          ],
           "subjects": [
             {
               "subjectId": "s1",
@@ -550,7 +573,8 @@
               "reviewedQuantityScope": null,
               "decision": "accepted",
               "reviewStatus": "accepted",
-              "corrections": []
+              "corrections": [],
+              "acceptedEvidenceEntryId": "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84"
             },
             {
               "claimId": "c2",
@@ -575,7 +599,8 @@
               "reviewedQuantityScope": null,
               "decision": "accepted",
               "reviewStatus": "accepted",
-              "corrections": []
+              "corrections": [],
+              "acceptedEvidenceEntryId": "f2889983-4ce7-4c3a-8896-faf6f2d20b5c"
             },
             {
               "claimId": "c3",
@@ -600,7 +625,8 @@
               "reviewedQuantityScope": null,
               "decision": "accepted",
               "reviewStatus": "accepted",
-              "corrections": []
+              "corrections": [],
+              "acceptedEvidenceEntryId": "1f4778be-fe1f-41d3-bac3-a0587be56765"
             },
             {
               "claimId": "c4",
@@ -626,7 +652,8 @@
               "reviewedQuantityScope": "observed",
               "decision": "accepted",
               "reviewStatus": "accepted",
-              "corrections": []
+              "corrections": [],
+              "acceptedEvidenceEntryId": "8babd88a-05b1-4f02-ac42-7acefcf81097"
             },
             {
               "claimId": "c5",
@@ -651,16 +678,17 @@
               "reviewedQuantityScope": null,
               "decision": "accepted",
               "reviewStatus": "accepted",
-              "corrections": []
+              "corrections": [],
+              "acceptedEvidenceEntryId": "eb17637f-221e-4aac-ba15-899ead4f4803"
             }
           ],
           "clarification": null,
-          "reviewedAt": "2026-09-10T23:39:50.158Z",
+          "reviewedAt": "2026-09-11T00:11:48.063Z",
           "reconciliation": {
             "recordId": "nb-mri-01",
             "reason": "La revisión del smoke test confirmó la modalidad y los datos de identificación respaldados",
             "actor": "Usuario local de demostración",
-            "decidedAt": "2026-09-10T23:39:50.164Z"
+            "decidedAt": "2026-09-11T00:11:48.070Z"
           },
           "model": {
             "sdk": "0.19.0",
@@ -681,7 +709,7 @@
             }
           },
           "load": {
-            "loadMs": 6178.2022,
+            "loadMs": 5048.091899999999,
             "info": {
               "modelId": "13dd17f190cd6438",
               "modelType": "llamacpp-completion",
@@ -693,7 +721,7 @@
               ],
               "displayName": "LLM (llama.cpp)",
               "addonPackage": "@qvac/llm-llamacpp",
-              "loadedAt": "2026-09-10T23:39:22.000Z",
+              "loadedAt": "2026-09-11T00:11:24.806Z",
               "name": "QWEN3_1_7B_INST_Q4",
               "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
               "toolDialect": "hermes"
@@ -709,33 +737,201 @@
           "id": "v1",
           "customerId": "northbridge",
           "equipmentRecordId": "nb-ct-02",
-          "priority": 1,
-          "reason": "Confirmar si la observación de CT corresponde al equipo AX-4",
-          "status": "open"
+          "reasonCodes": [
+            "unresolvedReconciliationConflict",
+            "undatedObservation"
+          ],
+          "supportingEvidenceEntryIds": [
+            "seed-e-nb-ct"
+          ],
+          "status": "open",
+          "createdAt": "2026-08-10T14:00:00.000Z",
+          "observationId": null,
+          "baseReasonCodes": [
+            "unresolvedReconciliationConflict"
+          ],
+          "updatedAt": "2026-08-10T14:00:00.000Z",
+          "priority": "high",
+          "latestEvidenceAt": "2026-08-10T14:00:00.000Z",
+          "latestObservationDate": null,
+          "priorityLabel": "Alta",
+          "reasons": [
+            "Conflicto de reconciliación pendiente",
+            "Evidencia sin fecha"
+          ],
+          "customer": {
+            "id": "northbridge",
+            "name": "Hospital General Northbridge",
+            "site": "Campus Central"
+          },
+          "equipmentRecord": {
+            "id": "nb-ct-02",
+            "customerId": "northbridge",
+            "status": "provisional",
+            "modality": "CT",
+            "manufacturer": "Aster Imaging",
+            "model": "AX-4",
+            "location": "Emergency",
+            "evidenceObservationIds": [],
+            "evidenceEntryIds": [
+              "seed-e-nb-ct"
+            ],
+            "latestEvidenceAt": "2026-08-10T14:00:00.000Z",
+            "latestObservationDate": null
+          },
+          "supportingEvidenceEntries": [
+            {
+              "id": "seed-e-nb-ct",
+              "customerId": "northbridge",
+              "equipmentRecordId": "nb-ct-02",
+              "type": "seedReference",
+              "text": "Referencia sintética del equipo CT Aster Imaging.",
+              "author": "Conjunto sintético",
+              "observationDate": null,
+              "recordedAt": "2026-08-10T14:00:00.000Z"
+            }
+          ]
         },
         {
           "id": "v2",
           "customerId": "northbridge",
           "equipmentRecordId": "nb-mri-01",
-          "priority": 2,
-          "reason": "Verificar el número de serie del equipo MRI en la próxima visita",
-          "status": "open"
+          "reasonCodes": [
+            "unknownIdentity"
+          ],
+          "supportingEvidenceEntryIds": [
+            "seed-e-nb-mri"
+          ],
+          "status": "open",
+          "createdAt": "2026-09-09T14:00:00.000Z",
+          "observationId": null,
+          "baseReasonCodes": [
+            "unknownIdentity"
+          ],
+          "updatedAt": "2026-09-09T14:00:00.000Z",
+          "priority": "high",
+          "latestEvidenceAt": "2026-09-09T14:00:00.000Z",
+          "latestObservationDate": "2026-09-08",
+          "priorityLabel": "Alta",
+          "reasons": [
+            "Identidad del equipo desconocida"
+          ],
+          "customer": {
+            "id": "northbridge",
+            "name": "Hospital General Northbridge",
+            "site": "Campus Central"
+          },
+          "equipmentRecord": {
+            "id": "nb-mri-01",
+            "customerId": "northbridge",
+            "status": "verified",
+            "modality": "MRI",
+            "manufacturer": "DemoScan",
+            "model": "DS-One",
+            "location": "Radiology",
+            "evidenceObservationIds": [
+              "b381a647-89e4-4faa-ac46-5637ba19d552"
+            ],
+            "evidenceEntryIds": [
+              "seed-e-nb-mri",
+              "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84",
+              "f2889983-4ce7-4c3a-8896-faf6f2d20b5c",
+              "1f4778be-fe1f-41d3-bac3-a0587be56765",
+              "8babd88a-05b1-4f02-ac42-7acefcf81097",
+              "eb17637f-221e-4aac-ba15-899ead4f4803"
+            ],
+            "latestEvidenceAt": "2026-09-11T00:11:19.761Z",
+            "latestObservationDate": "2026-09-08"
+          },
+          "supportingEvidenceEntries": [
+            {
+              "id": "seed-e-nb-mri",
+              "customerId": "northbridge",
+              "equipmentRecordId": "nb-mri-01",
+              "type": "seedReference",
+              "text": "Referencia sintética del equipo MRI DemoScan.",
+              "author": "Conjunto sintético",
+              "observationDate": "2026-09-08",
+              "recordedAt": "2026-09-09T14:00:00.000Z"
+            }
+          ]
         },
         {
           "id": "v3",
           "customerId": "northbridge",
-          "priority": 3,
-          "reason": "Aclarar si la cantidad reportada en Radiología representa un total",
-          "status": "open"
+          "equipmentRecordId": "nb-mri-01",
+          "reasonCodes": [
+            "ambiguousQuantity"
+          ],
+          "supportingEvidenceEntryIds": [
+            "seed-e-nb-mri"
+          ],
+          "status": "open",
+          "createdAt": "2026-09-09T14:00:00.000Z",
+          "observationId": null,
+          "baseReasonCodes": [
+            "ambiguousQuantity"
+          ],
+          "updatedAt": "2026-09-09T14:00:00.000Z",
+          "priority": "high",
+          "latestEvidenceAt": "2026-09-09T14:00:00.000Z",
+          "latestObservationDate": "2026-09-08",
+          "priorityLabel": "Alta",
+          "reasons": [
+            "Cantidad en conflicto"
+          ],
+          "customer": {
+            "id": "northbridge",
+            "name": "Hospital General Northbridge",
+            "site": "Campus Central"
+          },
+          "equipmentRecord": {
+            "id": "nb-mri-01",
+            "customerId": "northbridge",
+            "status": "verified",
+            "modality": "MRI",
+            "manufacturer": "DemoScan",
+            "model": "DS-One",
+            "location": "Radiology",
+            "evidenceObservationIds": [
+              "b381a647-89e4-4faa-ac46-5637ba19d552"
+            ],
+            "evidenceEntryIds": [
+              "seed-e-nb-mri",
+              "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84",
+              "f2889983-4ce7-4c3a-8896-faf6f2d20b5c",
+              "1f4778be-fe1f-41d3-bac3-a0587be56765",
+              "8babd88a-05b1-4f02-ac42-7acefcf81097",
+              "eb17637f-221e-4aac-ba15-899ead4f4803"
+            ],
+            "latestEvidenceAt": "2026-09-11T00:11:19.761Z",
+            "latestObservationDate": "2026-09-08"
+          },
+          "supportingEvidenceEntries": [
+            {
+              "id": "seed-e-nb-mri",
+              "customerId": "northbridge",
+              "equipmentRecordId": "nb-mri-01",
+              "type": "seedReference",
+              "text": "Referencia sintética del equipo MRI DemoScan.",
+              "author": "Conjunto sintético",
+              "observationDate": "2026-09-08",
+              "recordedAt": "2026-09-09T14:00:00.000Z"
+            }
+          ]
         }
-      ]
+      ],
+      "freshnessPolicy": {
+        "materiallyOldDays": 90,
+        "disclaimer": "Regla configurable del prototipo; no es una política oficial de Philips y no indica que la información antigua sea incorrecta."
+      }
     },
     "aggregate": {
       "customers": 3,
       "observations": 1,
       "verifiedRecords": 3,
       "provisionalRecords": 2,
-      "openVerificationItems": 5,
+      "openVerificationItems": 7,
       "byModality": [
         {
           "modality": "MRI",

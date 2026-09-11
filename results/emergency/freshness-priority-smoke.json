@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "freshness-priority-smoke-v1",
+  "startedAt": "2026-09-11T00:11:13.382Z",
+  "completedAt": "2026-09-11T00:11:13.465Z",
+  "synthetic": true,
+  "adapter": "controlled-test-adapter",
+  "purpose": "Deterministic freshness, prioritization, filtering, and no-auto-resolution evidence; not QVAC quality evidence.",
+  "freshness": {
+    "policy": {
+      "materiallyOldDays": 90,
+      "disclaimer": "Regla configurable del prototipo; no es una política oficial de Philips y no indica que la información antigua sea incorrecta."
+    },
+    "records": [
+      {
+        "id": "nb-mri-01",
+        "latestObservationDate": "2026-09-08",
+        "latestEvidenceAt": "2026-09-09T14:00:00.000Z"
+      },
+      {
+        "id": "nb-ct-02",
+        "latestObservationDate": null,
+        "latestEvidenceAt": "2026-08-10T14:00:00.000Z"
+      }
+    ]
+  },
+  "priorities": [
+    {
+      "id": "v1",
+      "priority": "high",
+      "priorityLabel": "Alta",
+      "reasons": [
+        "Conflicto de reconciliación pendiente",
+        "Evidencia sin fecha"
+      ],
+      "latestObservationDate": null,
+      "latestEvidenceAt": "2026-08-10T14:00:00.000Z"
+    },
+    {
+      "id": "v4",
+      "priority": "high",
+      "priorityLabel": "Alta",
+      "reasons": [
+        "Cantidad en conflicto",
+        "Evidencia antigua según la regla del prototipo"
+      ],
+      "latestObservationDate": "2026-04-15",
+      "latestEvidenceAt": "2026-04-16T14:00:00.000Z"
+    },
+    {
+      "id": "v2",
+      "priority": "high",
+      "priorityLabel": "Alta",
+      "reasons": [
+        "Identidad del equipo desconocida"
+      ],
+      "latestObservationDate": "2026-09-08",
+      "latestEvidenceAt": "2026-09-09T14:00:00.000Z"
+    },
+    {
+      "id": "v3",
+      "priority": "high",
+      "priorityLabel": "Alta",
+      "reasons": [
+        "Cantidad en conflicto"
+      ],
+      "latestObservationDate": "2026-09-08",
+      "latestEvidenceAt": "2026-09-09T14:00:00.000Z"
+    },
+    {
+      "id": "v5",
+      "priority": "medium",
+      "priorityLabel": "Media",
+      "reasons": [
+        "Evidencia antigua según la regla del prototipo"
+      ],
+      "latestObservationDate": "2026-05-20",
+      "latestEvidenceAt": "2026-05-21T14:00:00.000Z"
+    },
+    {
+      "id": "v6",
+      "priority": "low",
+      "priorityLabel": "Baja",
+      "reasons": [
+        "Información reportada pendiente de confirmar"
+      ],
+      "latestObservationDate": "2026-09-01",
+      "latestEvidenceAt": "2026-09-02T14:00:00.000Z"
+    }
+  ],
+  "filters": {
+    "highNorthbridge": [
+      "v1",
+      "v2",
+      "v3"
+    ],
+    "lowMeadow": [
+      "v6"
+    ]
+  },
+  "recalculation": {
+    "itemId": "accepted:668e80f3-88dd-4362-8189-c7041f7b80e9:s1",
+    "priorityBefore": "high",
+    "priorityAfter": "high",
+    "statusAfter": "open",
+    "equipmentRecordId": "nb-mri-01",
+    "equipmentRecordCountBefore": 2,
+    "equipmentRecordCountAfter": 2
+  },
+  "failure": null
+}

@@ -3,6 +3,8 @@ const $$ = (selector) => [...document.querySelectorAll(selector)]
 
 let currentObservation = null
 let currentView = null
+let allVerificationItems = []
+let allCustomers = []
 
 const claimLabels = {
   equipmentType: 'Tipo de equipo',
@@ -19,6 +21,7 @@ const locationScopeLabels = { room: 'Sala', dept: 'Departamento', site: 'Sede', 
 const quantityScopeLabels = { observed: 'Cantidad observada', reportedTotal: 'Total reportado', unknown: 'Alcance desconocido' }
 const correctionFieldLabels = { equipmentType: 'Tipo de equipo', manufacturer: 'Fabricante', model: 'Modelo', quantity: 'Cantidad', quantityScope: 'Alcance de cantidad', certainty: 'Estado de certeza' }
 const statusLabels = { verified: 'Verificado', provisional: 'Provisional', open: 'Pendiente' }
+const priorityLabels = { high: 'Alta', medium: 'Media', low: 'Baja' }
 const modalityLabels = { Ultrasound: 'Ultrasonido', 'Patient monitoring': 'Monitoreo de pacientes' }
 const locationLabels = { Radiology: 'Radiología', Emergency: 'Emergencias', Imaging: 'Diagnóstico por imágenes', 'Critical Care': 'Cuidados intensivos', 'Room 2': 'Sala 2' }
 
@@ -32,6 +35,9 @@ $('#answer-clarification').addEventListener('click', () => clarify('answered'))
 $('#unknown-clarification').addEventListener('click', () => clarify('unknown'))
 $('#skip-clarification').addEventListener('click', () => clarify('skipped'))
 $('#reset').addEventListener('click', reset)
+for (const id of ['#verification-priority', '#verification-customer', '#verification-equipment', '#verification-reason']) {
+  $(id).addEventListener('change', applyVerificationFilters)
+}
 
 bootstrap().catch(() => {
   setRuntime('No se pudo conectar con QVAC local', 'error')
@@ -40,10 +46,11 @@ bootstrap().catch(() => {
 
 async function bootstrap() {
   const data = await api('/api/bootstrap')
+  allCustomers = data.customers
   $('#customer').innerHTML = data.customers.map((customer) => `<option value="${customer.id}">${escapeHtml(customer.name)} · ${escapeHtml(customer.site)}</option>`).join('')
   $('#footer-runtime').textContent = `${data.qvac.sdk} · ${data.qvac.modelExport} · GPU local`
   updateNoteLength()
-  await loadView()
+  await loadView({ syncVerificationCustomer: true })
   setRuntime('QVAC local disponible', 'ready')
 }
 
@@ -60,13 +67,13 @@ function activateWorkspace(name) {
 
 async function changeCustomer() {
   if (currentObservation && currentObservation.customerId !== $('#customer').value) clearReviewWorkspace()
-  await loadView()
+  await loadView({ syncVerificationCustomer: true })
 }
 
 async function capture(event) {
   event.preventDefault()
   const button = $('#extract')
-  const lockedControls = [$('#customer'), $('#note'), $('#reset')]
+  const lockedControls = [$('#customer'), $('#note'), $('#observation-date'), $('#reset')]
   button.disabled = true
   button.innerHTML = '<span><span class="spinner" aria-hidden="true"></span>Guardando y analizando…</span>'
   lockedControls.forEach((control) => { control.disabled = true })
@@ -77,7 +84,7 @@ async function capture(event) {
   try {
     currentObservation = await api('/api/observations', {
       method: 'POST',
-      body: JSON.stringify({ customerId: $('#customer').value, text: $('#note').value })
+      body: JSON.stringify({ customerId: $('#customer').value, text: $('#note').value, observationDate: $('#observation-date').value || null })
     })
     renderOriginalObservation(currentObservation)
     await loadView()
@@ -107,7 +114,7 @@ function renderOriginalObservation(observation) {
     ? `<div class="saved-answer reviewer-evidence"><span>Evidencia aportada por el revisor · ${formatDate(entry.recordedAt)}</span><strong>${escapeHtml(translate(entry.field, correctionFieldLabels))}: ${escapeHtml(entry.text)}</strong>${entry.reason ? `<small>${escapeHtml(entry.reason)}</small>` : ''}</div>`
     : `<div class="saved-answer"><span>Respuesta de aclaración · ${formatDate(entry.recordedAt)}</span><strong>${escapeHtml(entry.text)}</strong></div>`).join('')
   $('#observation-state').className = 'observation-state saved'
-  $('#observation-state').textContent = `Observación guardada · ${formatDate(observation.recordedAt)}`
+  $('#observation-state').innerHTML = `<span>${observation.observationDate ? `Fecha de observación: ${formatObservationDate(observation.observationDate)}` : 'Fecha de observación desconocida'}</span><span>Evidencia registrada: ${formatDate(observation.recordedAt)} · ${formatEvidenceAge(observation.recordedAt)}</span>`
 }
 
 function showExtractionFailure(observation) {
@@ -404,17 +411,19 @@ async function reconcile(recordId) {
   }
 }
 
-async function loadView() {
+async function loadView({ syncVerificationCustomer = false } = {}) {
   const customerId = $('#customer').value
   if (!customerId) return
-  const [view, bootstrapData] = await Promise.all([api(`/api/customers/${customerId}/view`), api('/api/bootstrap')])
+  const [view, bootstrapData, verificationItems] = await Promise.all([api(`/api/customers/${customerId}/view`), api('/api/bootstrap'), api('/api/verifications')])
   currentView = view
+  allVerificationItems = verificationItems
   $('#header-customer').textContent = view.customer.name
   $('#installed-title').textContent = `Base instalada de ${view.customer.name}`
   $('#installed-description').textContent = `${view.customer.site} · vista de trabajo basada en evidencia sintética revisada.`
   renderCustomerMetrics(view)
   renderEquipment(view.equipmentRecords)
-  renderVerification(view)
+  renderVerificationFilters({ selectedCustomerId: syncVerificationCustomer ? customerId : undefined, freshnessPolicy: view.freshnessPolicy })
+  applyVerificationFilters()
   renderAggregate(bootstrapData.aggregate)
 }
 
@@ -428,18 +437,54 @@ function renderCustomerMetrics(view) {
 }
 
 function renderEquipment(records) {
-  $('#equipment').innerHTML = records.length ? records.map((record) => `<article class="equipment-row"><span class="equipment-symbol" aria-hidden="true">${escapeHtml(record.modality.slice(0, 2).toUpperCase())}</span><div class="equipment-identity"><strong>${escapeHtml(record.manufacturer)} ${escapeHtml(displayModality(record.modality))}</strong><span>${escapeHtml(record.model)} · ${escapeHtml(displayLocation(record.location))}</span></div><div class="equipment-evidence"><strong>${record.evidenceObservationIds.length}</strong><span>evidencias nuevas</span></div><span class="status-pill ${record.status}">${translate(record.status, statusLabels)}</span></article>`).join('') : '<div class="empty-state"><strong>No hay equipos registrados</strong><span>Las observaciones revisadas aparecerán aquí.</span></div>'
+  $('#equipment').innerHTML = records.length ? records.map((record) => `<article class="equipment-row"><span class="equipment-symbol" aria-hidden="true">${escapeHtml(record.modality.slice(0, 2).toUpperCase())}</span><div class="equipment-identity"><strong>${escapeHtml(record.manufacturer)} ${escapeHtml(displayModality(record.modality))}</strong><span>${escapeHtml(record.model)} · ${escapeHtml(displayLocation(record.location))}</span><small>Última evidencia: ${formatEvidenceAge(record.latestEvidenceAt)}${record.latestEvidenceAt ? ` · ${formatDateOnly(record.latestEvidenceAt)}` : ''}</small><small>${record.latestObservationDate ? `Fecha de observación: ${formatObservationDate(record.latestObservationDate)}` : 'Fecha de observación desconocida'}</small></div><div class="equipment-evidence"><strong>${record.evidenceObservationIds.length}</strong><span>observaciones nuevas</span></div><span class="status-pill ${record.status}">${translate(record.status, statusLabels)}</span></article>`).join('') : '<div class="empty-state"><strong>No hay equipos registrados</strong><span>Las observaciones revisadas aparecerán aquí.</span></div>'
 }
 
-function renderVerification(view) {
-  const items = view.verificationItems
-  $('#verification-nav-count').textContent = items.length
-  $('#verification-summary').textContent = `${items.length} pendiente${items.length === 1 ? '' : 's'}`
+function renderVerificationFilters({ selectedCustomerId, freshnessPolicy }) {
+  const customerSelect = $('#verification-customer')
+  const previousCustomer = selectedCustomerId ?? customerSelect.value
+  customerSelect.innerHTML = `<option value="">Todos</option>${allCustomers.map((customer) => `<option value="${customer.id}">${escapeHtml(customer.name)}</option>`).join('')}`
+  customerSelect.value = previousCustomer
+
+  const equipmentSelect = $('#verification-equipment')
+  const previousEquipment = equipmentSelect.value
+  const equipment = [...new Map(allVerificationItems.filter((item) => item.equipmentRecord).map((item) => [item.equipmentRecord.id, item.equipmentRecord])).values()]
+  equipmentSelect.innerHTML = `<option value="">Todos</option><option value="unlinked">Sin equipo vinculado</option>${equipment.map((record) => `<option value="${record.id}">${escapeHtml(record.manufacturer)} ${escapeHtml(displayModality(record.modality))} · ${escapeHtml(record.model)}</option>`).join('')}`
+  if ([...equipmentSelect.options].some(({ value }) => value === previousEquipment)) equipmentSelect.value = previousEquipment
+
+  const reasonSelect = $('#verification-reason')
+  const previousReason = reasonSelect.value
+  const reasons = new Map()
+  for (const item of allVerificationItems) item.reasonCodes.forEach((code, index) => reasons.set(code, item.reasons[index]))
+  reasonSelect.innerHTML = `<option value="">Todos</option>${[...reasons].sort((left, right) => left[1].localeCompare(right[1], 'es')).map(([code, label]) => `<option value="${code}">${escapeHtml(label)}</option>`).join('')}`
+  if (reasons.has(previousReason)) reasonSelect.value = previousReason
+  $('#freshness-policy').textContent = `${freshnessPolicy.disclaimer} Umbral actual: ${freshnessPolicy.materiallyOldDays} días.`
+}
+
+function applyVerificationFilters() {
+  const priority = $('#verification-priority').value
+  const customerId = $('#verification-customer').value
+  const equipmentId = $('#verification-equipment').value
+  const reasonCode = $('#verification-reason').value
+  const filtered = allVerificationItems.filter((item) =>
+    (!priority || item.priority === priority) &&
+    (!customerId || item.customerId === customerId) &&
+    (!equipmentId || (equipmentId === 'unlinked' ? !item.equipmentRecordId : item.equipmentRecordId === equipmentId)) &&
+    (!reasonCode || item.reasonCodes.includes(reasonCode)))
+  const defaultCustomerView = !priority && customerId === $('#customer').value && !equipmentId && !reasonCode
+  renderVerification(defaultCustomerView ? filtered.slice(0, 3) : filtered, filtered.length)
+}
+
+function renderVerification(items, total = items.length) {
+  const selectedCustomer = $('#customer').value
+  $('#verification-nav-count').textContent = allVerificationItems.filter((item) => item.customerId === selectedCustomer).length
+  $('#verification-summary').textContent = items.length === total ? `${total} pendiente${total === 1 ? '' : 's'}` : `${items.length} de ${total} pendientes`
   $('#verification').innerHTML = items.length ? items.map((item) => {
-    const record = view.equipmentRecords.find((candidate) => candidate.id === item.equipmentRecordId)
+    const record = item.equipmentRecord
     const relation = record ? `${record.manufacturer} ${displayModality(record.modality)} · ${record.model}` : 'Grupo de equipos por confirmar'
-    return `<article class="verification-row"><span class="priority-badge">${item.priority}</span><div class="verification-copy"><strong>${escapeHtml(item.reason)}</strong><span>Confirmar en una próxima revisión de evidencia.</span></div><div class="verification-relation"><strong>${escapeHtml(relation)}</strong><span>${record ? displayLocation(record.location) : 'Relación aún no resuelta'}</span></div><span class="status-pill open">${translate(item.status, statusLabels)}</span></article>`
-  }).join('') : '<div class="empty-state"><strong>No hay verificaciones pendientes</strong><span>La evidencia disponible no requiere una comprobación prioritaria.</span></div>'
+    const evidence = item.supportingEvidenceEntries
+    return `<article class="verification-row"><span class="priority-badge ${item.priority}">${escapeHtml(item.priorityLabel ?? translate(item.priority, priorityLabels))}</span><div class="verification-copy"><strong>${item.reasons.map(escapeHtml).join(' · ')}</strong><span>Prioridad calculada con reglas deterministas y explicables.</span><details class="verification-evidence"><summary>${evidence.length} evidencia${evidence.length === 1 ? '' : 's'} relacionada${evidence.length === 1 ? '' : 's'}</summary>${evidence.map((entry) => `<p><strong>${escapeHtml(entry.author)}</strong> · ${formatEvidenceAge(entry.recordedAt)}<br>${entry.observationDate ? `Fecha de observación: ${formatObservationDate(entry.observationDate)}` : 'Fecha de observación desconocida'}</p>`).join('')}</details></div><div class="verification-relation"><strong>${escapeHtml(relation)}</strong><span>${record ? `${displayLocation(record.location)} · Última evidencia: ${formatEvidenceAge(record.latestEvidenceAt)}` : 'Relación con equipo aún no resuelta'}</span><small>${escapeHtml(item.customer?.name ?? 'Cliente desconocido')}</small></div><span class="status-pill open">${translate(item.status, statusLabels)}</span></article>`
+  }).join('') : '<div class="empty-state"><strong>No hay verificaciones pendientes</strong><span>Los filtros actuales no contienen elementos abiertos.</span></div>'
 }
 
 function renderAggregate(data) {
@@ -454,6 +499,7 @@ async function reset() {
   try {
     await api('/api/reset', { method: 'POST' })
     currentObservation = null
+    $('#observation-date').value = ''
     clearReviewWorkspace()
     setFeedback('Demostración restablecida con los datos sintéticos iniciales.', 'success')
     await loadView()
@@ -507,5 +553,17 @@ function setFeedback(message, kind = '') { $('#capture-status').className = `fee
 function setClarificationStatus(message, kind = '') { $('#clarification-status').className = `feedback ${kind}`; $('#clarification-status').textContent = message }
 function setRuntime(message, kind) { $('#runtime-status').className = `runtime-status ${kind}`; $('#runtime-status').innerHTML = `<span class="status-dot"></span>${escapeHtml(message)}` }
 function formatDate(value) { return new Intl.DateTimeFormat('es', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) }
+function formatDateOnly(value) { return new Intl.DateTimeFormat('es', { dateStyle: 'medium' }).format(new Date(value)) }
+function formatObservationDate(value) { return new Intl.DateTimeFormat('es', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(`${value}T00:00:00.000Z`)) }
+function formatEvidenceAge(value) {
+  if (!value) return 'Evidencia sin fecha'
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const date = new Date(value)
+  date.setHours(0, 0, 0, 0)
+  const days = Math.max(0, Math.floor((today - date) / 86_400_000))
+  if (days === 0) return 'Registrada hoy'
+  return `Hace ${days} día${days === 1 ? '' : 's'}`
+}
 function escapeHtml(value) { const node = document.createElement('span'); node.textContent = value; return node.innerHTML }
 async function api(url, options) { const response = await fetch(url, { headers: { 'content-type': 'application/json' }, ...options }); const data = await response.json(); if (!response.ok) throw new Error(data.error || 'La solicitud local falló.'); return data }

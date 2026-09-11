@@ -55,6 +55,7 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
     'Base instalada',
     'Verificaciones',
     'Guardar y analizar con QVAC',
+    'Fecha de observación',
     'El análisis ocurre localmente.',
     'Observación original',
     'Datos extraídos pendientes de revisión',
@@ -62,7 +63,11 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
     'Aclaración única',
     'Responder y volver a analizar',
     'No lo sé',
-    'Omitir'
+    'Omitir',
+    'Prioridad',
+    'Cliente',
+    'Equipo',
+    'Motivo'
   ]) assert.match(page, new RegExp(expectedCopy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
   assert.doesNotMatch(page, /Problema|Solución|Valor/)
   const rejectedOrigin = await fetch(`${origin}/api/bootstrap`, { headers: { origin: 'http://example.invalid' } })
@@ -86,6 +91,10 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
   assert.match(clientScript, /Valor extraído por QVAC/)
   assert.match(clientScript, /Valor corregido por el usuario/)
   assert.match(clientScript, /Evidencia aportada por el revisor/)
+  assert.match(clientScript, /Registrada hoy/)
+  assert.match(clientScript, /Hace.*día/)
+  assert.match(clientScript, /Fecha de observación desconocida/)
+  assert.match(clientScript, /Prioridad calculada con reglas deterministas y explicables/)
   assert.match(page, /id="review"[^>]*disabled/)
   assert.doesNotMatch(clientScript, /value="rejected" checked/)
   assert.doesNotMatch(clientScript, /generatedTokens|metrics\.totalMs|evidence\.start|evidence\.end/)
@@ -134,6 +143,11 @@ test('invalid QVAC output leaves a visible failed observation and cannot affect 
   })
 
   const before = await fetch(`${origin}/api/customers/northbridge/view`).then((response) => response.json())
+  const highPriority = await fetch(`${origin}/api/verifications?priority=high&customerId=northbridge`).then((response) => response.json())
+  assert.equal(highPriority.length, 3)
+  assert.equal(highPriority.every((item) => item.priority === 'high' && item.customerId === 'northbridge'), true)
+  assert.equal(highPriority.every((item) => item.supportingEvidenceEntries.length > 0), true)
+  assert.match(before.freshnessPolicy.disclaimer, /no es una política oficial de Philips/i)
   const observation = await fetch(`${origin}/api/observations`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },

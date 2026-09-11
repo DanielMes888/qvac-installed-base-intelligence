@@ -1,17 +1,27 @@
 import { randomUUID } from 'node:crypto'
 
 export class WorkspaceService {
-  constructor(state, persist) {
+  constructor(state, persist, { now = () => new Date() } = {}) {
     this.state = structuredClone(state)
     this.state.evidenceEntries ??= []
+    this.state.verificationItems ??= []
+    this.now = now
+    for (const record of this.state.equipmentRecords) {
+      record.evidenceObservationIds ??= []
+      record.evidenceEntryIds ??= []
+    }
+    for (const entry of this.state.evidenceEntries) entry.observationDate ??= null
     for (const observation of this.state.observations) {
       observation.revision ??= 0
       observation.evidenceEntryIds ??= []
+      observation.observationDate ??= null
       observation.draftClaims = (observation.draftClaims ?? []).map(prepareDraftClaim)
       if (observation.clarification && !observation.clarification.status) {
         observation.clarification = { ...observation.clarification, status: 'pending', questionCount: 1, nextQuestion: observation.clarification.question, selectedAt: observation.recordedAt, resolvedAt: null, answerEvidenceEntryId: null }
       }
     }
+    for (const item of this.state.verificationItems) normalizeVerificationItem(item)
+    this.recalculateVerificationItems()
     this.persist = persist
   }
 
@@ -19,14 +29,15 @@ export class WorkspaceService {
     return structuredClone(this.state)
   }
 
-  async capture(customerId, originalText, extractor) {
+  async capture(customerId, originalText, extractor, { observationDate } = {}) {
     if (!this.state.customers.some((customer) => customer.id === customerId)) throw new Error('Cliente desconocido')
     if (!originalText?.trim()) throw new Error('El texto de la observación es obligatorio')
     const observation = {
       id: randomUUID(),
       customerId,
       originalText: originalText.trim(),
-      recordedAt: new Date().toISOString(),
+      observationDate: normalizeObservationDate(observationDate),
+      recordedAt: this.timestamp(),
       revision: 0,
       status: 'processing',
       attempts: [],
@@ -43,7 +54,7 @@ export class WorkspaceService {
     await this.persist(this.state)
 
     try {
-      const startedAt = new Date().toISOString()
+      const startedAt = this.timestamp()
       const extraction = await extractor(observation.originalText, { allowClarification: true, phase: 'initial' })
       observation.status = extraction.status
       this.appendExtractionAttempts(observation, extraction, 'initial', startedAt)
@@ -58,7 +69,7 @@ export class WorkspaceService {
           status: 'pending',
           questionCount: 1,
           nextQuestion: clarification.question,
-          selectedAt: new Date().toISOString(),
+          selectedAt: this.timestamp(),
           resolvedAt: null,
           answerEvidenceEntryId: null
         } : null
@@ -67,6 +78,7 @@ export class WorkspaceService {
       observation.status = 'failed'
       observation.attempts.push({ status: 'failed', failureCategory: 'host', errors: [error instanceof Error ? error.message : String(error)] })
     }
+    this.recalculateVerificationItems()
     await this.persist(this.state)
     return this.observation(observation.id)
   }
@@ -79,7 +91,8 @@ export class WorkspaceService {
     if (outcome !== 'answered') {
       observation.clarification.status = outcome
       observation.clarification.nextQuestion = null
-      observation.clarification.resolvedAt = new Date().toISOString()
+      observation.clarification.resolvedAt = this.timestamp()
+      this.recalculateVerificationItems()
       await this.persist(this.state)
       return this.observation(observationId)
     }
@@ -91,10 +104,12 @@ export class WorkspaceService {
     const evidenceEntry = {
       id: randomUUID(),
       observationId,
+      customerId: observation.customerId,
       type: 'clarificationAnswer',
       text,
       author: 'Usuario local de demostración',
-      recordedAt: new Date().toISOString(),
+      observationDate: observation.observationDate,
+      recordedAt: this.timestamp(),
       question: observation.clarification.question
     }
     this.state.evidenceEntries.push(evidenceEntry)
@@ -113,7 +128,7 @@ export class WorkspaceService {
     await this.persist(this.state)
 
     const combinedEvidence = `${observation.originalText}\nAclaración del usuario: ${text}`
-    const startedAt = new Date().toISOString()
+    const startedAt = this.timestamp()
     try {
       const extraction = await extractor(combinedEvidence, { allowClarification: false, phase: 'clarification' })
       this.appendExtractionAttempts(observation, extraction, 'clarification', startedAt)
@@ -136,14 +151,15 @@ export class WorkspaceService {
         phase: 'clarification',
         observationRevision: observation.revision,
         startedAt,
-        completedAt: new Date().toISOString(),
+        completedAt: this.timestamp(),
         status: 'failed',
         failureCategory: 'host',
         errors: [error instanceof Error ? error.message : String(error)],
         draftStatus: 'invalid'
       })
     }
-    observation.clarification.resolvedAt = new Date().toISOString()
+    observation.clarification.resolvedAt = this.timestamp()
+    this.recalculateVerificationItems()
     await this.persist(this.state)
     return this.observation(observationId)
   }
@@ -165,7 +181,10 @@ export class WorkspaceService {
       claim.decision = decision
       claim.reviewStatus = decision
     }
-    observation.reviewedAt = new Date().toISOString()
+    observation.reviewedAt = this.timestamp()
+    this.ensureAcceptedEvidence(observation)
+    this.ensureVerificationItemForAcceptedEvidence(observation)
+    this.recalculateVerificationItems()
     await this.persist(this.state)
     return this.observation(observationId)
   }
@@ -188,18 +207,20 @@ export class WorkspaceService {
     const previousValue = currentFieldValue(claim, field)
     if (sameValue(previousValue, value)) throw new Error('El valor corregido debe ser diferente del valor actual')
 
-    const correctedAt = new Date().toISOString()
+    const correctedAt = this.timestamp()
     const supported = isDirectlySupported(observation.originalText, field, value)
     let evidenceEntryId = null
     if (!supported) {
       const evidenceEntry = {
         id: randomUUID(),
         observationId,
+        customerId: observation.customerId,
         claimId,
         type: 'reviewerCorrection',
         field,
         text: String(value),
         author: 'Usuario local de demostración',
+        observationDate: observation.observationDate,
         recordedAt: correctedAt,
         reason: shortReason
       }
@@ -222,6 +243,7 @@ export class WorkspaceService {
       origin: supported ? 'originalObservation' : 'reviewerProvided',
       evidenceEntryId
     })
+    this.recalculateVerificationItems()
     await this.persist(this.state)
     return this.observation(observationId)
   }
@@ -249,8 +271,17 @@ export class WorkspaceService {
     const candidateIds = new Set(this.candidates(observationId).map(({ id }) => id))
     if (!candidateIds.has(recordId)) throw new Error('El registro no es un candidato respaldado por la evidencia')
     const record = this.state.equipmentRecords.find((item) => item.id === recordId)
-    observation.reconciliation = { recordId, reason: reason || 'El usuario vinculó la evidencia repetida', actor: 'Usuario local de demostración', decidedAt: new Date().toISOString() }
+    observation.reconciliation = { recordId, reason: reason || 'El usuario vinculó la evidencia repetida', actor: 'Usuario local de demostración', decidedAt: this.timestamp() }
     if (!record.evidenceObservationIds.includes(observation.id)) record.evidenceObservationIds.push(observation.id)
+    for (const entry of this.state.evidenceEntries.filter((item) => item.observationId === observation.id)) {
+      entry.equipmentRecordId = recordId
+      if (!record.evidenceEntryIds.includes(entry.id)) record.evidenceEntryIds.push(entry.id)
+    }
+    for (const item of this.state.verificationItems.filter((candidate) => candidate.observationId === observation.id && candidate.status === 'open')) {
+      item.equipmentRecordId = recordId
+    }
+    this.ensureVerificationItemForAcceptedEvidence(observation)
+    this.recalculateVerificationItems()
     await this.persist(this.state)
     return this.customerView(observation.customerId)
   }
@@ -275,16 +306,27 @@ export class WorkspaceService {
     }
     return {
       customer: structuredClone(this.state.customers.find((customer) => customer.id === customerId)),
-      equipmentRecords: structuredClone(this.state.equipmentRecords.filter((record) => record.customerId === customerId)),
+      equipmentRecords: this.state.equipmentRecords.filter((record) => record.customerId === customerId).map((record) => this.equipmentRecordWithFreshness(record)),
       observations: structuredClone(observations),
       acceptedClaimCount: acceptedClaims.length,
       unlinkedClaims: unlinkedSubjects.size,
       reportedTotals: acceptedClaims.filter((claim) => claim.type === 'quantity' && claim.quantityScope === 'reportedTotal'),
-      verificationItems: structuredClone(this.state.verificationItems
-        .filter((item) => item.customerId === customerId && item.status === 'open')
-        .sort((left, right) => left.priority - right.priority)
-        .slice(0, 3))
+      verificationItems: this.verificationItems({ customerId }).slice(0, 3),
+      freshnessPolicy: structuredClone(FRESHNESS_POLICY)
     }
+  }
+
+  verificationItems({ priority, customerId, equipmentRecordId, reasonCode, observationId } = {}) {
+    this.recalculateVerificationItems()
+    return this.state.verificationItems
+      .filter((item) => item.status === 'open')
+      .map((item) => this.verificationItemWithEvidence(item))
+      .filter((item) => !priority || item.priority === priority)
+      .filter((item) => !customerId || item.customerId === customerId)
+      .filter((item) => !equipmentRecordId || item.equipmentRecordId === equipmentRecordId)
+      .filter((item) => !reasonCode || item.reasonCodes.includes(reasonCode))
+      .filter((item) => !observationId || item.observationId === observationId)
+      .sort(compareVerificationItems)
   }
 
   aggregate() {
@@ -305,6 +347,108 @@ export class WorkspaceService {
     return observation
   }
 
+  timestamp() {
+    return new Date(this.now()).toISOString()
+  }
+
+  ensureAcceptedEvidence(observation) {
+    for (const claim of observation.draftClaims.filter((item) => item.decision === 'accepted')) {
+      if (claim.acceptedEvidenceEntryId && this.state.evidenceEntries.some(({ id }) => id === claim.acceptedEvidenceEntryId)) continue
+      const entry = {
+        id: randomUUID(),
+        observationId: observation.id,
+        claimId: claim.claimId,
+        customerId: observation.customerId,
+        equipmentRecordId: observation.reconciliation?.recordId ?? null,
+        type: 'acceptedClaim',
+        text: claim.evidence.text,
+        author: 'Usuario local de demostración',
+        origin: 'qvacDraftReviewed',
+        observationDate: observation.observationDate,
+        recordedAt: observation.recordedAt
+      }
+      this.state.evidenceEntries.push(entry)
+      observation.evidenceEntryIds.push(entry.id)
+      claim.acceptedEvidenceEntryId = entry.id
+    }
+  }
+
+  ensureVerificationItemForAcceptedEvidence(observation) {
+    const accepted = observation.draftClaims.filter((claim) => claim.decision === 'accepted' && !claim.negated)
+    for (const subjectId of new Set(accepted.map(({ subjectId }) => subjectId))) {
+      const claims = accepted.filter((claim) => claim.subjectId === subjectId)
+      const reasonCodes = verificationReasonsForClaims(claims, observation, this.state.equipmentRecords)
+      const evidenceIds = claims.flatMap((claim) => [
+        claim.acceptedEvidenceEntryId,
+        ...claim.corrections.map(({ evidenceEntryId }) => evidenceEntryId)
+      ]).filter(Boolean)
+      const id = `accepted:${observation.id}:${subjectId}`
+      const existing = this.state.verificationItems.find((item) => item.id === id)
+      if (existing) {
+        existing.baseReasonCodes = [...new Set([...existing.baseReasonCodes, ...reasonCodes])]
+        existing.supportingEvidenceEntryIds = [...new Set([...existing.supportingEvidenceEntryIds, ...evidenceIds])]
+        existing.equipmentRecordId = observation.reconciliation?.recordId ?? existing.equipmentRecordId ?? null
+        existing.updatedAt = this.timestamp()
+      } else {
+        this.state.verificationItems.push({
+          id,
+          customerId: observation.customerId,
+          observationId: observation.id,
+          subjectId,
+          equipmentRecordId: observation.reconciliation?.recordId ?? null,
+          baseReasonCodes: reasonCodes,
+          reasonCodes: [...reasonCodes],
+          supportingEvidenceEntryIds: evidenceIds,
+          status: 'open',
+          createdAt: this.timestamp(),
+          updatedAt: this.timestamp()
+        })
+      }
+    }
+  }
+
+  recalculateVerificationItems() {
+    for (const item of this.state.verificationItems) {
+      normalizeVerificationItem(item)
+      const evidence = item.supportingEvidenceEntryIds.map((id) => this.state.evidenceEntries.find((entry) => entry.id === id)).filter(Boolean)
+      const reasonCodes = [...item.baseReasonCodes]
+      const latestEvidenceAt = latestDate(evidence.map(({ recordedAt }) => recordedAt))
+      const latestObservationDate = latestDate(evidence.map(({ observationDate }) => observationDate))
+      if (!latestEvidenceAt) reasonCodes.push('undatedEvidence')
+      if (!latestObservationDate) reasonCodes.push('undatedObservation')
+      else if (ageInDays(latestObservationDate, this.now()) >= FRESHNESS_POLICY.materiallyOldDays) reasonCodes.push('staleEvidence')
+      item.reasonCodes = [...new Set(reasonCodes)]
+      item.priority = priorityForReasons(item.reasonCodes)
+      item.latestEvidenceAt = latestEvidenceAt
+      item.latestObservationDate = latestObservationDate
+    }
+  }
+
+  verificationItemWithEvidence(item) {
+    const equipment = item.equipmentRecordId ? this.state.equipmentRecords.find(({ id }) => id === item.equipmentRecordId) : null
+    return {
+      ...structuredClone(item),
+      priorityLabel: PRIORITY_LABELS[item.priority],
+      reasons: item.reasonCodes.map((code) => REASON_LABELS[code] ?? 'Información pendiente de confirmar'),
+      customer: structuredClone(this.state.customers.find(({ id }) => id === item.customerId)),
+      equipmentRecord: equipment ? this.equipmentRecordWithFreshness(equipment) : null,
+      supportingEvidenceEntries: structuredClone(item.supportingEvidenceEntryIds.map((id) => this.state.evidenceEntries.find((entry) => entry.id === id)).filter(Boolean))
+    }
+  }
+
+  equipmentRecordWithFreshness(record) {
+    const observations = record.evidenceObservationIds.map((id) => this.state.observations.find((observation) => observation.id === id)).filter(Boolean)
+    const evidenceIds = new Set(record.evidenceEntryIds)
+    for (const entry of this.state.evidenceEntries.filter((item) => item.equipmentRecordId === record.id || record.evidenceObservationIds.includes(item.observationId))) evidenceIds.add(entry.id)
+    const entries = [...evidenceIds].map((id) => this.state.evidenceEntries.find((entry) => entry.id === id)).filter(Boolean)
+    return {
+      ...structuredClone(record),
+      evidenceEntryIds: [...evidenceIds],
+      latestEvidenceAt: latestDate([...observations.map(({ recordedAt }) => recordedAt), ...entries.map(({ recordedAt }) => recordedAt)]),
+      latestObservationDate: latestDate([...observations.map(({ observationDate }) => observationDate), ...entries.map(({ observationDate }) => observationDate)])
+    }
+  }
+
   appendExtractionAttempts(observation, extraction, phase, startedAt) {
     const received = extraction.attempts ?? []
     if (received.length > 1) throw new Error('Cada fase de aclaración admite una sola inferencia')
@@ -316,11 +460,115 @@ export class WorkspaceService {
       phase,
       observationRevision: observation.revision,
       startedAt,
-      completedAt: new Date().toISOString(),
+      completedAt: this.timestamp(),
       draftStatus: attempt.status === 'succeeded' ? 'active' : 'invalid'
     }))
     observation.attempts.push(...added)
   }
+}
+
+export const FRESHNESS_POLICY = Object.freeze({
+  materiallyOldDays: 90,
+  disclaimer: 'Regla configurable del prototipo; no es una política oficial de Philips y no indica que la información antigua sea incorrecta.'
+})
+
+const HIGH_PRIORITY_REASONS = new Set(['conflictingEvidence', 'unknownIdentity', 'ambiguousQuantity', 'conflictingQuantity', 'unknownQuantity', 'unresolvedReconciliationConflict'])
+const MEDIUM_PRIORITY_REASONS = new Set(['estimatedInformation', 'reviewerCorrection', 'missingManufacturer', 'missingModel', 'staleEvidence', 'undatedEvidence', 'undatedObservation'])
+const PRIORITY_LABELS = { high: 'Alta', medium: 'Media', low: 'Baja' }
+const REASON_LABELS = {
+  conflictingEvidence: 'Evidencia en conflicto',
+  unknownIdentity: 'Identidad del equipo desconocida',
+  ambiguousQuantity: 'Cantidad en conflicto',
+  conflictingQuantity: 'Cantidad en conflicto',
+  unknownQuantity: 'Cantidad con alcance desconocido',
+  unresolvedReconciliationConflict: 'Conflicto de reconciliación pendiente',
+  estimatedInformation: 'Información estimada',
+  reviewerCorrection: 'Corrección proporcionada por el revisor',
+  missingManufacturer: 'Fabricante desconocido',
+  missingModel: 'Modelo desconocido',
+  staleEvidence: 'Evidencia antigua según la regla del prototipo',
+  undatedEvidence: 'Evidencia sin fecha de registro',
+  undatedObservation: 'Evidencia sin fecha',
+  reportedNeedsConfirmation: 'Información reportada pendiente de confirmar',
+  legacyNeedsConfirmation: 'Información pendiente de confirmar'
+}
+
+function normalizeObservationDate(value) {
+  if (value === undefined || value === null || value === '') return null
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new Error('La fecha de observación debe usar el formato AAAA-MM-DD')
+  const parsed = new Date(`${value}T00:00:00.000Z`)
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== value) throw new Error('La fecha de observación no es válida')
+  return value
+}
+
+function normalizeVerificationItem(item) {
+  item.supportingEvidenceEntryIds ??= []
+  item.equipmentRecordId ??= null
+  item.observationId ??= null
+  item.baseReasonCodes ??= item.reasonCodes?.length
+    ? [...item.reasonCodes]
+    : [legacyReasonCode(item)]
+  item.reasonCodes ??= [...item.baseReasonCodes]
+  item.createdAt ??= null
+  item.updatedAt ??= item.createdAt
+}
+
+function legacyReasonCode(item) {
+  const reason = item.reason?.toLocaleLowerCase('es') ?? ''
+  if (/contradict|conflict/.test(reason)) return 'conflictingEvidence'
+  if (/cantidad|total/.test(reason)) return 'ambiguousQuantity'
+  if (/serie|identidad/.test(reason)) return 'unknownIdentity'
+  if (/modelo/.test(reason)) return 'missingModel'
+  if (/fabricante/.test(reason)) return 'missingManufacturer'
+  if (item.priority === 1) return 'unresolvedReconciliationConflict'
+  if (item.priority === 2) return 'legacyNeedsConfirmation'
+  return 'reportedNeedsConfirmation'
+}
+
+function verificationReasonsForClaims(claims, observation, records) {
+  const reasons = []
+  if (claims.some((claim) => claim.type === 'quantity' && claim.quantityScope === 'unknown')) reasons.push('unknownQuantity')
+  if (claims.some((claim) => claim.certainty === 'estimated')) reasons.push('estimatedInformation')
+  if (claims.some((claim) => claim.corrections.some(({ origin }) => origin === 'reviewerProvided'))) reasons.push('reviewerCorrection')
+  if (claims.some((claim) => claim.type === 'equipmentType')) {
+    if (!claims.some((claim) => claim.type === 'manufacturer')) reasons.push('missingManufacturer')
+    if (!claims.some((claim) => claim.type === 'model')) reasons.push('missingModel')
+  }
+  const record = observation.reconciliation ? records.find(({ id }) => id === observation.reconciliation.recordId) : null
+  if (record && claims.some((claim) => {
+    const recordValue = { equipmentType: record.modality, manufacturer: record.manufacturer, model: record.model }[claim.type]
+    return recordValue !== undefined && String(recordValue).toLocaleLowerCase('es') !== String(claim.value).toLocaleLowerCase('es')
+  })) reasons.push('conflictingEvidence')
+  return reasons.length ? [...new Set(reasons)] : ['reportedNeedsConfirmation']
+}
+
+function priorityForReasons(reasonCodes) {
+  if (reasonCodes.some((code) => HIGH_PRIORITY_REASONS.has(code))) return 'high'
+  if (reasonCodes.some((code) => MEDIUM_PRIORITY_REASONS.has(code))) return 'medium'
+  return 'low'
+}
+
+function compareVerificationItems(left, right) {
+  const rank = { high: 0, medium: 1, low: 2 }
+  if (rank[left.priority] !== rank[right.priority]) return rank[left.priority] - rank[right.priority]
+  const leftUnknown = left.latestObservationDate ? 1 : 0
+  const rightUnknown = right.latestObservationDate ? 1 : 0
+  if (leftUnknown !== rightUnknown) return leftUnknown - rightUnknown
+  const leftEvidence = left.latestEvidenceAt ? Date.parse(left.latestEvidenceAt) : Number.NEGATIVE_INFINITY
+  const rightEvidence = right.latestEvidenceAt ? Date.parse(right.latestEvidenceAt) : Number.NEGATIVE_INFINITY
+  if (leftEvidence !== rightEvidence) return leftEvidence - rightEvidence
+  return left.id.localeCompare(right.id)
+}
+
+function latestDate(values) {
+  const valid = values.filter(Boolean).filter((value) => !Number.isNaN(Date.parse(value)))
+  if (!valid.length) return null
+  return valid.reduce((latest, value) => Date.parse(value) > Date.parse(latest) ? value : latest)
+}
+
+function ageInDays(value, now) {
+  const difference = new Date(now).getTime() - Date.parse(value)
+  return Math.max(0, Math.floor(difference / 86_400_000))
 }
 
 const CORRECTABLE_VALUE_TYPES = new Set(['equipmentType', 'manufacturer', 'model', 'quantity'])

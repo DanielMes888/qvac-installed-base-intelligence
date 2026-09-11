@@ -49,6 +49,11 @@
             <textarea id="note" rows="7" required>Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.</textarea>
             <small>Escriba lo que vio o lo que otra persona le comunicó. Conserve expresiones de duda o aproximación.</small>
           </div>
+          <div class="field">
+            <label for="observation-date">Fecha de observación <span class="optional-label">(opcional)</span></label>
+            <input id="observation-date" type="date">
+            <small>Déjela vacía si no conoce cuándo ocurrió la observación. La fecha de registro se conservará por separado.</small>
+          </div>
           <div class="privacy-note"><span aria-hidden="true">●</span><div><strong>El análisis ocurre localmente.</strong><small>La observación se guarda antes de iniciar QVAC y no se envía a la nube.</small></div></div>
           <button id="extract" class="button primary" type="submit"><span>Guardar y analizar con QVAC</span><span aria-hidden="true">→</span></button>
           <div id="capture-status" class="feedback" aria-live="polite"></div>
@@ -127,6 +132,13 @@
       <div class="workspace-heading">
         <div><p class="section-kicker">Próxima comprobación</p><h1 id="verification-title">Información pendiente de verificar</h1><p>Revise primero los puntos que podrían evitar duplicados o mejorar la identificación de un equipo.</p></div>
         <span id="verification-summary" class="step-badge">0 pendientes</span>
+      </div>
+      <div class="surface verification-filters" aria-label="Filtros de verificaciones">
+        <label>Prioridad<select id="verification-priority"><option value="">Todas</option><option value="high">Alta</option><option value="medium">Media</option><option value="low">Baja</option></select></label>
+        <label>Cliente<select id="verification-customer"></select></label>
+        <label>Equipo<select id="verification-equipment"><option value="">Todos</option></select></label>
+        <label>Motivo<select id="verification-reason"><option value="">Todos</option></select></label>
+        <p id="freshness-policy" class="freshness-policy"></p>
       </div>
       <div class="surface verification-panel">
         <div class="verification-header"><span>Prioridad</span><span>Qué debe confirmarse</span><span>Equipo relacionado</span><span>Estado</span></div>

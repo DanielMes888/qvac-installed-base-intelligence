@@ -29,8 +29,16 @@ export async function createPrototypeServer({
       }
       if (url.pathname === '/api/observations' && request.method === 'POST') {
         const body = await bodyJson(request)
-        const observation = await workspace.capture(body.customerId, body.text, extractor)
+        const observation = await workspace.capture(body.customerId, body.text, extractor, { observationDate: body.observationDate })
         return json(response, 201, observation)
+      }
+      if (url.pathname === '/api/verifications' && request.method === 'GET') {
+        return json(response, 200, workspace.verificationItems({
+          priority: url.searchParams.get('priority') || undefined,
+          customerId: url.searchParams.get('customerId') || undefined,
+          equipmentRecordId: url.searchParams.get('equipmentRecordId') || undefined,
+          reasonCode: url.searchParams.get('reasonCode') || undefined
+        }))
       }
       const viewMatch = url.pathname.match(/^\/api\/customers\/([^/]+)\/view$/)
       if (viewMatch && request.method === 'GET') return json(response, 200, workspace.customerView(viewMatch[1]))

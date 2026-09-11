@@ -42,17 +42,18 @@ The preferred one-tool contract failed in the bounded probe: none of three diagn
 - `demo-smoke.json`: final real-QVAC vertical-slice evidence.
 - `clarification-smoke.json`: dedicated real-QVAC clarification attempt; initial extraction succeeded but produced no question, so the bounded workflow stopped before a second inference.
 - `correction-smoke.json`: deterministic public-seam correction workflow using a controlled Draft Claim; it is provenance and workflow evidence rather than model-quality evidence.
+- `freshness-priority-smoke.json`: deterministic evidence-freshness, prioritization, filtering, recalculation, and relationship workflow using a controlled adapter.
 
 The smoke note was: `Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.` The real local run produced one compact item and five supported atomic claims. Its single attempt recorded:
 
 | Metric | Result |
 | --- | ---: |
-| Cached model load | 6,178.20 ms |
-| End-to-end extraction | 28,099.20 ms |
+| Cached model load | 5,048.09 ms |
+| End-to-end extraction | 23,196.61 ms |
 | Prompt tokens | 247 |
 | Generated/emitted tokens | 60 / 60 |
-| TTFT | 26,055.11 ms |
-| Throughput | 63.69 tokens/s |
+| TTFT | 21,346.45 ms |
+| Throughput | 71.68 tokens/s |
 | Backend | GPU |
 | Retry | None |
 
@@ -76,13 +77,21 @@ Every correction records a timestamp, the local demonstration reviewer, field, p
 
 `npm.cmd run smoke:correction` used the controlled Draft Claim `DS-Zero`, corrected it to the source-supported `DS-One`, retained both values and the original source offsets, required explicit acceptance, matched `nb-mri-01`, and reconciled without increasing Northbridge's two equipment records. The controlled adapter makes this a deterministic workflow check; the real-QVAC behavior remains evidenced by `demo-smoke.json`.
 
+## Evidence freshness and verification priority
+
+Observations now preserve an optional observation date separately from their evidence-recorded timestamp. Equipment records derive their latest evidence timestamp and latest known observation date from linked Observations and Evidence Entries. The UI renders **Registrada hoy**, **Hace X días**, or **Fecha de observación desconocida** and never derives an equipment expiration date or labels old evidence as incorrect.
+
+Open Verification Items receive deterministic `high`, `medium`, or `low` states rendered as **Alta**, **Media**, and **Baja**. High reasons cover conflicting evidence, unknown identity, ambiguous/conflicting/unknown-scope quantity, and unresolved reconciliation conflicts. Medium reasons cover estimated information, unsupported reviewer corrections, missing manufacturer/model, and materially old or undated evidence. Consistent reported information awaiting confirmation is Low. Unknown observation dates sort first within equal priority, followed by the oldest evidence. The list exposes filters for priority, customer, equipment, and reason, and each item retains links to its supporting Evidence Entries and equipment record.
+
+The 90-day materially-old threshold is a configurable prototype rule. It is not official Philips policy, does not expire a record, and does not imply that older information is wrong. Recalculation never marks an item Resolved or creates an equipment record.
+
 ## Offline result
 
 The smoke run first attempted a short external npm-registry request, which failed, and then completed cached model loading, real QVAC inference, review, reconciliation, customer-view generation, and aggregate generation in the same process. The application has no cloud inference, delegated inference, telemetry, upload, or non-loopback server binding. This demonstrates the bounded workflow under the command environment's restricted network access; it is not a general operating-system security audit.
 
 ## Essential demo-readiness pass
 
-On 2026-09-10, the application was reset and started at `127.0.0.1:4173`. The page, synthetic notice, capture/review controls, customer view, verification panel, and aggregate panel loaded. The complete test suite now passes 37/37, including focused clarification and reviewer-correction coverage.
+On 2026-09-10, the application was reset and started at `127.0.0.1:4173`. The page, synthetic notice, capture/review controls, customer view, verification panel, and aggregate panel loaded. The complete test suite now passes 41/41, including focused clarification, reviewer-correction, freshness, priority, filtering, and no-side-effect coverage.
 
 The running application then processed the rehearsed note through its production loopback API and real QVAC adapter. It saved the note, produced five Draft Claims, required review of all five, suggested `nb-mri-01`, and linked the repeated evidence. Northbridge had two equipment records before and after the link, the selected MRI gained one evidence reference, three verification items were returned, and the aggregate reported three verified and two provisional records. Reset restored zero observations and zero new evidence links.
 
@@ -116,6 +125,7 @@ Then open `http://127.0.0.1:4173` on the laptop.
 npm.cmd test
 npm.cmd run smoke:demo
 npm.cmd run smoke:correction
+npm.cmd run smoke:freshness
 ```
 
 ## Known limitations
@@ -126,6 +136,7 @@ npm.cmd run smoke:correction
 - The raw fallback applies one source type, certainty, location scope, and evidence reference to all atomic claims derived from an equipment row. It is suitable for the rehearsed uniform sentence but can flatten mixed-certainty statements; those outputs require rejection in this prototype.
 - The accepted second-inference clarification lifecycle is implemented, but its dedicated real-model smoke did not receive a clarification candidate from the current 1.7B model.
 - Reviewer correction supports only the six approved fields and a single local reviewer attribution. It does not provide general record editing, identity verification, or multi-user authorization.
+- Freshness has one configurable 90-day prototype band and date-based tie-breaking. No real Philips freshness policy or operational threshold has been validated.
 - Local persistence is a single JSON file written through a completed temporary file followed by replacement. It has no migrations, encryption, authentication, synchronization, import/export, deletion workflow, or production recovery guarantees.
 - The prototype has no packaging, phone access, full E7 evaluation, user experiment, or comprehensive compliance/reproduction result.
 - Browser visual automation was unavailable in the execution environment. The HTTP page and full API seam were exercised automatically; final display rehearsal still needs a project-owner browser check on the laptop.

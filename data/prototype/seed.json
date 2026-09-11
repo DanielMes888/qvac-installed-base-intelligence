@@ -7,19 +7,26 @@
     { "id": "harbor", "name": "Clínica Harborview", "site": "Campus Oeste" }
   ],
   "equipmentRecords": [
-    { "id": "nb-mri-01", "customerId": "northbridge", "status": "verified", "modality": "MRI", "manufacturer": "DemoScan", "model": "DS-One", "location": "Radiology", "evidenceObservationIds": [] },
-    { "id": "nb-ct-02", "customerId": "northbridge", "status": "provisional", "modality": "CT", "manufacturer": "Aster Imaging", "model": "AX-4", "location": "Emergency", "evidenceObservationIds": [] },
-    { "id": "meadow-us-01", "customerId": "meadow", "status": "verified", "modality": "Ultrasound", "manufacturer": "LumaCare", "model": "Sonora", "location": "Imaging", "evidenceObservationIds": [] },
-    { "id": "meadow-mon-02", "customerId": "meadow", "status": "provisional", "modality": "Patient monitoring", "manufacturer": "NovaPulse", "model": "NP-9", "location": "Critical Care", "evidenceObservationIds": [] },
-    { "id": "harbor-mri-01", "customerId": "harbor", "status": "verified", "modality": "MRI", "manufacturer": "HelioView", "model": "HV-One", "location": "Room 2", "evidenceObservationIds": [] }
+    { "id": "nb-mri-01", "customerId": "northbridge", "status": "verified", "modality": "MRI", "manufacturer": "DemoScan", "model": "DS-One", "location": "Radiology", "evidenceObservationIds": [], "evidenceEntryIds": ["seed-e-nb-mri"] },
+    { "id": "nb-ct-02", "customerId": "northbridge", "status": "provisional", "modality": "CT", "manufacturer": "Aster Imaging", "model": "AX-4", "location": "Emergency", "evidenceObservationIds": [], "evidenceEntryIds": ["seed-e-nb-ct"] },
+    { "id": "meadow-us-01", "customerId": "meadow", "status": "verified", "modality": "Ultrasound", "manufacturer": "LumaCare", "model": "Sonora", "location": "Imaging", "evidenceObservationIds": [], "evidenceEntryIds": ["seed-e-meadow-us"] },
+    { "id": "meadow-mon-02", "customerId": "meadow", "status": "provisional", "modality": "Patient monitoring", "manufacturer": "NovaPulse", "model": "NP-9", "location": "Critical Care", "evidenceObservationIds": [], "evidenceEntryIds": ["seed-e-meadow-mon"] },
+    { "id": "harbor-mri-01", "customerId": "harbor", "status": "verified", "modality": "MRI", "manufacturer": "HelioView", "model": "HV-One", "location": "Room 2", "evidenceObservationIds": [], "evidenceEntryIds": ["seed-e-harbor-mri"] }
   ],
   "observations": [],
-  "evidenceEntries": [],
+  "evidenceEntries": [
+    { "id": "seed-e-nb-mri", "customerId": "northbridge", "equipmentRecordId": "nb-mri-01", "type": "seedReference", "text": "Referencia sintética del equipo MRI DemoScan.", "author": "Conjunto sintético", "observationDate": "2026-09-08", "recordedAt": "2026-09-09T14:00:00.000Z" },
+    { "id": "seed-e-nb-ct", "customerId": "northbridge", "equipmentRecordId": "nb-ct-02", "type": "seedReference", "text": "Referencia sintética del equipo CT Aster Imaging.", "author": "Conjunto sintético", "observationDate": null, "recordedAt": "2026-08-10T14:00:00.000Z" },
+    { "id": "seed-e-meadow-us", "customerId": "meadow", "equipmentRecordId": "meadow-us-01", "type": "seedReference", "text": "Referencia sintética del equipo de ultrasonido LumaCare.", "author": "Conjunto sintético", "observationDate": "2026-09-01", "recordedAt": "2026-09-02T14:00:00.000Z" },
+    { "id": "seed-e-meadow-mon", "customerId": "meadow", "equipmentRecordId": "meadow-mon-02", "type": "seedReference", "text": "Referencia sintética de monitoreo de pacientes NovaPulse.", "author": "Conjunto sintético", "observationDate": "2026-04-15", "recordedAt": "2026-04-16T14:00:00.000Z" },
+    { "id": "seed-e-harbor-mri", "customerId": "harbor", "equipmentRecordId": "harbor-mri-01", "type": "seedReference", "text": "Referencia sintética del equipo MRI HelioView.", "author": "Conjunto sintético", "observationDate": "2026-05-20", "recordedAt": "2026-05-21T14:00:00.000Z" }
+  ],
   "verificationItems": [
-    { "id": "v1", "customerId": "northbridge", "equipmentRecordId": "nb-ct-02", "priority": 1, "reason": "Confirmar si la observación de CT corresponde al equipo AX-4", "status": "open" },
-    { "id": "v2", "customerId": "northbridge", "equipmentRecordId": "nb-mri-01", "priority": 2, "reason": "Verificar el número de serie del equipo MRI en la próxima visita", "status": "open" },
-    { "id": "v3", "customerId": "northbridge", "priority": 3, "reason": "Aclarar si la cantidad reportada en Radiología representa un total", "status": "open" },
-    { "id": "v4", "customerId": "meadow", "equipmentRecordId": "meadow-mon-02", "priority": 1, "reason": "Resolver las cantidades contradictorias de monitores de pacientes", "status": "open" },
-    { "id": "v5", "customerId": "harbor", "equipmentRecordId": "harbor-mri-01", "priority": 2, "reason": "Confirmar la sala actual del equipo MRI", "status": "open" }
+    { "id": "v1", "customerId": "northbridge", "equipmentRecordId": "nb-ct-02", "reasonCodes": ["unresolvedReconciliationConflict"], "supportingEvidenceEntryIds": ["seed-e-nb-ct"], "status": "open", "createdAt": "2026-08-10T14:00:00.000Z" },
+    { "id": "v2", "customerId": "northbridge", "equipmentRecordId": "nb-mri-01", "reasonCodes": ["unknownIdentity"], "supportingEvidenceEntryIds": ["seed-e-nb-mri"], "status": "open", "createdAt": "2026-09-09T14:00:00.000Z" },
+    { "id": "v3", "customerId": "northbridge", "equipmentRecordId": "nb-mri-01", "reasonCodes": ["ambiguousQuantity"], "supportingEvidenceEntryIds": ["seed-e-nb-mri"], "status": "open", "createdAt": "2026-09-09T14:00:00.000Z" },
+    { "id": "v4", "customerId": "meadow", "equipmentRecordId": "meadow-mon-02", "reasonCodes": ["conflictingQuantity"], "supportingEvidenceEntryIds": ["seed-e-meadow-mon"], "status": "open", "createdAt": "2026-04-16T14:00:00.000Z" },
+    { "id": "v5", "customerId": "harbor", "equipmentRecordId": "harbor-mri-01", "reasonCodes": ["staleEvidence"], "supportingEvidenceEntryIds": ["seed-e-harbor-mri"], "status": "open", "createdAt": "2026-05-21T14:00:00.000Z" },
+    { "id": "v6", "customerId": "meadow", "equipmentRecordId": "meadow-us-01", "reasonCodes": ["reportedNeedsConfirmation"], "supportingEvidenceEntryIds": ["seed-e-meadow-us"], "status": "open", "createdAt": "2026-09-02T14:00:00.000Z" }
   ]
 }

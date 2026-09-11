@@ -52,6 +52,20 @@ npm.cmd run smoke:correction
 
 Su evidencia se publica en [correction-smoke.json](results/emergency/correction-smoke.json). Este smoke prueba el flujo y la procedencia; no mide la calidad de QVAC.
 
+## Vigencia y prioridad de verificación
+
+La aplicación conserva por separado la fecha de observación, cuando el usuario la conoce, y la fecha en que la evidencia se registró. Cada equipo muestra la fecha de su evidencia más reciente con textos como **Registrada hoy** o **Hace X días**; una fecha de observación ausente se presenta como **Fecha de observación desconocida**. La antigüedad no vence el equipo ni significa que la información sea incorrecta.
+
+Los Verification Items reciben prioridad **Alta**, **Media** o **Baja** mediante reglas deterministas. Conflictos, identidad desconocida y cantidades ambiguas son Alta; estimaciones, correcciones aportadas solo por el revisor, fabricante/modelo faltante y evidencia antigua o sin fecha son Media; información reportada coherente que aún requiere confirmación es Baja. Dentro de la misma prioridad se muestra primero la fecha de observación desconocida y luego la evidencia más antigua.
+
+El umbral actual de 90 días es una regla configurable del prototipo. **No es una política oficial de Philips** y no establece una fecha de expiración. La vista explica cada prioridad y permite filtrar por prioridad, cliente, equipo y motivo.
+
+```powershell
+npm.cmd run smoke:freshness
+```
+
+El resultado determinista se publica en [freshness-priority-smoke.json](results/emergency/freshness-priority-smoke.json). Usa un adaptador controlado para verificar reglas y relaciones; no es evidencia de calidad de QVAC.
+
 ## Problem
 
 Hospital equipment observations remain scattered across field employees' notes and memory. Incomplete, estimated, repeated, or contradictory reports can produce unreliable installed-base records without clear supporting evidence.
