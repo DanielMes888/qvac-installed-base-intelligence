@@ -244,6 +244,8 @@ The owner voluntarily authorizes planning an attempt to complete the five unfini
 
 Cross-device synchronization is not an official Stretch Goal in the stored brief and remains deferred under ADR 0002. Full manual testing and final rehearsal move after the five-feature extension and UI/UX integration; each feature still requires automated tests and a specific smoke during implementation.
 
+**Expected-output amendment, 2026-09-11:** the owner additionally authorized a **Geographic Installed-Base Map** found under Expected Output in the stored brief. It is an optional demonstration experience, not a ninth Stretch Goal or a Minimum Viable Prototype requirement. It is limited to synthetic geography, local/offline assets, deterministic modality/geography aggregates, the hierarchy `Región → País → Ciudad → Cliente → Equipos instalados`, an accessible list/tree alternative, and navigation to Customer 360. Remote tiles, geocoding, external services, real Philips locations, invented precision, QVAC calls, and Equipment Record mutation are prohibited. Extension Tickets 01 and 02 are now owner-approved and implemented; the failed E4/E4-v2 gates and original formal-ticket states remain unchanged.
+
 Automatic asset lifecycle management, complete visit-note capture, a general-purpose knowledge graph, and a full event-sourcing framework are outside the MVP. Supporting seeded labels or references does not add photo/document ingestion to the required scope.
 
 Delegated inference and mobile deployment are outside the selected MVP route. Peer model distribution is not peer inference; do not downgrade the SDK to recover delegation.

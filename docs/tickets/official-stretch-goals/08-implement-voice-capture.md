@@ -1,4 +1,4 @@
-# 07: Implement voice capture
+# 08: Implement voice capture
 
 Type: Official Stretch Goal
 
@@ -18,7 +18,7 @@ A user can record or select permitted synthetic audio, inspect and edit a local 
 
 ## Scope
 
-- Implement only the exact local transcription route approved by Ticket 06's `viable` result.
+- Implement only the exact local transcription route approved by Ticket 07's `viable` result.
 - Show permission/capture, temporary playback/transcription, review/edit, submit, cancel, error, and cleanup states.
 - Discard source audio after submit or cancel; do not store it in application persistence, evidence, logs, or results.
 - Persist only reviewed and submitted transcript text as a distinct Observation with `voice` provenance.
@@ -27,9 +27,9 @@ A user can record or select permitted synthetic audio, inspect and edit a local 
 
 ## Dependencies
 
-Blocked by: `docs/tickets/official-stretch-goals/06-prove-local-transcription-feasibility.md` finishing with an owner-approved `viable` result.
+Blocked by: `docs/tickets/official-stretch-goals/07-prove-local-transcription-feasibility.md` finishing with an owner-approved `viable` result.
 
-If Ticket 06 is `not viable`, do not implement. Preserve feasibility evidence and obtain an explicit owner decision before closing this ticket as `done` with `Resolution: not-planned`; do not mislabel it as implemented.
+If Ticket 07 is `not viable`, do not implement. Preserve feasibility evidence and obtain an explicit owner decision before closing this ticket as `done` with `Resolution: not-planned`; do not mislabel it as implemented.
 
 ## Acceptance Criteria
 
@@ -63,7 +63,7 @@ With the approved transcription route cached and networking unavailable, submit 
 
 ## Stop Conditions
 
-- Stop if Ticket 06 lacks an owner-approved viable result.
+- Stop if Ticket 07 lacks an owner-approved viable result.
 - Stop if any audio persists beyond the temporary lifecycle or reaches telemetry/logging.
 - Stop if the flow creates data without explicit review and submit.
 - Stop rather than add cloud fallback, change QVAC v9, or weaken conservative reconciliation.

@@ -1,4 +1,4 @@
-# 08: Integrate Stretch Goals and improve UI/UX
+# 09: Integrate Stretch Goals and improve UI/UX
 
 Type: Integration and Demonstration
 
@@ -19,6 +19,7 @@ A user can move through capture, review, installed-base intelligence, analytics,
 ## Scope
 
 - Integrate Confidence scoring, Opportunity identification, and Natural-language analytics after their functional tickets pass.
+- Integrate the Geographic Installed-Base Map after its functional ticket passes, including its accessible hierarchy and Customer 360 transition.
 - Integrate Photo-assisted and Voice capture only when their feasibility and implementation tickets end as implemented.
 - Treat each media implementation ticket closed `Resolution: not-planned` after failed feasibility and explicit owner decision as an intentionally unavailable branch, not as an implemented feature.
 - Improve information architecture, navigation, visual hierarchy, responsive states, keyboard/focus behavior, labels, empty/loading/error states, and demo discoverability.
@@ -31,8 +32,9 @@ Blocked by:
 
 - `docs/tickets/official-stretch-goals/02-implement-conservative-opportunity-identification.md`
 - `docs/tickets/official-stretch-goals/03-implement-local-read-only-natural-language-analytics.md`
-- Resolution of `docs/tickets/official-stretch-goals/05-implement-photo-assisted-capture.md` as implemented or explicitly `Resolution: not-planned`
-- Resolution of `docs/tickets/official-stretch-goals/07-implement-voice-capture.md` as implemented or explicitly `Resolution: not-planned`
+- `docs/tickets/official-stretch-goals/04-implement-geographic-installed-base-map.md`
+- Resolution of `docs/tickets/official-stretch-goals/06-implement-photo-assisted-capture.md` as implemented or explicitly `Resolution: not-planned`
+- Resolution of `docs/tickets/official-stretch-goals/08-implement-voice-capture.md` as implemented or explicitly `Resolution: not-planned`
 
 Do not start general UI/UX work before all applicable functional branches have a recorded resolution.
 

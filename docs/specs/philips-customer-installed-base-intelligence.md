@@ -391,6 +391,8 @@ Full manual regression and final rehearsal are deferred until the extension and 
 
 **Owner closure note, 2026-09-11:** the initial Confidence scoring weights are completeness 40, freshness 30, and independent corroboration 30, with deterministic subthresholds deferred to implementation. Multiple Draft Claims or human review from one Observation do not establish independent corroboration, and the score stays separate from certainty, verification priority, acceptance, and identity. Opportunity signals cannot assert purchase intent, clinical need, obsolescence, or recommendations. Analytics is read-only and uses a separate contract/prompt. Photo and voice media are temporary; only reviewed submitted text persists as an Observation with `photo-assisted` or `voice` provenance.
 
+**Expected-output amendment, 2026-09-11:** Geographic Installed-Base Map is separately authorized as an optional experience listed under Expected Output, not as a ninth Stretch Goal or MVP requirement. The bounded implementation uses only synthetic region/country/city/customer data, local/offline assets, deterministic allowlisted aggregates, an accessible hierarchy equivalent to the schematic view, and navigation to Customer 360. It must expose unknown geographic granularity, preserve provenance/certainty/freshness, execute no QVAC inference, mutate no Equipment Record, and use no remote tiles, geocoding, external services, real Philips location, or invented precision.
+
 ## Out of Scope
 
 - A validated Philips role, CRM process, service workflow, reporting obligation, installed-base owner, or data-steward handoff.

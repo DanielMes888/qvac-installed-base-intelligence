@@ -1,4 +1,4 @@
-# 06: Prove local transcription feasibility
+# 07: Prove local transcription feasibility
 
 Type: Official Stretch Goal Feasibility Gate
 
@@ -29,7 +29,7 @@ A small feasibility surface demonstrates local audio capture/import, temporary p
 
 Blocked by: `docs/tickets/official-stretch-goals/03-implement-local-read-only-natural-language-analytics.md`.
 
-This gate is independent of Tickets 04 and 05. OCR failure must not prevent voice feasibility from running.
+This gate is independent of Tickets 05 and 06. OCR failure must not prevent voice feasibility from running.
 
 ## Acceptance Criteria
 

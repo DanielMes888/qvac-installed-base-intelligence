@@ -1,4 +1,4 @@
-# 05: Implement photo-assisted capture
+# 06: Implement photo-assisted capture
 
 Type: Official Stretch Goal
 
@@ -18,7 +18,7 @@ A user can select a permitted synthetic image, inspect and edit local OCR text, 
 
 ## Scope
 
-- Implement only the exact local OCR route approved by Ticket 04's `viable` result.
+- Implement only the exact local OCR route approved by Ticket 05's `viable` result.
 - Show temporary image/OCR state, review/edit controls, explicit submit, cancel, error, and cleanup status.
 - Discard the original image after submit or cancel; do not store it in application persistence, evidence, logs, or results.
 - Persist only reviewed and submitted text as a distinct Observation with `photo-assisted` provenance.
@@ -27,9 +27,9 @@ A user can select a permitted synthetic image, inspect and edit local OCR text, 
 
 ## Dependencies
 
-Blocked by: `docs/tickets/official-stretch-goals/04-prove-local-ocr-feasibility.md` finishing with an owner-approved `viable` result.
+Blocked by: `docs/tickets/official-stretch-goals/05-prove-local-ocr-feasibility.md` finishing with an owner-approved `viable` result.
 
-If Ticket 04 is `not viable`, do not implement. Preserve the feasibility evidence and obtain an explicit owner decision before closing this ticket as `done` with `Resolution: not-planned`; do not mislabel it as implemented.
+If Ticket 05 is `not viable`, do not implement. Preserve the feasibility evidence and obtain an explicit owner decision before closing this ticket as `done` with `Resolution: not-planned`; do not mislabel it as implemented.
 
 ## Acceptance Criteria
 
@@ -63,7 +63,7 @@ With the approved OCR route cached and networking unavailable, submit one permit
 
 ## Stop Conditions
 
-- Stop if Ticket 04 lacks an owner-approved viable result.
+- Stop if Ticket 05 lacks an owner-approved viable result.
 - Stop if any image persists beyond the temporary lifecycle or reaches telemetry/logging.
 - Stop if the flow can create data without explicit review and submit.
 - Stop rather than add cloud fallback, change QVAC v9, or weaken conservative reconciliation.

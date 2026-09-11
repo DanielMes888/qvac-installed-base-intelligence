@@ -17,6 +17,8 @@ The essential demo manual checks in [DEMO_GUIDE.md](DEMO_GUIDE.md) were not comp
 
 ADR 0007 authorizes planning an attempt to add explainable Confidence scoring, bounded Opportunity identification, Natural-language analytics, Photo-assisted capture with fully local OCR, and Voice capture with fully local transcription. These are optional official Stretch Goals, not Minimum Viable Prototype requirements. The owner approved the separate implementation plan on 2026-09-11, but no extension implementation or ticket publication is authorized by this status document. The original twelve tickets remain in their recorded states; Ticket 02 and dependent tickets remain blocked. Cross-device synchronization remains deferred.
 
+**Extension status note, 2026-09-11:** separate extension tickets were subsequently published. Confidence scoring and Opportunity identification are implemented and owner-approved within the prototype boundary; this does not complete the original formal tickets or change E4/E4-v2. The owner also authorized the Geographic Installed-Base Map as an optional Expected-Output experience, not a ninth Stretch Goal. Its future ticket requires synthetic-only, local/offline, read-only geography with no external tiles/geocoding or invented precision. Natural-language analytics, the map, OCR/photo, voice, integration, and final rehearsal remain pending.
+
 Automated readiness evidence on 2026-09-10:
 
 - `npm.cmd test`: 50/50 passing after the v9 configuration and recorded-evidence scope checks.

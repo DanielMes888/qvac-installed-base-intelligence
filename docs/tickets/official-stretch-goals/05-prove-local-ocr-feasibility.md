@@ -1,4 +1,4 @@
-# 04: Prove local OCR feasibility
+# 05: Prove local OCR feasibility
 
 Type: Official Stretch Goal Feasibility Gate
 
@@ -29,7 +29,7 @@ A small feasibility surface demonstrates local image selection, temporary previe
 
 Blocked by: `docs/tickets/official-stretch-goals/03-implement-local-read-only-natural-language-analytics.md`.
 
-This gate does not block `docs/tickets/official-stretch-goals/06-prove-local-transcription-feasibility.md`; OCR and voice feasibility are independent after Ticket 03.
+This gate does not block `docs/tickets/official-stretch-goals/07-prove-local-transcription-feasibility.md`; OCR and voice feasibility are independent after Ticket 03.
 
 ## Acceptance Criteria
 

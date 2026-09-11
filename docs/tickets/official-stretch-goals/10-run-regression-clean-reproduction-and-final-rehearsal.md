@@ -1,4 +1,4 @@
-# 09: Run regression, clean reproduction, and final rehearsal
+# 10: Run regression, clean reproduction, and final rehearsal
 
 Type: Release-Candidate Verification
 
@@ -18,7 +18,7 @@ The owner has a reproducible, evidence-backed demonstration record that clearly 
 
 ## Scope
 
-- Verify the resolved status and evidence of extension Tickets 01-08 before declaring a release candidate.
+- Verify the resolved status and evidence of extension Tickets 01-09 before declaring a release candidate.
 - Run the repository's complete documented automated verification and each feature-specific smoke.
 - Reproduce setup and execution from a clean checkout/state using pinned, reviewed local dependencies and cached local models where required.
 - Rehearse the core explicit flow, ambiguity clarification, and every implemented Stretch Goal using only synthetic data.
@@ -29,11 +29,11 @@ The owner has a reproducible, evidence-backed demonstration record that clearly 
 
 Blocked by:
 
-- `docs/tickets/official-stretch-goals/08-integrate-stretch-goals-and-improve-ui-ux.md`
-- Recorded resolution of `docs/tickets/official-stretch-goals/04-prove-local-ocr-feasibility.md`
-- Recorded resolution of `docs/tickets/official-stretch-goals/05-implement-photo-assisted-capture.md`
-- Recorded resolution of `docs/tickets/official-stretch-goals/06-prove-local-transcription-feasibility.md`
-- Recorded resolution of `docs/tickets/official-stretch-goals/07-implement-voice-capture.md`
+- `docs/tickets/official-stretch-goals/09-integrate-stretch-goals-and-improve-ui-ux.md`
+- Recorded resolution of `docs/tickets/official-stretch-goals/05-prove-local-ocr-feasibility.md`
+- Recorded resolution of `docs/tickets/official-stretch-goals/06-implement-photo-assisted-capture.md`
+- Recorded resolution of `docs/tickets/official-stretch-goals/07-prove-local-transcription-feasibility.md`
+- Recorded resolution of `docs/tickets/official-stretch-goals/08-implement-voice-capture.md`
 
 ## Required Outcome Classification
 
@@ -61,7 +61,7 @@ A failed feasibility gate is not an implemented feature. `Test not run` cannot b
 
 - Run the complete repository lint, type-check, unit, integration, and build commands documented for the release candidate.
 - Run regression suites for core capture, persisted Observation-before-inference, clarification bounds, Draft Claim review, conservative reconciliation, duplicate prevention, evidence, operational views, and aggregates.
-- Run the automated suites specified in Tickets 01-08 for every implemented/applicable branch.
+- Run the automated suites specified in Tickets 01-09 for every implemented/applicable branch.
 - Verify Markdown links/paths, clean-install or clean-checkout instructions, evidence schemas, and absence of unintended real/sensitive data.
 - Verify tracked E4/E4-v2 evidence and the original 12 ticket files have not been rewritten to imply success.
 

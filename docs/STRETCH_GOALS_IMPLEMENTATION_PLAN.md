@@ -49,10 +49,11 @@ Cross-device synchronization is not one of the official Stretch Goals. It remain
 1. **Confidence scoring.** It uses data already present and establishes an explainable evidence-quality input needed by opportunity signals and analytics.
 2. **Opportunity identification.** It consumes the score and current evidence/freshness state while keeping commercial conclusions bounded and reviewable.
 3. **Natural-language analytics.** It queries the now-stable score and opportunity schemas through a strict read-only plan rather than inventing unsupported answers.
-4. **Photo-assisted capture with fully local OCR.** It adds a new input modality only after the downstream evidence and query semantics are stable.
-5. **Voice capture with fully local transcription.** It follows the same principle and is last among features because runtime, model size, browser capture, and offline-device behavior are the least certain.
-6. **Integration and general UI/UX improvement.** Consolidate the five features into the existing focused workspaces without changing the approved core semantics.
-7. **Regression, clean reproduction, and final rehearsal.** Run only after integration; preserve per-feature smokes during implementation and then validate the complete release candidate.
+4. **Geographic Installed-Base Map.** It reuses the stable read-only geographic and aggregate semantics before introducing multimedia branches.
+5. **Photo-assisted capture with fully local OCR.** It adds a new input modality only after the downstream evidence and query semantics are stable.
+6. **Voice capture with fully local transcription.** It follows the same principle and is last among features because runtime, model size, browser capture, and offline-device behavior are the least certain.
+7. **Integration and general UI/UX improvement.** Consolidate the completed features into the existing focused workspaces without changing the approved core semantics.
+8. **Regression, clean reproduction, and final rehearsal.** Run only after integration; preserve per-feature smokes during implementation and then validate the complete release candidate.
 
 The order is recommended rather than an authorization to begin. A blocked feasibility stage may be deferred without skipping its stop/owner-decision gate or silently moving large dependencies into the project.
 
@@ -239,7 +240,13 @@ Stop if a validated read-only plan cannot bound the model, if provenance cannot 
 
 Arbitrary SQL/code execution, writes through chat, external knowledge, cloud search, free-form business recommendations, market share, revenue, cross-customer reported-total summation, and general-purpose chat.
 
-## Feature 4 Photo Assisted Capture With Fully Local OCR
+## Optional Expected-Output Experience 4: Geographic Installed-Base Map
+
+**Amendment recorded 2026-09-11:** this experience comes from Expected Output in the stored brief and is not a ninth Stretch Goal. Its minimum scope is a local/offline schematic visualization plus an equivalent accessible list/tree for `Región → País → Ciudad → Cliente → Equipos instalados`, allowlisted modality/geography aggregates, and navigation to Customer 360.
+
+Only synthetic stored geography may be used. The view must display the geographic level actually known, retain provenance, certainty and freshness context, and avoid invented coordinates or precision. It performs no QVAC inference and cannot modify Equipment Records. Automated hierarchy/aggregation/navigation/accessibility/no-network tests and a deterministic offline smoke are required. Stop if implementation would require remote tiles, geocoding, external services, real Philips locations, or fabricated precision.
+
+## Feature 5 Photo Assisted Capture With Fully Local OCR
 
 ### Problem and demonstrable value
 
@@ -303,7 +310,7 @@ Stop and document a blocker if no candidate works offline on the same computer w
 
 General computer vision, patient/document OCR, automatic asset verification, batch image ingestion, camera-device packaging, real manufacturer imagery, remote OCR, and production media governance.
 
-## Feature 5 Voice Capture With Fully Local Transcription
+## Feature 6 Voice Capture With Fully Local Transcription
 
 ### Problem and demonstrable value
 
@@ -381,6 +388,6 @@ This unit may conclude only with a traceable release-candidate result and explic
 
 ## Future implementation units and publication gate
 
-The future units are: confidence scoring; opportunity identification; natural-language analytics; photo/OCR feasibility; photo-assisted capture; voice feasibility; voice capture; integration/UI/UX; and regression/reproduction/rehearsal. These are planning units, not tickets. They must not be placed into the existing twelve-ticket dependency chain or used to change any existing ticket status.
+The extension units are: confidence scoring; opportunity identification; natural-language analytics; Geographic Installed-Base Map; photo/OCR feasibility; photo-assisted capture; voice feasibility; voice capture; integration/UI/UX; and regression/reproduction/rehearsal. The map is an optional Expected-Output experience, not a ninth Stretch Goal. These units remain separate from the original twelve-ticket dependency chain.
 
 The owner approved this plan on 2026-09-11. In a later session, decide the structure and publish a separate specification amendment and separate ticket set for this extension. Ticket publication must preserve the local status vocabulary and blocking edges, with feasibility decisions ahead of photo or voice implementation.
