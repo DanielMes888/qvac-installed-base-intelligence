@@ -2,7 +2,7 @@
 
 Type: Official Stretch Goal Feasibility Gate
 
-Status: blocked
+Status: ready
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
@@ -27,7 +27,7 @@ A small feasibility surface demonstrates local image selection, temporary previe
 
 ## Dependencies
 
-Blocked by: `docs/tickets/official-stretch-goals/03-implement-local-read-only-natural-language-analytics.md`.
+Blocked by: None. Ticket 03 is `done`.
 
 This gate does not block `docs/tickets/official-stretch-goals/07-prove-local-transcription-feasibility.md`; OCR and voice feasibility are independent after Ticket 03.
 
