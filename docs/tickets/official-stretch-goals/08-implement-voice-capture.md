@@ -2,7 +2,9 @@
 
 Type: Official Stretch Goal
 
-Status: blocked
+Status: ready
+
+Opened 2026-09-11 after Ticket 07 passed with the local `@qvac/sdk 0.19.0` `WHISPER_TINY_Q8_0` route. The measured transcript was understandable but imperfect, so editable review remains mandatory and no alternative engine is authorized.
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
