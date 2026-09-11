@@ -2,7 +2,7 @@
 
 Type: Integration and Demonstration
 
-Status: blocked
+Status: ready
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
@@ -25,10 +25,15 @@ A user can move through capture, review, installed-base intelligence, analytics,
 - Improve information architecture, navigation, visual hierarchy, responsive states, keyboard/focus behavior, labels, empty/loading/error states, and demo discoverability.
 - Show provenance, evidence, uncertainty, freshness, confidence explanations, configurable-rule labels, and known limitations at decision points.
 - Keep the existing core workflow, QVAC v9, conservative reconciliation, synthetic data, and non-production positioning intact.
+- Choose the final product name and visible brand, then define one coherent end-to-end product flow.
+- Integrate text, image, and voice as one clear capture experience.
+- Remove customer-facing internal language such as raw schemas, contracts, SQL, enum values, model paths, and implementation details.
+- Translate internal values such as `high`, `medium`, and `low`, and replace raw filter expressions such as `confidenceBand eq high`, with clear natural-language display copy.
+- Keep a discreet **Data and privacy** area that explains local/on-device processing and QVAC for the technical demonstration.
 
 ## Dependencies
 
-Blocked by:
+Dependencies resolved:
 
 - `docs/tickets/official-stretch-goals/02-implement-conservative-opportunity-identification.md`
 - `docs/tickets/official-stretch-goals/03-implement-local-read-only-natural-language-analytics.md`
@@ -36,7 +41,7 @@ Blocked by:
 - Resolution of `docs/tickets/official-stretch-goals/06-implement-photo-assisted-capture.md` as implemented or explicitly `Resolution: not-planned`
 - Resolution of `docs/tickets/official-stretch-goals/08-implement-voice-capture.md` as implemented or explicitly `Resolution: not-planned`
 
-Do not start general UI/UX work before all applicable functional branches have a recorded resolution.
+All applicable functional branches have a recorded implemented resolution as of 2026-09-11. Ticket 09 is now ready; this status change does not begin its implementation.
 
 ## Acceptance Criteria
 
