@@ -1,5 +1,7 @@
 import { randomUUID } from 'node:crypto'
 
+import { createWorkspaceExport, DELETE_CONFIRMATION, emptyWorkspaceState } from './workspace-export.mjs'
+
 export class WorkspaceService {
   constructor(state, persist, { now = () => new Date() } = {}) {
     this.state = structuredClone(state)
@@ -339,6 +341,19 @@ export class WorkspaceService {
       openVerificationItems: this.state.verificationItems.filter((item) => item.status === 'open').length,
       byModality: Object.entries(records.reduce((counts, item) => ({ ...counts, [item.modality]: (counts[item.modality] ?? 0) + 1 }), {})).map(([modality, count]) => ({ modality, count }))
     }
+  }
+
+  exportWorkspace() {
+    this.recalculateVerificationItems()
+    return createWorkspaceExport(this.state, this.aggregate(), this.timestamp())
+  }
+
+  async deleteWorkspace(confirmation) {
+    if (confirmation !== DELETE_CONFIRMATION) throw new Error(`Escriba ${DELETE_CONFIRMATION} para confirmar la eliminación`)
+    const empty = emptyWorkspaceState(this.state)
+    await this.persist(empty)
+    this.state = empty
+    return this.snapshot()
   }
 
   requireObservation(id) {

@@ -17,7 +17,7 @@
       <div class="topbar-actions">
         <span class="runtime-status" id="runtime-status"><span class="status-dot"></span>QVAC local disponible</span>
         <span class="synthetic-badge">Datos sintéticos</span>
-        <button id="reset" class="reset-button" type="button">Restablecer</button>
+        <button id="reset" class="reset-button" type="button">Restablecer demostración</button>
       </div>
     </div>
     <nav class="app-nav" aria-label="Secciones de la aplicación">
@@ -25,6 +25,7 @@
       <button class="nav-item" data-workspace="review" type="button">Revisar <span id="review-nav-count" class="nav-count hidden">0</span></button>
       <button class="nav-item" data-workspace="installed" type="button">Base instalada</button>
       <button class="nav-item" data-workspace="verification" type="button">Verificaciones <span id="verification-nav-count" class="nav-count">0</span></button>
+      <button class="nav-item" data-workspace="privacy" type="button">Datos y privacidad</button>
     </nav>
   </header>
 
@@ -143,6 +144,39 @@
       <div class="surface verification-panel">
         <div class="verification-header"><span>Prioridad</span><span>Qué debe confirmarse</span><span>Equipo relacionado</span><span>Estado</span></div>
         <div id="verification"></div>
+      </div>
+    </section>
+
+    <section id="workspace-privacy" class="workspace" aria-labelledby="privacy-title">
+      <div class="workspace-heading">
+        <div><p class="section-kicker">Control local</p><h1 id="privacy-title">Datos y privacidad</h1><p>Descargue una copia completa del Workspace o elimine sus datos de ejecución de este computador.</p></div>
+        <span class="step-badge">Sin servicios en la nube</span>
+      </div>
+      <div class="data-controls-grid">
+        <article class="surface data-control-card">
+          <div class="surface-heading"><div><span class="icon-tile" aria-hidden="true">↓</span><div><h2>Exportar Workspace</h2><p>Archivo JSON generado y validado localmente</p></div></div></div>
+          <p>Incluye clientes ficticios, observaciones, evidencia, intentos de inferencia, decisiones, correcciones, equipos, reconciliaciones, verificaciones y resultados agregados.</p>
+          <button id="export-workspace" class="button primary" type="button">Exportar JSON</button>
+          <div id="export-status" class="feedback" aria-live="polite"></div>
+        </article>
+        <article class="surface data-control-card danger-zone">
+          <div class="surface-heading"><div><span class="icon-tile danger" aria-hidden="true">!</span><div><h2>Eliminar datos del espacio de trabajo</h2><p>Acción local que requiere confirmación explícita</p></div></div></div>
+          <p>Elimina observaciones, evidencia, datos extraídos, correcciones, vínculos de reconciliación, registros de equipos y verificaciones del Workspace activo.</p>
+          <p class="protected-copy">No elimina el código, el modelo ni su caché, fixtures sintéticos, evidencia de pruebas, documentación o archivos externos.</p>
+          <button id="open-delete" class="button danger-button" type="button">Eliminar datos del espacio de trabajo</button>
+          <div id="delete-confirmation" class="delete-confirmation hidden">
+            <strong>Confirme la eliminación del Workspace</strong>
+            <p>Puede descargar una copia antes de continuar. Después de eliminar, reiniciar la aplicación no restaurará estos datos.</p>
+            <button id="export-before-delete" class="button secondary" type="button">Exportar antes de eliminar</button>
+            <label for="delete-phrase">Escriba <strong>ELIMINAR</strong> para confirmar</label>
+            <input id="delete-phrase" type="text" autocomplete="off">
+            <div class="delete-actions">
+              <button id="confirm-delete" class="button danger-button" type="button" disabled>Eliminar definitivamente</button>
+              <button id="cancel-delete" class="button secondary" type="button">Cancelar</button>
+            </div>
+          </div>
+          <div id="delete-status" class="feedback" aria-live="polite"></div>
+        </article>
       </div>
     </section>
   </main>

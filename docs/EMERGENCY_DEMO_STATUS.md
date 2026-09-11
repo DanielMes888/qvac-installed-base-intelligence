@@ -17,7 +17,7 @@ The essential demo awaits the manual checks in [DEMO_GUIDE.md](DEMO_GUIDE.md). U
 
 Automated readiness evidence on 2026-09-10:
 
-- `npm.cmd test`: 41/41 passing after the bounded freshness and verification-priority workflow.
+- `npm.cmd test`: 47/47 passing after the bounded local export and Workspace-deletion workflow.
 - Reset/start: loopback server and every required page control loaded.
 - Real-QVAC smoke: succeeded with 60 output tokens on GPU while the external network probe was unreachable.
 - Live port-4173 API path: saved one observation, produced and reviewed five Draft Claims, linked `nb-mri-01`, retained two Northbridge equipment records, exposed three verification items, and returned aggregate counts of three verified and two provisional records.
@@ -26,13 +26,13 @@ Automated readiness evidence on 2026-09-10:
 - Controlled correction tests: all six approved fields, immutable QVAC value, audit metadata, reviewer Evidence, malformed-input rejection, correction followed by rejection, accepted final-value matching, and no automatic installed-base modification passed.
 - Deterministic correction smoke: changed the controlled model value `DS-Zero` to `DS-One`, preserved both values and the source reference, required explicit acceptance, matched `nb-mri-01`, and retained two Northbridge equipment records. It is workflow evidence, not real-QVAC quality evidence.
 - Deterministic freshness/priority smoke: preserved observation and recorded dates separately, exposed latest record evidence, produced explained Alta/Media/Baja items, exercised priority/customer/equipment/reason filters, retained evidence relationships, kept items Open after reconciliation, and retained the equipment-record count.
+- Deterministic export/deletion smoke: validated `workspace-export-v1` before and after deletion; preserved stable provenance references; excluded internal invalid model output; required explicit confirmation; persisted an empty Workspace across restart; kept protected source, fixtures, tests, and both E4 failure reports unchanged; restored the synthetic seed only through the separate reset action; and recorded zero unexpected external requests.
 - Real-QVAC clarification smoke: the initial local GPU extraction succeeded in 19.66 seconds, but `QWEN3_1_7B_INST_Q4` returned no clarification candidate. The smoke stopped before a second inference and remains failed evidence in `results/emergency/clarification-smoke.json`.
 - Final reset: zero captured Northbridge observations and zero new evidence links.
 
 ## Deferred until essential-demo approval
 
-- Workspace export.
-- Observation deletion.
+- Observation-level deletion and its advanced recovery behavior.
 - Packaging.
 - Mobile execution.
 - Full E7 evaluation.

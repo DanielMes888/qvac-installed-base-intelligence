@@ -6,6 +6,7 @@ import path from 'node:path'
 
 import { FileStore } from './core/file-store.mjs'
 import { WorkspaceService } from './core/workspace-service.mjs'
+import { exportFilename } from './core/workspace-export.mjs'
 import { QVAC_CONFIGURATION, closeQvac, extractEquipmentDraft } from './qvac/adapter.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
@@ -26,6 +27,14 @@ export async function createPrototypeServer({
       if (url.pathname === '/api/bootstrap' && request.method === 'GET') {
         const state = workspace.snapshot()
         return json(response, 200, { label: state.label, customers: state.customers, aggregate: workspace.aggregate(), qvac: QVAC_CONFIGURATION })
+      }
+      if (url.pathname === '/api/workspace/export' && request.method === 'GET') {
+        const payload = workspace.exportWorkspace()
+        return downloadJson(response, payload, exportFilename(payload.exportTimestamp))
+      }
+      if (url.pathname === '/api/workspace' && request.method === 'DELETE') {
+        const state = await workspace.deleteWorkspace((await bodyJson(request)).confirmation)
+        return json(response, 200, { deleted: true, state, aggregate: workspace.aggregate() })
       }
       if (url.pathname === '/api/observations' && request.method === 'POST') {
         const body = await bodyJson(request)
@@ -93,6 +102,15 @@ async function bodyJson(request) {
 function json(response, status, value) {
   response.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' })
   response.end(JSON.stringify(value))
+}
+
+function downloadJson(response, value, filename) {
+  response.writeHead(200, {
+    'content-type': 'application/json; charset=utf-8',
+    'content-disposition': `attachment; filename="${filename}"`,
+    'cache-control': 'no-store'
+  })
+  response.end(`${JSON.stringify(value, null, 2)}\n`)
 }
 
 async function staticFile(response, pathname) {

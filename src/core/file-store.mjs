@@ -3,8 +3,12 @@ import path from 'node:path'
 
 export class FileStore {
   constructor({ seedPath, workspacePath }) {
-    this.seedPath = seedPath
-    this.workspacePath = workspacePath
+    this.seedPath = safeJsonPath(seedPath, 'fixture sintético')
+    this.workspacePath = safeJsonPath(workspacePath, 'Workspace')
+    if (samePath(this.seedPath, this.workspacePath)) throw new Error('El Workspace no puede usar la ruta del fixture sintético')
+    if (!path.basename(this.workspacePath).toLowerCase().includes('workspace')) {
+      throw new Error('La ruta de Workspace debe identificar explícitamente un archivo de Workspace')
+    }
   }
 
   async load() {
@@ -29,4 +33,16 @@ export class FileStore {
     await this.save(seed)
     return structuredClone(seed)
   }
+}
+
+function safeJsonPath(value, label) {
+  if (typeof value !== 'string' || !value.trim()) throw new Error(`La ruta de ${label} es obligatoria`)
+  if (/[%*$?]/.test(value)) throw new Error(`La ruta de ${label} contiene caracteres no permitidos`)
+  const resolved = path.resolve(value)
+  if (path.extname(resolved).toLowerCase() !== '.json') throw new Error(`La ruta de ${label} debe ser un archivo JSON`)
+  return resolved
+}
+
+function samePath(left, right) {
+  return left.localeCompare(right, undefined, { sensitivity: 'accent' }) === 0
 }

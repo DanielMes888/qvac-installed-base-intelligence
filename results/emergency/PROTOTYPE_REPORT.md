@@ -89,9 +89,15 @@ The 90-day materially-old threshold is a configurable prototype rule. It is not 
 
 The smoke run first attempted a short external npm-registry request, which failed, and then completed cached model loading, real QVAC inference, review, reconciliation, customer-view generation, and aggregate generation in the same process. The application has no cloud inference, delegated inference, telemetry, upload, or non-loopback server binding. This demonstrates the bounded workflow under the command environment's restricted network access; it is not a general operating-system security audit.
 
+## Local Workspace data control
+
+The supporting prototype now exposes a compact **Datos y privacidad** workspace. `workspace-export-v1` produces a validated local JSON snapshot with fictional customers, Observations, Evidence Entries, sanitized inference-attempt metadata, Draft Claims and review decisions, correction history, equipment records, reconciliation links, Verification Items, and the permitted aggregate. Stable local identifiers retain provenance. Internal `rawOutput`, `validatedDraft`, and invalid model content are not exported.
+
+Whole-Workspace deletion requires the exact confirmation `ELIMINAR`, offers export first, and replaces only the configured runtime JSON state with empty collections. The empty state survives restart. The distinct **Restablecer demostración** action recreates the frozen synthetic fixture. The deterministic smoke uses an isolated temporary directory, records and denies non-loopback request attempts, verifies protected-file hashes, and reports no model-cache or recursive-deletion operation. See `results/emergency/export-delete-smoke.json`. This is bounded privacy evidence, not a security audit.
+
 ## Essential demo-readiness pass
 
-On 2026-09-10, the application was reset and started at `127.0.0.1:4173`. The page, synthetic notice, capture/review controls, customer view, verification panel, and aggregate panel loaded. The complete test suite now passes 41/41, including focused clarification, reviewer-correction, freshness, priority, filtering, and no-side-effect coverage.
+On 2026-09-10, the application was reset and started at `127.0.0.1:4173`. The page, synthetic notice, capture/review controls, customer view, verification panel, aggregate panel, and data-control workspace loaded. The complete test suite now passes 47/47, including focused clarification, reviewer-correction, freshness, priority, export, confirmed deletion, restart persistence, path safety, filtering, and no-side-effect coverage.
 
 The running application then processed the rehearsed note through its production loopback API and real QVAC adapter. It saved the note, produced five Draft Claims, required review of all five, suggested `nb-mri-01`, and linked the repeated evidence. Northbridge had two equipment records before and after the link, the selected MRI gained one evidence reference, three verification items were returned, and the aggregate reported three verified and two provisional records. Reset restored zero observations and zero new evidence links.
 
@@ -126,6 +132,7 @@ npm.cmd test
 npm.cmd run smoke:demo
 npm.cmd run smoke:correction
 npm.cmd run smoke:freshness
+npm.cmd run smoke:export-delete
 ```
 
 ## Known limitations
@@ -137,6 +144,6 @@ npm.cmd run smoke:freshness
 - The accepted second-inference clarification lifecycle is implemented, but its dedicated real-model smoke did not receive a clarification candidate from the current 1.7B model.
 - Reviewer correction supports only the six approved fields and a single local reviewer attribution. It does not provide general record editing, identity verification, or multi-user authorization.
 - Freshness has one configurable 90-day prototype band and date-based tie-breaking. No real Philips freshness policy or operational threshold has been validated.
-- Local persistence is a single JSON file written through a completed temporary file followed by replacement. It has no migrations, encryption, authentication, synchronization, import/export, deletion workflow, or production recovery guarantees.
+- Local persistence is a single JSON file written through a completed temporary file followed by replacement. The prototype now supports validated local JSON export and explicit whole-Workspace deletion; it still has no migrations, encryption, authentication, synchronization, import, observation-level deletion, or production recovery guarantees.
 - The prototype has no packaging, phone access, full E7 evaluation, user experiment, or comprehensive compliance/reproduction result.
 - Browser visual automation was unavailable in the execution environment. The HTTP page and full API seam were exercised automatically; final display rehearsal still needs a project-owner browser check on the laptop.

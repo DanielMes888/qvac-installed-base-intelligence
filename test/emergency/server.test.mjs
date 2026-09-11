@@ -67,7 +67,12 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
     'Prioridad',
     'Cliente',
     'Equipo',
-    'Motivo'
+    'Motivo',
+    'Datos y privacidad',
+    'Exportar Workspace',
+    'Eliminar datos del espacio de trabajo',
+    'Exportar antes de eliminar',
+    'Restablecer demostración'
   ]) assert.match(page, new RegExp(expectedCopy.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
   assert.doesNotMatch(page, /Problema|Solución|Valor/)
   const rejectedOrigin = await fetch(`${origin}/api/bootstrap`, { headers: { origin: 'http://example.invalid' } })
@@ -98,6 +103,9 @@ test('HTTP seam captures, reviews, and links repeated evidence without record gr
   assert.match(page, /id="review"[^>]*disabled/)
   assert.doesNotMatch(clientScript, /value="rejected" checked/)
   assert.doesNotMatch(clientScript, /generatedTokens|metrics\.totalMs|evidence\.start|evidence\.end/)
+  assert.match(clientScript, /schemaVersion !== 'workspace-export-v1'/)
+  assert.match(clientScript, /confirmation: \$\('#delete-phrase'\)\.value/)
+  assert.match(clientScript, /Eliminación cancelada\. El Workspace no cambió/)
   const observation = await fetch(`${origin}/api/observations`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },

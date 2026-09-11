@@ -92,7 +92,17 @@ Original notes are saved before inference. A clarification answer is saved separ
 
 QVAC-generated claims remain drafts until explicit review and never affect customer views or aggregates beforehand. The prototype accepts fictional demonstration data only, includes no application telemetry or automatic upload, and relies on the operating-system account for access. It does not claim enterprise authentication, encrypted storage, or production security.
 
-The accepted specification defines offline JSON export and observation deletion, but the emergency slice defers both workflows.
+## Control local de datos
+
+La sección **Datos y privacidad** permite descargar una instantánea JSON validada del Workspace y eliminar de forma explícita sus datos de ejecución. La exportación `workspace-export-v1` conserva identificadores y relaciones de procedencia, decisiones, correcciones, reconciliaciones, verificaciones y agregados. Excluye la salida interna inválida del modelo. Consulte [docs/WORKSPACE_DATA_CONTROL.md](docs/WORKSPACE_DATA_CONTROL.md) para la estructura y los límites.
+
+La eliminación exige escribir `ELIMINAR`, ofrece exportar primero y deja el almacenamiento persistente vacío incluso después de reiniciar. **Restablecer demostración** es una acción distinta que recrea el fixture sintético. Ninguna de estas operaciones usa servicios externos.
+
+```powershell
+npm.cmd run smoke:export-delete
+```
+
+La eliminación de una observación individual continúa aplazada; esta capacidad borra el Workspace de ejecución completo.
 
 ## Authoritative plan
 

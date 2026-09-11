@@ -1,7 +1,7 @@
 {
   "schemaVersion": "emergency-demo-smoke-v1",
-  "startedAt": "2026-09-11T00:11:19.643Z",
-  "completedAt": "2026-09-11T00:11:48.077Z",
+  "startedAt": "2026-09-11T00:24:05.974Z",
+  "completedAt": "2026-09-11T00:24:34.121Z",
   "synthetic": true,
   "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
   "environment": {
@@ -12,14 +12,14 @@
       "reachable": false,
       "error": "TypeError"
     },
-    "loopbackOrigin": "http://127.0.0.1:61230"
+    "loopbackOrigin": "http://127.0.0.1:54631"
   },
   "extraction": {
-    "id": "b381a647-89e4-4faa-ac46-5637ba19d552",
+    "id": "23b2d538-c52a-4504-9cb4-13bdaf3aed99",
     "customerId": "northbridge",
     "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
     "observationDate": null,
-    "recordedAt": "2026-09-11T00:11:19.761Z",
+    "recordedAt": "2026-09-11T00:24:06.064Z",
     "revision": 0,
     "status": "succeeded",
     "attempts": [
@@ -126,19 +126,19 @@
           "clarification": null
         },
         "metrics": {
-          "totalMs": 23196.6098,
+          "totalMs": 23102.6973,
           "promptTokens": 247,
           "generatedTokens": 60,
           "emittedTokens": 60,
-          "timeToFirstToken": 21346.453,
-          "tokensPerSecond": 71.67919260557449,
+          "timeToFirstToken": 21271.683,
+          "tokensPerSecond": 74.2103095435695,
           "backendDevice": "gpu"
         },
-        "attemptId": "effe3b19-8654-4460-b26b-585caafb2fba",
+        "attemptId": "933b55c9-93c2-4a0e-8844-a5516dba360f",
         "phase": "initial",
         "observationRevision": 0,
-        "startedAt": "2026-09-11T00:11:19.763Z",
-        "completedAt": "2026-09-11T00:11:48.056Z",
+        "startedAt": "2026-09-11T00:24:06.066Z",
+        "completedAt": "2026-09-11T00:24:34.100Z",
         "draftStatus": "active"
       }
     ],
@@ -300,7 +300,7 @@
       }
     },
     "load": {
-      "loadMs": 5048.091899999999,
+      "loadMs": 4890.4233,
       "info": {
         "modelId": "13dd17f190cd6438",
         "modelType": "llamacpp-completion",
@@ -312,7 +312,7 @@
         ],
         "displayName": "LLM (llama.cpp)",
         "addonPackage": "@qvac/llm-llamacpp",
-        "loadedAt": "2026-09-11T00:11:24.806Z",
+        "loadedAt": "2026-09-11T00:24:10.951Z",
         "name": "QWEN3_1_7B_INST_Q4",
         "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
         "toolDialect": "hermes"
@@ -377,17 +377,17 @@
           "model": "DS-One",
           "location": "Radiology",
           "evidenceObservationIds": [
-            "b381a647-89e4-4faa-ac46-5637ba19d552"
+            "23b2d538-c52a-4504-9cb4-13bdaf3aed99"
           ],
           "evidenceEntryIds": [
             "seed-e-nb-mri",
-            "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84",
-            "f2889983-4ce7-4c3a-8896-faf6f2d20b5c",
-            "1f4778be-fe1f-41d3-bac3-a0587be56765",
-            "8babd88a-05b1-4f02-ac42-7acefcf81097",
-            "eb17637f-221e-4aac-ba15-899ead4f4803"
+            "b2f7d536-aa94-4add-8345-72dd7ee4e946",
+            "e902b8d1-34a3-4d22-b7b4-6b14fdb8d369",
+            "5ba8a53f-3f0a-43a9-844c-d18cb0c4d4e5",
+            "9783b198-d0ad-43b1-9e7d-dfbe1432cb00",
+            "bd0ef291-f923-4414-844f-e6c886217abd"
           ],
-          "latestEvidenceAt": "2026-09-11T00:11:19.761Z",
+          "latestEvidenceAt": "2026-09-11T00:24:06.064Z",
           "latestObservationDate": "2026-09-08"
         },
         {
@@ -408,11 +408,11 @@
       ],
       "observations": [
         {
-          "id": "b381a647-89e4-4faa-ac46-5637ba19d552",
+          "id": "23b2d538-c52a-4504-9cb4-13bdaf3aed99",
           "customerId": "northbridge",
           "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
           "observationDate": null,
-          "recordedAt": "2026-09-11T00:11:19.761Z",
+          "recordedAt": "2026-09-11T00:24:06.064Z",
           "revision": 0,
           "status": "succeeded",
           "attempts": [
@@ -519,28 +519,28 @@
                 "clarification": null
               },
               "metrics": {
-                "totalMs": 23196.6098,
+                "totalMs": 23102.6973,
                 "promptTokens": 247,
                 "generatedTokens": 60,
                 "emittedTokens": 60,
-                "timeToFirstToken": 21346.453,
-                "tokensPerSecond": 71.67919260557449,
+                "timeToFirstToken": 21271.683,
+                "tokensPerSecond": 74.2103095435695,
                 "backendDevice": "gpu"
               },
-              "attemptId": "effe3b19-8654-4460-b26b-585caafb2fba",
+              "attemptId": "933b55c9-93c2-4a0e-8844-a5516dba360f",
               "phase": "initial",
               "observationRevision": 0,
-              "startedAt": "2026-09-11T00:11:19.763Z",
-              "completedAt": "2026-09-11T00:11:48.056Z",
+              "startedAt": "2026-09-11T00:24:06.066Z",
+              "completedAt": "2026-09-11T00:24:34.100Z",
               "draftStatus": "active"
             }
           ],
           "evidenceEntryIds": [
-            "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84",
-            "f2889983-4ce7-4c3a-8896-faf6f2d20b5c",
-            "1f4778be-fe1f-41d3-bac3-a0587be56765",
-            "8babd88a-05b1-4f02-ac42-7acefcf81097",
-            "eb17637f-221e-4aac-ba15-899ead4f4803"
+            "b2f7d536-aa94-4add-8345-72dd7ee4e946",
+            "e902b8d1-34a3-4d22-b7b4-6b14fdb8d369",
+            "5ba8a53f-3f0a-43a9-844c-d18cb0c4d4e5",
+            "9783b198-d0ad-43b1-9e7d-dfbe1432cb00",
+            "bd0ef291-f923-4414-844f-e6c886217abd"
           ],
           "subjects": [
             {
@@ -574,7 +574,7 @@
               "decision": "accepted",
               "reviewStatus": "accepted",
               "corrections": [],
-              "acceptedEvidenceEntryId": "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84"
+              "acceptedEvidenceEntryId": "b2f7d536-aa94-4add-8345-72dd7ee4e946"
             },
             {
               "claimId": "c2",
@@ -600,7 +600,7 @@
               "decision": "accepted",
               "reviewStatus": "accepted",
               "corrections": [],
-              "acceptedEvidenceEntryId": "f2889983-4ce7-4c3a-8896-faf6f2d20b5c"
+              "acceptedEvidenceEntryId": "e902b8d1-34a3-4d22-b7b4-6b14fdb8d369"
             },
             {
               "claimId": "c3",
@@ -626,7 +626,7 @@
               "decision": "accepted",
               "reviewStatus": "accepted",
               "corrections": [],
-              "acceptedEvidenceEntryId": "1f4778be-fe1f-41d3-bac3-a0587be56765"
+              "acceptedEvidenceEntryId": "5ba8a53f-3f0a-43a9-844c-d18cb0c4d4e5"
             },
             {
               "claimId": "c4",
@@ -653,7 +653,7 @@
               "decision": "accepted",
               "reviewStatus": "accepted",
               "corrections": [],
-              "acceptedEvidenceEntryId": "8babd88a-05b1-4f02-ac42-7acefcf81097"
+              "acceptedEvidenceEntryId": "9783b198-d0ad-43b1-9e7d-dfbe1432cb00"
             },
             {
               "claimId": "c5",
@@ -679,16 +679,16 @@
               "decision": "accepted",
               "reviewStatus": "accepted",
               "corrections": [],
-              "acceptedEvidenceEntryId": "eb17637f-221e-4aac-ba15-899ead4f4803"
+              "acceptedEvidenceEntryId": "bd0ef291-f923-4414-844f-e6c886217abd"
             }
           ],
           "clarification": null,
-          "reviewedAt": "2026-09-11T00:11:48.063Z",
+          "reviewedAt": "2026-09-11T00:24:34.107Z",
           "reconciliation": {
             "recordId": "nb-mri-01",
             "reason": "La revisión del smoke test confirmó la modalidad y los datos de identificación respaldados",
             "actor": "Usuario local de demostración",
-            "decidedAt": "2026-09-11T00:11:48.070Z"
+            "decidedAt": "2026-09-11T00:24:34.114Z"
           },
           "model": {
             "sdk": "0.19.0",
@@ -709,7 +709,7 @@
             }
           },
           "load": {
-            "loadMs": 5048.091899999999,
+            "loadMs": 4890.4233,
             "info": {
               "modelId": "13dd17f190cd6438",
               "modelType": "llamacpp-completion",
@@ -721,7 +721,7 @@
               ],
               "displayName": "LLM (llama.cpp)",
               "addonPackage": "@qvac/llm-llamacpp",
-              "loadedAt": "2026-09-11T00:11:24.806Z",
+              "loadedAt": "2026-09-11T00:24:10.951Z",
               "name": "QWEN3_1_7B_INST_Q4",
               "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
               "toolDialect": "hermes"
@@ -830,17 +830,17 @@
             "model": "DS-One",
             "location": "Radiology",
             "evidenceObservationIds": [
-              "b381a647-89e4-4faa-ac46-5637ba19d552"
+              "23b2d538-c52a-4504-9cb4-13bdaf3aed99"
             ],
             "evidenceEntryIds": [
               "seed-e-nb-mri",
-              "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84",
-              "f2889983-4ce7-4c3a-8896-faf6f2d20b5c",
-              "1f4778be-fe1f-41d3-bac3-a0587be56765",
-              "8babd88a-05b1-4f02-ac42-7acefcf81097",
-              "eb17637f-221e-4aac-ba15-899ead4f4803"
+              "b2f7d536-aa94-4add-8345-72dd7ee4e946",
+              "e902b8d1-34a3-4d22-b7b4-6b14fdb8d369",
+              "5ba8a53f-3f0a-43a9-844c-d18cb0c4d4e5",
+              "9783b198-d0ad-43b1-9e7d-dfbe1432cb00",
+              "bd0ef291-f923-4414-844f-e6c886217abd"
             ],
-            "latestEvidenceAt": "2026-09-11T00:11:19.761Z",
+            "latestEvidenceAt": "2026-09-11T00:24:06.064Z",
             "latestObservationDate": "2026-09-08"
           },
           "supportingEvidenceEntries": [
@@ -894,17 +894,17 @@
             "model": "DS-One",
             "location": "Radiology",
             "evidenceObservationIds": [
-              "b381a647-89e4-4faa-ac46-5637ba19d552"
+              "23b2d538-c52a-4504-9cb4-13bdaf3aed99"
             ],
             "evidenceEntryIds": [
               "seed-e-nb-mri",
-              "cf1d0ad1-d4be-4681-8c9f-f04e7c8b7b84",
-              "f2889983-4ce7-4c3a-8896-faf6f2d20b5c",
-              "1f4778be-fe1f-41d3-bac3-a0587be56765",
-              "8babd88a-05b1-4f02-ac42-7acefcf81097",
-              "eb17637f-221e-4aac-ba15-899ead4f4803"
+              "b2f7d536-aa94-4add-8345-72dd7ee4e946",
+              "e902b8d1-34a3-4d22-b7b4-6b14fdb8d369",
+              "5ba8a53f-3f0a-43a9-844c-d18cb0c4d4e5",
+              "9783b198-d0ad-43b1-9e7d-dfbe1432cb00",
+              "bd0ef291-f923-4414-844f-e6c886217abd"
             ],
-            "latestEvidenceAt": "2026-09-11T00:11:19.761Z",
+            "latestEvidenceAt": "2026-09-11T00:24:06.064Z",
             "latestObservationDate": "2026-09-08"
           },
           "supportingEvidenceEntries": [

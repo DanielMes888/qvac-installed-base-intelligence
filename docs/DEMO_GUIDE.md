@@ -135,6 +135,17 @@ npm.cmd start
 
 El botón **Restablecer demostración** recupera el mismo conjunto semilla sintético mientras el servidor está activo.
 
+La sección **Datos y privacidad** mantiene dos acciones distintas:
+
+- **Exportar JSON** descarga una instantánea local validada con observaciones, evidencia, intentos, decisiones, correcciones, equipos, reconciliaciones, verificaciones y agregados. El archivo no incluye salida interna inválida del modelo.
+- **Eliminar datos del espacio de trabajo** muestra el alcance exacto, ofrece exportar primero y exige escribir `ELIMINAR`. Después de confirmar, el Workspace queda vacío incluso al reiniciar. Solo **Restablecer demostración** recrea los datos sintéticos.
+
+Estas acciones funcionan sin conectividad externa. Para comprobarlas sin tocar el Workspace de ensayo, use:
+
+```powershell
+npm.cmd run smoke:export-delete
+```
+
 Si la extracción falla o devuelve JSON inválido, la interfaz debe indicar que la observación se guardó localmente y que ningún dato extraído entró en la base instalada. No improvise valores aceptados. Restablezca la demostración, confirme la nota ensayada y haga un nuevo intento. Si la estructura es válida pero un campo compatible es incorrecto, corríjalo con procedencia visible o rechácelo; no reconcilie información que no haya sido revisada.
 
 Si el segundo análisis falla, confirme que la observación y la respuesta fechada siguen visibles, que los borradores iniciales ya no pueden revisarse y que no aparece otra pregunta. No vuelva a ejecutar QVAC para esa observación.
@@ -160,6 +171,9 @@ Si el puerto 4173 está en uso, cierre la terminal anterior del prototipo. Si no
 - [ ] Los cuatro filtros restringen la lista por prioridad, cliente, equipo y motivo; no aparecen puntuaciones numéricas.
 - [ ] La interfaz declara que el umbral de 90 días es configurable y no es política oficial de Philips.
 - [ ] Restablecer devuelve las observaciones y los nuevos vínculos a cero.
+- [ ] **Datos y privacidad** genera un archivo `workspace-local-AAAA-MM-DD.json` y muestra confirmación de exportación local.
+- [ ] Cancelar la eliminación conserva el Workspace; una confirmación con `ELIMINAR` lo deja vacío después de reiniciar.
+- [ ] **Restablecer demostración** permanece claramente separado y es la única acción que recrea el fixture sintético.
 - [ ] Una salida inválida conserva la nota, no muestra datos para aceptar y no modifica la base instalada.
 - [ ] Cuando exista una aclaración, solo aparece una pregunta; responder conserva evidencia y **No lo sé** u **Omitir** no ejecutan otra inferencia.
 
@@ -169,4 +183,4 @@ Si el puerto 4173 está en uso, cierre la terminal anterior del prototipo. Si no
 - No afirme que la inferencia ocurre dentro del navegador; QVAC se ejecuta en el host Node del mismo computador.
 - No afirme que se trata de un inventario auditado, un flujo de Philips validado, seguridad o privacidad de producción, captura más rápida, adopción, integración con CRM o preparación para envío.
 - La disponibilidad de una pregunta depende de que el modelo actual produzca un candidato válido; el smoke real dedicado no lo consiguió.
-- La edición fuera de los seis campos de corrección aprobados, exportación, eliminación, empaquetado, ejecución móvil, evaluación E7 completa, experimentos con usuarios, recuperación avanzada y tableros ampliados siguen aplazados.
+- La edición fuera de los seis campos de corrección aprobados, eliminación de observaciones individuales, empaquetado, ejecución móvil, evaluación E7 completa, experimentos con usuarios, recuperación avanzada y tableros ampliados siguen aplazados.

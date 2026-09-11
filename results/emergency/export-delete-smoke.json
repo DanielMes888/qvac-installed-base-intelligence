@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "export-delete-smoke-v1",
+  "startedAt": "2026-09-11T00:27:20.810Z",
+  "completedAt": "2026-09-11T00:27:20.888Z",
+  "synthetic": true,
+  "adapter": "controlled-test-adapter",
+  "purpose": "Deterministic local export, confirmed deletion, restart persistence, reset separation, path-boundary, and denied-network evidence.",
+  "export": {
+    "schemaVersion": "workspace-export-v1",
+    "filename": "workspace-local-2026-09-11.json",
+    "collections": {
+      "customers": 3,
+      "observations": 1,
+      "evidenceEntries": 5,
+      "equipmentRecords": 5,
+      "reconciliationLinks": 0,
+      "verificationItems": 6
+    },
+    "validBeforeDeletion": true,
+    "validWhenEmpty": true,
+    "invalidModelContentExported": false
+  },
+  "deletion": {
+    "confirmationRequired": true,
+    "cancellationPreservedWorkspace": true,
+    "inMemoryEmpty": true,
+    "persistedEmptyAfterRestart": true,
+    "resetRestoredSyntheticFixture": true,
+    "storageTarget": "temporary isolated directory"
+  },
+  "protection": {
+    "filesChecked": [
+      "package.json",
+      "data/prototype/seed.json",
+      "test/emergency/workspace.test.mjs",
+      "results/feasibility/E4_FAILURE_REPORT.md",
+      "results/feasibility/E4_V2_FAILURE_REPORT.md"
+    ],
+    "unchanged": true,
+    "modelOrQvacCacheOperations": 0,
+    "recursiveDeletionOperations": 0
+  },
+  "privacy": {
+    "externalNetworking": "denied by the smoke-test request boundary",
+    "attemptedExternalRequests": [
+      {
+        "url": "https://example.invalid",
+        "blocked": true
+      }
+    ],
+    "applicationRequests": [
+      {
+        "method": "POST",
+        "origin": "http://127.0.0.1:63151",
+        "path": "/api/observations"
+      },
+      {
+        "method": "GET",
+        "origin": "http://127.0.0.1:63151",
+        "path": "/api/workspace/export"
+      },
+      {
+        "method": "DELETE",
+        "origin": "http://127.0.0.1:63151",
+        "path": "/api/workspace"
+      },
+      {
+        "method": "GET",
+        "origin": "http://127.0.0.1:63151",
+        "path": "/api/bootstrap"
+      },
+      {
+        "method": "DELETE",
+        "origin": "http://127.0.0.1:63151",
+        "path": "/api/workspace"
+      },
+      {
+        "method": "GET",
+        "origin": "http://127.0.0.1:63155",
+        "path": "/api/bootstrap"
+      },
+      {
+        "method": "GET",
+        "origin": "http://127.0.0.1:63155",
+        "path": "/api/workspace/export"
+      },
+      {
+        "method": "POST",
+        "origin": "http://127.0.0.1:63155",
+        "path": "/api/reset"
+      },
+      {
+        "method": "GET",
+        "origin": "http://127.0.0.1:63155",
+        "path": "/api/bootstrap"
+      }
+    ],
+    "unexpectedExternalRequests": []
+  },
+  "failure": null
+}

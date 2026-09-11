@@ -35,6 +35,12 @@ $('#answer-clarification').addEventListener('click', () => clarify('answered'))
 $('#unknown-clarification').addEventListener('click', () => clarify('unknown'))
 $('#skip-clarification').addEventListener('click', () => clarify('skipped'))
 $('#reset').addEventListener('click', reset)
+$('#export-workspace').addEventListener('click', exportWorkspace)
+$('#export-before-delete').addEventListener('click', exportWorkspace)
+$('#open-delete').addEventListener('click', openDeleteConfirmation)
+$('#cancel-delete').addEventListener('click', cancelDelete)
+$('#delete-phrase').addEventListener('input', updateDeleteConfirmation)
+$('#confirm-delete').addEventListener('click', deleteWorkspace)
 for (const id of ['#verification-priority', '#verification-customer', '#verification-equipment', '#verification-reason']) {
   $(id).addEventListener('change', applyVerificationFilters)
 }
@@ -47,9 +53,19 @@ bootstrap().catch(() => {
 async function bootstrap() {
   const data = await api('/api/bootstrap')
   allCustomers = data.customers
-  $('#customer').innerHTML = data.customers.map((customer) => `<option value="${customer.id}">${escapeHtml(customer.name)} · ${escapeHtml(customer.site)}</option>`).join('')
+  const customerSelect = $('#customer')
+  customerSelect.innerHTML = data.customers.length
+    ? data.customers.map((customer) => `<option value="${customer.id}">${escapeHtml(customer.name)} · ${escapeHtml(customer.site)}</option>`).join('')
+    : '<option value="">Workspace vacío</option>'
+  customerSelect.disabled = data.customers.length === 0
+  $('#extract').disabled = data.customers.length === 0
   $('#footer-runtime').textContent = `${data.qvac.sdk} · ${data.qvac.modelExport} · GPU local`
   updateNoteLength()
+  if (!data.customers.length) {
+    renderEmptyWorkspace(data.aggregate)
+    setRuntime('QVAC local disponible', 'ready')
+    return
+  }
   await loadView({ syncVerificationCustomer: true })
   setRuntime('QVAC local disponible', 'ready')
 }
@@ -502,14 +518,115 @@ async function reset() {
     $('#observation-date').value = ''
     clearReviewWorkspace()
     setFeedback('Demostración restablecida con los datos sintéticos iniciales.', 'success')
-    await loadView()
+    await bootstrap()
     activateWorkspace('capture')
   } catch {
     setFeedback('No fue posible restablecer la demostración. Confirme que el servidor local siga activo.', 'error')
   } finally {
     button.disabled = false
-    button.textContent = 'Restablecer'
+    button.textContent = 'Restablecer demostración'
   }
+}
+
+async function exportWorkspace() {
+  const buttons = [$('#export-workspace'), $('#export-before-delete')]
+  buttons.forEach((button) => { button.disabled = true })
+  setDataFeedback('export', 'Generando y validando el archivo local…', 'loading')
+  try {
+    const response = await fetch('/api/workspace/export')
+    if (!response.ok) throw new Error((await response.json()).error || 'La exportación local falló')
+    const payload = await response.json()
+    validateExportForDownload(payload)
+    const filename = response.headers.get('content-disposition')?.match(/filename="([^"]+)"/)?.[1] || `workspace-local-${payload.exportTimestamp.slice(0, 10)}.json`
+    const url = URL.createObjectURL(new Blob([`${JSON.stringify(payload, null, 2)}\n`], { type: 'application/json' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.download = filename
+    document.body.append(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(url)
+    setDataFeedback('export', `Exportación local preparada: ${filename}`, 'success')
+  } catch (error) {
+    setDataFeedback('export', `No fue posible exportar: ${error.message}. Sus datos permanecen guardados.`, 'error')
+  } finally {
+    buttons.forEach((button) => { button.disabled = false })
+  }
+}
+
+function openDeleteConfirmation() {
+  $('#delete-confirmation').classList.remove('hidden')
+  $('#open-delete').classList.add('hidden')
+  $('#delete-phrase').value = ''
+  updateDeleteConfirmation()
+  $('#delete-phrase').focus()
+}
+
+function cancelDelete() {
+  $('#delete-confirmation').classList.add('hidden')
+  $('#open-delete').classList.remove('hidden')
+  $('#delete-phrase').value = ''
+  updateDeleteConfirmation()
+  setDataFeedback('delete', 'Eliminación cancelada. El Workspace no cambió.', 'success')
+}
+
+function updateDeleteConfirmation() {
+  $('#confirm-delete').disabled = $('#delete-phrase').value !== 'ELIMINAR'
+}
+
+async function deleteWorkspace() {
+  const button = $('#confirm-delete')
+  button.disabled = true
+  button.textContent = 'Eliminando datos locales…'
+  setDataFeedback('delete', 'Vaciando únicamente el archivo del Workspace…', 'loading')
+  try {
+    await api('/api/workspace', { method: 'DELETE', body: JSON.stringify({ confirmation: $('#delete-phrase').value }) })
+    currentObservation = null
+    currentView = null
+    allVerificationItems = []
+    clearReviewWorkspace()
+    await bootstrap()
+    cancelDelete()
+    setDataFeedback('delete', 'Datos del Workspace eliminados. El estado vacío permanecerá después de reiniciar.', 'success')
+  } catch (error) {
+    setDataFeedback('delete', `No fue posible eliminar los datos: ${error.message}. El Workspace permanece disponible.`, 'error')
+  } finally {
+    button.textContent = 'Eliminar definitivamente'
+    updateDeleteConfirmation()
+  }
+}
+
+function validateExportForDownload(payload) {
+  if (payload?.schemaVersion !== 'workspace-export-v1') throw new Error('la versión del archivo no es válida')
+  if (Number.isNaN(Date.parse(payload.exportTimestamp))) throw new Error('la fecha de exportación no es válida')
+  for (const key of ['customers', 'observations', 'evidenceEntries', 'equipmentRecords', 'reconciliationLinks', 'verificationItems']) {
+    if (!Array.isArray(payload[key])) throw new Error(`falta la colección ${key}`)
+  }
+}
+
+function renderEmptyWorkspace(aggregate) {
+  $('#header-customer').textContent = 'Sin cliente seleccionado'
+  $('#installed-title').textContent = 'Base instalada consolidada'
+  $('#installed-description').textContent = 'El Workspace está vacío. Restablezca la demostración para recrear los datos sintéticos.'
+  $('#customer-metrics').innerHTML = [
+    summaryMetric(0, 'Equipos registrados', 'Workspace vacío'),
+    summaryMetric(0, 'Verificados', 'Sin datos'),
+    summaryMetric(0, 'Provisionales', 'Sin datos'),
+    summaryMetric(0, 'Observaciones', 'Sin datos')
+  ].join('')
+  renderEquipment([])
+  renderAggregate(aggregate)
+  $('#verification-customer').innerHTML = '<option value="">Todos</option>'
+  $('#verification-equipment').innerHTML = '<option value="">Todos</option>'
+  $('#verification-reason').innerHTML = '<option value="">Todos</option>'
+  $('#freshness-policy').textContent = 'No hay evidencia en el Workspace.'
+  renderVerification([])
+}
+
+function setDataFeedback(kind, message, state = '') {
+  const target = $(`#${kind}-status`)
+  target.className = `feedback ${state}`
+  target.textContent = message
 }
 
 function clearReviewWorkspace(clearObservation = true) {
