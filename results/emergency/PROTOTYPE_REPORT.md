@@ -53,13 +53,13 @@ The smoke note was: `Observé un escáner MRI DemoScan, modelo DS-One, en Radiol
 
 | Metric | Result |
 | --- | ---: |
-| Cached model load | 4,732.31 ms |
+| Cached model load | 5,591.96 ms |
 | Startup warmup | Completed before capture |
-| End-to-end extraction | 557.60 ms |
+| End-to-end extraction | 558.78 ms |
 | Prompt tokens | 639 |
 | Generated/emitted tokens | 56 / 56 |
-| TTFT | 100.87 ms |
-| Throughput | 131.05 tokens/s |
+| TTFT | 105.04 ms |
+| Throughput | 132.98 tokens/s |
 | Backend | GPU |
 | Retry | None |
 

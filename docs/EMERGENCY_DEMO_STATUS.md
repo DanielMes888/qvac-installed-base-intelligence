@@ -20,7 +20,7 @@ Automated readiness evidence on 2026-09-10:
 - `npm.cmd test`: 50/50 passing after the v9 configuration and recorded-evidence scope checks.
 - Reset/start: loopback server and every required page control loaded.
 - QVAC v9 benchmark: 5/5 schema-valid, 5/5 semantic-checklist passes, zero unsupported identities or quantities, 4/4 explicit cases without a question, one useful ambiguity question, and five warm extractions between 578.72 and 855.50 ms. The four department cases retained `dept`; the ambiguous site case retained `site`.
-- Real-QVAC primary smoke with v9: succeeded on GPU while the external network probe was unreachable; extraction took 557.60 ms, returned `dept` for Radiología, produced the expected candidate, and reconciliation kept Northbridge at two equipment records.
+- Real-QVAC primary smoke with v9: succeeded on GPU while the external network probe was unreachable; extraction took 558.78 ms, returned `dept` for Radiología, accepted all five supported claims, produced the expected candidate, and reconciliation kept Northbridge at two equipment records.
 - Live port-4173 API path: saved one observation, produced and reviewed five Draft Claims, linked `nb-mri-01`, retained two Northbridge equipment records, exposed three verification items, and returned aggregate counts of three verified and two provisional records.
 - Invalid-output test: saved the original observation, admitted zero Draft Claims, and changed neither accepted evidence nor equipment-record count.
 - Controlled clarification tests: answer, omit, **No lo sé**, one-question/two-inference limits, second-inference failure, draft replacement, attempt metadata, Spanish-question filtering, and final human review passed.

@@ -88,7 +88,7 @@ El smoke real dedicado con el prompt v9 usó: **La directora de radiología dijo
 
 **Qué hacer:** pulse **Guardar y analizar con QVAC**.
 
-**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. El inicio carga el modelo y ejecuta un calentamiento antes de habilitar la captura; el calentamiento v9 registrado tardó 27.01 segundos después de una carga de 4.52 segundos. Una vez listo, las cinco extracciones del benchmark quedaron entre 578.72 y 855.50 ms, y el smoke principal v9 extrajo el caso ensayado en 557.60 ms.
+**Qué explicar:** QVAC se ejecuta mediante el host Node en el mismo portátil y usa la RTX 4050. El inicio carga el modelo y ejecuta un calentamiento antes de habilitar la captura; el calentamiento v9 registrado tardó 27.01 segundos después de una carga de 4.52 segundos. Una vez listo, las cinco extracciones del benchmark quedaron entre 578.72 y 855.50 ms, y el smoke principal v9 final extrajo el caso ensayado en 558.78 ms.
 
 **Resultado visible:** el botón queda bloqueado durante la inferencia, la barra superior indica que QVAC está analizando y luego vuelve a mostrar **QVAC local disponible**.
 
