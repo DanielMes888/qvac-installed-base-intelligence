@@ -9,6 +9,7 @@ import { WorkspaceService } from './core/workspace-service.mjs'
 import { exportFilename } from './core/workspace-export.mjs'
 import { QVAC_CONFIGURATION, closeQvac, ensureQvacReady, extractEquipmentDraft } from './qvac/adapter.mjs'
 import { ensureAnalyticsReady, interpretAnalyticsQuestion } from './qvac/analytics-adapter.mjs'
+import { closePhotoOcr, recognizePhoto } from './core/photo-ocr.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const publicDirectory = path.join(root, 'public')
@@ -47,9 +48,11 @@ export async function createPrototypeServer({
       }
       if (url.pathname === '/api/observations' && request.method === 'POST') {
         const body = await bodyJson(request)
-        const observation = await workspace.capture(body.customerId, body.text, activeExtractor, { observationDate: body.observationDate })
+        const observation = await workspace.capture(body.customerId, body.text, activeExtractor, { observationDate: body.observationDate, provenance: body.provenance })
         return json(response, 201, observation)
       }
+      if (url.pathname === '/api/photo-example' && request.method === 'GET') return photoExample(response)
+      if (url.pathname === '/api/photo-ocr' && request.method === 'POST') return json(response, 200, await recognizePhoto(await bodyJson(request, 7 * 1024 * 1024)))
       if (url.pathname === '/api/verifications' && request.method === 'GET') {
         return json(response, 200, workspace.verificationItems({
           priority: url.searchParams.get('priority') || undefined,
@@ -108,7 +111,7 @@ export async function createPrototypeServer({
       return json(response, 400, { error: error instanceof Error ? error.message : String(error) })
     }
   })
-  return { server, close: async () => { await closeQvac(); await new Promise((resolve) => server.close(resolve)) } }
+  return { server, close: async () => { await closePhotoOcr(); await closeQvac(); await new Promise((resolve) => server.close(resolve)) } }
 }
 
 export function startupErrorMessage(error, host, port) {
@@ -125,10 +128,17 @@ function isLocalRequest(request) {
   return origin === undefined || origin === `http://${host}`
 }
 
-async function bodyJson(request) {
+async function bodyJson(request, maxBytes = 1024 * 1024) {
   const chunks = []
-  for await (const chunk of request) chunks.push(chunk)
+  let size = 0
+  for await (const chunk of request) { size += chunk.length; if (size > maxBytes) throw new Error('La solicitud supera el límite permitido'); chunks.push(chunk) }
   return JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}')
+}
+
+function photoExample(response) {
+  const filePath = path.join(root, 'test', 'fixtures', 'ocr', 'clear-image.png')
+  response.writeHead(200, { 'content-type': 'image/png', 'cache-control': 'no-store' })
+  return createReadStream(filePath).pipe(response)
 }
 
 function json(response, status, value) {

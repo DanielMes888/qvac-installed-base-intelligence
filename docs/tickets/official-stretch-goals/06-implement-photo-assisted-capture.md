@@ -2,7 +2,9 @@
 
 Type: Official Stretch Goal
 
-Status: ready
+Status: done
+
+Completed 2026-09-11 with the approved local Tesseract.js route, editable review, explicit handoff to the unchanged observation/QVAC flow, `photo-assisted` provenance, temporary-media cleanup, and a real-OCR controlled smoke. No real QVAC inference was rerun because its integration boundary and prompt v9 were unchanged.
 
 Opened 2026-09-11 after Ticket 05 passed via `tesseract.js@7.0.0`/`tesseract.js-core@7.0.0`. The approved route is local Tesseract.js with explicitly fixed worker, WASM, and `eng`/`spa` model assets; the QVAC OCR attempt remains failed and its evidence is unchanged. The deliberately difficult synthetic OCR fixture remains a 60% limitation. This ticket does not authorize cloud OCR, remote fallback, or changes to QVAC v9.
 
@@ -35,14 +37,14 @@ If Ticket 05 is `not viable`, do not implement. Preserve the feasibility evidenc
 
 ## Acceptance Criteria
 
-- [ ] All OCR processing uses the approved same-computer local/offline route with no cloud or delegated fallback.
-- [ ] The original image remains temporary and is discarded after submit, cancel, and handled failure paths.
-- [ ] Cancel creates no Observation, Evidence Entry, Draft Claim, or installed-equipment change.
-- [ ] Submit persists only the user-reviewed text as one original Observation with `photo-assisted` provenance before QVAC inference.
-- [ ] QVAC v9 extracts from the persisted text and the user explicitly reviews Draft Claims before reconciliation.
-- [ ] No UI claims photo authenticity, verified label content, unique identity, or official Philips capability.
-- [ ] Unsupported/empty OCR and local-engine failures are recoverable and do not produce records.
-- [ ] Existing text capture behavior and conservative duplicate handling remain unchanged.
+- [x] All OCR processing uses the approved same-computer local/offline route with no cloud or delegated fallback.
+- [x] The original image remains temporary and is discarded after submit, cancel, and handled failure paths.
+- [x] Cancel creates no Observation, Evidence Entry, Draft Claim, or installed-equipment change.
+- [x] Submit persists only the user-reviewed text as one original Observation with `photo-assisted` provenance before QVAC inference.
+- [x] QVAC v9 extracts from the persisted text and the user explicitly reviews Draft Claims before reconciliation.
+- [x] No UI claims photo authenticity, verified label content, unique identity, or official Philips capability.
+- [x] Unsupported/empty OCR and local-engine failures are recoverable and do not produce records.
+- [x] Existing text capture behavior and conservative duplicate handling remain unchanged.
 
 ## Automated Tests
 

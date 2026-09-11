@@ -7,6 +7,9 @@ let allVerificationItems = []
 let allOpportunitySignals = []
 let allCustomers = []
 let geographicView = null
+let photoFile = null
+let photoObjectUrl = null
+let captureProvenance = 'text'
 
 const claimLabels = {
   equipmentType: 'Tipo de equipo',
@@ -32,6 +35,18 @@ $$('.workspace-link').forEach((button) => button.addEventListener('click', () =>
 $('#customer').addEventListener('change', changeCustomer)
 $('#note').addEventListener('input', updateNoteLength)
 $('#capture-form').addEventListener('submit', capture)
+$('#photo-dropzone').addEventListener('click', () => $('#photo-file').click())
+$('#photo-dropzone').addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); $('#photo-file').click() } })
+$('#photo-dropzone').addEventListener('dragover', (event) => { event.preventDefault(); $('#photo-dropzone').classList.add('dragging') })
+$('#photo-dropzone').addEventListener('dragleave', () => $('#photo-dropzone').classList.remove('dragging'))
+$('#photo-dropzone').addEventListener('drop', (event) => { event.preventDefault(); $('#photo-dropzone').classList.remove('dragging'); selectPhoto(event.dataTransfer.files[0]) })
+$('#photo-file').addEventListener('change', () => selectPhoto($('#photo-file').files[0]))
+$('#photo-example').addEventListener('click', loadPhotoExample)
+$('#photo-recognize').addEventListener('click', recognizePhoto)
+$('#photo-change').addEventListener('click', () => $('#photo-file').click())
+$('#photo-cancel').addEventListener('click', cancelPhoto)
+$('#photo-use').addEventListener('click', usePhotoAsObservation)
+window.addEventListener('beforeunload', () => { if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl) })
 $('#review').addEventListener('click', review)
 $('#answer-clarification').addEventListener('click', () => clarify('answered'))
 $('#unknown-clarification').addEventListener('click', () => clarify('unknown'))
@@ -202,8 +217,9 @@ async function capture(event) {
   try {
     currentObservation = await api('/api/observations', {
       method: 'POST',
-      body: JSON.stringify({ customerId: $('#customer').value, text: $('#note').value, observationDate: $('#observation-date').value || null })
+      body: JSON.stringify({ customerId: $('#customer').value, text: $('#note').value, observationDate: $('#observation-date').value || null, provenance: captureProvenance })
     })
+    captureProvenance = 'text'
     renderOriginalObservation(currentObservation)
     await loadView()
     if (currentObservation.status !== 'succeeded') {
@@ -226,8 +242,99 @@ async function capture(event) {
   }
 }
 
+function selectPhoto(file) {
+  if (!file) return
+  if (!['image/png', 'image/jpeg'].includes(file.type)) return rejectPhotoSelection('Solo se permiten imágenes PNG o JPEG.')
+  if (file.size > 5 * 1024 * 1024) return rejectPhotoSelection('La imagen supera el límite de 5 MB.')
+  photoFile = file
+  if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl)
+  photoObjectUrl = URL.createObjectURL(file)
+  $('#photo-preview').src = photoObjectUrl
+  $('#photo-preview-wrap').classList.remove('hidden')
+  $('#photo-file-name').textContent = file.name || 'Imagen temporal'
+  $('#photo-file-meta').textContent = `${Math.round(file.size / 1024)} KB · revisión local`
+  $('#photo-recognize').disabled = false
+  $$('#photo-change, #photo-cancel').forEach((button) => button.classList.remove('hidden'))
+  $('#photo-text-wrap').classList.add('hidden')
+  $('#photo-text').value = ''
+  $('#photo-recognize').textContent = 'Reconocer texto'
+  setPhotoStatus('Imagen lista. El reconocimiento será local y temporal.', '')
+}
+
+function rejectPhotoSelection(message) {
+  clearPhotoCapture()
+  setPhotoStatus(message, 'error')
+}
+
+async function loadPhotoExample() {
+  try {
+    const response = await fetch('/api/photo-example', { cache: 'no-store' })
+    if (!response.ok) throw new Error('No se pudo cargar la imagen sintética de ejemplo')
+    const blob = await response.blob()
+    selectPhoto(new File([blob], 'ejemplo-sintetico.png', { type: 'image/png' }))
+  } catch (error) { setPhotoStatus(error.message, 'error') }
+}
+
+async function recognizePhoto() {
+  if (!photoFile) return
+  const button = $('#photo-recognize')
+  button.disabled = true
+  setPhotoStatus('Preparando reconocimiento…', 'loading')
+  try {
+    await new Promise((resolve) => requestAnimationFrame(resolve))
+    setPhotoStatus('Leyendo imagen…', 'loading')
+    const base64 = await fileToBase64(photoFile)
+    const response = await api('/api/photo-ocr', { method: 'POST', body: JSON.stringify({ base64, mimeType: photoFile.type }) })
+    $('#photo-text').value = response.text
+    $('#photo-text-wrap').classList.remove('hidden')
+    button.textContent = 'Volver a intentar'
+    setPhotoStatus('Texto encontrado. Revisa y corrige el texto antes de continuar.', 'success')
+  } catch (error) {
+    $('#photo-text-wrap').classList.add('hidden')
+    $('#photo-text').value = ''
+    button.textContent = 'Volver a intentar'
+    setPhotoStatus(`No se pudo leer la imagen: ${error.message}`, 'error')
+  } finally { button.disabled = false }
+}
+
+function usePhotoAsObservation() {
+  const text = $('#photo-text').value.trim()
+  if (!text) return setPhotoStatus('Corrija o escriba texto antes de usarlo como observación.', 'error')
+  $('#note').value = text
+  captureProvenance = 'photo-assisted'
+  updateNoteLength()
+  clearPhotoCapture()
+  setFeedback('Texto preparado como observación photo-assisted. Revíselo y envíelo con el botón de captura.', 'success')
+  $('#note').focus()
+}
+
+function cancelPhoto() {
+  clearPhotoCapture()
+  setPhotoStatus('Captura cancelada. La imagen temporal fue eliminada.', 'success')
+}
+
+function clearPhotoCapture() {
+  if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl)
+  photoObjectUrl = null; photoFile = null
+  $('#photo-file').value = ''
+  $('#photo-preview').removeAttribute('src')
+  $('#photo-preview-wrap').classList.add('hidden')
+  $('#photo-text-wrap').classList.add('hidden')
+  $('#photo-text').value = ''
+  $('#photo-recognize').disabled = true
+  $$('#photo-change, #photo-cancel').forEach((button) => button.classList.add('hidden'))
+}
+
+function setPhotoStatus(message, kind = '') { $('#photo-status').className = `feedback ${kind}`; $('#photo-status').textContent = message }
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(String(reader.result).split(',')[1]); reader.onerror = () => reject(new Error('No se pudo leer la imagen local')); reader.readAsDataURL(file) })
+}
+
 function renderOriginalObservation(observation) {
   $('#original-note').textContent = observation.originalText
+  $('#observation-provenance').classList.remove('hidden')
+  $('#observation-provenance').textContent = observation.provenance === 'photo-assisted' ? 'Procedencia: captura asistida por imagen' : 'Procedencia: captura manual'
   $('#clarification-evidence').innerHTML = (observation.evidenceEntries ?? []).map((entry) => entry.type === 'reviewerCorrection'
     ? `<div class="saved-answer reviewer-evidence"><span>Evidencia aportada por el revisor · ${formatDate(entry.recordedAt)}</span><strong>${escapeHtml(translate(entry.field, correctionFieldLabels))}: ${escapeHtml(entry.text)}</strong>${entry.reason ? `<small>${escapeHtml(entry.reason)}</small>` : ''}</div>`
     : `<div class="saved-answer"><span>Respuesta de aclaración · ${formatDate(entry.recordedAt)}</span><strong>${escapeHtml(entry.text)}</strong></div>`).join('')
@@ -794,6 +901,8 @@ function setDataFeedback(kind, message, state = '') {
 
 function clearReviewWorkspace(clearObservation = true) {
   if (clearObservation) currentObservation = null
+  $('#observation-provenance').classList.add('hidden')
+  $('#observation-provenance').textContent = ''
   $('#original-note').textContent = 'Todavía no hay una observación para revisar.'
   $('#clarification-evidence').innerHTML = ''
   $('#observation-state').className = 'observation-state'

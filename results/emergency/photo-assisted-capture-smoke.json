@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "photo-assisted-capture-smoke-v1",
+  "startedAt": "2026-09-11T07:48:33.420Z",
+  "completedAt": "2026-09-11T07:48:33.902Z",
+  "synthetic": true,
+  "outcome": "passed",
+  "ocr": {
+    "engine": "Tesseract.js",
+    "real": true,
+    "elapsedMs": 341.39509999999996,
+    "externalInstrumentedCalls": 0
+  },
+  "review": {
+    "editableTextChanged": true,
+    "explicitObservationSubmit": true,
+    "explicitDraftReview": true
+  },
+  "persistence": {
+    "observationsBeforeConfirm": 0,
+    "observationsAfterCancel": 0,
+    "observationsAfterConfirm": 1,
+    "provenance": "photo-assisted",
+    "originalImagePersisted": false
+  },
+  "reconciliation": {
+    "explicit": true,
+    "equipmentRecordsBefore": 2,
+    "equipmentRecordsAfter": 2,
+    "automaticMerge": false
+  },
+  "cleanup": {
+    "temporaryDirectoriesRemoved": true
+  },
+  "qvac": {
+    "realInferenceExecuted": false,
+    "adapter": "controlled-smoke"
+  }
+}

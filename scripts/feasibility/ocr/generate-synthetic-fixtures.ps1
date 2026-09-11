@@ -55,4 +55,13 @@ foreach ($case in $cases) {
   }
 }
 
-Write-Output "Generated $($cases.Count) synthetic OCR fixtures in $resolvedOutput"
+$clearPng = Join-Path $resolvedOutput 'clear-image.png'
+$clearJpeg = Join-Path $resolvedOutput 'clear-image.jpg'
+$jpegBitmap = [System.Drawing.Bitmap]::FromFile($clearPng)
+try {
+  $jpegBitmap.Save($clearJpeg, [System.Drawing.Imaging.ImageFormat]::Jpeg)
+} finally {
+  $jpegBitmap.Dispose()
+}
+
+Write-Output "Generated $($cases.Count) synthetic OCR fixtures and one JPEG companion in $resolvedOutput"

@@ -29,6 +29,7 @@
     "smoke:analytics": "node scripts/emergency/run-analytics-deterministic-smoke.mjs",
     "smoke:analytics:real": "node scripts/emergency/run-analytics-real-smoke.mjs",
     "smoke:geography": "node scripts/emergency/run-geographic-map-smoke.mjs",
+    "smoke:photo": "node scripts/emergency/run-photo-assisted-capture-smoke.mjs",
     "feasibility:ocr:fixtures": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/feasibility/ocr/generate-synthetic-fixtures.ps1",
     "feasibility:ocr:acquire": "node scripts/feasibility/ocr/acquire-qvac-ocr-models.mjs",
     "feasibility:ocr": "node scripts/feasibility/ocr/run-local-ocr-feasibility.mjs",

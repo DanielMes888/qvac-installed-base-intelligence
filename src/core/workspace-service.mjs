@@ -24,6 +24,7 @@ export class WorkspaceService {
       observation.revision ??= 0
       observation.evidenceEntryIds ??= []
       observation.observationDate ??= null
+      observation.provenance ??= 'text'
       observation.draftClaims = (observation.draftClaims ?? []).map(prepareDraftClaim)
       if (observation.clarification && !observation.clarification.status) {
         observation.clarification = { ...observation.clarification, status: 'pending', questionCount: 1, nextQuestion: observation.clarification.question, selectedAt: observation.recordedAt, resolvedAt: null, answerEvidenceEntryId: null }
@@ -38,13 +39,15 @@ export class WorkspaceService {
     return structuredClone(this.state)
   }
 
-  async capture(customerId, originalText, extractor, { observationDate } = {}) {
+  async capture(customerId, originalText, extractor, { observationDate, provenance = 'text' } = {}) {
     if (!this.state.customers.some((customer) => customer.id === customerId)) throw new Error('Cliente desconocido')
     if (!originalText?.trim()) throw new Error('El texto de la observación es obligatorio')
+    if (!['text', 'photo-assisted'].includes(provenance)) throw new Error('La procedencia de la observación no es válida')
     const observation = {
       id: randomUUID(),
       customerId,
       originalText: originalText.trim(),
+      provenance,
       observationDate: normalizeObservationDate(observationDate),
       recordedAt: this.timestamp(),
       revision: 0,

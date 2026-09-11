@@ -52,9 +52,16 @@
             <textarea id="note" rows="7" required>Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.</textarea>
             <small>Escriba lo que vio o lo que otra persona le comunicó. Conserve expresiones de duda o aproximación.</small>
           </div>
-          <div class="field">
-            <label for="observation-date">Fecha de observación <span class="optional-label">(opcional)</span></label>
-            <input id="observation-date" type="date">
+          <section class="photo-capture" aria-labelledby="photo-capture-title">
+            <div class="photo-capture-heading"><div><p class="section-kicker">Entrada opcional</p><h2 id="photo-capture-title">Añadir desde una imagen</h2><p>Use una imagen sintética local para preparar texto editable.</p></div><span aria-hidden="true">▧</span></div>
+            <input id="photo-file" type="file" accept="image/png,image/jpeg" hidden>
+            <div id="photo-dropzone" class="photo-dropzone" tabindex="0" role="button" aria-controls="photo-file"><strong>Seleccionar imagen</strong><span>PNG o JPEG · también puede arrastrarla aquí</span></div>
+            <div id="photo-preview-wrap" class="photo-preview-wrap hidden"><img id="photo-preview" alt="Vista previa temporal de la imagen seleccionada"><div><strong id="photo-file-name"></strong><small id="photo-file-meta"></small></div></div>
+            <div class="photo-actions"><button id="photo-example" class="button secondary" type="button">Probar imagen de ejemplo</button><button id="photo-recognize" class="button primary" type="button" disabled>Reconocer texto</button><button id="photo-change" class="button text-button hidden" type="button">Cambiar imagen</button><button id="photo-cancel" class="button text-button hidden" type="button">Cancelar</button></div>
+            <div id="photo-status" class="feedback" aria-live="polite"></div>
+            <div id="photo-text-wrap" class="photo-text-wrap hidden"><label for="photo-text">Revisa y corrige el texto</label><textarea id="photo-text" rows="5"></textarea><button id="photo-use" class="button primary" type="button">Usar como observación</button></div>
+          </section>
+          <div class="field"><label for="observation-date">Fecha de observación <span class="optional-label">(opcional)</span></label><input id="observation-date" type="date">
             <small>Déjela vacía si no conoce cuándo ocurrió la observación. La fecha de registro se conservará por separado.</small>
           </div>
           <div class="privacy-note"><span aria-hidden="true">●</span><div><strong>El análisis ocurre localmente.</strong><small>La observación se guarda antes de iniciar QVAC y no se envía a la nube.</small></div></div>
@@ -82,6 +89,7 @@
       <div class="review-grid">
         <aside class="surface source-panel">
           <div class="surface-heading"><div><span class="icon-tile" aria-hidden="true">“</span><div><h2>Observación original</h2><p>Referencia guardada antes del análisis</p></div></div></div>
+          <p id="observation-provenance" class="observation-provenance hidden"></p>
           <blockquote id="original-note">Todavía no hay una observación para revisar.</blockquote>
           <div id="clarification-evidence"></div>
           <div id="observation-state" class="observation-state">Registre una observación desde Capturar.</div>

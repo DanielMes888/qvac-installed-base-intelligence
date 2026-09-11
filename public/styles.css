@@ -75,6 +75,23 @@ button:disabled, input:disabled, select:disabled, textarea:disabled { cursor: wa
 .surface { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
 .capture-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.75fr); gap: 18px; align-items: start; }
 .capture-form { padding: 25px; }
+.photo-capture { margin: 18px 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-subtle); }
+.photo-capture-heading { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.photo-capture-heading h2 { margin: 0; font-size: 17px; }
+.photo-capture-heading p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+.photo-capture-heading > span { font-size: 25px; color: var(--brand); }
+.photo-dropzone { display: grid; gap: 4px; margin-top: 13px; padding: 18px; border: 1px dashed var(--line-strong); border-radius: 10px; background: #fff; cursor: pointer; }
+.photo-dropzone span, .photo-preview-wrap small { color: var(--muted); font-size: 11px; }
+.photo-dropzone.dragging, .photo-dropzone:focus-visible { border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 15%, transparent); }
+.photo-preview-wrap { display: flex; gap: 12px; align-items: center; margin-top: 12px; }
+.photo-preview-wrap img { width: 76px; height: 58px; object-fit: cover; border-radius: 7px; border: 1px solid var(--line); }
+.photo-preview-wrap strong, .photo-preview-wrap small { display: block; }
+.photo-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.photo-actions .button { min-height: 34px; padding: 7px 10px; font-size: 11px; }
+.photo-text-wrap { display: grid; gap: 8px; margin-top: 13px; }
+.photo-text-wrap label { font-weight: 750; font-size: 12px; }
+.photo-text-wrap textarea { min-height: 105px; background: #fff; }
+.observation-provenance { display: inline-flex; margin: 0 0 10px; padding: 5px 9px; border-radius: 999px; background: var(--brand-soft); color: var(--brand-strong); font-size: 11px; font-weight: 750; }
 .field + .field { margin-top: 20px; }
 .field label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 750; }
 .optional-label { color: var(--muted); font-size: 11px; font-weight: 500; }
