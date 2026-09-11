@@ -42,7 +42,7 @@ export class WorkspaceService {
   async capture(customerId, originalText, extractor, { observationDate, provenance = 'text' } = {}) {
     if (!this.state.customers.some((customer) => customer.id === customerId)) throw new Error('Cliente desconocido')
     if (!originalText?.trim()) throw new Error('El texto de la observación es obligatorio')
-    if (!['text', 'photo-assisted'].includes(provenance)) throw new Error('La procedencia de la observación no es válida')
+    if (!['text', 'photo-assisted', 'voice'].includes(provenance)) throw new Error('La procedencia de la observación no es válida')
     const observation = {
       id: randomUUID(),
       customerId,

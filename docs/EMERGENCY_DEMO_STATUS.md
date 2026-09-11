@@ -19,6 +19,8 @@ ADR 0007 authorizes planning an attempt to add explainable Confidence scoring, b
 
 **Extension status note, 2026-09-11:** separate extension tickets were subsequently published. Confidence scoring and Opportunity identification are implemented and owner-approved within the prototype boundary; this does not complete the original formal tickets or change E4/E4-v2. The owner also authorized the Geographic Installed-Base Map as an optional Expected-Output experience, not a ninth Stretch Goal. Its future ticket requires synthetic-only, local/offline, read-only geography with no external tiles/geocoding or invented precision. Natural-language analytics, the map, OCR/photo, voice, integration, and final rehearsal remain pending.
 
+**Voice implementation note, 2026-09-11:** Ticket 08 adds local browser microphone capture and synthetic example audio, local PCM/WAV conversion, real cached Whisper Tiny Q8 transcription through `@qvac/sdk 0.19.0`, mandatory transcript review, explicit handoff to the unchanged observation flow, and `voice` provenance. Original audio remains temporary and is excluded from Workspace persistence and export. This does not change prompt v9, reconciliation, E4/E4-v2, or production-readiness status.
+
 Automated readiness evidence on 2026-09-10:
 
 - `npm.cmd test`: 50/50 passing after the v9 configuration and recorded-evidence scope checks.

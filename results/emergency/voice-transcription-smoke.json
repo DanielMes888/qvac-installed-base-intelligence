@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "voice-transcription-smoke-v1",
+  "startedAt": "2026-09-11T08:39:23.237Z",
+  "completedAt": "2026-09-11T08:39:27.101Z",
+  "synthetic": true,
+  "outcome": "passed",
+  "transcription": {
+    "engine": "@qvac/sdk 0.19.0 WHISPER_TINY_Q8_0",
+    "real": true,
+    "firstMs": 3510.5481999999997,
+    "secondMs": 320.1017999999999,
+    "modelLoads": 1,
+    "reviewedTranscriptChanged": true
+  },
+  "lifecycle": {
+    "exampleTranscribed": true,
+    "cancelledCaseCreatedObservation": false,
+    "editableReview": true,
+    "explicitObservationSubmit": true,
+    "explicitDraftReview": true
+  },
+  "persistence": {
+    "observationsBeforeSubmit": 0,
+    "observationsAfterTranscription": 0,
+    "observationsAfterSubmit": 1,
+    "provenance": "voice",
+    "originalAudioPersisted": false
+  },
+  "cleanup": {
+    "temporaryDirectoriesRemoved": true
+  },
+  "boundaries": {
+    "qvacExtractionCallsDuringRecordingOrTranscription": 0,
+    "qvacExtractionCallsAfterExplicitSubmit": 1,
+    "nonLoopbackTranscriptionCallsObserved": 0,
+    "observationSavedBeforeExtraction": true
+  },
+  "limitations": [
+    "Synthetic fixture audio only; microphone variability requires manual browser validation.",
+    "Whisper Tiny mishears some proper names, so transcript review is mandatory.",
+    "Instrumented Node boundaries are not a complete operating-system audit."
+  ]
+}

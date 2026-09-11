@@ -2,7 +2,7 @@
 
 Type: Official Stretch Goal
 
-Status: ready
+Status: done
 
 Opened 2026-09-11 after Ticket 07 passed with the local `@qvac/sdk 0.19.0` `WHISPER_TINY_Q8_0` route. The measured transcript was understandable but imperfect, so editable review remains mandatory and no alternative engine is authorized.
 
@@ -35,14 +35,14 @@ If Ticket 07 is `not viable`, do not implement. Preserve feasibility evidence an
 
 ## Acceptance Criteria
 
-- [ ] All transcription uses the approved same-computer local/offline route with no cloud, delegated, Web Speech, or hidden network fallback.
-- [ ] Source audio remains temporary and is discarded after submit, cancel, permission/error, and handled failure paths.
-- [ ] Cancel creates no Observation, Evidence Entry, Draft Claim, installed equipment, or aggregate change.
-- [ ] Submit persists only user-reviewed text as one original Observation with `voice` provenance before QVAC inference.
-- [ ] QVAC v9 extracts from persisted text and the user explicitly reviews Draft Claims before reconciliation.
-- [ ] No UI claims speaker identity, verified transcription, certainty, or official Philips capability.
-- [ ] Permission denial, silence, unsupported audio, and local-engine failure are recoverable and create no records.
-- [ ] Existing text/photo-applicable capture and conservative duplicate behavior remain unchanged.
+- [x] All transcription uses the approved same-computer local/offline route with no cloud, delegated, Web Speech, or hidden network fallback.
+- [x] Source audio remains temporary and is discarded after submit, cancel, permission/error, and handled failure paths.
+- [x] Cancel creates no Observation, Evidence Entry, Draft Claim, installed equipment, or aggregate change.
+- [x] Submit persists only user-reviewed text as one original Observation with `voice` provenance before QVAC inference.
+- [x] QVAC v9 extracts from persisted text and the user explicitly reviews Draft Claims before reconciliation.
+- [x] No UI claims speaker identity, verified transcription, certainty, or official Philips capability.
+- [x] Permission denial, silence, unsupported audio, and local-engine failure are recoverable and create no records.
+- [x] Existing text/photo-applicable capture and conservative duplicate behavior remain unchanged.
 
 ## Automated Tests
 
@@ -82,3 +82,7 @@ With the approved transcription route cached and networking unavailable, submit 
 - Replacing explicit Draft Claim review or conservative reconciliation.
 - Modifying QVAC v9, model selection, adapter semantics, seeded data, E4/E4-v2, or original tickets.
 - Production mobile capture, cloud transcription, cross-device synchronization, or Philips-certified behavior.
+
+## Completion note, 2026-09-11
+
+Implemented with the cached `@qvac/sdk 0.19.0` `WHISPER_TINY_Q8_0` model, browser microphone capture and local mono PCM/WAV conversion. The real synthetic-audio smoke passed with model reuse, zero observed non-loopback transcription calls at the instrumented Node boundaries, no Workspace mutation before explicit submission, `voice` provenance afterward, and no retained audio. Focused voice/photo/capture/export/reconciliation checks and the 149-test full suite passed. Browser automation was unavailable for device-level microphone validation; permission, unsupported-browser, lifecycle, cancellation, and cleanup behavior is covered by the implemented UI states and public-seam tests, while microphone variability remains documented as a limitation.

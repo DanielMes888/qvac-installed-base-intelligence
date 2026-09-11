@@ -10,6 +10,7 @@ import { exportFilename } from './core/workspace-export.mjs'
 import { QVAC_CONFIGURATION, closeQvac, ensureQvacReady, extractEquipmentDraft } from './qvac/adapter.mjs'
 import { ensureAnalyticsReady, interpretAnalyticsQuestion } from './qvac/analytics-adapter.mjs'
 import { closePhotoOcr, recognizePhoto } from './core/photo-ocr.mjs'
+import { closeVoiceTranscription, transcribeVoice } from './core/voice-transcription.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const publicDirectory = path.join(root, 'public')
@@ -17,7 +18,8 @@ const publicDirectory = path.join(root, 'public')
 export async function createPrototypeServer({
   workspacePath = path.join(root, '.local', 'workspace.json'),
   extractor,
-  analyticsInterpreter = interpretAnalyticsQuestion
+  analyticsInterpreter = interpretAnalyticsQuestion,
+  transcriber = transcribeVoice
 } = {}) {
   const usesLocalQvac = extractor === undefined
   const activeExtractor = extractor ?? ((note) => extractEquipmentDraft(note, { mode: 'simple-json-object', maxAttempts: 2 }))
@@ -53,6 +55,13 @@ export async function createPrototypeServer({
       }
       if (url.pathname === '/api/photo-example' && request.method === 'GET') return photoExample(response)
       if (url.pathname === '/api/photo-ocr' && request.method === 'POST') return json(response, 200, await recognizePhoto(await bodyJson(request, 7 * 1024 * 1024)))
+      if (url.pathname === '/api/voice-example' && request.method === 'GET') return voiceExample(response)
+      if (url.pathname === '/api/voice-transcription' && request.method === 'POST') {
+        const controller = new AbortController()
+        request.once('aborted', () => controller.abort())
+        response.once('close', () => { if (!response.writableEnded) controller.abort() })
+        return json(response, 200, await transcriber(await bodyJson(request, 12 * 1024 * 1024), { signal: controller.signal }))
+      }
       if (url.pathname === '/api/verifications' && request.method === 'GET') {
         return json(response, 200, workspace.verificationItems({
           priority: url.searchParams.get('priority') || undefined,
@@ -111,7 +120,7 @@ export async function createPrototypeServer({
       return json(response, 400, { error: error instanceof Error ? error.message : String(error) })
     }
   })
-  return { server, close: async () => { await closePhotoOcr(); await closeQvac(); await new Promise((resolve) => server.close(resolve)) } }
+  return { server, close: async () => { await closePhotoOcr(); await closeVoiceTranscription(); await closeQvac(); await new Promise((resolve) => server.close(resolve)) } }
 }
 
 export function startupErrorMessage(error, host, port) {
@@ -138,6 +147,12 @@ async function bodyJson(request, maxBytes = 1024 * 1024) {
 function photoExample(response) {
   const filePath = path.join(root, 'test', 'fixtures', 'ocr', 'clear-image.png')
   response.writeHead(200, { 'content-type': 'image/png', 'cache-control': 'no-store' })
+  return createReadStream(filePath).pipe(response)
+}
+
+function voiceExample(response) {
+  const filePath = path.join(root, 'test', 'fixtures', 'transcription', 'spanish-medical-equipment.wav')
+  response.writeHead(200, { 'content-type': 'audio/wav', 'cache-control': 'no-store' })
   return createReadStream(filePath).pipe(response)
 }
 

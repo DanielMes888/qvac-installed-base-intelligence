@@ -42,6 +42,11 @@
 
       <div class="capture-grid">
         <form class="surface capture-form" id="capture-form">
+          <div class="capture-methods" aria-label="Métodos de captura">
+            <button class="capture-method active" data-capture-method="text" type="button">Escribir una observación</button>
+            <button class="capture-method" data-capture-method="photo" type="button">Añadir desde una imagen</button>
+            <button class="capture-method" data-capture-method="voice" type="button">Dictar por voz</button>
+          </div>
           <div class="field">
             <label for="customer">Cliente ficticio</label>
             <select id="customer" required></select>
@@ -60,6 +65,22 @@
             <div class="photo-actions"><button id="photo-example" class="button secondary" type="button">Probar imagen de ejemplo</button><button id="photo-recognize" class="button primary" type="button" disabled>Reconocer texto</button><button id="photo-change" class="button text-button hidden" type="button">Cambiar imagen</button><button id="photo-cancel" class="button text-button hidden" type="button">Cancelar</button></div>
             <div id="photo-status" class="feedback" aria-live="polite"></div>
             <div id="photo-text-wrap" class="photo-text-wrap hidden"><label for="photo-text">Revisa y corrige el texto</label><textarea id="photo-text" rows="5"></textarea><button id="photo-use" class="button primary" type="button">Usar como observación</button></div>
+          </section>
+          <section id="voice-capture" class="voice-capture" aria-labelledby="voice-capture-title">
+            <div class="photo-capture-heading"><div><p class="section-kicker">Entrada opcional</p><h2 id="voice-capture-title">Dictar por voz</h2><p>Grabe hasta 60 segundos de audio sintético. La transcripción es local, puede contener errores y debe revisarse.</p></div><span aria-hidden="true">●</span></div>
+            <div class="voice-meter"><strong id="voice-state">Listo para grabar</strong><span id="voice-elapsed">00:00 / 01:00</span></div>
+            <audio id="voice-playback" class="hidden" preload="metadata"></audio>
+            <div class="photo-actions">
+              <button id="voice-start" class="button primary compact-button" type="button">Iniciar grabación</button>
+              <button id="voice-stop" class="button danger-button hidden" type="button">Detener</button>
+              <button id="voice-listen" class="button secondary hidden" type="button">Escuchar</button>
+              <button id="voice-again" class="button secondary hidden" type="button">Grabar de nuevo</button>
+              <button id="voice-transcribe" class="button primary compact-button hidden" type="button">Transcribir</button>
+              <button id="voice-example" class="button secondary" type="button">Probar audio de ejemplo</button>
+              <button id="voice-cancel" class="button text-button" type="button">Cancelar</button>
+            </div>
+            <div id="voice-status" class="feedback" aria-live="polite"></div>
+            <div id="voice-text-wrap" class="photo-text-wrap hidden"><label for="voice-text">Revisa y corrige la transcripción</label><textarea id="voice-text" rows="5"></textarea><p class="media-limitation">La transcripción no verifica quién habló ni garantiza exactitud. Conserve cualquier duda en el texto.</p><button id="voice-use" class="button primary" type="button">Usar como observación</button></div>
           </section>
           <div class="field"><label for="observation-date">Fecha de observación <span class="optional-label">(opcional)</span></label><input id="observation-date" type="date">
             <small>Déjela vacía si no conoce cuándo ocurrió la observación. La fecha de registro se conservará por separado.</small>

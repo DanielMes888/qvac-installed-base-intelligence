@@ -1,5 +1,6 @@
 const $ = (selector) => document.querySelector(selector)
 const $$ = (selector) => [...document.querySelectorAll(selector)]
+const VOICE_MAX_MS = 60_000
 
 let currentObservation = null
 let currentView = null
@@ -10,6 +11,15 @@ let geographicView = null
 let photoFile = null
 let photoObjectUrl = null
 let captureProvenance = 'text'
+let voiceStream = null
+let voiceRecorder = null
+let voiceChunks = []
+let voiceBlob = null
+let voiceObjectUrl = null
+let voiceTimer = null
+let voiceStartedAt = 0
+let voiceAbortController = null
+let voiceCancelled = false
 
 const claimLabels = {
   equipmentType: 'Tipo de equipo',
@@ -46,7 +56,16 @@ $('#photo-recognize').addEventListener('click', recognizePhoto)
 $('#photo-change').addEventListener('click', () => $('#photo-file').click())
 $('#photo-cancel').addEventListener('click', cancelPhoto)
 $('#photo-use').addEventListener('click', usePhotoAsObservation)
-window.addEventListener('beforeunload', () => { if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl) })
+$$('.capture-method').forEach((button) => button.addEventListener('click', () => selectCaptureMethod(button.dataset.captureMethod)))
+$('#voice-start').addEventListener('click', startVoiceRecording)
+$('#voice-stop').addEventListener('click', stopVoiceRecording)
+$('#voice-listen').addEventListener('click', () => $('#voice-playback').play())
+$('#voice-again').addEventListener('click', startVoiceRecording)
+$('#voice-transcribe').addEventListener('click', transcribeVoiceRecording)
+$('#voice-example').addEventListener('click', loadVoiceExample)
+$('#voice-cancel').addEventListener('click', cancelVoiceCapture)
+$('#voice-use').addEventListener('click', useVoiceAsObservation)
+window.addEventListener('beforeunload', () => { clearVoiceCapture(); if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl) })
 $('#review').addEventListener('click', review)
 $('#answer-clarification').addEventListener('click', () => clarify('answered'))
 $('#unknown-clarification').addEventListener('click', () => clarify('unknown'))
@@ -133,6 +152,7 @@ async function runAnalytics(event) {
 }
 
 function activateWorkspace(name) {
+  if (name !== 'capture' && voiceRecorder?.state === 'recording') clearVoiceCapture()
   $$('.workspace').forEach((workspace) => workspace.classList.toggle('active', workspace.id === `workspace-${name}`))
   $$('.nav-item').forEach((button) => {
     const active = button.dataset.workspace === name
@@ -331,10 +351,202 @@ function fileToBase64(file) {
   return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(String(reader.result).split(',')[1]); reader.onerror = () => reject(new Error('No se pudo leer la imagen local')); reader.readAsDataURL(file) })
 }
 
+function selectCaptureMethod(method) {
+  $$('.capture-method').forEach((button) => button.classList.toggle('active', button.dataset.captureMethod === method))
+  if (method === 'voice') return $('#voice-capture').scrollIntoView({ behavior: 'smooth', block: 'center' })
+  if (voiceRecorder?.state === 'recording') clearVoiceCapture()
+  if (method === 'photo') return $('#photo-capture-title').scrollIntoView({ behavior: 'smooth', block: 'center' })
+  $('#note').focus()
+}
+
+async function startVoiceRecording() {
+  if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') return setVoiceStatus('Este navegador no permite grabar audio localmente.', 'error')
+  clearVoiceCapture()
+  voiceCancelled = false
+  setVoiceStatus('Preparando dictado…', 'loading')
+  try {
+    voiceStream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true }, video: false })
+    voiceChunks = []
+    voiceRecorder = new MediaRecorder(voiceStream)
+    voiceRecorder.addEventListener('dataavailable', (event) => { if (event.data.size) voiceChunks.push(event.data) })
+    voiceRecorder.addEventListener('stop', prepareRecordedVoice, { once: true })
+    voiceRecorder.start(250)
+    voiceStartedAt = Date.now()
+    voiceTimer = window.setInterval(updateVoiceElapsed, 250)
+    $('#voice-capture').classList.add('recording')
+    $('#voice-start').classList.add('hidden')
+    $('#voice-stop').classList.remove('hidden')
+    $('#voice-state').textContent = 'Grabando'
+    setVoiceStatus('Grabación activa. Deténgala cuando termine; el límite es 60 segundos.', 'loading')
+    updateVoiceElapsed()
+  } catch (error) {
+    clearVoiceCapture()
+    setVoiceStatus(error?.name === 'NotAllowedError' ? 'No se concedió permiso para usar el micrófono. Puede intentar de nuevo o escribir la observación.' : `No se pudo iniciar la grabación: ${error.message}`, 'error')
+  }
+}
+
+function stopVoiceRecording() {
+  if (voiceRecorder?.state === 'recording') voiceRecorder.stop()
+  stopVoiceTracks()
+  clearInterval(voiceTimer)
+  voiceTimer = null
+  $('#voice-stop').classList.add('hidden')
+  $('#voice-capture').classList.remove('recording')
+  $('#voice-state').textContent = 'Procesando audio'
+  setVoiceStatus('Procesando audio localmente…', 'loading')
+}
+
+async function prepareRecordedVoice() {
+  if (voiceCancelled) return
+  try {
+    if (!voiceChunks.length) throw new Error('La grabación está vacía')
+    voiceBlob = await encodeMonoPcmWav(new Blob(voiceChunks, { type: voiceRecorder.mimeType }))
+    if (voiceBlob.size <= 44) throw new Error('La grabación está vacía')
+    showPreparedVoice(voiceBlob)
+    setVoiceStatus('Audio listo. Puede escucharlo, grabar de nuevo o solicitar la transcripción local.', 'success')
+  } catch (error) {
+    clearVoiceCapture()
+    setVoiceStatus(`El audio no pudo prepararse: ${error.message}`, 'error')
+  }
+}
+
+function showPreparedVoice(blob) {
+  if (voiceObjectUrl) URL.revokeObjectURL(voiceObjectUrl)
+  voiceBlob = blob
+  voiceObjectUrl = URL.createObjectURL(blob)
+  $('#voice-playback').src = voiceObjectUrl
+  $('#voice-state').textContent = 'Audio listo'
+  $$('#voice-listen, #voice-again, #voice-transcribe').forEach((button) => button.classList.remove('hidden'))
+  $('#voice-start').classList.add('hidden')
+}
+
+async function loadVoiceExample() {
+  clearVoiceCapture()
+  setVoiceStatus('Preparando dictado de ejemplo…', 'loading')
+  try {
+    const response = await fetch('/api/voice-example', { cache: 'no-store' })
+    if (!response.ok) throw new Error('No se pudo cargar el audio sintético de ejemplo')
+    showPreparedVoice(await response.blob())
+    $('#voice-elapsed').textContent = '00:05 / 01:00'
+    setVoiceStatus('Audio sintético listo. Use Transcribir para procesarlo con el motor local real.', 'success')
+  } catch (error) { setVoiceStatus(error.message, 'error') }
+}
+
+async function transcribeVoiceRecording() {
+  if (!voiceBlob) return setVoiceStatus('Grabe o cargue un audio sintético antes de transcribir.', 'error')
+  voiceAbortController?.abort()
+  voiceAbortController = new AbortController()
+  const button = $('#voice-transcribe')
+  button.disabled = true
+  $('#voice-state').textContent = 'Procesando audio'
+  setVoiceStatus('Procesando audio con transcripción local…', 'loading')
+  try {
+    const response = await api('/api/voice-transcription', { method: 'POST', signal: voiceAbortController.signal, body: JSON.stringify({ base64: await fileToBase64(voiceBlob), mimeType: 'audio/wav' }) })
+    $('#voice-text').value = response.text
+    $('#voice-text-wrap').classList.remove('hidden')
+    $('#voice-state').textContent = 'Transcripción lista'
+    setVoiceStatus('Transcripción lista. Revise y corrija el texto antes de usarlo.', 'success')
+  } catch (error) {
+    if (error.name !== 'AbortError') {
+      $('#voice-state').textContent = 'El audio no pudo transcribirse'
+      setVoiceStatus(`El audio no pudo transcribirse: ${error.message}. Puede volver a intentar o grabar de nuevo.`, 'error')
+    }
+  } finally { button.disabled = false; voiceAbortController = null }
+}
+
+function useVoiceAsObservation() {
+  const text = $('#voice-text').value.trim()
+  if (!text) return setVoiceStatus('Revise o escriba texto antes de usarlo como observación.', 'error')
+  $('#note').value = text
+  captureProvenance = 'voice'
+  updateNoteLength()
+  clearVoiceCapture()
+  setFeedback('Texto de voz preparado como observación. Revíselo y envíelo explícitamente con el botón de captura.', 'success')
+  $('#note').focus()
+}
+
+function cancelVoiceCapture() {
+  clearVoiceCapture()
+  setVoiceStatus('Dictado cancelado. El audio temporal fue eliminado y no se creó ninguna observación.', 'success')
+}
+
+function clearVoiceCapture() {
+  voiceCancelled = true
+  voiceAbortController?.abort()
+  voiceAbortController = null
+  if (voiceRecorder?.state === 'recording') voiceRecorder.stop()
+  stopVoiceTracks()
+  clearInterval(voiceTimer)
+  voiceTimer = null
+  voiceRecorder = null
+  voiceChunks = []
+  voiceBlob = null
+  if (voiceObjectUrl) URL.revokeObjectURL(voiceObjectUrl)
+  voiceObjectUrl = null
+  $('#voice-playback').pause()
+  $('#voice-playback').removeAttribute('src')
+  $('#voice-capture').classList.remove('recording')
+  $('#voice-start').classList.remove('hidden')
+  $('#voice-stop').classList.add('hidden')
+  $$('#voice-listen, #voice-again, #voice-transcribe').forEach((button) => button.classList.add('hidden'))
+  $('#voice-text-wrap').classList.add('hidden')
+  $('#voice-text').value = ''
+  $('#voice-state').textContent = 'Listo para grabar'
+  $('#voice-elapsed').textContent = '00:00 / 01:00'
+}
+
+function stopVoiceTracks() {
+  voiceStream?.getTracks().forEach((track) => track.stop())
+  voiceStream = null
+}
+
+function updateVoiceElapsed() {
+  const elapsed = Math.min(VOICE_MAX_MS / 1000, Math.floor((Date.now() - voiceStartedAt) / 1000))
+  $('#voice-elapsed').textContent = `00:${String(elapsed).padStart(2, '0')} / 01:00`
+  if (elapsed >= VOICE_MAX_MS / 1000) stopVoiceRecording()
+}
+
+async function encodeMonoPcmWav(blob) {
+  const context = new AudioContext()
+  try {
+    const decoded = await context.decodeAudioData(await blob.arrayBuffer())
+    const sampleRate = Math.min(48000, decoded.sampleRate)
+    const length = Math.ceil(decoded.duration * sampleRate)
+    if (!length || decoded.duration > 60.05) throw new Error('La grabación supera el límite de 60 segundos o está vacía')
+    const offline = new OfflineAudioContext(1, length, sampleRate)
+    const mono = offline.createBuffer(1, decoded.length, decoded.sampleRate)
+    const target = mono.getChannelData(0)
+    for (let channel = 0; channel < decoded.numberOfChannels; channel += 1) {
+      const source = decoded.getChannelData(channel)
+      for (let index = 0; index < source.length; index += 1) target[index] += source[index] / decoded.numberOfChannels
+    }
+    const node = offline.createBufferSource()
+    node.buffer = mono
+    node.connect(offline.destination)
+    node.start()
+    return pcmToWave(await offline.startRendering())
+  } finally { await context.close() }
+}
+
+function pcmToWave(buffer) {
+  const samples = buffer.getChannelData(0)
+  const output = new ArrayBuffer(44 + samples.length * 2)
+  const view = new DataView(output)
+  writeAscii(view, 0, 'RIFF'); view.setUint32(4, 36 + samples.length * 2, true); writeAscii(view, 8, 'WAVEfmt ')
+  view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true); view.setUint32(24, buffer.sampleRate, true)
+  view.setUint32(28, buffer.sampleRate * 2, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true); writeAscii(view, 36, 'data'); view.setUint32(40, samples.length * 2, true)
+  for (let index = 0; index < samples.length; index += 1) view.setInt16(44 + index * 2, Math.max(-1, Math.min(1, samples[index])) * 0x7fff, true)
+  return new Blob([output], { type: 'audio/wav' })
+}
+
+function writeAscii(view, offset, value) { for (let index = 0; index < value.length; index += 1) view.setUint8(offset + index, value.charCodeAt(index)) }
+
+function setVoiceStatus(message, kind = '') { $('#voice-status').className = `feedback ${kind}`; $('#voice-status').textContent = message }
+
 function renderOriginalObservation(observation) {
   $('#original-note').textContent = observation.originalText
   $('#observation-provenance').classList.remove('hidden')
-  $('#observation-provenance').textContent = observation.provenance === 'photo-assisted' ? 'Procedencia: captura asistida por imagen' : 'Procedencia: captura manual'
+  $('#observation-provenance').textContent = observation.provenance === 'photo-assisted' ? 'Procedencia: captura asistida por imagen' : observation.provenance === 'voice' ? 'Procedencia: dictado por voz revisado' : 'Procedencia: captura manual'
   $('#clarification-evidence').innerHTML = (observation.evidenceEntries ?? []).map((entry) => entry.type === 'reviewerCorrection'
     ? `<div class="saved-answer reviewer-evidence"><span>Evidencia aportada por el revisor · ${formatDate(entry.recordedAt)}</span><strong>${escapeHtml(translate(entry.field, correctionFieldLabels))}: ${escapeHtml(entry.text)}</strong>${entry.reason ? `<small>${escapeHtml(entry.reason)}</small>` : ''}</div>`
     : `<div class="saved-answer"><span>Respuesta de aclaración · ${formatDate(entry.recordedAt)}</span><strong>${escapeHtml(entry.text)}</strong></div>`).join('')
