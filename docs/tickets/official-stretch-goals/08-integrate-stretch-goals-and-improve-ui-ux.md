@@ -38,6 +38,9 @@ Do not start general UI/UX work before all applicable functional branches have a
 
 ## Acceptance Criteria
 
+- [ ] La arquitectura de información distingue claramente secciones, pestañas o pasos y comunica el recorrido `captura → aclaración/revisión → base instalada → insights`.
+- [ ] La vista explica qué representan los Equipment Records y cómo Confidence scoring encaja en el flujo general, sin hacer que sus tarjetas parezcan elementos aislados sin contexto.
+- [ ] `Ver desglose y evidencia` resulta reconocible como una acción expandible y accesible.
 - [ ] All implemented capabilities are reachable through consistent navigation and return users to a coherent customer/evidence context.
 - [ ] Loading, empty, success, error, blocked, unavailable, and offline states are visible and actionable.
 - [ ] Keyboard navigation, focus order/visibility, labels, headings, contrast, and status announcements pass the selected automated and manual accessibility checks.
@@ -86,3 +89,7 @@ Run one local/offline integrated demonstration over synthetic data: core explici
 - Treating a feasibility failure as an implementation success.
 - Cross-device synchronization, cloud services, production deployment, or enterprise access control.
 - Claiming official Philips rules, E4/E4-v2 success, formal ticket completion, submission readiness, or production readiness.
+
+## Owner validation note, 2026-09-11
+
+The owner functionally approved Ticket 01 after visual validation. The owner did not immediately understand what the Equipment Records section represents or how Confidence scoring fits the application journey. This is non-blocking for Ticket 01 and is deliberately deferred to this ticket; no general redesign is authorized before its dependencies resolve.

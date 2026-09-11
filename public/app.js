@@ -453,7 +453,32 @@ function renderCustomerMetrics(view) {
 }
 
 function renderEquipment(records) {
-  $('#equipment').innerHTML = records.length ? records.map((record) => `<article class="equipment-row"><span class="equipment-symbol" aria-hidden="true">${escapeHtml(record.modality.slice(0, 2).toUpperCase())}</span><div class="equipment-identity"><strong>${escapeHtml(record.manufacturer)} ${escapeHtml(displayModality(record.modality))}</strong><span>${escapeHtml(record.model)} · ${escapeHtml(displayLocation(record.location))}</span><small>Última evidencia: ${formatEvidenceAge(record.latestEvidenceAt)}${record.latestEvidenceAt ? ` · ${formatDateOnly(record.latestEvidenceAt)}` : ''}</small><small>${record.latestObservationDate ? `Fecha de observación: ${formatObservationDate(record.latestObservationDate)}` : 'Fecha de observación desconocida'}</small></div><div class="equipment-evidence"><strong>${record.evidenceObservationIds.length}</strong><span>observaciones nuevas</span></div><span class="status-pill ${record.status}">${translate(record.status, statusLabels)}</span></article>`).join('') : '<div class="empty-state"><strong>No hay equipos registrados</strong><span>Las observaciones revisadas aparecerán aquí.</span></div>'
+  $('#equipment').innerHTML = records.length ? records.map((record) => `<article class="equipment-row"><span class="equipment-symbol" aria-hidden="true">${escapeHtml(record.modality.slice(0, 2).toUpperCase())}</span><div class="equipment-identity"><strong>${escapeHtml(record.manufacturer)} ${escapeHtml(displayModality(record.modality))}</strong><span>${escapeHtml(record.model)} · ${escapeHtml(displayLocation(record.location))}</span><small>Última evidencia: ${formatEvidenceAge(record.latestEvidenceAt)}${record.latestEvidenceAt ? ` · ${formatDateOnly(record.latestEvidenceAt)}` : ''}</small><small>${record.latestObservationDate ? `Fecha de observación: ${formatObservationDate(record.latestObservationDate)}` : 'Fecha de observación desconocida'}</small></div>${renderConfidenceScore(record.confidenceScore)}<div class="equipment-evidence"><strong>${record.evidenceObservationIds.length}</strong><span>observaciones nuevas</span></div><span class="status-pill ${record.status}">${translate(record.status, statusLabels)}</span></article>`).join('') : '<div class="empty-state"><strong>No hay equipos registrados</strong><span>Las observaciones revisadas aparecerán aquí.</span></div>'
+}
+
+function renderConfidenceScore(score) {
+  if (!score) return ''
+  const components = [
+    ['Completitud', score.components.completeness],
+    ['Vigencia', score.components.freshness],
+    ['Corroboración', score.components.corroboration]
+  ]
+  const evidence = score.evidence ?? []
+  const headline = score.available
+    ? `${score.total}/100 <small class="confidence-band ${escapeHtml(score.band.key)}">${escapeHtml(score.band.label)}</small>`
+    : `<small class="confidence-band unavailable">${escapeHtml(score.band.label)}</small>`
+  return `<div class="equipment-confidence"><span>Confianza de evidencia</span><strong>${headline}</strong><details><summary>Ver desglose y evidencia</summary>${score.availabilityReason ? `<p class="confidence-warning">${escapeHtml(score.availabilityReason)}</p>` : ''}<ul>${components.map(([label, component]) => `<li><strong>${label}: ${component.points}/${component.maximum}</strong><span>${escapeHtml(component.reason)}</span></li>`).join('')}</ul><p>Regla ${escapeHtml(score.version)} · Fecha de evaluación: ${formatObservationDate(score.evaluatedOn)}</p><p>Procedencias consideradas: ${score.components.corroboration.sourceIds.length ? score.components.corroboration.sourceIds.map((id) => `<a href="#${confidenceEvidenceAnchor(id)}">${escapeHtml(id)}</a>`).join(', ') : 'ninguna'}.</p>${evidence.length ? `<ol class="confidence-evidence-list">${evidence.map(renderConfidenceEvidence).join('')}</ol>` : '<p>No hay evidencia vinculada.</p>'}<p>${escapeHtml(score.disclaimer)}</p><p>No cambia la certeza, la prioridad, la revisión ni la identidad.</p></details></div>`
+}
+
+function renderConfidenceEvidence(item) {
+  const exclusionLabels = { unknownScope: 'alcance desconocido', unreviewedScope: 'sin claim aceptada ni alcance estructurado', incompatibleEvidence: 'evidencia incompatible', compatibilityUnestablished: 'compatibilidad no establecida', duplicateProvenance: 'procedencia repetida para corroboración', possibleChangeForCorroboration: 'posible cambio temporal; no corrobora el mismo estado' }
+  const excluded = item.exclusionCodes?.length ? ` · Excluida: ${item.exclusionCodes.map((code) => exclusionLabels[code] ?? code).join(', ')}` : ''
+  const roles = [item.countedForFreshness ? 'determina vigencia' : null, item.countedForCorroboration ? 'cuenta para corroboración' : null].filter(Boolean)
+  return `<li id="${confidenceEvidenceAnchor(item.id)}"><strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.excerpt || 'Sin texto visible')}</span><small>${escapeHtml(item.author)} · ${item.observationDate ? formatObservationDate(item.observationDate) : 'fecha de observación desconocida'} · ${item.scope === 'explicitRecordScope' ? 'alcance explícito del registro' : 'alcance desconocido'}${roles.length ? ` · ${roles.join(' y ')}` : ''}${excluded}</small></li>`
+}
+
+function confidenceEvidenceAnchor(id) {
+  return `confidence-evidence-${String(id).replace(/[^a-zA-Z0-9_-]/g, '-')}`
 }
 
 function renderVerificationFilters({ selectedCustomerId, freshnessPolicy }) {

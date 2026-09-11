@@ -1,0 +1,261 @@
+{
+  "schemaVersion": "confidence-scoring-smoke-v1",
+  "synthetic": true,
+  "evaluatedAt": "2026-09-10T12:00:00.000Z",
+  "execution": "local deterministic customer read-model; no QVAC inference",
+  "scenario": "one incomplete old Observation and two independently sourced recent Evidence Entries",
+  "beforeAllowedEvidenceChange": {
+    "version": "equipment-confidence-v1",
+    "kind": "configurablePrototypeIndicator",
+    "available": true,
+    "total": 90,
+    "band": {
+      "key": "high",
+      "label": "Alta"
+    },
+    "evaluatedOn": "2026-09-10",
+    "availabilityReason": null,
+    "components": {
+      "completeness": {
+        "points": 40,
+        "maximum": 40,
+        "availableFields": [
+          "modality",
+          "manufacturer",
+          "model",
+          "location"
+        ],
+        "missingFields": [],
+        "reason": "4 de 4 campos completos."
+      },
+      "freshness": {
+        "points": 30,
+        "maximum": 30,
+        "latestObservationDate": "2026-09-09",
+        "ageDays": 1,
+        "unknownDateSourceCount": 0,
+        "futureDateSourceCount": 0,
+        "reason": "Evidencia reciente: la observación aplicable más reciente tiene 1 día de antigüedad."
+      },
+      "corroboration": {
+        "points": 20,
+        "maximum": 30,
+        "distinctSourceCount": 2,
+        "sourceIds": [
+          "evidence:recent-a",
+          "evidence:recent-b"
+        ],
+        "excludedSourceIds": [],
+        "incompatibleSourceIds": [],
+        "unestablishedCompatibilitySourceIds": [],
+        "unknownScopeSourceIds": [],
+        "duplicateSourceIds": [],
+        "possibleChangeSourceIds": [],
+        "reason": "2 procedencias independientes respaldan el registro."
+      }
+    },
+    "evidence": [
+      {
+        "id": "evidence:recent-a",
+        "kind": "evidenceEntry",
+        "label": "Evidencia recent-a",
+        "excerpt": "Fuente sintética A confirma el MRI DemoScan.",
+        "author": "Fuente sintética A",
+        "observationDate": "2026-09-09",
+        "scope": "explicitRecordScope",
+        "compatible": true,
+        "exclusionCodes": [],
+        "countedForFreshness": true,
+        "countedForCorroboration": true
+      },
+      {
+        "id": "evidence:recent-b",
+        "kind": "evidenceEntry",
+        "label": "Evidencia recent-b",
+        "excerpt": "Fuente sintética B reporta el mismo MRI.",
+        "author": "Fuente sintética B",
+        "observationDate": "2026-09-08",
+        "scope": "explicitRecordScope",
+        "compatible": true,
+        "exclusionCodes": [],
+        "countedForFreshness": false,
+        "countedForCorroboration": true
+      }
+    ],
+    "disclaimer": "Indicador configurable del prototipo. No es una probabilidad estadística. No es una regla oficial de Philips, un estado de certeza, una prioridad de verificación, una revisión humana ni una confirmación de identidad."
+  },
+  "afterAllowedEvidenceChange": {
+    "version": "equipment-confidence-v1",
+    "kind": "configurablePrototypeIndicator",
+    "available": true,
+    "total": 100,
+    "band": {
+      "key": "high",
+      "label": "Alta"
+    },
+    "evaluatedOn": "2026-09-10",
+    "availabilityReason": null,
+    "components": {
+      "completeness": {
+        "points": 40,
+        "maximum": 40,
+        "availableFields": [
+          "modality",
+          "manufacturer",
+          "model",
+          "location"
+        ],
+        "missingFields": [],
+        "reason": "4 de 4 campos completos."
+      },
+      "freshness": {
+        "points": 30,
+        "maximum": 30,
+        "latestObservationDate": "2026-09-10",
+        "ageDays": 0,
+        "unknownDateSourceCount": 0,
+        "futureDateSourceCount": 0,
+        "reason": "Evidencia reciente: la observación aplicable más reciente tiene 0 días de antigüedad."
+      },
+      "corroboration": {
+        "points": 30,
+        "maximum": 30,
+        "distinctSourceCount": 3,
+        "sourceIds": [
+          "evidence:recent-a",
+          "evidence:recent-b",
+          "evidence:recent-c"
+        ],
+        "excludedSourceIds": [],
+        "incompatibleSourceIds": [],
+        "unestablishedCompatibilitySourceIds": [],
+        "unknownScopeSourceIds": [],
+        "duplicateSourceIds": [],
+        "possibleChangeSourceIds": [],
+        "reason": "3 procedencias independientes respaldan el registro."
+      }
+    },
+    "evidence": [
+      {
+        "id": "evidence:recent-a",
+        "kind": "evidenceEntry",
+        "label": "Evidencia recent-a",
+        "excerpt": "Fuente sintética A confirma el MRI DemoScan.",
+        "author": "Fuente sintética A",
+        "observationDate": "2026-09-09",
+        "scope": "explicitRecordScope",
+        "compatible": true,
+        "exclusionCodes": [],
+        "countedForFreshness": false,
+        "countedForCorroboration": true
+      },
+      {
+        "id": "evidence:recent-b",
+        "kind": "evidenceEntry",
+        "label": "Evidencia recent-b",
+        "excerpt": "Fuente sintética B reporta el mismo MRI.",
+        "author": "Fuente sintética B",
+        "observationDate": "2026-09-08",
+        "scope": "explicitRecordScope",
+        "compatible": true,
+        "exclusionCodes": [],
+        "countedForFreshness": false,
+        "countedForCorroboration": true
+      },
+      {
+        "id": "evidence:recent-c",
+        "kind": "evidenceEntry",
+        "label": "Evidencia recent-c",
+        "excerpt": "Fuente sintética C corrobora ubicación y modelo.",
+        "author": "Fuente sintética C",
+        "observationDate": "2026-09-10",
+        "scope": "explicitRecordScope",
+        "compatible": true,
+        "exclusionCodes": [],
+        "countedForFreshness": true,
+        "countedForCorroboration": true
+      }
+    ],
+    "disclaimer": "Indicador configurable del prototipo. No es una probabilidad estadística. No es una regla oficial de Philips, un estado de certeza, una prioridad de verificación, una revisión humana ni una confirmación de identidad."
+  },
+  "incompleteOldObservation": {
+    "version": "equipment-confidence-v1",
+    "kind": "configurablePrototypeIndicator",
+    "available": true,
+    "total": 10,
+    "band": {
+      "key": "low",
+      "label": "Baja"
+    },
+    "evaluatedOn": "2026-09-10",
+    "availabilityReason": null,
+    "components": {
+      "completeness": {
+        "points": 10,
+        "maximum": 40,
+        "availableFields": [
+          "modality"
+        ],
+        "missingFields": [
+          "manufacturer",
+          "model",
+          "location"
+        ],
+        "reason": "1 de 4 campos completos; faltan fabricante, modelo, ubicación."
+      },
+      "freshness": {
+        "points": 0,
+        "maximum": 30,
+        "latestObservationDate": "2025-12-01",
+        "ageDays": 283,
+        "unknownDateSourceCount": 0,
+        "futureDateSourceCount": 0,
+        "reason": "Evidencia muy antigua: la observación aplicable más reciente tiene 283 días de antigüedad."
+      },
+      "corroboration": {
+        "points": 0,
+        "maximum": 30,
+        "distinctSourceCount": 1,
+        "sourceIds": [
+          "observation:old-observation"
+        ],
+        "excludedSourceIds": [],
+        "incompatibleSourceIds": [],
+        "unestablishedCompatibilitySourceIds": [],
+        "unknownScopeSourceIds": [],
+        "duplicateSourceIds": [],
+        "possibleChangeSourceIds": [],
+        "reason": "Una sola procedencia respalda el registro; no existe corroboración independiente."
+      }
+    },
+    "evidence": [
+      {
+        "id": "observation:old-observation",
+        "kind": "observation",
+        "label": "Observación old-observation",
+        "excerpt": "Observé un CT sin fabricante, modelo ni ubicación confirmados.",
+        "author": "Usuario local de demostración",
+        "observationDate": "2025-12-01",
+        "scope": "explicitRecordScope",
+        "compatible": true,
+        "exclusionCodes": [],
+        "countedForFreshness": true,
+        "countedForCorroboration": true
+      }
+    ],
+    "disclaimer": "Indicador configurable del prototipo. No es una probabilidad estadística. No es una regla oficial de Philips, un estado de certeza, una prioridad de verificación, una revisión humana ni una confirmación de identidad."
+  },
+  "assertions": {
+    "displayedComponentMathAndTotal": true,
+    "inspectableEvidenceLinks": true,
+    "stableRerun": true,
+    "recomputedAfterAllowedEvidenceChange": true,
+    "inputMutation": false,
+    "equipmentRecordGrowth": 0,
+    "verificationItemsResolved": 0,
+    "claimsAcceptedOrChanged": 0,
+    "reconciliationChanges": 0,
+    "qvacCalls": 0
+  },
+  "failure": null
+}

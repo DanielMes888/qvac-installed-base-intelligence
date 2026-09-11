@@ -1,13 +1,15 @@
 import { randomUUID } from 'node:crypto'
 
+import { calculateEquipmentConfidence, CONFIDENCE_SCORE_POLICY } from './confidence-score.mjs'
 import { createWorkspaceExport, DELETE_CONFIRMATION, emptyWorkspaceState } from './workspace-export.mjs'
 
 export class WorkspaceService {
-  constructor(state, persist, { now = () => new Date() } = {}) {
+  constructor(state, persist, { now = () => new Date(), confidencePolicy = CONFIDENCE_SCORE_POLICY } = {}) {
     this.state = structuredClone(state)
     this.state.evidenceEntries ??= []
     this.state.verificationItems ??= []
     this.now = now
+    this.confidencePolicy = confidencePolicy
     for (const record of this.state.equipmentRecords) {
       record.evidenceObservationIds ??= []
       record.evidenceEntryIds ??= []
@@ -456,12 +458,20 @@ export class WorkspaceService {
     const evidenceIds = new Set(record.evidenceEntryIds)
     for (const entry of this.state.evidenceEntries.filter((item) => item.equipmentRecordId === record.id || record.evidenceObservationIds.includes(item.observationId))) evidenceIds.add(entry.id)
     const entries = [...evidenceIds].map((id) => this.state.evidenceEntries.find((entry) => entry.id === id)).filter(Boolean)
-    return {
+    const result = {
       ...structuredClone(record),
       evidenceEntryIds: [...evidenceIds],
       latestEvidenceAt: latestDate([...observations.map(({ recordedAt }) => recordedAt), ...entries.map(({ recordedAt }) => recordedAt)]),
       latestObservationDate: latestDate([...observations.map(({ observationDate }) => observationDate), ...entries.map(({ observationDate }) => observationDate)])
     }
+    result.confidenceScore = calculateEquipmentConfidence({
+      record: result,
+      observations,
+      evidenceEntries: entries,
+      evaluatedAt: this.now(),
+      policy: this.confidencePolicy
+    })
+    return result
   }
 
   appendExtractionAttempts(observation, extraction, phase, startedAt) {
