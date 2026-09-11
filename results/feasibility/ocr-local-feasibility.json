@@ -1,0 +1,971 @@
+{
+  "schemaVersion": "local-ocr-feasibility-v1",
+  "outcome": "OCR feasibility failed",
+  "evaluatedAt": "2026-09-11T06:26:09.018Z",
+  "synthetic": true,
+  "execution": "same-computer @qvac/sdk OCR using absolute cached model paths",
+  "policy": {
+    "schemaVersion": "local-ocr-feasibility-v1",
+    "requiredCaseIds": [
+      "clear-image",
+      "small-text",
+      "low-contrast",
+      "slight-rotation",
+      "multiple-lines",
+      "alphanumeric"
+    ],
+    "diagnosticCaseIds": [
+      "deliberately-difficult"
+    ],
+    "minimumTokenRecall": 0.8,
+    "maxWarmExtractionMs": 5000,
+    "minimumSystemFreeBytes": 536870912,
+    "persistsImages": false,
+    "mutatesWorkspace": false
+  },
+  "environment": {
+    "platform": "win32",
+    "architecture": "x64",
+    "node": "v22.17.0",
+    "sdk": "0.19.0",
+    "enginePackage": "@qvac/ocr-ggml@0.21.0",
+    "backendRequested": "cpu"
+  },
+  "models": {
+    "detector": {
+      "cacheFile": "bb5d57baeb6ae9e7_craft_mlt_25k.gguf",
+      "expectedSize": 83133856,
+      "actualSize": 83133856,
+      "expectedSha256": "74501993caf4581ce09b280f49a1b3d249c0f5a78496e047718b398457a875aa",
+      "actualSha256": "74501993caf4581ce09b280f49a1b3d249c0f5a78496e047718b398457a875aa",
+      "verified": true
+    },
+    "recognizer": {
+      "cacheFile": "1bd09b23f28caa7e_latin_g2.gguf",
+      "expectedSize": 15396512,
+      "actualSize": 15396512,
+      "expectedSha256": "dd1c7a436e9175904e63683e939635892f45c8c6377d5e14e87cf8b175e10768",
+      "actualSha256": "dd1c7a436e9175904e63683e939635892f45c8c6377d5e14e87cf8b175e10768",
+      "verified": true
+    }
+  },
+  "acquisition": {
+    "source": "QVAC registry descriptors OCR_CRAFT and OCR_LATIN",
+    "completedBeforeOfflineRun": true,
+    "measuredMs": 223546.9853
+  },
+  "initialization": {
+    "elapsedMs": 1982.1798000000001,
+    "loaded": {
+      "modelId": "bddb81cdd069f1b4",
+      "modelType": "ggml-ocr",
+      "handlers": [
+        "ocrStream"
+      ],
+      "displayName": "OCR (GGML)",
+      "addonPackage": "@qvac/ocr-ggml",
+      "loadedAt": "2026-09-11T06:26:11.100Z",
+      "cacheFile": "1bd09b23f28caa7e_latin_g2.gguf"
+    },
+    "modelSourcesWereAbsoluteLocalPaths": true
+  },
+  "firstExtraction": {
+    "id": "clear-image",
+    "file": "clear-image.png",
+    "description": "High-contrast label with common-size text.",
+    "required": true,
+    "sha256": "2657400d596beb777d806ea96c2e480b97985efd566931a555633a5e460dde78",
+    "expectedTokens": [
+      "NOVAMED",
+      "AX-700",
+      "SYN-2026-001",
+      "MRI",
+      "2018"
+    ],
+    "recognizedText": "FABRICANTE NOVAMED\nMODELO AX-700\nSERIE SYN-2026-001\nMODALIDAD MRI\nANO 2018",
+    "blocks": [
+      {
+        "text": "FABRICANTE NOVAMED",
+        "bbox": [
+          122,
+          108,
+          621,
+          149
+        ],
+        "confidence": 0.9994795322418213
+      },
+      {
+        "text": "MODELO AX-700",
+        "bbox": [
+          120,
+          180,
+          464,
+          221
+        ],
+        "confidence": 0.9072250723838806
+      },
+      {
+        "text": "SERIE SYN-2026-001",
+        "bbox": [
+          119,
+          253,
+          536,
+          295
+        ],
+        "confidence": 0.7260489463806152
+      },
+      {
+        "text": "MODALIDAD MRI",
+        "bbox": [
+          122,
+          325,
+          469,
+          365
+        ],
+        "confidence": 0.9463728070259094
+      },
+      {
+        "text": "ANO 2018",
+        "bbox": [
+          122,
+          396,
+          322,
+          437
+        ],
+        "confidence": 0.8014102578163147
+      }
+    ],
+    "stats": {
+      "detectionTime": 11.3765249,
+      "recognitionTime": 0.39632269999999997,
+      "totalTime": 11.8036389
+    },
+    "elapsedMs": 11827.1104,
+    "requiredTokens": [
+      "NOVAMED",
+      "AX-700",
+      "SYN-2026-001",
+      "MRI",
+      "2018"
+    ],
+    "matchedTokens": [
+      "NOVAMED",
+      "AX-700",
+      "SYN-2026-001",
+      "MRI",
+      "2018"
+    ],
+    "missingTokens": [],
+    "tokenRecall": 1,
+    "passed": true,
+    "temporaryPathWasOutsideWorkspace": true,
+    "temporaryFilesRemoved": true
+  },
+  "cases": [
+    {
+      "id": "clear-image",
+      "file": "clear-image.png",
+      "description": "High-contrast label with common-size text.",
+      "required": true,
+      "sha256": "2657400d596beb777d806ea96c2e480b97985efd566931a555633a5e460dde78",
+      "expectedTokens": [
+        "NOVAMED",
+        "AX-700",
+        "SYN-2026-001",
+        "MRI",
+        "2018"
+      ],
+      "recognizedText": "FABRICANTE NOVAMED\nMODELO AX-700\nSERIE SYN-2026-001\nMODALIDAD MRI\nANO 2018",
+      "blocks": [
+        {
+          "text": "FABRICANTE NOVAMED",
+          "bbox": [
+            122,
+            108,
+            621,
+            149
+          ],
+          "confidence": 0.9994795322418213
+        },
+        {
+          "text": "MODELO AX-700",
+          "bbox": [
+            120,
+            180,
+            464,
+            221
+          ],
+          "confidence": 0.9072250723838806
+        },
+        {
+          "text": "SERIE SYN-2026-001",
+          "bbox": [
+            119,
+            253,
+            536,
+            295
+          ],
+          "confidence": 0.7260489463806152
+        },
+        {
+          "text": "MODALIDAD MRI",
+          "bbox": [
+            122,
+            325,
+            469,
+            365
+          ],
+          "confidence": 0.9463728070259094
+        },
+        {
+          "text": "ANO 2018",
+          "bbox": [
+            122,
+            396,
+            322,
+            437
+          ],
+          "confidence": 0.8014102578163147
+        }
+      ],
+      "stats": {
+        "detectionTime": 11.5467449,
+        "recognitionTime": 0.4010764,
+        "totalTime": 11.9745189
+      },
+      "elapsedMs": 11988.5753,
+      "requiredTokens": [
+        "NOVAMED",
+        "AX-700",
+        "SYN-2026-001",
+        "MRI",
+        "2018"
+      ],
+      "matchedTokens": [
+        "NOVAMED",
+        "AX-700",
+        "SYN-2026-001",
+        "MRI",
+        "2018"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "small-text",
+      "file": "small-text.png",
+      "description": "Synthetic label rendered at a smaller but legible size.",
+      "required": true,
+      "sha256": "d682513da0cef03b8a9b7e4ed6fe98cb72f4c676ca44055e86289872b49f741f",
+      "expectedTokens": [
+        "MEDILAB",
+        "MICRO-22",
+        "SYN-44B9",
+        "CT",
+        "2021"
+      ],
+      "recognizedText": "FABRICANTE MEDILAB\nMODELO MICRO-22\nSERIE SYN-44B9\nMODALIDAD CT\nANO 2021",
+      "blocks": [
+        {
+          "text": "FABRICANTE MEDILAB",
+          "bbox": [
+            116,
+            104,
+            367,
+            131
+          ],
+          "confidence": 0.999813973903656
+        },
+        {
+          "text": "MODELO MICRO-22",
+          "bbox": [
+            118,
+            177,
+            325,
+            203
+          ],
+          "confidence": 0.9967185854911804
+        },
+        {
+          "text": "SERIE SYN-44B9",
+          "bbox": [
+            116,
+            250,
+            299,
+            275
+          ],
+          "confidence": 0.9898311495780945
+        },
+        {
+          "text": "MODALIDAD CT",
+          "bbox": [
+            118,
+            322,
+            288,
+            347
+          ],
+          "confidence": 0.9818532466888428
+        },
+        {
+          "text": "ANO 2021",
+          "bbox": [
+            118,
+            394,
+            223,
+            418
+          ],
+          "confidence": 0.9992901086807251
+        }
+      ],
+      "stats": {
+        "detectionTime": 11.606401,
+        "recognitionTime": 0.3051299,
+        "totalTime": 11.9346558
+      },
+      "elapsedMs": 11947.947199999999,
+      "requiredTokens": [
+        "MEDILAB",
+        "MICRO-22",
+        "SYN-44B9",
+        "CT",
+        "2021"
+      ],
+      "matchedTokens": [
+        "MEDILAB",
+        "MICRO-22",
+        "SYN-44B9",
+        "CT",
+        "2021"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "low-contrast",
+      "file": "low-contrast.png",
+      "description": "Gray text on a light-gray synthetic label.",
+      "required": true,
+      "sha256": "e6fd014ca2204d3219bea977063cc782f36c3afb72482d02be0bf6e857801ffe",
+      "expectedTokens": [
+        "CLARAVIEW",
+        "US-310",
+        "SYN-LOW-77",
+        "ULTRASOUND",
+        "2019"
+      ],
+      "recognizedText": "FABRICANTE CLARAVIEW\nMODELO US-310\nSERIE SYN-LOW-77\nMODALIDAD ULTRASOUND\nANO 2019",
+      "blocks": [
+        {
+          "text": "FABRICANTE CLARAVIEW",
+          "bbox": [
+            119,
+            109,
+            608,
+            147
+          ],
+          "confidence": 0.998928427696228
+        },
+        {
+          "text": "MODELO US-310",
+          "bbox": [
+            121,
+            181,
+            433,
+            219
+          ],
+          "confidence": 0.813014805316925
+        },
+        {
+          "text": "SERIE SYN-LOW-77",
+          "bbox": [
+            118,
+            252,
+            482,
+            291
+          ],
+          "confidence": 0.8022710084915161
+        },
+        {
+          "text": "MODALIDAD ULTRASOUND",
+          "bbox": [
+            121,
+            323,
+            631,
+            363
+          ],
+          "confidence": 0.7986308932304382
+        },
+        {
+          "text": "ANO 2019",
+          "bbox": [
+            121,
+            397,
+            304,
+            435
+          ],
+          "confidence": 0.9994162917137146
+        }
+      ],
+      "stats": {
+        "detectionTime": 11.580420400000001,
+        "recognitionTime": 0.4139538,
+        "totalTime": 12.019328799999998
+      },
+      "elapsedMs": 12031.2454,
+      "requiredTokens": [
+        "CLARAVIEW",
+        "US-310",
+        "SYN-LOW-77",
+        "ULTRASOUND",
+        "2019"
+      ],
+      "matchedTokens": [
+        "CLARAVIEW",
+        "US-310",
+        "SYN-LOW-77",
+        "ULTRASOUND",
+        "2019"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "slight-rotation",
+      "file": "slight-rotation.png",
+      "description": "High-contrast label rotated by four degrees.",
+      "required": true,
+      "sha256": "21529479d7e3e788cb194372ab71f51916adf51c532a74b815acb42c4f0a2075",
+      "expectedTokens": [
+        "AURORA",
+        "PM-8",
+        "SYN-ROT-04",
+        "MONITOR",
+        "2020"
+      ],
+      "recognizedText": "FABRICANTE AURORA\nMODELO PM-8\nSERIE SYN-ROT-04\nMODALIDAD MONITOR\nANO 2020",
+      "blocks": [
+        {
+          "text": "FABRICANTE AURORA",
+          "bbox": [
+            132,
+            70,
+            565,
+            145
+          ],
+          "confidence": 0.9900816082954407
+        },
+        {
+          "text": "MODELO PM-8",
+          "bbox": [
+            129,
+            143,
+            409,
+            206
+          ],
+          "confidence": 0.999742329120636
+        },
+        {
+          "text": "SERIE SYN-ROT-04",
+          "bbox": [
+            122,
+            215,
+            485,
+            284
+          ],
+          "confidence": 0.905368447303772
+        },
+        {
+          "text": "MODALIDAD MONITOR",
+          "bbox": [
+            117,
+            286,
+            552,
+            360
+          ],
+          "confidence": 0.9998635649681091
+        },
+        {
+          "text": "ANO 2020",
+          "bbox": [
+            114,
+            360,
+            304,
+            414
+          ],
+          "confidence": 0.9933037757873535
+        }
+      ],
+      "stats": {
+        "detectionTime": 11.6072431,
+        "recognitionTime": 0.2705669,
+        "totalTime": 11.9023637
+      },
+      "elapsedMs": 11915.145600000003,
+      "requiredTokens": [
+        "AURORA",
+        "PM-8",
+        "SYN-ROT-04",
+        "MONITOR",
+        "2020"
+      ],
+      "matchedTokens": [
+        "AURORA",
+        "PM-8",
+        "SYN-ROT-04",
+        "MONITOR",
+        "2020"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "multiple-lines",
+      "file": "multiple-lines.png",
+      "description": "Six lines with a non-sensitive maintenance note.",
+      "required": true,
+      "sha256": "7b0b06d24a1275801aabd7f620c0c60d8e88cd47882c100964079ae9852d6c64",
+      "expectedTokens": [
+        "VITALIS",
+        "XR-55",
+        "SYN-ML-500",
+        "XRAY",
+        "AÑO",
+        "REVISIÓN",
+        "PANAMÁ",
+        "DEMO"
+      ],
+      "recognizedText": "FABRICANTE VITALIS\nMODELO XR-55\nSERIE SYN-ML-500\nMODALIDAD XRAY\nAÑO 2017\nREVISIÓN PANAMÁ DEMO",
+      "blocks": [
+        {
+          "text": "FABRICANTE VITALIS",
+          "bbox": [
+            119,
+            106,
+            481,
+            143
+          ],
+          "confidence": 0.9216508269309998
+        },
+        {
+          "text": "MODELO XR-55",
+          "bbox": [
+            119,
+            178,
+            380,
+            214
+          ],
+          "confidence": 0.8172532916069031
+        },
+        {
+          "text": "SERIE SYN-ML-500",
+          "bbox": [
+            117,
+            250,
+            436,
+            289
+          ],
+          "confidence": 0.9714261889457703
+        },
+        {
+          "text": "MODALIDAD XRAY",
+          "bbox": [
+            119,
+            322,
+            433,
+            359
+          ],
+          "confidence": 0.9968528747558594
+        },
+        {
+          "text": "AÑO 2017",
+          "bbox": [
+            119,
+            391,
+            281,
+            431
+          ],
+          "confidence": 0.9858741760253906
+        },
+        {
+          "text": "REVISIÓN PANAMÁ DEMO",
+          "bbox": [
+            117,
+            459,
+            557,
+            510
+          ],
+          "confidence": 0.800814151763916
+        }
+      ],
+      "stats": {
+        "detectionTime": 11.7235082,
+        "recognitionTime": 0.4543091,
+        "totalTime": 12.2067287
+      },
+      "elapsedMs": 12219.673999999999,
+      "requiredTokens": [
+        "VITALIS",
+        "XR-55",
+        "SYN-ML-500",
+        "XRAY",
+        "AÑO",
+        "REVISIÓN",
+        "PANAMÁ",
+        "DEMO"
+      ],
+      "matchedTokens": [
+        "VITALIS",
+        "XR-55",
+        "SYN-ML-500",
+        "XRAY",
+        "AÑO",
+        "REVISIÓN",
+        "PANAMÁ",
+        "DEMO"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "alphanumeric",
+      "file": "alphanumeric.png",
+      "description": "Dense synthetic identifiers with letters, numbers, dashes, and slash.",
+      "required": true,
+      "sha256": "782169ce3012d340c2ad9dfb3193732c01a031878e8c3da219a60f90491dcf64",
+      "expectedTokens": [
+        "ORBITAL",
+        "MX-9B/42",
+        "SN-A7C9-2048",
+        "CT",
+        "2022"
+      ],
+      "recognizedText": "FABRICANTE ORBITAL\nMODELO MX-9B/42\nSERIE SN-A7C9-2048\nMODALIDAD CT\nANO 2022",
+      "blocks": [
+        {
+          "text": "FABRICANTE ORBITAL",
+          "bbox": [
+            119,
+            107,
+            527,
+            145
+          ],
+          "confidence": 0.9790281057357788
+        },
+        {
+          "text": "MODELO MX-9B/42",
+          "bbox": [
+            119,
+            179,
+            453,
+            217
+          ],
+          "confidence": 0.6981319785118103
+        },
+        {
+          "text": "SERIE SN-A7C9-2048",
+          "bbox": [
+            118,
+            251,
+            488,
+            289
+          ],
+          "confidence": 0.9463741779327393
+        },
+        {
+          "text": "MODALIDAD CT",
+          "bbox": [
+            119,
+            323,
+            399,
+            361
+          ],
+          "confidence": 0.7063816785812378
+        },
+        {
+          "text": "ANO 2022",
+          "bbox": [
+            121,
+            395,
+            295,
+            433
+          ],
+          "confidence": 0.7129735946655273
+        }
+      ],
+      "stats": {
+        "detectionTime": 11.6252493,
+        "recognitionTime": 0.33488189999999995,
+        "totalTime": 11.983981799999999
+      },
+      "elapsedMs": 11998.963200000013,
+      "requiredTokens": [
+        "ORBITAL",
+        "MX-9B/42",
+        "SN-A7C9-2048",
+        "CT",
+        "2022"
+      ],
+      "matchedTokens": [
+        "ORBITAL",
+        "MX-9B/42",
+        "SN-A7C9-2048",
+        "CT",
+        "2022"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "deliberately-difficult",
+      "file": "deliberately-difficult.png",
+      "description": "Small, low-contrast, rotated diagnostic case; failure does not lower the required threshold.",
+      "required": false,
+      "sha256": "db30d1583ecb7ba72bde9891cb81539db86d1cf8672f718f51b58a4f26bd5d4c",
+      "expectedTokens": [
+        "NEBULA",
+        "Z-13",
+        "SYN-HARD-999",
+        "MRI",
+        "2016"
+      ],
+      "recognizedText": "NEBULA\nFABRICANTE\nZ.13\nMODELO\nSYN-HARD-999\nSERIE\nMRI\nMODALIDAD\n2016\nANO",
+      "blocks": [
+        {
+          "text": "NEBULA",
+          "bbox": [
+            202.43914794921875,
+            143.35752868652344,
+            279.9089660644531,
+            169.93487548828125
+          ],
+          "confidence": 0.999741792678833
+        },
+        {
+          "text": "FABRICANTE",
+          "bbox": [
+            88.7388916015625,
+            152.99703979492188,
+            204.74075317382812,
+            182.98670959472656
+          ],
+          "confidence": 0.9994120001792908
+        },
+        {
+          "text": "Z.13",
+          "bbox": [
+            176.19810485839844,
+            223.42111206054688,
+            218.46856689453125,
+            245.9122314453125
+          ],
+          "confidence": 0.5260242819786072
+        },
+        {
+          "text": "MODELO",
+          "bbox": [
+            98.41027069091797,
+            228.71163940429688,
+            179.11343383789062,
+            254.2969970703125
+          ],
+          "confidence": 0.991448700428009
+        },
+        {
+          "text": "SYN-HARD-999",
+          "bbox": [
+            161.70501708984375,
+            286.7103576660156,
+            292.54132080078125,
+            319.0796203613281
+          ],
+          "confidence": 0.8615145087242126
+        },
+        {
+          "text": "SERIE",
+          "bbox": [
+            106.80541229248047,
+            302.2828369140625,
+            164.01185607910156,
+            325.83953857421875
+          ],
+          "confidence": 0.9980598092079163
+        },
+        {
+          "text": "MRI",
+          "bbox": [
+            224.06585693359375,
+            363.5800476074219,
+            261.4463806152344,
+            384.6964111328125
+          ],
+          "confidence": 0.9854190945625305
+        },
+        {
+          "text": "MODALIDAD",
+          "bbox": [
+            115.40511322021484,
+            367.28717041015625,
+            225.89537048339844,
+            397.7780456542969
+          ],
+          "confidence": 0.6110617518424988
+        },
+        {
+          "text": "2016",
+          "bbox": [
+            166.7838592529297,
+            442.1470642089844,
+            210.66831970214844,
+            464.3744201660156
+          ],
+          "confidence": 0.9999265074729919
+        },
+        {
+          "text": "ANO",
+          "bbox": [
+            125.38685607910156,
+            447.2286682128906,
+            168.1090850830078,
+            468.90155029296875
+          ],
+          "confidence": 0.9712173342704773
+        }
+      ],
+      "stats": {
+        "detectionTime": 11.7167596,
+        "recognitionTime": 0.7492686,
+        "totalTime": 12.4909564
+      },
+      "elapsedMs": 12504.697,
+      "requiredTokens": [
+        "NEBULA",
+        "Z-13",
+        "SYN-HARD-999",
+        "MRI",
+        "2016"
+      ],
+      "matchedTokens": [
+        "NEBULA",
+        "Z-13",
+        "SYN-HARD-999",
+        "MRI",
+        "2016"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    }
+  ],
+  "errorRecovery": {
+    "corruptImageRejected": true,
+    "corruptError": "UNSUPPORTED_IMAGE_FORMAT: Unsupported image format: <temporary-image>/clear-image.png",
+    "subsequentValidImagePassed": true
+  },
+  "lifecycleDecisions": {
+    "reviewed": {
+      "decision": "reviewed",
+      "temporaryImageExistedDuringDecision": true,
+      "imageOrTextPersisted": false,
+      "temporaryFilesRemoved": true
+    },
+    "cancelled": {
+      "decision": "cancelled",
+      "temporaryImageExistedDuringDecision": true,
+      "imageOrTextPersisted": false,
+      "temporaryFilesRemoved": true
+    }
+  },
+  "networkBoundary": {
+    "mode": "absolute local model paths plus denied global fetch; command executed in the restricted network sandbox",
+    "attemptedRequests": [],
+    "externalRequestCountAtInstrumentedFetchBoundary": 0,
+    "packetLevelOrNativeWorkerAuditPerformed": false,
+    "limitation": "No packet-level audit was performed; zero fetch attempts cannot prove that native code opened no socket."
+  },
+  "memory": {
+    "totalBytes": 16390729728,
+    "systemFreeBeforeBytes": 4876132352,
+    "minimumSystemFreeBytes": 939319296,
+    "parentRssBeforeBytes": 75485184,
+    "peakParentRssBytes": 180584448,
+    "systemFreeAfterBytes": 4929241088,
+    "parentRssAfterBytes": 66232320,
+    "maximumObservedSystemMemoryDeltaBytes": 3936813056,
+    "parentPeakRssDeltaBytes": 105099264,
+    "measurementLimit": "System delta includes concurrent Windows activity; parent RSS excludes the QVAC Bare worker."
+  },
+  "cleanup": {
+    "allTaskDirectoriesRemoved": true,
+    "originalFixtureDirectoryIsSyntheticTestInput": true,
+    "runtimeImagesPersistedToWorkspace": false
+  },
+  "workspace": {
+    "before": [
+      {
+        "path": "data/prototype/seed.json",
+        "sha256": "0f2238ae92ba879e9324d93bf7a6dc5064fade4fe5ead4a09137643b374ac553",
+        "size": 4748
+      },
+      {
+        "path": ".local/workspace.json",
+        "sha256": "9bd8f63d4ccf898f53b0ab1824fd53e610e5a9d2d1903c6b3c3f0beb5620a31a",
+        "size": 5966
+      }
+    ],
+    "after": [
+      {
+        "path": "data/prototype/seed.json",
+        "sha256": "0f2238ae92ba879e9324d93bf7a6dc5064fade4fe5ead4a09137643b374ac553",
+        "size": 4748
+      },
+      {
+        "path": ".local/workspace.json",
+        "sha256": "9bd8f63d4ccf898f53b0ab1824fd53e610e5a9d2d1903c6b3c3f0beb5620a31a",
+        "size": 5966
+      }
+    ],
+    "unchanged": true,
+    "observationsCreated": 0,
+    "equipmentRecordsCreated": 0,
+    "exportsCreated": 0
+  },
+  "gate": {
+    "checks": {
+      "localExecution": true,
+      "offlineExecution": true,
+      "licenseAccepted": false,
+      "compatibleResources": true,
+      "noExternalRequests": false,
+      "temporaryFilesRemoved": true,
+      "workspaceUnchanged": true,
+      "latencyWithinBudget": false
+    },
+    "failures": [
+      "gate check failed: licenseAccepted",
+      "gate check failed: noExternalRequests",
+      "gate check failed: latencyWithinBudget"
+    ],
+    "outcome": "OCR feasibility failed"
+  },
+  "failure": null
+}

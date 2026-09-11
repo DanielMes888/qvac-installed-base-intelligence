@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "tesseract-acquisition-v2",
+  "acquiredAt": "2026-09-11T06:46:31.835Z",
+  "sourceRevision": "87416418657359cb625c412a48b6e1d6d41c29bd",
+  "sourceRepository": "tesseract-ocr/tessdata_fast",
+  "license": "Apache-2.0",
+  "elapsedMs": 7.021699999999996,
+  "cacheDirectory": ".local/feasibility/ocr/tesseract-v2/tessdata_fast-87416418657359cb625c412a48b6e1d6d41c29bd",
+  "artifacts": [
+    {
+      "language": "eng",
+      "cacheFile": "eng.traineddata",
+      "downloaded": false,
+      "bytes": 4113088,
+      "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+      "source": "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/87416418657359cb625c412a48b6e1d6d41c29bd/eng.traineddata",
+      "verified": true
+    },
+    {
+      "language": "spa",
+      "cacheFile": "spa.traineddata",
+      "downloaded": false,
+      "bytes": 2294433,
+      "sha256": "6f2e04d02774a18f01bed44b1111f2cd7f3ba7ac9dc4373cd3f898a40ea6b464",
+      "source": "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/87416418657359cb625c412a48b6e1d6d41c29bd/spa.traineddata",
+      "verified": true
+    }
+  ]
+}

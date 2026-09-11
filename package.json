@@ -29,6 +29,11 @@
     "smoke:analytics": "node scripts/emergency/run-analytics-deterministic-smoke.mjs",
     "smoke:analytics:real": "node scripts/emergency/run-analytics-real-smoke.mjs",
     "smoke:geography": "node scripts/emergency/run-geographic-map-smoke.mjs",
+    "feasibility:ocr:fixtures": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/feasibility/ocr/generate-synthetic-fixtures.ps1",
+    "feasibility:ocr:acquire": "node scripts/feasibility/ocr/acquire-qvac-ocr-models.mjs",
+    "feasibility:ocr": "node scripts/feasibility/ocr/run-local-ocr-feasibility.mjs",
+    "feasibility:ocr:tesseract:acquire": "node scripts/feasibility/ocr/acquire-tesseract-models.mjs",
+    "feasibility:ocr:tesseract": "node scripts/feasibility/ocr/run-tesseract-ocr-feasibility.mjs",
     "smoke:freshness": "node scripts/emergency/run-freshness-priority-smoke.mjs",
     "smoke:export-delete": "node scripts/emergency/run-export-delete-smoke.mjs",
     "smoke:performance": "node scripts/emergency/run-performance-benchmark.mjs after"
@@ -39,6 +44,7 @@
   },
   "devDependencies": {
     "ajv": "8.20.0",
-    "node": "22.17.0"
+    "node": "22.17.0",
+    "tesseract.js": "7.0.0"
   }
 }

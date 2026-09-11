@@ -1,0 +1,582 @@
+{
+  "schemaVersion": "local-ocr-feasibility-tesseract-v2",
+  "outcome": "OCR feasibility passed via Tesseract.js",
+  "evaluatedAt": "2026-09-11T07:02:20.629Z",
+  "synthetic": true,
+  "candidate": "Tesseract.js",
+  "policy": {
+    "schemaVersion": "local-ocr-feasibility-v1",
+    "requiredCaseIds": [
+      "clear-image",
+      "small-text",
+      "low-contrast",
+      "slight-rotation",
+      "multiple-lines",
+      "alphanumeric"
+    ],
+    "diagnosticCaseIds": [
+      "deliberately-difficult"
+    ],
+    "minimumTokenRecall": 0.8,
+    "maxWarmExtractionMs": 5000,
+    "minimumSystemFreeBytes": 536870912,
+    "persistsImages": false,
+    "mutatesWorkspace": false
+  },
+  "environment": {
+    "platform": "win32",
+    "architecture": "x64",
+    "node": "v22.17.0",
+    "package": "tesseract.js@7.0.0",
+    "core": "tesseract.js-core@7.0.0",
+    "workerReuse": "one worker for first extraction, all warm fixtures, error recovery, then explicit termination"
+  },
+  "licenses": {
+    "package": "Apache-2.0",
+    "core": "Apache-2.0",
+    "traineddata": "Apache-2.0",
+    "traineddataLicenseSource": "https://github.com/tesseract-ocr/tessdata_fast/blob/87416418657359cb625c412a48b6e1d6d41c29bd/LICENSE",
+    "compatibleForExperimentAndRedistributionWithApacheNotice": true
+  },
+  "artifacts": {
+    "package": {
+      "name": "tesseract.js",
+      "version": "7.0.0",
+      "repositoryRevision": "b5cff0bca691a99ff69f1b162184e6c5a78629ef",
+      "license": "Apache-2.0",
+      "npmUnpackedBytes": 1411341,
+      "npmIntegrity": "sha512-exPBkd+z+wM1BuMkx/Bjv43OeLBxhL5kKWsz/9JY+DXcXdiBjiAch0V49QR3oAJqCaL5qURE0vx9Eo+G5YE7mA==",
+      "installedVersion": "7.0.0",
+      "installedLicense": "Apache-2.0",
+      "installedBytes": 1411341,
+      "installedTreeSha256": "8bc813c179d0b986123ae47f90fac442763dc54c90f37cce37d99798df0a11d9",
+      "lockedVersion": "7.0.0",
+      "lockedIntegrity": "sha512-exPBkd+z+wM1BuMkx/Bjv43OeLBxhL5kKWsz/9JY+DXcXdiBjiAch0V49QR3oAJqCaL5qURE0vx9Eo+G5YE7mA==",
+      "verified": true
+    },
+    "core": {
+      "name": "tesseract.js-core",
+      "version": "7.0.0",
+      "repositoryRevision": "acffef2b66eb44a31df297e11d905f4b39001068",
+      "license": "Apache-2.0",
+      "npmUnpackedBytes": 45262431,
+      "npmIntegrity": "sha512-WnNH518NzmbSq9zgTPeoF8c+xmilS8rFIl1YKbk/ptuuc7p6cLNELNuPAzcmsYw450ca6bLa8j3t0VAtq435Vw==",
+      "installedVersion": "7.0.0",
+      "installedLicense": "Apache-2.0",
+      "installedBytes": 45262431,
+      "installedTreeSha256": "d908999751e0ca0c59ea342c4982fdf3b277ada2502e601399bc7544d42e259b",
+      "lockedVersion": "7.0.0",
+      "lockedIntegrity": "sha512-WnNH518NzmbSq9zgTPeoF8c+xmilS8rFIl1YKbk/ptuuc7p6cLNELNuPAzcmsYw450ca6bLa8j3t0VAtq435Vw==",
+      "verified": true
+    },
+    "selectedRuntimeVariant": "relaxedsimd-lstm (capability probe was true on this laptop)",
+    "files": {
+      "offlineWorker": {
+        "file": "tesseract-offline-worker.cjs",
+        "bytes": 231,
+        "sha256": "070081510e806489937368545a6eb1f62d2fd886175490353fccf67aa09918cf",
+        "verified": true
+      },
+      "networkBoundaries": {
+        "file": "network-boundaries.cjs",
+        "bytes": 1595,
+        "sha256": "7196ca69f5837f865b45956a2b17ad2817f67aa8d7992295c363f472e113e651",
+        "verified": true
+      },
+      "nodeWorkerEntry": {
+        "file": "index.js",
+        "bytes": 771,
+        "sha256": "a973c23ce067bc752c0bf602297eac843098e531ac03f3ea34cdf694326a6d02",
+        "verified": true
+      },
+      "relaxedSimdLstmWrapper": {
+        "file": "tesseract-core-relaxedsimd-lstm.js",
+        "bytes": 89360,
+        "sha256": "a37ac78b707e8d5d3d2e532cc3c4e69b04d127ea44a608f1e7de17640402aa5c",
+        "verified": true
+      },
+      "relaxedSimdLstmWasm": {
+        "file": "tesseract-core-relaxedsimd-lstm.wasm",
+        "bytes": 2862266,
+        "sha256": "7985c92d4c64e7267d24cadffe1b2a1da6bf8aa55fdcaf953fe94fe122a24545",
+        "verified": true
+      },
+      "eng": {
+        "file": "eng.traineddata",
+        "bytes": 4113088,
+        "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+        "verified": true
+      },
+      "spa": {
+        "file": "spa.traineddata",
+        "bytes": 2294433,
+        "sha256": "6f2e04d02774a18f01bed44b1111f2cd7f3ba7ac9dc4373cd3f898a40ea6b464",
+        "verified": true
+      }
+    },
+    "allVerified": true
+  },
+  "runtimePaths": {
+    "worker": "scripts/feasibility/ocr/tesseract-offline-worker.cjs",
+    "core": "node_modules/tesseract.js-core",
+    "languages": ".local/feasibility/ocr/tesseract-v2/tessdata_fast-87416418657359cb625c412a48b6e1d6d41c29bd",
+    "allAbsoluteAndLocal": true,
+    "automaticDownloadsDisabled": true,
+    "gzip": false,
+    "cacheMethod": "none"
+  },
+  "initialization": {
+    "totalWorkerAndLanguageMs": 212.8545,
+    "phases": [
+      {
+        "status": "loading tesseract core",
+        "startedMs": 50.62729999999999,
+        "completedMs": 52.9083,
+        "durationMs": 2.281000000000006
+      },
+      {
+        "status": "initializing tesseract",
+        "startedMs": 52.9298,
+        "completedMs": 70.1377,
+        "durationMs": 17.207899999999995
+      },
+      {
+        "status": "loading language traineddata",
+        "startedMs": 70.47,
+        "completedMs": 72.64509999999999,
+        "durationMs": 2.1750999999999863
+      },
+      {
+        "status": "initializing api",
+        "startedMs": 72.98689999999999,
+        "completedMs": 212.71219999999997,
+        "durationMs": 139.72529999999998
+      }
+    ],
+    "languages": [
+      "eng",
+      "spa"
+    ],
+    "generalPreprocessing": "none; identical OCR settings for every frozen fixture"
+  },
+  "firstExtraction": {
+    "id": "clear-image",
+    "file": "clear-image.png",
+    "description": "High-contrast label with common-size text.",
+    "required": true,
+    "sha256": "2657400d596beb777d806ea96c2e480b97985efd566931a555633a5e460dde78",
+    "expectedTextContract": "NOVAMED\nAX-700\nSYN-2026-001\nMRI\n2018",
+    "expectedTokens": [
+      "NOVAMED",
+      "AX-700",
+      "SYN-2026-001",
+      "MRI",
+      "2018"
+    ],
+    "recognizedText": "FABRICANTE NOVAMED\nMODELO AX-700\n\nSERIE SYN-2026-001\nMODALIDAD MRI\n\nANO 2018",
+    "elapsedMs": 139.09889999999996,
+    "requiredTokens": [
+      "NOVAMED",
+      "AX-700",
+      "SYN-2026-001",
+      "MRI",
+      "2018"
+    ],
+    "matchedTokens": [
+      "NOVAMED",
+      "AX-700",
+      "SYN-2026-001",
+      "MRI",
+      "2018"
+    ],
+    "missingTokens": [],
+    "tokenRecall": 1,
+    "passed": true,
+    "normalization": "NFKD, remove combining marks, uppercase, remove non-alphanumerics for token comparison only",
+    "error": null,
+    "temporaryPathWasOutsideWorkspace": true,
+    "temporaryFilesRemoved": true
+  },
+  "warm": {
+    "requiredCaseCount": 6,
+    "minimumMs": 72.93780000000004,
+    "maximumMs": 90.52409999999998,
+    "medianMs": 84.34765000000004
+  },
+  "cases": [
+    {
+      "id": "clear-image",
+      "file": "clear-image.png",
+      "description": "High-contrast label with common-size text.",
+      "required": true,
+      "sha256": "2657400d596beb777d806ea96c2e480b97985efd566931a555633a5e460dde78",
+      "expectedTextContract": "NOVAMED\nAX-700\nSYN-2026-001\nMRI\n2018",
+      "expectedTokens": [
+        "NOVAMED",
+        "AX-700",
+        "SYN-2026-001",
+        "MRI",
+        "2018"
+      ],
+      "recognizedText": "FABRICANTE NOVAMED\nMODELO AX-700\n\nSERIE SYN-2026-001\nMODALIDAD MRI\n\nANO 2018",
+      "elapsedMs": 87.23209999999995,
+      "requiredTokens": [
+        "NOVAMED",
+        "AX-700",
+        "SYN-2026-001",
+        "MRI",
+        "2018"
+      ],
+      "matchedTokens": [
+        "NOVAMED",
+        "AX-700",
+        "SYN-2026-001",
+        "MRI",
+        "2018"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "normalization": "NFKD, remove combining marks, uppercase, remove non-alphanumerics for token comparison only",
+      "error": null,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "small-text",
+      "file": "small-text.png",
+      "description": "Synthetic label rendered at a smaller but legible size.",
+      "required": true,
+      "sha256": "d682513da0cef03b8a9b7e4ed6fe98cb72f4c676ca44055e86289872b49f741f",
+      "expectedTextContract": "MEDILAB\nMICRO-22\nSYN-44B9\nCT\n2021",
+      "expectedTokens": [
+        "MEDILAB",
+        "MICRO-22",
+        "SYN-44B9",
+        "CT",
+        "2021"
+      ],
+      "recognizedText": "FABRICANTE MEDILAB\nMODELO MICRO-22\nSERIE SYN-44B9\nMODALIDAD CT\n\nANO 2021",
+      "elapsedMs": 72.93780000000004,
+      "requiredTokens": [
+        "MEDILAB",
+        "MICRO-22",
+        "SYN-44B9",
+        "CT",
+        "2021"
+      ],
+      "matchedTokens": [
+        "MEDILAB",
+        "MICRO-22",
+        "SYN-44B9",
+        "CT",
+        "2021"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "normalization": "NFKD, remove combining marks, uppercase, remove non-alphanumerics for token comparison only",
+      "error": null,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "low-contrast",
+      "file": "low-contrast.png",
+      "description": "Gray text on a light-gray synthetic label.",
+      "required": true,
+      "sha256": "e6fd014ca2204d3219bea977063cc782f36c3afb72482d02be0bf6e857801ffe",
+      "expectedTextContract": "CLARAVIEW\nUS-310\nSYN-LOW-77\nULTRASOUND\n2019",
+      "expectedTokens": [
+        "CLARAVIEW",
+        "US-310",
+        "SYN-LOW-77",
+        "ULTRASOUND",
+        "2019"
+      ],
+      "recognizedText": "FABRICANTE CLARAVIEW\nMODELO US-310\n\nSERIE SYN-LOW-77\nMODALIDAD ULTRASOUND\nANO 2019",
+      "elapsedMs": 90.52409999999998,
+      "requiredTokens": [
+        "CLARAVIEW",
+        "US-310",
+        "SYN-LOW-77",
+        "ULTRASOUND",
+        "2019"
+      ],
+      "matchedTokens": [
+        "CLARAVIEW",
+        "US-310",
+        "SYN-LOW-77",
+        "ULTRASOUND",
+        "2019"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "normalization": "NFKD, remove combining marks, uppercase, remove non-alphanumerics for token comparison only",
+      "error": null,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "slight-rotation",
+      "file": "slight-rotation.png",
+      "description": "High-contrast label rotated by four degrees.",
+      "required": true,
+      "sha256": "21529479d7e3e788cb194372ab71f51916adf51c532a74b815acb42c4f0a2075",
+      "expectedTextContract": "AURORA\nPM-8\nSYN-ROT-04\nMONITOR\n2020",
+      "expectedTokens": [
+        "AURORA",
+        "PM-8",
+        "SYN-ROT-04",
+        "MONITOR",
+        "2020"
+      ],
+      "recognizedText": "FABRICANTE AURORA\nMODELO PM-8\nSERIE SYN-ROT-04\nMODALIDAD MONITOR\nANO 2020",
+      "elapsedMs": 82.41020000000003,
+      "requiredTokens": [
+        "AURORA",
+        "PM-8",
+        "SYN-ROT-04",
+        "MONITOR",
+        "2020"
+      ],
+      "matchedTokens": [
+        "AURORA",
+        "PM-8",
+        "SYN-ROT-04",
+        "MONITOR",
+        "2020"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "normalization": "NFKD, remove combining marks, uppercase, remove non-alphanumerics for token comparison only",
+      "error": null,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "multiple-lines",
+      "file": "multiple-lines.png",
+      "description": "Six lines with a non-sensitive maintenance note.",
+      "required": true,
+      "sha256": "7b0b06d24a1275801aabd7f620c0c60d8e88cd47882c100964079ae9852d6c64",
+      "expectedTextContract": "VITALIS\nXR-55\nSYN-ML-500\nXRAY\nAÑO\nREVISIÓN\nPANAMÁ\nDEMO",
+      "expectedTokens": [
+        "VITALIS",
+        "XR-55",
+        "SYN-ML-500",
+        "XRAY",
+        "AÑO",
+        "REVISIÓN",
+        "PANAMÁ",
+        "DEMO"
+      ],
+      "recognizedText": "FABRICANTE VITALIS\nMODELO XR-55\n\nSERIE SYN-ML-500\nMODALIDAD XRAY\n\nANO 2017\n\nREVISION PANAMA DEMO",
+      "elapsedMs": 85.78740000000005,
+      "requiredTokens": [
+        "VITALIS",
+        "XR-55",
+        "SYN-ML-500",
+        "XRAY",
+        "AÑO",
+        "REVISIÓN",
+        "PANAMÁ",
+        "DEMO"
+      ],
+      "matchedTokens": [
+        "VITALIS",
+        "XR-55",
+        "SYN-ML-500",
+        "XRAY",
+        "AÑO",
+        "REVISIÓN",
+        "PANAMÁ",
+        "DEMO"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "normalization": "NFKD, remove combining marks, uppercase, remove non-alphanumerics for token comparison only",
+      "error": null,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "alphanumeric",
+      "file": "alphanumeric.png",
+      "description": "Dense synthetic identifiers with letters, numbers, dashes, and slash.",
+      "required": true,
+      "sha256": "782169ce3012d340c2ad9dfb3193732c01a031878e8c3da219a60f90491dcf64",
+      "expectedTextContract": "ORBITAL\nMX-9B/42\nSN-A7C9-2048\nCT\n2022",
+      "expectedTokens": [
+        "ORBITAL",
+        "MX-9B/42",
+        "SN-A7C9-2048",
+        "CT",
+        "2022"
+      ],
+      "recognizedText": "FABRICANTE ORBITAL\nMODELO MX-9B/42\nSERIE SN-A7C9-2048\nMODALIDAD CT\n\nANO 2022",
+      "elapsedMs": 82.90790000000004,
+      "requiredTokens": [
+        "ORBITAL",
+        "MX-9B/42",
+        "SN-A7C9-2048",
+        "CT",
+        "2022"
+      ],
+      "matchedTokens": [
+        "ORBITAL",
+        "MX-9B/42",
+        "SN-A7C9-2048",
+        "CT",
+        "2022"
+      ],
+      "missingTokens": [],
+      "tokenRecall": 1,
+      "passed": true,
+      "normalization": "NFKD, remove combining marks, uppercase, remove non-alphanumerics for token comparison only",
+      "error": null,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    },
+    {
+      "id": "deliberately-difficult",
+      "file": "deliberately-difficult.png",
+      "description": "Small, low-contrast, rotated diagnostic case; failure does not lower the required threshold.",
+      "required": false,
+      "sha256": "db30d1583ecb7ba72bde9891cb81539db86d1cf8672f718f51b58a4f26bd5d4c",
+      "expectedTextContract": "NEBULA\nZ-13\nSYN-HARD-999\nMRI\n2016",
+      "expectedTokens": [
+        "NEBULA",
+        "Z-13",
+        "SYN-HARD-999",
+        "MRI",
+        "2016"
+      ],
+      "recognizedText": "FABRICANTE NEBULA\nMODELO ZA3\nSERIE SYN-HARD-999\nMODALIDAD RI\nANO 201) 6",
+      "elapsedMs": 81.16899999999998,
+      "requiredTokens": [
+        "NEBULA",
+        "Z-13",
+        "SYN-HARD-999",
+        "MRI",
+        "2016"
+      ],
+      "matchedTokens": [
+        "NEBULA",
+        "SYN-HARD-999",
+        "2016"
+      ],
+      "missingTokens": [
+        "Z-13",
+        "MRI"
+      ],
+      "tokenRecall": 0.6,
+      "passed": false,
+      "normalization": "NFKD, remove combining marks, uppercase, remove non-alphanumerics for token comparison only",
+      "error": null,
+      "temporaryPathWasOutsideWorkspace": true,
+      "temporaryFilesRemoved": true
+    }
+  ],
+  "errorRecovery": {
+    "corruptImageRejected": true,
+    "corruptError": "TypeError: Cannot create property 'temporaryFilesRemoved' on string 'Error: Error attempting to read image.'",
+    "subsequentValidImagePassed": true
+  },
+  "lifecycleDecisions": {
+    "reviewed": {
+      "decision": "reviewed",
+      "temporaryImageExistedDuringDecision": true,
+      "imageOrTextPersisted": false,
+      "temporaryFilesRemoved": true
+    },
+    "cancelled": {
+      "decision": "cancelled",
+      "temporaryImageExistedDuringDecision": true,
+      "imageOrTextPersisted": false,
+      "temporaryFilesRemoved": true
+    }
+  },
+  "networkBoundary": {
+    "mode": "absolute local worker/core/traineddata paths with fetch, HTTP(S), net, TLS and DNS denied in parent and OCR worker",
+    "parentAttempts": [],
+    "workerAttempts": [],
+    "observedAttemptCount": 0,
+    "instrumentedBoundaries": [
+      "fetch",
+      "http.request/get",
+      "https.request/get",
+      "net.connect/createConnection",
+      "tls.connect",
+      "dns.lookup/resolve/resolve4/resolve6"
+    ],
+    "packetLevelAuditPerformed": false,
+    "limitation": "Zero instrumented attempts is not a packet capture or proof about uninstrumented native operating-system activity."
+  },
+  "memory": {
+    "totalBytes": 16390729728,
+    "systemFreeBeforeBytes": 4202004480,
+    "minimumSystemFreeBytes": 4068601856,
+    "processRssBeforeBytes": 44134400,
+    "peakProcessRssBytes": 167399424,
+    "systemFreeAfterBytes": 4096159744,
+    "processRssAfterBytes": 132485120,
+    "maximumObservedSystemMemoryDeltaBytes": 133402624,
+    "processPeakRssDeltaBytes": 123265024,
+    "measurementLimit": "System free memory includes concurrent Windows activity; process RSS covers the Node process and its worker thread but is not a WASM-only measurement."
+  },
+  "cleanup": {
+    "workerTerminated": true,
+    "allImageTaskDirectoriesRemoved": true,
+    "harnessTaskDirectoryRemoved": true,
+    "runtimeImagesPersistedToWorkspace": false
+  },
+  "workspace": {
+    "before": [
+      {
+        "path": "data/prototype/seed.json",
+        "sha256": "0f2238ae92ba879e9324d93bf7a6dc5064fade4fe5ead4a09137643b374ac553",
+        "size": 4748
+      },
+      {
+        "path": ".local/workspace.json",
+        "sha256": "9bd8f63d4ccf898f53b0ab1824fd53e610e5a9d2d1903c6b3c3f0beb5620a31a",
+        "size": 5966
+      }
+    ],
+    "after": [
+      {
+        "path": "data/prototype/seed.json",
+        "sha256": "0f2238ae92ba879e9324d93bf7a6dc5064fade4fe5ead4a09137643b374ac553",
+        "size": 4748
+      },
+      {
+        "path": ".local/workspace.json",
+        "sha256": "9bd8f63d4ccf898f53b0ab1824fd53e610e5a9d2d1903c6b3c3f0beb5620a31a",
+        "size": 5966
+      }
+    ],
+    "unchanged": true,
+    "observationsCreated": 0,
+    "equipmentRecordsCreated": 0,
+    "exportsCreated": 0
+  },
+  "gate": {
+    "checks": {
+      "localExecution": true,
+      "offlineExecution": true,
+      "licenseAccepted": true,
+      "compatibleResources": true,
+      "noExternalRequests": true,
+      "temporaryFilesRemoved": true,
+      "workspaceUnchanged": true,
+      "latencyWithinBudget": true
+    },
+    "failures": [],
+    "outcome": "OCR feasibility passed via Tesseract.js"
+  },
+  "failure": null
+}

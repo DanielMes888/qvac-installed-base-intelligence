@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "tesseract-acquisition-v2-initial",
+  "date": "2026-09-11",
+  "authorizedCandidate": "Tesseract.js",
+  "npmInstall": {
+    "command": "npm.cmd install --save-dev --save-exact tesseract.js@7.0.0",
+    "npmReportedElapsedMsApprox": 10000,
+    "toolCommandWallMsApprox": 38600,
+    "package": {
+      "name": "tesseract.js",
+      "version": "7.0.0",
+      "source": "https://registry.npmjs.org/tesseract.js/-/tesseract.js-7.0.0.tgz",
+      "unpackedBytes": 1411341,
+      "registryIntegrity": "sha512-exPBkd+z+wM1BuMkx/Bjv43OeLBxhL5kKWsz/9JY+DXcXdiBjiAch0V49QR3oAJqCaL5qURE0vx9Eo+G5YE7mA==",
+      "installedTreeSha256": "8bc813c179d0b986123ae47f90fac442763dc54c90f37cce37d99798df0a11d9",
+      "createdAtUtc": "2026-09-11T06:43:24.1100553Z"
+    },
+    "core": {
+      "name": "tesseract.js-core",
+      "version": "7.0.0",
+      "source": "https://registry.npmjs.org/tesseract.js-core/-/tesseract.js-core-7.0.0.tgz",
+      "unpackedBytes": 45262431,
+      "registryIntegrity": "sha512-WnNH518NzmbSq9zgTPeoF8c+xmilS8rFIl1YKbk/ptuuc7p6cLNELNuPAzcmsYw450ca6bLa8j3t0VAtq435Vw==",
+      "installedTreeSha256": "d908999751e0ca0c59ea342c4982fdf3b277ada2502e601399bc7544d42e259b",
+      "createdAtUtc": "2026-09-11T06:43:24.1114028Z"
+    },
+    "observation": "npm reported 13 packages added, two package installations changed, zero audited vulnerabilities, and an engine warning because the invoking npm process used Node 22.15.0; evaluated commands use the repository Node 22.17.0."
+  },
+  "traineddataAcquisition": {
+    "command": "owner-authorized Invoke-WebRequest for exact eng and spa URLs into .local/feasibility/ocr/tesseract-v2",
+    "toolCommandWallMsApprox": 6900,
+    "repository": "tesseract-ocr/tessdata_fast",
+    "revision": "87416418657359cb625c412a48b6e1d6d41c29bd",
+    "license": "Apache-2.0",
+    "artifacts": [
+      {
+        "language": "eng",
+        "source": "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/87416418657359cb625c412a48b6e1d6d41c29bd/eng.traineddata",
+        "bytes": 4113088,
+        "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+        "createdAtUtc": "2026-09-11T06:44:29.2782627Z",
+        "completedAtUtc": "2026-09-11T06:44:31.3423553Z"
+      },
+      {
+        "language": "spa",
+        "source": "https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/87416418657359cb625c412a48b6e1d6d41c29bd/spa.traineddata",
+        "bytes": 2294433,
+        "sha256": "6f2e04d02774a18f01bed44b1111f2cd7f3ba7ac9dc4373cd3f898a40ea6b464",
+        "createdAtUtc": "2026-09-11T06:44:31.6080359Z",
+        "completedAtUtc": "2026-09-11T06:44:32.6882830Z"
+      }
+    ]
+  },
+  "modelsCommitted": false,
+  "runtimeCloudServiceUsed": false
+}

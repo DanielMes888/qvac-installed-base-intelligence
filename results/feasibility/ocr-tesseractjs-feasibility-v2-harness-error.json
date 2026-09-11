@@ -1,0 +1,239 @@
+{
+  "schemaVersion": "local-ocr-feasibility-tesseract-v2",
+  "outcome": "OCR feasibility failed after QVAC OCR and Tesseract.js",
+  "evaluatedAt": "2026-09-11T06:49:06.440Z",
+  "synthetic": true,
+  "candidate": "Tesseract.js",
+  "policy": {
+    "schemaVersion": "local-ocr-feasibility-v1",
+    "requiredCaseIds": [
+      "clear-image",
+      "small-text",
+      "low-contrast",
+      "slight-rotation",
+      "multiple-lines",
+      "alphanumeric"
+    ],
+    "diagnosticCaseIds": [
+      "deliberately-difficult"
+    ],
+    "minimumTokenRecall": 0.8,
+    "maxWarmExtractionMs": 5000,
+    "minimumSystemFreeBytes": 536870912,
+    "persistsImages": false,
+    "mutatesWorkspace": false
+  },
+  "environment": {
+    "platform": "win32",
+    "architecture": "x64",
+    "node": "v22.17.0",
+    "package": "tesseract.js@7.0.0",
+    "core": "tesseract.js-core@7.0.0",
+    "workerReuse": "one worker for first extraction, all warm fixtures, error recovery, then explicit termination"
+  },
+  "licenses": {
+    "package": "Apache-2.0",
+    "core": "Apache-2.0",
+    "traineddata": "Apache-2.0",
+    "traineddataLicenseSource": "https://github.com/tesseract-ocr/tessdata_fast/blob/87416418657359cb625c412a48b6e1d6d41c29bd/LICENSE",
+    "compatibleForExperimentAndRedistributionWithApacheNotice": true
+  },
+  "artifacts": {
+    "package": {
+      "name": "tesseract.js",
+      "version": "7.0.0",
+      "repositoryRevision": "b5cff0bca691a99ff69f1b162184e6c5a78629ef",
+      "license": "Apache-2.0",
+      "npmUnpackedBytes": 1411341,
+      "npmIntegrity": "sha512-exPBkd+z+wM1BuMkx/Bjv43OeLBxhL5kKWsz/9JY+DXcXdiBjiAch0V49QR3oAJqCaL5qURE0vx9Eo+G5YE7mA==",
+      "installedBytes": 1411341
+    },
+    "core": {
+      "name": "tesseract.js-core",
+      "version": "7.0.0",
+      "repositoryRevision": "acffef2b66eb44a31df297e11d905f4b39001068",
+      "license": "Apache-2.0",
+      "npmUnpackedBytes": 45262431,
+      "npmIntegrity": "sha512-WnNH518NzmbSq9zgTPeoF8c+xmilS8rFIl1YKbk/ptuuc7p6cLNELNuPAzcmsYw450ca6bLa8j3t0VAtq435Vw==",
+      "installedBytes": 45262431
+    },
+    "selectedRuntimeVariant": "relaxedsimd-lstm (capability probe was true on this laptop)",
+    "files": {
+      "offlineWorker": {
+        "file": "tesseract-offline-worker.cjs",
+        "bytes": 1161,
+        "sha256": "b56215a724ef920b5f11c0a5dd6362850491995cacdce245db089c97230e2a4d",
+        "verified": true
+      },
+      "nodeWorkerEntry": {
+        "file": "index.js",
+        "bytes": 771,
+        "sha256": "a973c23ce067bc752c0bf602297eac843098e531ac03f3ea34cdf694326a6d02",
+        "verified": true
+      },
+      "relaxedSimdLstmWrapper": {
+        "file": "tesseract-core-relaxedsimd-lstm.js",
+        "bytes": 89360,
+        "sha256": "a37ac78b707e8d5d3d2e532cc3c4e69b04d127ea44a608f1e7de17640402aa5c",
+        "verified": true
+      },
+      "relaxedSimdLstmWasm": {
+        "file": "tesseract-core-relaxedsimd-lstm.wasm",
+        "bytes": 2862266,
+        "sha256": "7985c92d4c64e7267d24cadffe1b2a1da6bf8aa55fdcaf953fe94fe122a24545",
+        "verified": true
+      },
+      "eng": {
+        "file": "eng.traineddata",
+        "bytes": 4113088,
+        "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+        "verified": true
+      },
+      "spa": {
+        "file": "spa.traineddata",
+        "bytes": 2294433,
+        "sha256": "6f2e04d02774a18f01bed44b1111f2cd7f3ba7ac9dc4373cd3f898a40ea6b464",
+        "verified": true
+      }
+    },
+    "allVerified": true
+  },
+  "runtimePaths": {
+    "worker": "scripts/feasibility/ocr/tesseract-offline-worker.cjs",
+    "core": "node_modules/tesseract.js-core",
+    "languages": ".local/feasibility/ocr/tesseract-v2/tessdata_fast-87416418657359cb625c412a48b6e1d6d41c29bd",
+    "allAbsoluteAndLocal": true,
+    "automaticDownloadsDisabled": true,
+    "gzip": false,
+    "cacheMethod": "none"
+  },
+  "initialization": {
+    "totalWorkerAndLanguageMs": 294.1865,
+    "phases": [
+      {
+        "status": "loading tesseract core",
+        "startedMs": 99.3723,
+        "completedMs": 126.7732,
+        "durationMs": 27.400900000000007
+      },
+      {
+        "status": "initializing tesseract",
+        "startedMs": 126.80690000000001,
+        "completedMs": 152.79569999999998,
+        "durationMs": 25.98879999999997
+      },
+      {
+        "status": "loading language traineddata",
+        "startedMs": 153.1389,
+        "completedMs": 155.2589,
+        "durationMs": 2.1200000000000045
+      },
+      {
+        "status": "initializing api",
+        "startedMs": 155.60850000000002,
+        "completedMs": 294.09090000000003,
+        "durationMs": 138.4824
+      }
+    ],
+    "languages": [
+      "eng",
+      "spa"
+    ],
+    "generalPreprocessing": "none; identical OCR settings for every frozen fixture"
+  },
+  "firstExtraction": null,
+  "warm": null,
+  "cases": [],
+  "errorRecovery": null,
+  "lifecycleDecisions": null,
+  "networkBoundary": {
+    "mode": "absolute local worker/core/traineddata paths with fetch, HTTP(S), net, TLS and DNS denied in parent and OCR worker",
+    "parentAttempts": [],
+    "workerAttempts": [],
+    "observedAttemptCount": 0,
+    "instrumentedBoundaries": [
+      "fetch",
+      "http.request/get",
+      "https.request/get",
+      "net.connect/createConnection",
+      "tls.connect",
+      "dns.lookup/resolve/resolve4/resolve6"
+    ],
+    "packetLevelAuditPerformed": false,
+    "limitation": "Zero instrumented attempts is not a packet capture or proof about uninstrumented native operating-system activity."
+  },
+  "memory": {
+    "totalBytes": 16390729728,
+    "systemFreeBeforeBytes": 4235419648,
+    "minimumSystemFreeBytes": 4150538240,
+    "processRssBeforeBytes": 44244992,
+    "peakProcessRssBytes": 117620736,
+    "systemFreeAfterBytes": 4164411392,
+    "processRssAfterBytes": 116158464,
+    "maximumObservedSystemMemoryDeltaBytes": 84881408,
+    "processPeakRssDeltaBytes": 73375744,
+    "measurementLimit": "System free memory includes concurrent Windows activity; process RSS covers the Node process and its worker thread but is not a WASM-only measurement."
+  },
+  "cleanup": {
+    "workerTerminated": true,
+    "allImageTaskDirectoriesRemoved": false,
+    "harnessTaskDirectoryRemoved": true,
+    "runtimeImagesPersistedToWorkspace": false
+  },
+  "workspace": {
+    "before": [
+      {
+        "path": "data/prototype/seed.json",
+        "sha256": "0f2238ae92ba879e9324d93bf7a6dc5064fade4fe5ead4a09137643b374ac553",
+        "size": 4748
+      },
+      {
+        "path": ".local/workspace.json",
+        "sha256": "9bd8f63d4ccf898f53b0ab1824fd53e610e5a9d2d1903c6b3c3f0beb5620a31a",
+        "size": 5966
+      }
+    ],
+    "after": [
+      {
+        "path": "data/prototype/seed.json",
+        "sha256": "0f2238ae92ba879e9324d93bf7a6dc5064fade4fe5ead4a09137643b374ac553",
+        "size": 4748
+      },
+      {
+        "path": ".local/workspace.json",
+        "sha256": "9bd8f63d4ccf898f53b0ab1824fd53e610e5a9d2d1903c6b3c3f0beb5620a31a",
+        "size": 5966
+      }
+    ],
+    "unchanged": true,
+    "observationsCreated": 0,
+    "equipmentRecordsCreated": 0,
+    "exportsCreated": 0
+  },
+  "gate": {
+    "checks": {
+      "localExecution": true,
+      "offlineExecution": true,
+      "licenseAccepted": true,
+      "compatibleResources": false,
+      "noExternalRequests": true,
+      "temporaryFilesRemoved": false,
+      "workspaceUnchanged": true,
+      "latencyWithinBudget": false
+    },
+    "failures": [
+      "required fixture failed: clear-image",
+      "required fixture failed: small-text",
+      "required fixture failed: low-contrast",
+      "required fixture failed: slight-rotation",
+      "required fixture failed: multiple-lines",
+      "required fixture failed: alphanumeric",
+      "gate check failed: compatibleResources",
+      "gate check failed: temporaryFilesRemoved",
+      "gate check failed: latencyWithinBudget",
+      "runtime failure: TypeError: Cannot read properties of undefined (reading 'join')"
+    ],
+    "outcome": "OCR feasibility failed after QVAC OCR and Tesseract.js"
+  },
+  "failure": "TypeError: Cannot read properties of undefined (reading 'join')"
+}

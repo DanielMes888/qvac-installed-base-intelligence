@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "synthetic-ocr-fixtures-v1",
+  "synthetic": true,
+  "generatedBy": "scripts/feasibility/ocr/generate-synthetic-fixtures.ps1",
+  "cases": [
+    {
+      "id": "clear-image",
+      "file": "clear-image.png",
+      "sha256": "2657400d596beb777d806ea96c2e480b97985efd566931a555633a5e460dde78",
+      "description": "High-contrast label with common-size text.",
+      "required": true,
+      "requiredTokens": ["NOVAMED", "AX-700", "SYN-2026-001", "MRI", "2018"]
+    },
+    {
+      "id": "small-text",
+      "file": "small-text.png",
+      "sha256": "d682513da0cef03b8a9b7e4ed6fe98cb72f4c676ca44055e86289872b49f741f",
+      "description": "Synthetic label rendered at a smaller but legible size.",
+      "required": true,
+      "requiredTokens": ["MEDILAB", "MICRO-22", "SYN-44B9", "CT", "2021"]
+    },
+    {
+      "id": "low-contrast",
+      "file": "low-contrast.png",
+      "sha256": "e6fd014ca2204d3219bea977063cc782f36c3afb72482d02be0bf6e857801ffe",
+      "description": "Gray text on a light-gray synthetic label.",
+      "required": true,
+      "requiredTokens": ["CLARAVIEW", "US-310", "SYN-LOW-77", "ULTRASOUND", "2019"]
+    },
+    {
+      "id": "slight-rotation",
+      "file": "slight-rotation.png",
+      "sha256": "21529479d7e3e788cb194372ab71f51916adf51c532a74b815acb42c4f0a2075",
+      "description": "High-contrast label rotated by four degrees.",
+      "required": true,
+      "requiredTokens": ["AURORA", "PM-8", "SYN-ROT-04", "MONITOR", "2020"]
+    },
+    {
+      "id": "multiple-lines",
+      "file": "multiple-lines.png",
+      "sha256": "7b0b06d24a1275801aabd7f620c0c60d8e88cd47882c100964079ae9852d6c64",
+      "description": "Six lines with a non-sensitive maintenance note.",
+      "required": true,
+      "requiredTokens": ["VITALIS", "XR-55", "SYN-ML-500", "XRAY", "AÑO", "REVISIÓN", "PANAMÁ", "DEMO"]
+    },
+    {
+      "id": "alphanumeric",
+      "file": "alphanumeric.png",
+      "sha256": "782169ce3012d340c2ad9dfb3193732c01a031878e8c3da219a60f90491dcf64",
+      "description": "Dense synthetic identifiers with letters, numbers, dashes, and slash.",
+      "required": true,
+      "requiredTokens": ["ORBITAL", "MX-9B/42", "SN-A7C9-2048", "CT", "2022"]
+    },
+    {
+      "id": "deliberately-difficult",
+      "file": "deliberately-difficult.png",
+      "sha256": "db30d1583ecb7ba72bde9891cb81539db86d1cf8672f718f51b58a4f26bd5d4c",
+      "description": "Small, low-contrast, rotated diagnostic case; failure does not lower the required threshold.",
+      "required": false,
+      "requiredTokens": ["NEBULA", "Z-13", "SYN-HARD-999", "MRI", "2016"]
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "local-ocr-feasibility-tesseract-v2",
+  "outcome": "OCR feasibility failed after QVAC OCR and Tesseract.js",
+  "evaluatedAt": "2026-09-11T07:08:16.323Z",
+  "synthetic": true,
+  "candidate": "Tesseract.js",
+  "policy": {
+    "schemaVersion": "local-ocr-feasibility-v1",
+    "requiredCaseIds": [
+      "clear-image",
+      "small-text",
+      "low-contrast",
+      "slight-rotation",
+      "multiple-lines",
+      "alphanumeric"
+    ],
+    "diagnosticCaseIds": [
+      "deliberately-difficult"
+    ],
+    "minimumTokenRecall": 0.8,
+    "maxWarmExtractionMs": 5000,
+    "minimumSystemFreeBytes": 536870912,
+    "persistsImages": false,
+    "mutatesWorkspace": false
+  },
+  "environment": {
+    "platform": "win32",
+    "architecture": "x64",
+    "node": "v22.17.0",
+    "package": "tesseract.js@7.0.0",
+    "core": "tesseract.js-core@7.0.0",
+    "workerReuse": "one worker for first extraction, all warm fixtures, error recovery, then explicit termination"
+  },
+  "licenses": {
+    "package": "Apache-2.0",
+    "core": "Apache-2.0",
+    "traineddata": "Apache-2.0",
+    "traineddataLicenseSource": "https://github.com/tesseract-ocr/tessdata_fast/blob/87416418657359cb625c412a48b6e1d6d41c29bd/LICENSE",
+    "compatibleForExperimentAndRedistributionWithApacheNotice": true
+  },
+  "artifacts": null,
+  "runtimePaths": {
+    "worker": "scripts/feasibility/ocr/tesseract-offline-worker.cjs",
+    "core": "node_modules/tesseract.js-core",
+    "languages": ".local/feasibility/ocr/tesseract-v2/tessdata_fast-87416418657359cb625c412a48b6e1d6d41c29bd",
+    "allAbsoluteAndLocal": true,
+    "automaticDownloadsDisabled": true,
+    "gzip": false,
+    "cacheMethod": "none"
+  },
+  "initialization": null,
+  "firstExtraction": null,
+  "warm": null,
+  "cases": [],
+  "errorRecovery": null,
+  "lifecycleDecisions": null,
+  "networkBoundary": {
+    "mode": "absolute local worker/core/traineddata paths with fetch, HTTP(S), net, TLS and DNS denied in parent and OCR worker",
+    "parentAttempts": [],
+    "workerAttempts": [],
+    "observedAttemptCount": 0,
+    "instrumentedBoundaries": [
+      "fetch",
+      "http.request/get",
+      "https.request/get",
+      "net.connect/createConnection",
+      "tls.connect",
+      "dns.lookup/resolve/resolve4/resolve6"
+    ],
+    "packetLevelAuditPerformed": false,
+    "limitation": "Zero instrumented attempts is not a packet capture or proof about uninstrumented native operating-system activity."
+  },
+  "memory": {
+    "totalBytes": 16390729728,
+    "systemFreeBeforeBytes": 3971731456,
+    "minimumSystemFreeBytes": 3971731456,
+    "processRssBeforeBytes": 44138496,
+    "peakProcessRssBytes": 44138496,
+    "systemFreeAfterBytes": 3971686400,
+    "processRssAfterBytes": 44236800,
+    "maximumObservedSystemMemoryDeltaBytes": 0,
+    "processPeakRssDeltaBytes": 0,
+    "measurementLimit": "System free memory includes concurrent Windows activity; process RSS covers the Node process and its worker thread but is not a WASM-only measurement."
+  },
+  "cleanup": {
+    "workerTerminated": false,
+    "allImageTaskDirectoriesRemoved": false,
+    "harnessTaskDirectoryRemoved": true,
+    "runtimeImagesPersistedToWorkspace": false
+  },
+  "workspace": {
+    "before": [
+      {
+        "path": "data/prototype/seed.json",
+        "sha256": "0f2238ae92ba879e9324d93bf7a6dc5064fade4fe5ead4a09137643b374ac553",
+        "size": 4748
+      },
+      {
+        "path": ".local/workspace.json",
+        "sha256": "9bd8f63d4ccf898f53b0ab1824fd53e610e5a9d2d1903c6b3c3f0beb5620a31a",
+        "size": 5966
+      }
+    ],
+    "after": [
+      {
+        "path": "data/prototype/seed.json",
+        "sha256": "0f2238ae92ba879e9324d93bf7a6dc5064fade4fe5ead4a09137643b374ac553",
+        "size": 4748
+      },
+      {
+        "path": ".local/workspace.json",
+        "sha256": "9bd8f63d4ccf898f53b0ab1824fd53e610e5a9d2d1903c6b3c3f0beb5620a31a",
+        "size": 5966
+      }
+    ],
+    "unchanged": true,
+    "observationsCreated": 0,
+    "equipmentRecordsCreated": 0,
+    "exportsCreated": 0
+  },
+  "gate": {
+    "checks": {
+      "localExecution": false,
+      "offlineExecution": true,
+      "licenseAccepted": true,
+      "compatibleResources": false,
+      "noExternalRequests": true,
+      "temporaryFilesRemoved": false,
+      "workspaceUnchanged": true,
+      "latencyWithinBudget": false
+    },
+    "failures": [
+      "required fixture failed: clear-image",
+      "required fixture failed: small-text",
+      "required fixture failed: low-contrast",
+      "required fixture failed: slight-rotation",
+      "required fixture failed: multiple-lines",
+      "required fixture failed: alphanumeric",
+      "gate check failed: localExecution",
+      "gate check failed: compatibleResources",
+      "gate check failed: temporaryFilesRemoved",
+      "gate check failed: latencyWithinBudget",
+      "runtime failure: ReferenceError: workerPath is not defined"
+    ],
+    "outcome": "OCR feasibility failed after QVAC OCR and Tesseract.js"
+  },
+  "failure": "ReferenceError: workerPath is not defined"
+}
