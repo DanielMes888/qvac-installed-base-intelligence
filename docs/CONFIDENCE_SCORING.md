@@ -1,6 +1,6 @@
 # Confidence scoring del prototipo
 
-Status: implementación de Ticket 01 en revisión del propietario.
+Status: aprobado por el propietario; Ticket 01 `done`.
 
 ## Propósito y límites
 
