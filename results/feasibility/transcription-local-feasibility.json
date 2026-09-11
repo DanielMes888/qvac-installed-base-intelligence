@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "local-transcription-feasibility-v1",
+  "startedAt": "2026-09-11T08:08:36.336Z",
+  "completedAt": "2026-09-11T08:08:40.409Z",
+  "synthetic": true,
+  "outcome": "local transcription feasibility passed",
+  "engine": {
+    "sdk": "@qvac/sdk 0.19.0",
+    "model": "WHISPER_TINY_Q8_0",
+    "modelType": "whispercpp-transcription",
+    "quantization": "q8_0",
+    "expectedModelBytes": 43537433,
+    "sha256": "c2085835d3f50733e2ff6e4b41ae8a2b8d8110461e18821b09a15c40c42d1cca",
+    "sourceRevision": "ggerganov/whisper.cpp@5359861c739e955e79d9a303bcbc70fb988958b1",
+    "license": "MIT",
+    "language": "es",
+    "loadMs": 3362.1673,
+    "loadCount": 1,
+    "loadedInfo": {
+      "backendDevice": null,
+      "backendName": null
+    }
+  },
+  "preparation": {
+    "firstObservedDownloadAndLoadMs": 33445.886399999996,
+    "currentCachedLoadMs": 3362.1673,
+    "modelCacheRetained": true
+  },
+  "fixture": {
+    "id": "spanish-medical-equipment",
+    "bytes": 228190,
+    "durationSeconds": 5.173333333333333,
+    "sha256": "502bb9a85f09e0017797a0d6f478b6d3f789f2c2594502192a5101125c7b474e"
+  },
+  "runs": [
+    {
+      "index": 1,
+      "realTranscription": true,
+      "elapsedMs": 329.55279999999993,
+      "text": "Obserbe un escaner de resonancia magnética no va a meden radiología."
+    },
+    {
+      "index": 2,
+      "realTranscription": true,
+      "elapsedMs": 322.92470000000003,
+      "text": "Obserbe un escaner de resonancia magnética no va a meden radiología."
+    }
+  ],
+  "reuse": {
+    "loadCount": 1,
+    "sameModelId": true,
+    "secondRunUsedLoadedModel": true
+  },
+  "quality": {
+    "matchedTokens": [
+      "escaner",
+      "resonancia",
+      "magnetica",
+      "radiologia"
+    ],
+    "requiredTokens": [
+      "observe",
+      "escaner",
+      "resonancia",
+      "magnetica",
+      "novamed",
+      "radiologia"
+    ],
+    "tokenRecall": 0.6666666666666666,
+    "editableForDemo": true
+  },
+  "memory": {
+    "before": {
+      "rssBytes": 79765504,
+      "systemFreeBytes": 2501894144
+    },
+    "afterRuns": {
+      "rssBytes": 90267648,
+      "systemFreeBytes": 2215301120
+    },
+    "afterCleanup": {
+      "rssBytes": 90558464,
+      "systemFreeBytes": 2432204800
+    },
+    "note": "Approximate process RSS and system free-memory samples; not isolated model allocation."
+  },
+  "networkBoundary": {
+    "kind": "instrumented Node boundaries, not an operating-system audit",
+    "observedAttemptCount": 0,
+    "attempts": []
+  },
+  "cleanup": {
+    "temporaryFilesRemoved": true,
+    "modelUnloaded": true
+  },
+  "workspace": {
+    "path": "data/prototype/seed.json",
+    "unchanged": true
+  },
+  "limitations": [
+    "Synthetic SAPI voice only; microphone variability is not measured by this feasibility run.",
+    "Tiny multilingual Whisper can omit accents or proper-name spelling; user review remains mandatory.",
+    "Instrumented network boundaries are not a complete operating-system audit."
+  ]
+}

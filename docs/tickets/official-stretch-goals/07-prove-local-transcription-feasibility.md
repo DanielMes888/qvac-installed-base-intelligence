@@ -2,7 +2,9 @@
 
 Type: Official Stretch Goal Feasibility Gate
 
-Status: ready
+Status: done
+
+Outcome 2026-09-11: `local transcription feasibility passed` with `@qvac/sdk 0.19.0` and `WHISPER_TINY_Q8_0`. The 5.17-second synthetic Spanish fixture produced 4/6 required tokens (66.7%); the fictitious name NovaMed was misheard and remains a visible reason for mandatory review. Download plus first load took about 33.45 seconds, cached load about 3.36 seconds, and two transcriptions about 330 ms and 323 ms with one loaded model.
 
 Opened 2026-09-11 after Ticket 05 passed via Tesseract.js and Ticket 06 completed the visible Photo-assisted capture flow. This ticket is limited to local transcription feasibility; it does not reopen OCR evaluation or authorize voice-capture implementation.
 
@@ -35,14 +37,14 @@ This gate is independent of Tickets 05 and 06. OCR failure must not prevent voic
 
 ## Acceptance Criteria
 
-- [ ] Candidate review records license, download/install size, runtime memory, compatibility, language support, offline guarantees, and required hardware before acquisition.
-- [ ] No cloud transcription, remote API, delegated inference, or network-dependent evaluated processing is used.
-- [ ] The approved candidate, if any, processes the bounded synthetic set locally after network access is unavailable.
-- [ ] The experiment records transcript, correctness checklist, latency, resource usage, failures, and limitations for every case.
-- [ ] Audio is temporary by default and demonstrably discarded after review, submit simulation, cancel, and handled failures.
-- [ ] Transcript text remains a draft; feasibility does not mutate installed-base data.
-- [ ] The final gate says `viable` only when all license, size, memory, compatibility, privacy, offline, and bounded-quality conditions pass.
-- [ ] A failed gate preserves evidence and does not simulate Voice capture.
+- [x] Candidate review records license, download/install size, runtime memory, compatibility, language support, offline guarantees, and required hardware before acquisition.
+- [x] No cloud transcription, remote API, delegated inference, or network-dependent evaluated processing is used.
+- [x] The approved candidate, if any, processes the bounded synthetic set locally after network access is unavailable.
+- [x] The experiment records transcript, correctness checklist, latency, resource usage, failures, and limitations for every case.
+- [x] Audio is temporary by default and demonstrably discarded after review, submit simulation, cancel, and handled failures.
+- [x] Transcript text remains a draft; feasibility does not mutate installed-base data.
+- [x] The final gate says `viable` only when all license, size, memory, compatibility, privacy, offline, and bounded-quality conditions pass.
+- [x] A failed gate preserves evidence and does not simulate Voice capture.
 
 ## Automated Tests
 

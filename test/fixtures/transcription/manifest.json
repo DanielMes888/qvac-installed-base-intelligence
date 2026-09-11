@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "synthetic-transcription-fixture-v1",
+  "id": "spanish-medical-equipment",
+  "synthetic": true,
+  "language": "es-MX",
+  "voice": "Microsoft Sabina Desktop",
+  "sourceText": "Observe un escaner de resonancia magnetica NovaMed en radiologia.",
+  "requiredTokens": [
+    "observe",
+    "escaner",
+    "resonancia",
+    "magnetica",
+    "novamed",
+    "radiologia"
+  ],
+  "sampleRateHz": 22050,
+  "channels": 1,
+  "bitsPerSample": 16,
+  "durationSeconds": 5.173333333333333,
+  "maxDurationSeconds": 60,
+  "bytes": 228190,
+  "sha256": "502bb9a85f09e0017797a0d6f478b6d3f789f2c2594502192a5101125c7b474e"
+}

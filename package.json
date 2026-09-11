@@ -35,6 +35,8 @@
     "feasibility:ocr": "node scripts/feasibility/ocr/run-local-ocr-feasibility.mjs",
     "feasibility:ocr:tesseract:acquire": "node scripts/feasibility/ocr/acquire-tesseract-models.mjs",
     "feasibility:ocr:tesseract": "node scripts/feasibility/ocr/run-tesseract-ocr-feasibility.mjs",
+    "feasibility:transcription:fixture": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/feasibility/transcription/generate-spanish-fixture.ps1",
+    "feasibility:transcription": "node scripts/feasibility/transcription/run-local-transcription-feasibility.mjs",
     "smoke:freshness": "node scripts/emergency/run-freshness-priority-smoke.mjs",
     "smoke:export-delete": "node scripts/emergency/run-export-delete-smoke.mjs",
     "smoke:performance": "node scripts/emergency/run-performance-benchmark.mjs after"
