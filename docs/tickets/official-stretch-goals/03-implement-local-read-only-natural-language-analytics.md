@@ -2,7 +2,7 @@
 
 Type: Official Stretch Goal
 
-Status: blocked
+Status: ready
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
@@ -27,7 +27,7 @@ The user can submit a supported question, inspect the interpreted filters/aggreg
 
 ## Dependencies
 
-Blocked by: `docs/tickets/official-stretch-goals/01-implement-explainable-confidence-scoring.md` and `docs/tickets/official-stretch-goals/02-implement-conservative-opportunity-identification.md`.
+Blocked by: None. Tickets 01 and 02 are `done`.
 
 ## Acceptance Criteria
 
