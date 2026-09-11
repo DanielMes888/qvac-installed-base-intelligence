@@ -1,117 +1,143 @@
-﻿# Philips Customer Installed Base Intelligence with QVAC
+# Philips Customer Installed Base Intelligence
 
-**Current status: Both E4 feasibility attempts failed. Under the project owner's deadline exception, a provisional same-computer browser/Node prototype now demonstrates one narrow real-QVAC workflow. This does not mark E4 as passed, unblock Ticket 02, or establish submission readiness.**
+Convierte observaciones de campo en evidencia estructurada y revisable para entender la base instalada sin sacar la inferencia del computador ni perder el control humano.
 
-## Pitch del producto
+## El problema
 
-**Problema.** Las observaciones de campo sobre equipos instalados llegan como notas sin estructura. Pueden quedar sin registrar, duplicarse o conservar información incierta sin una fuente visible.
+Las observaciones sobre equipos hospitalarios suelen quedar en notas de campo sin estructura. Eso produce información incompleta e incierta y puede duplicar equipos cuando una nueva nota describe un activo ya registrado.
 
-**Solución.** El prototipo usa QVAC local para convertir una observación en datos revisables. Una persona acepta o rechaza cada dato y reconcilia la evidencia repetida con equipos existentes antes de actualizar la vista de trabajo.
+## La solución
 
-**Valor.** La aplicación muestra una base instalada más confiable, reduce la interpretación manual de notas, evita crear registros duplicados y mantiene la información en el computador local. Estas son capacidades del prototipo; no son resultados medidos en un proceso real de Philips.
+**Observación → extracción local con IA → revisión y corrección humana → reconciliación de evidencia → visibilidad de la base instalada → verificación y agregación.**
 
-## Run the emergency prototype
+La aplicación conserva la nota original, propone datos como *Draft Claims* y exige que una persona decida qué aceptar, corregir o rechazar. La evidencia aceptada puede vincularse explícitamente a un equipo existente; una observación nunca crea ni modifica automáticamente un registro de equipo.
 
-Prerequisites are the pinned Node/npm versions, installed dependencies, and the cached model documented in the E4 evidence.
+## Por qué QVAC es esencial
+
+- Toda inferencia evaluada se ejecuta localmente, en el mismo computador, mediante `@qvac/sdk` 0.19.0.
+- Las notas operativas sensibles no necesitan enviarse a un servicio de inferencia en la nube.
+- Después de instalar dependencias y disponer de los modelos, el flujo funciona sin internet.
+- `QWEN3_1_7B_INST_Q4` (Qwen3 1.7B, Q4_0) convierte observaciones no estructuradas en *Draft Claims* y también interpreta preguntas de consulta en un plan seguro de solo lectura.
+- `WHISPER_TINY_Q8_0` (Whisper Tiny multilingüe, Q8_0) realiza la transcripción local de voz.
+- Código determinista valida contratos, conserva evidencia, reconcilia decisiones humanas y calcula agregados permitidos.
+- QVAC nunca modifica automáticamente los registros de equipos.
+
+La captura por imagen es una ruta separada: usa **Tesseract.js 7.0.0** con datos `eng` y `spa` locales. Tesseract.js hace OCR; QVAC hace la extracción semántica posterior.
+
+## Funcionalidades
+
+- Captura de observaciones por texto, imagen y voz dentro de una misma tarjeta.
+- Extracción local de tipo de equipo, fabricante, modelo, cantidad, alcance, ubicación, fuente, certeza y evidencia.
+- Una aclaración material acotada, seguida siempre por revisión humana.
+- Aprobación, rechazo y corrección con valor original, procedencia e historial preservados.
+- Sugerencia de duplicados y vinculación explícita a equipos existentes, sin fusión automática.
+- Vistas de registros verificados/provisionales, evidencia no vinculada, frescura y verificaciones priorizadas.
+- Confianza explicable y oportunidades conservadoras calculadas de forma determinista.
+- Consultas en lenguaje natural de solo lectura y agregados permitidos.
+- Mapa geográfico esquemático, local y sintético, sin mapas ni geocodificación externos.
+- Exportación JSON, eliminación confirmada y restablecimiento del Workspace sintético.
+- Voz: **Implementada; pendiente de validación manual con micrófono físico en Chrome/Edge.**
+
+## Cómo funciona
+
+```mermaid
+flowchart LR
+    A[Observación<br/>texto, imagen o voz] --> B[QVAC local<br/>Draft Claims]
+    B --> C[Revisión y corrección<br/>humana]
+    C --> D[Reconciliación<br/>de evidencia]
+    D --> E[Base instalada]
+    E --> F[Verificación y<br/>agregación]
+```
+
+## Arquitectura
+
+La interfaz se sirve en el navegador. Un host Node.js escucha únicamente en `127.0.0.1`, coordina los modelos QVAC locales y persiste un único Workspace JSON local. La validación, la reconciliación y los agregados son deterministas; la salida del modelo permanece como propuesta hasta una decisión humana.
+
+## Privacidad
+
+El repositorio y la demostración usan exclusivamente datos sintéticos. No hay inferencia en la nube. Las imágenes y el audio se procesan mediante archivos temporales locales que se eliminan tanto al completar como al fallar; el audio original nunca se persiste ni se exporta. El usuario puede exportar el Workspace a JSON y eliminarlo con confirmación explícita. Esta es evidencia acotada de un prototipo, no una auditoría de seguridad.
+
+## Inicio rápido
+
+Requisitos: Windows, Node.js **22.17.0**, npm **10.9.0 o posterior**, y un entorno compatible con la configuración GPU local del prototipo. La primera instalación y la adquisición de activos requieren internet; después se usan cachés locales fuera de Git.
 
 ```powershell
+git clone https://github.com/DanielMes888/qvac-installed-base-intelligence.git
+Set-Location qvac-installed-base-intelligence
+npm.cmd ci
+npm.cmd run feasibility:ocr:tesseract:acquire
+npm.cmd run feasibility:transcription
 npm.cmd run reset
 npm.cmd start
 ```
 
-Open `http://127.0.0.1:4173` on the same laptop. Use the prefilled synthetic observation for the rehearsed path, review each extracted datum, then explicitly link the repeated evidence to the suggested seeded record. The operational interface separates capture, review, installed-base records, and prioritized verification items.
+`npm.cmd start` carga `QWEN3_1_7B_INST_Q4` mediante el SDK y lo adquiere si aún no está en la caché. `feasibility:transcription` prepara/comprueba `WHISPER_TINY_Q8_0` con el fixture sintético y actualiza su resultado de factibilidad; omítalo si no va a probar voz. La adquisición de Tesseract descarga únicamente los datos `eng` y `spa`, verifica tamaño y SHA-256 y los guarda bajo `.local/`.
+
+Con el servidor activo, abra otra ventana de PowerShell:
 
 ```powershell
-npm.cmd test
-npm.cmd run smoke:demo
+Start-Process 'http://127.0.0.1:4173'
 ```
 
-The smoke command invokes the real cached QVAC model and writes reviewable evidence to [demo-smoke.json](results/emergency/demo-smoke.json). Follow the [demo guide](docs/DEMO_GUIDE.md), and see the [prototype report](results/emergency/PROTOTYPE_REPORT.md), [emergency scope status](docs/EMERGENCY_DEMO_STATUS.md), and [deadline ADR](docs/adr/0006-use-time-constrained-browser-prototype.md) for the bounded result and limitations.
+Espere a ver `Prototipo listo en http://127.0.0.1:4173`. Si el puerto está ocupado, el servidor muestra cómo elegir otro puerto de loopback.
 
-The application also supports one bounded clarification. When the initial QVAC output contains a material Spanish question, the user may answer, select **No lo sé**, or omit it. An answer is stored as a dated Evidence Entry and triggers one final local extraction; the initial drafts are superseded and the final drafts still require explicit review. Skipping and **No lo sé** use the initial drafts without another inference. The installed base never changes during clarification.
+## Validación
 
-The dedicated command below preserves the current real-model result in [clarification-smoke.json](results/emergency/clarification-smoke.json):
+| Tipo | Comando | Qué demuestra |
+| --- | --- | --- |
+| Suite normal | `npm.cmd test` | Contratos, Workspace, revisión, reconciliación, vistas y límites. La suite actual también contiene una integración local real con Whisper Tiny; no es una suite puramente determinista. |
+| Smoke principal con modelo real | `npm.cmd run smoke:demo` | Recorrido HTTP con Qwen v9 real, revisión y reconciliación. |
+| Modelo real opcional | `npm.cmd run smoke:clarification` | Pregunta acotada y segunda inferencia local. |
+| Modelo real opcional | `npm.cmd run smoke:analytics:real` | Interpretación local de consultas de solo lectura. |
+| Voz real opcional | `npm.cmd run smoke:voice` | Fixture WAV sintético con Whisper Tiny; no valida un micrófono físico. |
+| Deterministas | `npm.cmd run smoke:correction`, `smoke:confidence`, `smoke:opportunities`, `smoke:analytics`, `smoke:geography`, `smoke:freshness`, `smoke:export-delete` | Reglas y flujos controlados sin evaluar extracción Qwen. |
+| OCR local opcional | `npm.cmd run smoke:photo` | Fixture de imagen sintético con Tesseract.js local. |
 
-```powershell
-npm.cmd run smoke:clarification
-```
+Los smokes con modelos reales pueden tardar, requieren sus activos en caché y regeneran evidencia versionada. Consulte la [guía de demostración](docs/DEMO_GUIDE.md) antes de ejecutarlos.
 
-With prompt `prototype-equipment-extraction-v9`, the recorded local-GPU smoke produced one useful Spanish quantity-scope question in 768.09 ms. The answer was saved as a separate Evidence Entry and one final inference ran in 760.54 ms. The application enforced one question and two inferences, then a conservative review rejected every final draft and left the installed base unchanged. The second model output repeated `quantityScope: unknown` instead of applying the answer as an explicit total, so the workflow and safety gates passed but answer incorporation remains a semantic limitation.
+## Resultados demostrados
 
-## QVAC v9 optimization result
+Resultados reproducibles y acotados del benchmark sintético QVAC v9 de **5 casos**:
 
-The bounded five-case prototype benchmark retains startup warmup, one reused loaded model, `reasoning_budget: 0`, `json_object` output, and at most one compact raw-JSON retry. Compared with the preserved baseline, v9 improved schema-valid results from 5/5 to 5/5, semantic checklist passes from 2/5 to 5/5, the useful clarification result from 0/1 to 1/1, and the first measured extraction from 20.66 seconds to five warm extractions between 578.72 and 855.50 ms. It produced zero unsupported identities or quantities in the five cases. The recorded evidence also verifies department scope for the four explicit department cases and site scope for the ambiguous site case. This small tuned synthetic benchmark is prototype evidence, not general accuracy evidence.
+- Esquema válido: **5/5**; checklist semántico: **5/5**; identidades o cantidades no respaldadas: **0**.
+- Cinco extracciones calientes: **578.72–855.50 ms**; mediana: **600.34 ms** en el equipo documentado.
+- Aclaración: **1/1** caso ambiguo produjo una pregunta útil. El segundo análisis no incorporó la respuesta como total explícito y mantuvo desconocido el alcance de cantidad.
+- Prevención de duplicados: el smoke principal vinculó evidencia al MRI existente y Northbridge conservó **2** registros antes y después.
+- Evidencia local/offline: con activos ya almacenados y una sonda externa sin acceso, el flujo completó carga, inferencia, revisión, reconciliación y agregación. La observación cubrió límites instrumentados, no una auditoría de red del sistema operativo.
 
-## Corrección durante la revisión
+Detalles, configuración y límites: [informe del prototipo](results/emergency/PROTOTYPE_REPORT.md).
 
-Antes de completar la revisión, cada dato extraído ofrece la acción **Corregir** para tipo de equipo, fabricante, modelo, cantidad, alcance de cantidad y estado de certeza. La aplicación conserva el **Valor extraído por QVAC** y muestra por separado el **Valor corregido por el usuario**. Cada cambio registra fecha, revisor, campo, valores anterior y nuevo, y un motivo opcional.
+## Limitaciones
 
-Si el nuevo valor no aparece directamente en la observación original, se guarda como Evidence Entry atribuida al revisor y nunca a QVAC. Corregir no aprueba el dato ni modifica un equipo existente: la persona todavía debe aceptar o rechazar el valor final y después decidir cualquier reconciliación.
+- Las evaluaciones formales **E4 y E4-v2 fallaron**; el prototipo existe por una excepción de tiempo documentada.
+- El benchmark es sintético, pequeño y ajustado; no mide exactitud general.
+- Es un prototipo para un solo computador y un solo usuario, con almacenamiento JSON local.
+- Solo se usan datos sintéticos; no se ha validado con datos hospitalarios reales.
+- La transcripción con micrófono físico sigue pendiente de validación manual en Chrome/Edge.
+- No existe validación de seguridad de producción ni del flujo oficial de trabajo de Philips.
 
-El smoke determinista recorre esta API pública con un Draft Claim controlado deliberadamente incorrecto:
+## Estructura del repositorio
 
-```powershell
-npm.cmd run smoke:correction
-```
+| Ruta | Contenido |
+| --- | --- |
+| `public/` | Interfaz web y lógica de captura en navegador. |
+| `src/` | Host loopback, dominio, Workspace y adaptadores locales. |
+| `data/` | Semillas y casos sintéticos. |
+| `scripts/` | Factibilidad, adquisición reproducible, benchmarks y smokes. |
+| `test/` | Pruebas y fixtures sintéticos. |
+| `docs/` | Plan, decisiones, guías, especificaciones y tickets. |
+| `results/` | Evidencia versionada de factibilidad, benchmarks y smokes. |
 
-Su evidencia se publica en [correction-smoke.json](results/emergency/correction-smoke.json). Este smoke prueba el flujo y la procedencia; no mide la calidad de QVAC.
+## Documentación
 
-## Vigencia y prioridad de verificación
+- [Plan oficial del proyecto](docs/OFFICIAL_PROJECT_PLAN.md)
+- [Guía de demostración](docs/DEMO_GUIDE.md)
+- [Estado del prototipo de emergencia](docs/EMERGENCY_DEMO_STATUS.md)
+- [Informe del prototipo](results/emergency/PROTOTYPE_REPORT.md)
+- [Matriz de cumplimiento](docs/COMPLIANCE_MATRIX.md)
+- [Brief del reto Philips](docs/references/PHILIPS_CHALLENGE_BRIEF.docx)
+- Decisiones: [alcance de evidencia](docs/adr/0001-preserve-evidence-scope-separately-from-asset-identity.md), [Workspace local](docs/adr/0002-limit-mvp-to-one-local-workspace.md), [QVAC en el computador](docs/adr/0003-run-qvac-on-the-workspace-computer.md), [extracción semántica](docs/adr/0005-qvac-owns-semantic-extraction.md) y [excepción del prototipo](docs/adr/0006-use-time-constrained-browser-prototype.md).
 
-La aplicación conserva por separado la fecha de observación, cuando el usuario la conoce, y la fecha en que la evidencia se registró. Cada equipo muestra la fecha de su evidencia más reciente con textos como **Registrada hoy** o **Hace X días**; una fecha de observación ausente se presenta como **Fecha de observación desconocida**. La antigüedad no vence el equipo ni significa que la información sea incorrecta.
+## Licencias
 
-Los Verification Items reciben prioridad **Alta**, **Media** o **Baja** mediante reglas deterministas. Conflictos, identidad desconocida y cantidades ambiguas son Alta; estimaciones, correcciones aportadas solo por el revisor, fabricante/modelo faltante y evidencia antigua o sin fecha son Media; información reportada coherente que aún requiere confirmación es Baja. Dentro de la misma prioridad se muestra primero la fecha de observación desconocida y luego la evidencia más antigua.
-
-El umbral actual de 90 días es una regla configurable del prototipo. **No es una política oficial de Philips** y no establece una fecha de expiración. La vista explica cada prioridad y permite filtrar por prioridad, cliente, equipo y motivo.
-
-```powershell
-npm.cmd run smoke:freshness
-```
-
-El resultado determinista se publica en [freshness-priority-smoke.json](results/emergency/freshness-priority-smoke.json). Usa un adaptador controlado para verificar reglas y relaciones; no es evidencia de calidad de QVAC.
-
-## Problem
-
-Hospital equipment observations remain scattered across field employees' notes and memory. Incomplete, estimated, repeated, or contradictory reports can produce unreliable installed-base records without clear supporting evidence.
-
-## Proposed solution
-
-A private, offline-capable application will turn equipment observation notes into structured claims, preserve uncertainty and provenance, and suggest matches for human review without automatically merging ambiguous records. The hypothetical primary user is a field Account Manager / Sales Representative working in a single-user local workspace.
-
-The prototype runs on the inspected Windows 11 laptop with Ryzen 5 8645HS, approximately 16 GB RAM, and RTX 4050 Laptop GPU with 6 GB VRAM. The deadline exception provisionally uses a responsive browser UI connected to a loopback-only Node host on that laptop. Mobile remains future work.
-
-Verified asset records, provisional records, and reported totals are displayed separately. Verification uses explicitly trusted fictional seed references and does not prove real-world identity or current installation. The MVP supports local history, the same user's next visit, and structured export; it does not replace complete visit notes or provide cross-device synchronization or CRM ingestion.
-
-## Mandatory local inference
-
-All evaluated AI inference must use a pinned, tested `@qvac/sdk` version on the same physical computer that holds the workspace. Cloud and delegated inference are excluded. The core workflow must work without internet access after dependencies and models are installed.
-
-A web interface must identify where QVAC executes: both browser and native QVAC host run on the workspace computer. This is not browser-local inference. Peer model downloads are distinct from peer inference.
-
-Initial [platform research](docs/references/QVAC_PLATFORM_RESEARCH.md) found that official [QVAC v0.19.0 release notes](https://docs.qvac.tether.io/reference/release-notes/#delegated-inference-removed) remove delegated inference. The MVP excludes delegation and will not downgrade the SDK to restore it; the exact tested release will be recorded during the approved spike.
-
-The original E4 spike failed its structured-output and latency gates, and E4-v2 stopped at its mandatory model-fit gate. Those results remain authoritative. The emergency prototype evidence is a one-case demonstration smoke test, not a replacement feasibility evaluation.
-
-Original notes are saved before inference. A clarification answer is saved separately before the optional second and final inference. The emergency slice preserves both when extraction fails; ordinary retry and human-authored manual recovery remain deferred.
-
-QVAC-generated claims remain drafts until explicit review and never affect customer views or aggregates beforehand. The prototype accepts fictional demonstration data only, includes no application telemetry or automatic upload, and relies on the operating-system account for access. It does not claim enterprise authentication, encrypted storage, or production security.
-
-## Control local de datos
-
-La sección **Datos y privacidad** permite descargar una instantánea JSON validada del Workspace y eliminar de forma explícita sus datos de ejecución. La exportación `workspace-export-v1` conserva identificadores y relaciones de procedencia, decisiones, correcciones, reconciliaciones, verificaciones y agregados. Excluye la salida interna inválida del modelo. Consulte [docs/WORKSPACE_DATA_CONTROL.md](docs/WORKSPACE_DATA_CONTROL.md) para la estructura y los límites.
-
-La eliminación exige escribir `ELIMINAR`, ofrece exportar primero y deja el almacenamiento persistente vacío incluso después de reiniciar. **Restablecer demostración** es una acción distinta que recrea el fixture sintético. Ninguna de estas operaciones usa servicios externos.
-
-```powershell
-npm.cmd run smoke:export-delete
-```
-
-La eliminación de una observación individual continúa aplazada; esta capacidad borra el Workspace de ejecución completo.
-
-## Authoritative plan
-
-Read the [Official Project Plan](docs/OFFICIAL_PROJECT_PLAN.md) before planning or implementation. The accepted specification and tickets remain the delivery baseline, subject to the recorded emergency owner exception.
-
-The [grilling record](docs/GRILLING_RECORD.md) tracks decisions, assumptions, and validation work. [CONTEXT.md](CONTEXT.md) records domain terminology. The [original challenge reference](docs/references/PHILIPS_CHALLENGE_BRIEF.docx) is preserved unchanged, with its source boundaries documented in [reference notes](docs/references/README.md).
-
-The [compliance matrix](docs/COMPLIANCE_MATRIX.md) separates the stored Philips brief, user-provided Track 01 text, and unverified general submission commitments. The first executable implementation work remains E4 after a specification and first ticket exist; platform-dependent work waits for the measured post-E4 ADR.
+El código del proyecto se publica bajo [Apache License 2.0](LICENSE). La documentación existente conserva el alcance y las fuentes revisadas para [QVAC](docs/references/QVAC_PLATFORM_RESEARCH.md), [Tesseract.js y sus datos OCR](docs/OCR_ACQUISITION_AND_LICENSE.md) y [Whisper Tiny](results/feasibility/TRANSCRIPTION_FEASIBILITY_REPORT.md). Los pesos se mantienen fuera del repositorio; estas referencias no sustituyen una revisión legal ni otorgan derechos no documentados por sus fuentes.

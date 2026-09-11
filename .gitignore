@@ -12,6 +12,12 @@ node_modules/
 dist/
 build/
 coverage/
+.nyc_output/
+.cache/
+.eslintcache
+*.tmp
+/tmp/
+/temp/
 
 # Expo and Metro
 .expo/
@@ -74,5 +80,9 @@ models/
 # OS and editor files
 .DS_Store
 Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.code-workspace
 *.swp
 *.swo
