@@ -2,7 +2,7 @@
 
 Type: Optional Expected-Output Experience
 
-Status: blocked
+Status: ready
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
@@ -27,7 +27,15 @@ Users can explore `Región → País → Ciudad → Cliente → Equipos instalad
 
 ## Dependencies
 
-Blocked by: `docs/tickets/official-stretch-goals/03-implement-local-read-only-natural-language-analytics.md`.
+Blocked by: None. Ticket 03 is `done`.
+
+## Owner Scope Decision, 2026-09-11
+
+- Support a multinational synthetic installed base while making Panama the primary demonstration focus.
+- When applicable geography exists, prioritize Panama in the initial view and place most located synthetic customers there.
+- Retain at least one synthetic international customer, preferably in Brazil.
+- Preserve existing customer identifiers and equipment counts. Use clearly fictional names and no real or confidential hospital, address, equipment-location, or Philips data.
+- Represent absent geography explicitly as `Ubicación no especificada`; never confuse customer geography with a claim's `quantityScope` or Location Scope.
 
 ## Acceptance Criteria
 
@@ -38,6 +46,7 @@ Blocked by: `docs/tickets/official-stretch-goals/03-implement-local-read-only-na
 - [ ] Missing city/country/region remains unknown; no coordinate or precision is invented.
 - [ ] No tiles, geocoding, external map service, remote asset, real Philips location, QVAC call, or Workspace mutation occurs.
 - [ ] Synthetic-data, provenance, certainty, freshness, and limitation labels remain visible.
+- [ ] The initial applicable view prioritizes Panama, most located synthetic customers are in Panama, and at least one clearly fictional international case remains visible.
 
 ## Automated Tests
 

@@ -246,6 +246,8 @@ Arbitrary SQL/code execution, writes through chat, external knowledge, cloud sea
 
 Only synthetic stored geography may be used. The view must display the geographic level actually known, retain provenance, certainty and freshness context, and avoid invented coordinates or precision. It performs no QVAC inference and cannot modify Equipment Records. Automated hierarchy/aggregation/navigation/accessibility/no-network tests and a deterministic offline smoke are required. Stop if implementation would require remote tiles, geocoding, external services, real Philips locations, or fabricated precision.
 
+**Owner scope note recorded 2026-09-11:** the map supports a multinational synthetic landscape with Panama as the primary demonstration focus. The initial applicable view prioritizes Panama, most located synthetic customers remain in Panama, and at least one clearly fictional international case, preferably Brazil, is retained. Existing customer identifiers and equipment counts remain stable. Missing geography is shown as `Ubicación no especificada`; no real/confidential hospital, address, equipment location, coordinate, or Philips location may be introduced, and customer geography remains distinct from claim quantity/location scope.
+
 ## Feature 5 Photo Assisted Capture With Fully Local OCR
 
 ### Problem and demonstrable value
