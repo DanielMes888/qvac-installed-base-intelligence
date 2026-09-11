@@ -1,7 +1,7 @@
 {
   "schemaVersion": "emergency-demo-smoke-v1",
-  "startedAt": "2026-09-11T01:03:56.194Z",
-  "completedAt": "2026-09-11T01:04:28.204Z",
+  "startedAt": "2026-09-11T01:41:42.895Z",
+  "completedAt": "2026-09-11T01:41:50.283Z",
   "synthetic": true,
   "note": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
   "environment": {
@@ -9,17 +9,17 @@
     "cloudInference": false,
     "delegatedInference": false,
     "networkProbe": {
-      "reachable": false,
-      "error": "TypeError"
+      "reachable": true,
+      "status": 200
     },
-    "loopbackOrigin": "http://127.0.0.1:62092"
+    "loopbackOrigin": "http://127.0.0.1:56123"
   },
   "extraction": {
-    "id": "a54e1a73-5bc8-4761-8371-9c1967304d47",
+    "id": "33349cfe-5b5d-4b86-afb1-508ddcbdb9e0",
     "customerId": "northbridge",
     "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
     "observationDate": null,
-    "recordedAt": "2026-09-11T01:04:27.623Z",
+    "recordedAt": "2026-09-11T01:41:49.699Z",
     "revision": 0,
     "status": "succeeded",
     "attempts": [
@@ -126,19 +126,19 @@
           "clarification": null
         },
         "metrics": {
-          "totalMs": 557.5971000000027,
+          "totalMs": 558.7842,
           "promptTokens": 639,
           "generatedTokens": 56,
           "emittedTokens": 56,
-          "timeToFirstToken": 100.868,
-          "tokensPerSecond": 131.04687734012282,
+          "timeToFirstToken": 105.039,
+          "tokensPerSecond": 132.97588149949303,
           "backendDevice": "gpu"
         },
-        "attemptId": "d5d40acc-8c62-45f4-b720-3d402357c270",
+        "attemptId": "ef24250c-d58e-44e7-9805-cd8d6f14c706",
         "phase": "initial",
         "observationRevision": 0,
-        "startedAt": "2026-09-11T01:04:27.625Z",
-        "completedAt": "2026-09-11T01:04:28.184Z",
+        "startedAt": "2026-09-11T01:41:49.701Z",
+        "completedAt": "2026-09-11T01:41:50.260Z",
         "draftStatus": "active"
       }
     ],
@@ -303,7 +303,7 @@
       }
     },
     "load": {
-      "loadMs": 4732.3145,
+      "loadMs": 5591.9616,
       "info": {
         "modelId": "13dd17f190cd6438",
         "modelType": "llamacpp-completion",
@@ -315,7 +315,7 @@
         ],
         "displayName": "LLM (llama.cpp)",
         "addonPackage": "@qvac/llm-llamacpp",
-        "loadedAt": "2026-09-11T01:04:00.993Z",
+        "loadedAt": "2026-09-11T01:41:48.964Z",
         "name": "QWEN3_1_7B_INST_Q4",
         "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
         "toolDialect": "hermes"
@@ -345,11 +345,11 @@
       },
       {
         "claimId": "c5",
-        "decision": "rejected"
+        "decision": "accepted"
       }
     ],
-    "accepted": 4,
-    "rejected": 1,
+    "accepted": 5,
+    "rejected": 0,
     "candidates": [
       {
         "id": "nb-mri-01",
@@ -380,16 +380,17 @@
           "model": "DS-One",
           "location": "Radiology",
           "evidenceObservationIds": [
-            "a54e1a73-5bc8-4761-8371-9c1967304d47"
+            "33349cfe-5b5d-4b86-afb1-508ddcbdb9e0"
           ],
           "evidenceEntryIds": [
             "seed-e-nb-mri",
-            "a434a634-ab61-4d31-a63f-da80cbb5d137",
-            "fa78080c-42a2-417d-8ffb-39c23c460802",
-            "7429cffd-e4e0-4c95-9782-5b091ce34ecc",
-            "6d12a682-9c29-4a35-a99a-82d796c3f118"
+            "18846f03-50ec-409c-9054-b2e3e1b8690f",
+            "d2e33195-29b5-437d-a0d5-3a3137946ba4",
+            "1140d744-dd4e-4cd8-aeb2-bd3d2a5f02b6",
+            "86442a4a-6c3f-4f49-b52d-1ad5ab4a49dc",
+            "2dfcca82-6134-4b87-9fd0-744fd41c0601"
           ],
-          "latestEvidenceAt": "2026-09-11T01:04:27.623Z",
+          "latestEvidenceAt": "2026-09-11T01:41:49.699Z",
           "latestObservationDate": "2026-09-08"
         },
         {
@@ -410,11 +411,11 @@
       ],
       "observations": [
         {
-          "id": "a54e1a73-5bc8-4761-8371-9c1967304d47",
+          "id": "33349cfe-5b5d-4b86-afb1-508ddcbdb9e0",
           "customerId": "northbridge",
           "originalText": "Observé un escáner MRI DemoScan, modelo DS-One, en Radiología.",
           "observationDate": null,
-          "recordedAt": "2026-09-11T01:04:27.623Z",
+          "recordedAt": "2026-09-11T01:41:49.699Z",
           "revision": 0,
           "status": "succeeded",
           "attempts": [
@@ -521,27 +522,28 @@
                 "clarification": null
               },
               "metrics": {
-                "totalMs": 557.5971000000027,
+                "totalMs": 558.7842,
                 "promptTokens": 639,
                 "generatedTokens": 56,
                 "emittedTokens": 56,
-                "timeToFirstToken": 100.868,
-                "tokensPerSecond": 131.04687734012282,
+                "timeToFirstToken": 105.039,
+                "tokensPerSecond": 132.97588149949303,
                 "backendDevice": "gpu"
               },
-              "attemptId": "d5d40acc-8c62-45f4-b720-3d402357c270",
+              "attemptId": "ef24250c-d58e-44e7-9805-cd8d6f14c706",
               "phase": "initial",
               "observationRevision": 0,
-              "startedAt": "2026-09-11T01:04:27.625Z",
-              "completedAt": "2026-09-11T01:04:28.184Z",
+              "startedAt": "2026-09-11T01:41:49.701Z",
+              "completedAt": "2026-09-11T01:41:50.260Z",
               "draftStatus": "active"
             }
           ],
           "evidenceEntryIds": [
-            "a434a634-ab61-4d31-a63f-da80cbb5d137",
-            "fa78080c-42a2-417d-8ffb-39c23c460802",
-            "7429cffd-e4e0-4c95-9782-5b091ce34ecc",
-            "6d12a682-9c29-4a35-a99a-82d796c3f118"
+            "18846f03-50ec-409c-9054-b2e3e1b8690f",
+            "d2e33195-29b5-437d-a0d5-3a3137946ba4",
+            "1140d744-dd4e-4cd8-aeb2-bd3d2a5f02b6",
+            "86442a4a-6c3f-4f49-b52d-1ad5ab4a49dc",
+            "2dfcca82-6134-4b87-9fd0-744fd41c0601"
           ],
           "subjects": [
             {
@@ -575,7 +577,7 @@
               "decision": "accepted",
               "reviewStatus": "accepted",
               "corrections": [],
-              "acceptedEvidenceEntryId": "a434a634-ab61-4d31-a63f-da80cbb5d137"
+              "acceptedEvidenceEntryId": "18846f03-50ec-409c-9054-b2e3e1b8690f"
             },
             {
               "claimId": "c2",
@@ -601,7 +603,7 @@
               "decision": "accepted",
               "reviewStatus": "accepted",
               "corrections": [],
-              "acceptedEvidenceEntryId": "fa78080c-42a2-417d-8ffb-39c23c460802"
+              "acceptedEvidenceEntryId": "d2e33195-29b5-437d-a0d5-3a3137946ba4"
             },
             {
               "claimId": "c3",
@@ -627,7 +629,7 @@
               "decision": "accepted",
               "reviewStatus": "accepted",
               "corrections": [],
-              "acceptedEvidenceEntryId": "7429cffd-e4e0-4c95-9782-5b091ce34ecc"
+              "acceptedEvidenceEntryId": "1140d744-dd4e-4cd8-aeb2-bd3d2a5f02b6"
             },
             {
               "claimId": "c4",
@@ -654,7 +656,7 @@
               "decision": "accepted",
               "reviewStatus": "accepted",
               "corrections": [],
-              "acceptedEvidenceEntryId": "6d12a682-9c29-4a35-a99a-82d796c3f118"
+              "acceptedEvidenceEntryId": "86442a4a-6c3f-4f49-b52d-1ad5ab4a49dc"
             },
             {
               "claimId": "c5",
@@ -677,18 +679,19 @@
               "reviewedCertainty": "reported",
               "originalQuantityScope": null,
               "reviewedQuantityScope": null,
-              "decision": "rejected",
-              "reviewStatus": "rejected",
-              "corrections": []
+              "decision": "accepted",
+              "reviewStatus": "accepted",
+              "corrections": [],
+              "acceptedEvidenceEntryId": "2dfcca82-6134-4b87-9fd0-744fd41c0601"
             }
           ],
           "clarification": null,
-          "reviewedAt": "2026-09-11T01:04:28.190Z",
+          "reviewedAt": "2026-09-11T01:41:50.266Z",
           "reconciliation": {
             "recordId": "nb-mri-01",
             "reason": "La revisión del smoke test confirmó la modalidad y los datos de identificación respaldados",
             "actor": "Usuario local de demostración",
-            "decidedAt": "2026-09-11T01:04:28.197Z"
+            "decidedAt": "2026-09-11T01:41:50.275Z"
           },
           "model": {
             "sdk": "0.19.0",
@@ -712,7 +715,7 @@
             }
           },
           "load": {
-            "loadMs": 4732.3145,
+            "loadMs": 5591.9616,
             "info": {
               "modelId": "13dd17f190cd6438",
               "modelType": "llamacpp-completion",
@@ -724,7 +727,7 @@
               ],
               "displayName": "LLM (llama.cpp)",
               "addonPackage": "@qvac/llm-llamacpp",
-              "loadedAt": "2026-09-11T01:04:00.993Z",
+              "loadedAt": "2026-09-11T01:41:48.964Z",
               "name": "QWEN3_1_7B_INST_Q4",
               "path": "C:\\Users\\danie\\.qvac\\models\\f7cce66406dee646_Qwen3-1.7B-Q4_0.gguf",
               "toolDialect": "hermes"
@@ -732,7 +735,7 @@
           }
         }
       ],
-      "acceptedClaimCount": 4,
+      "acceptedClaimCount": 5,
       "unlinkedClaims": 0,
       "reportedTotals": [],
       "verificationItems": [
@@ -833,16 +836,17 @@
             "model": "DS-One",
             "location": "Radiology",
             "evidenceObservationIds": [
-              "a54e1a73-5bc8-4761-8371-9c1967304d47"
+              "33349cfe-5b5d-4b86-afb1-508ddcbdb9e0"
             ],
             "evidenceEntryIds": [
               "seed-e-nb-mri",
-              "a434a634-ab61-4d31-a63f-da80cbb5d137",
-              "fa78080c-42a2-417d-8ffb-39c23c460802",
-              "7429cffd-e4e0-4c95-9782-5b091ce34ecc",
-              "6d12a682-9c29-4a35-a99a-82d796c3f118"
+              "18846f03-50ec-409c-9054-b2e3e1b8690f",
+              "d2e33195-29b5-437d-a0d5-3a3137946ba4",
+              "1140d744-dd4e-4cd8-aeb2-bd3d2a5f02b6",
+              "86442a4a-6c3f-4f49-b52d-1ad5ab4a49dc",
+              "2dfcca82-6134-4b87-9fd0-744fd41c0601"
             ],
-            "latestEvidenceAt": "2026-09-11T01:04:27.623Z",
+            "latestEvidenceAt": "2026-09-11T01:41:49.699Z",
             "latestObservationDate": "2026-09-08"
           },
           "supportingEvidenceEntries": [
@@ -896,16 +900,17 @@
             "model": "DS-One",
             "location": "Radiology",
             "evidenceObservationIds": [
-              "a54e1a73-5bc8-4761-8371-9c1967304d47"
+              "33349cfe-5b5d-4b86-afb1-508ddcbdb9e0"
             ],
             "evidenceEntryIds": [
               "seed-e-nb-mri",
-              "a434a634-ab61-4d31-a63f-da80cbb5d137",
-              "fa78080c-42a2-417d-8ffb-39c23c460802",
-              "7429cffd-e4e0-4c95-9782-5b091ce34ecc",
-              "6d12a682-9c29-4a35-a99a-82d796c3f118"
+              "18846f03-50ec-409c-9054-b2e3e1b8690f",
+              "d2e33195-29b5-437d-a0d5-3a3137946ba4",
+              "1140d744-dd4e-4cd8-aeb2-bd3d2a5f02b6",
+              "86442a4a-6c3f-4f49-b52d-1ad5ab4a49dc",
+              "2dfcca82-6134-4b87-9fd0-744fd41c0601"
             ],
-            "latestEvidenceAt": "2026-09-11T01:04:27.623Z",
+            "latestEvidenceAt": "2026-09-11T01:41:49.699Z",
             "latestObservationDate": "2026-09-08"
           },
           "supportingEvidenceEntries": [
