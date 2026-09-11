@@ -2,7 +2,9 @@
 
 Type: Official Stretch Goal
 
-Status: blocked
+Status: ready
+
+Opened 2026-09-11 after Ticket 05 passed via `tesseract.js@7.0.0`/`tesseract.js-core@7.0.0`. The approved route is local Tesseract.js with explicitly fixed worker, WASM, and `eng`/`spa` model assets; the QVAC OCR attempt remains failed and its evidence is unchanged. The deliberately difficult synthetic OCR fixture remains a 60% limitation. This ticket does not authorize cloud OCR, remote fallback, or changes to QVAC v9.
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
@@ -27,7 +29,7 @@ A user can select a permitted synthetic image, inspect and edit local OCR text, 
 
 ## Dependencies
 
-Blocked by: `docs/tickets/official-stretch-goals/05-prove-local-ocr-feasibility.md` finishing with an owner-approved `viable` result.
+Blocked by: `docs/tickets/official-stretch-goals/05-prove-local-ocr-feasibility.md` finishing with an owner-approved `viable` result. Resolved 2026-09-11 by the recorded outcome `OCR feasibility passed via Tesseract.js`.
 
 If Ticket 05 is `not viable`, do not implement. Preserve the feasibility evidence and obtain an explicit owner decision before closing this ticket as `done` with `Resolution: not-planned`; do not mislabel it as implemented.
 
