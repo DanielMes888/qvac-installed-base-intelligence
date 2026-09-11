@@ -2,7 +2,7 @@
 
 Type: Integration and Demonstration
 
-Status: ready
+Status: blocked
 
 Specification: `docs/specs/philips-customer-installed-base-intelligence.md`
 
@@ -42,6 +42,8 @@ Dependencies resolved:
 - Resolution of `docs/tickets/official-stretch-goals/08-implement-voice-capture.md` as implemented or explicitly `Resolution: not-planned`
 
 All applicable functional branches have a recorded implemented resolution as of 2026-09-11. Ticket 09 is now ready; this status change does not begin its implementation.
+
+Temporary blocker, 2026-09-11: Ticket 08 was reopened after owner manual testing found blocking physical-microphone and capture-placement defects. Do not begin this ticket's general redesign until Ticket 08 passes owner validation and returns to `done`.
 
 ## Acceptance Criteria
 

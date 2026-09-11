@@ -2,7 +2,9 @@
 
 Type: Official Stretch Goal
 
-Status: done
+Status: in-progress
+
+Owner validation: awaiting physical-microphone confirmation in Chrome or Edge
 
 Opened 2026-09-11 after Ticket 07 passed with the local `@qvac/sdk 0.19.0` `WHISPER_TINY_Q8_0` route. The measured transcript was understandable but imperfect, so editable review remains mandatory and no alternative engine is authorized.
 
@@ -86,3 +88,9 @@ With the approved transcription route cached and networking unavailable, submit 
 ## Completion note, 2026-09-11
 
 Implemented with the cached `@qvac/sdk 0.19.0` `WHISPER_TINY_Q8_0` model, browser microphone capture and local mono PCM/WAV conversion. The real synthetic-audio smoke passed with model reuse, zero observed non-loopback transcription calls at the instrumented Node boundaries, no Workspace mutation before explicit submission, `voice` provenance afterward, and no retained audio. Focused voice/photo/capture/export/reconciliation checks and the 149-test full suite passed. Browser automation was unavailable for device-level microphone validation; permission, unsupported-browser, lifecycle, cancellation, and cleanup behavior is covered by the implemented UI states and public-seam tests, while microphone variability remains documented as a limitation.
+
+## Reopened correction, 2026-09-11
+
+Owner manual testing found that physical-microphone recording did not produce a usable transcription and that voice capture appeared outside the existing observation capture area. Ticket 08 is reopened for a focused correction of the browser MediaRecorder-to-WAV boundary and the three-mode observation capture UI. Ticket 09 remains blocked while this work is active.
+
+Automated completion is not sufficient to return this ticket to `done`. After the correction is committed and pushed, the ticket remains `in-progress` and awaiting owner validation in Chrome or Edge with a physical microphone. The owner must confirm usable microphone transcription and the in-card `Escribir` / `Imagen` / `Voz` flow before closure.

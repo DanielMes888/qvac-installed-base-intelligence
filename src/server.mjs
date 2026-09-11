@@ -60,7 +60,9 @@ export async function createPrototypeServer({
         const controller = new AbortController()
         request.once('aborted', () => controller.abort())
         response.once('close', () => { if (!response.writableEnded) controller.abort() })
-        return json(response, 200, await transcriber(await bodyJson(request, 12 * 1024 * 1024), { signal: controller.signal }))
+        const mimeType = String(request.headers['content-type'] ?? '').split(';', 1)[0].trim().toLowerCase()
+        const bytes = await bodyBuffer(request, 8 * 1024 * 1024)
+        return json(response, 200, await transcriber({ bytes, mimeType }, { signal: controller.signal }))
       }
       if (url.pathname === '/api/verifications' && request.method === 'GET') {
         return json(response, 200, workspace.verificationItems({
@@ -117,7 +119,10 @@ export async function createPrototypeServer({
       if (url.pathname.startsWith('/api/')) return json(response, 404, { error: 'No encontrado' })
       return staticFile(response, url.pathname)
     } catch (error) {
-      return json(response, 400, { error: error instanceof Error ? error.message : String(error) })
+      return json(response, 400, {
+        error: error instanceof Error ? error.message : String(error),
+        errorCategory: error?.category ?? (error?.name === 'AbortError' ? 'cancelled' : 'request-failed')
+      })
     }
   })
   return { server, close: async () => { await closePhotoOcr(); await closeVoiceTranscription(); await closeQvac(); await new Promise((resolve) => server.close(resolve)) } }
@@ -138,10 +143,14 @@ function isLocalRequest(request) {
 }
 
 async function bodyJson(request, maxBytes = 1024 * 1024) {
+  return JSON.parse((await bodyBuffer(request, maxBytes)).toString('utf8') || '{}')
+}
+
+async function bodyBuffer(request, maxBytes = 1024 * 1024) {
   const chunks = []
   let size = 0
   for await (const chunk of request) { size += chunk.length; if (size > maxBytes) throw new Error('La solicitud supera el límite permitido'); chunks.push(chunk) }
-  return JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}')
+  return Buffer.concat(chunks)
 }
 
 function photoExample(response) {

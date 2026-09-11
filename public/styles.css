@@ -78,6 +78,7 @@ button:disabled, input:disabled, select:disabled, textarea:disabled { cursor: wa
 .capture-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 20px; }
 .capture-method { min-height: 40px; padding: 8px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--muted); font-size: 11px; font-weight: 750; }
 .capture-method.active { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+.capture-panel[hidden] { display: none; }
 .photo-capture, .voice-capture { margin: 18px 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-subtle); }
 .photo-capture-heading { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
 .photo-capture-heading h2 { margin: 0; font-size: 17px; }
@@ -100,6 +101,12 @@ button:disabled, input:disabled, select:disabled, textarea:disabled { cursor: wa
 .voice-meter strong { font-size: 12px; }
 .voice-meter span { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 11px; }
 .voice-capture.recording .voice-meter strong { color: var(--danger); }
+.voice-diagnostics { margin-top: 12px; color: var(--muted); font-size: 10px; }
+.voice-diagnostics summary { cursor: pointer; font-weight: 750; }
+.voice-diagnostics dl { display: grid; gap: 5px; margin: 9px 0 0; }
+.voice-diagnostics dl > div { display: grid; grid-template-columns: 105px minmax(0, 1fr); gap: 8px; }
+.voice-diagnostics dt { font-weight: 750; }
+.voice-diagnostics dd { margin: 0; overflow-wrap: anywhere; }
 .compact-button.button.primary { width: auto; margin-top: 0; }
 .media-limitation { margin: 0; color: var(--muted); font-size: 10px; }
 .observation-provenance { display: inline-flex; margin: 0 0 10px; padding: 5px 9px; border-radius: 999px; background: var(--brand-soft); color: var(--brand-strong); font-size: 11px; font-weight: 750; }
@@ -401,7 +408,7 @@ details p { margin: 4px 0 0; }
   .app-main { padding: 18px 16px 38px; }
   .workspace-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
   .capture-grid { grid-template-columns: 1fr; }
-  .capture-methods { grid-template-columns: 1fr; }
+  .capture-methods { grid-template-columns: repeat(3, 1fr); }
   .process-card { order: -1; }
   .process-card ol { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
   .process-card li { display: block; padding: 0; }

@@ -7,11 +7,13 @@ import { fileURLToPath } from 'node:url'
 
 import { transcribeVoice, voiceTranscriptionDiagnostics } from '../../src/core/voice-transcription.mjs'
 import { createPrototypeServer } from '../../src/server.mjs'
+import { resamplePcm16MonoWave } from '../support/wave-fixture.mjs'
 
 const require = createRequire(import.meta.url)
 const { installNetworkDeny } = require('../feasibility/ocr/network-boundaries.cjs')
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const fixture = await readFile(new URL('../../test/fixtures/transcription/spanish-medical-equipment.wav', import.meta.url))
+const browserTargetFixture = resamplePcm16MonoWave(fixture, 16_000)
 const workspaceDirectory = await mkdtemp(path.join(tmpdir(), 'voice-smoke-workspace-'))
 const workspacePath = path.join(workspaceDirectory, 'workspace.json')
 const networkAttempts = []
@@ -32,7 +34,7 @@ try {
   const beforeDirectories = await temporaryVoiceDirectories()
   const before = await fetch(`${origin}/api/workspace/export`).then((response) => response.json())
   const firstStarted = performance.now()
-  const first = await fetch(`${origin}/api/voice-transcription`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ base64: fixture.toString('base64'), mimeType: 'audio/wav' }) }).then((response) => response.json())
+  const first = await fetch(`${origin}/api/voice-transcription`, { method: 'POST', headers: { 'content-type': 'audio/wav' }, body: browserTargetFixture }).then((response) => response.json())
   const firstMs = performance.now() - firstStarted
   assert.match(first.text, /escaner|resonancia|radiolog/i)
   assert.equal(extractorCalls, 0)
@@ -42,7 +44,7 @@ try {
   const restoreNetwork = installNetworkDeny({ attempts: networkAttempts })
   let second
   const secondStarted = performance.now()
-  try { second = await transcribeVoice({ base64: fixture.toString('base64'), mimeType: 'audio/wav' }) } finally { restoreNetwork() }
+  try { second = await transcribeVoice({ bytes: browserTargetFixture, mimeType: 'audio/wav' }) } finally { restoreNetwork() }
   const secondMs = performance.now() - secondStarted
   assert.match(second.text, /escaner|resonancia|radiolog/i)
   assert.equal(networkAttempts.length, 0)
@@ -65,8 +67,8 @@ try {
     lifecycle: { exampleTranscribed: true, cancelledCaseCreatedObservation: false, editableReview: true, explicitObservationSubmit: true, explicitDraftReview: true },
     persistence: { observationsBeforeSubmit: before.observations.length, observationsAfterTranscription: afterTranscription.observations.length, observationsAfterSubmit: exported.observations.length, provenance: observation.provenance, originalAudioPersisted: false },
     cleanup: { temporaryDirectoriesRemoved: true },
-    boundaries: { qvacExtractionCallsDuringRecordingOrTranscription: 0, qvacExtractionCallsAfterExplicitSubmit: extractorCalls, nonLoopbackTranscriptionCallsObserved: networkAttempts.length, observationSavedBeforeExtraction: true },
-    limitations: ['Synthetic fixture audio only; microphone variability requires manual browser validation.', 'Whisper Tiny mishears some proper names, so transcript review is mandatory.', 'Instrumented Node boundaries are not a complete operating-system audit.']
+    boundaries: { qvacExtractionCallsDuringRecordingOrTranscription: 0, qvacExtractionCallsAfterExplicitSubmit: extractorCalls, nonLoopbackTranscriptionCallsObserved: networkAttempts.length, observationSavedBeforeExtraction: true, uploadContentType: 'audio/wav', received: first.received },
+    limitations: ['Synthetic fixture retained; physical-microphone transcription still requires owner validation in Chrome or Edge.', 'Whisper Tiny mishears some proper names, so transcript review is mandatory.', 'Instrumented Node boundaries are not a complete operating-system audit.']
   }
   await writeFile(path.join(root, 'results', 'emergency', 'voice-transcription-smoke.json'), `${JSON.stringify(result, null, 2)}\n`, 'utf8')
   console.log(JSON.stringify(result))

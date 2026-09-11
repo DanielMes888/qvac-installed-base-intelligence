@@ -1,3 +1,5 @@
+import { finalizeMediaRecording, normalizeBrowserAudio, selectMediaRecorderMimeType } from './voice-audio.js'
+
 const $ = (selector) => document.querySelector(selector)
 const $$ = (selector) => [...document.querySelectorAll(selector)]
 const VOICE_MAX_MS = 60_000
@@ -20,6 +22,9 @@ let voiceTimer = null
 let voiceStartedAt = 0
 let voiceAbortController = null
 let voiceCancelled = false
+let voiceStopping = false
+let voiceSelectedMimeType = ''
+let voiceSession = 0
 
 const claimLabels = {
   equipmentType: 'Tipo de equipo',
@@ -66,6 +71,7 @@ $('#voice-example').addEventListener('click', loadVoiceExample)
 $('#voice-cancel').addEventListener('click', cancelVoiceCapture)
 $('#voice-use').addEventListener('click', useVoiceAsObservation)
 window.addEventListener('beforeunload', () => { clearVoiceCapture(); if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl) })
+window.addEventListener('pagehide', () => { clearVoiceCapture(); if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl) })
 $('#review').addEventListener('click', review)
 $('#answer-clarification').addEventListener('click', () => clarify('answered'))
 $('#unknown-clarification').addEventListener('click', () => clarify('unknown'))
@@ -152,7 +158,7 @@ async function runAnalytics(event) {
 }
 
 function activateWorkspace(name) {
-  if (name !== 'capture' && voiceRecorder?.state === 'recording') clearVoiceCapture()
+  if (name !== 'capture' && hasVoiceCapture()) clearVoiceCapture()
   $$('.workspace').forEach((workspace) => workspace.classList.toggle('active', workspace.id === `workspace-${name}`))
   $$('.nav-item').forEach((button) => {
     const active = button.dataset.workspace === name
@@ -325,7 +331,7 @@ function usePhotoAsObservation() {
   updateNoteLength()
   clearPhotoCapture()
   setFeedback('Texto preparado como observación photo-assisted. Revíselo y envíelo con el botón de captura.', 'success')
-  $('#note').focus()
+  selectCaptureMethod('text', { preserveProvenance: true })
 }
 
 function cancelPhoto() {
@@ -351,107 +357,194 @@ function fileToBase64(file) {
   return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(String(reader.result).split(',')[1]); reader.onerror = () => reject(new Error('No se pudo leer la imagen local')); reader.readAsDataURL(file) })
 }
 
-function selectCaptureMethod(method) {
-  $$('.capture-method').forEach((button) => button.classList.toggle('active', button.dataset.captureMethod === method))
-  if (method === 'voice') return $('#voice-capture').scrollIntoView({ behavior: 'smooth', block: 'center' })
-  if (voiceRecorder?.state === 'recording') clearVoiceCapture()
-  if (method === 'photo') return $('#photo-capture-title').scrollIntoView({ behavior: 'smooth', block: 'center' })
-  $('#note').focus()
+function selectCaptureMethod(method, { preserveProvenance = false } = {}) {
+  if (!['text', 'photo', 'voice'].includes(method)) return
+  if (method !== 'voice' && hasVoiceCapture()) clearVoiceCapture()
+  if (method !== 'photo' && photoFile) clearPhotoCapture()
+  $$('.capture-method').forEach((button) => {
+    const active = button.dataset.captureMethod === method
+    button.classList.toggle('active', active)
+    button.setAttribute('aria-selected', String(active))
+  })
+  $$('[data-capture-panel]').forEach((panel) => { panel.hidden = panel.dataset.capturePanel !== method })
+  $('#extract').disabled = method !== 'text' || !$('#customer').value
+  if (method === 'text' && !preserveProvenance) captureProvenance = 'text'
+  if (method === 'voice') {
+    updateMicrophonePermission().catch(() => {})
+    $('#voice-start').focus()
+  } else if (method === 'photo') {
+    $('#photo-dropzone').focus()
+  } else {
+    $('#note').focus()
+  }
 }
 
 async function startVoiceRecording() {
-  if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') return setVoiceStatus('Este navegador no permite grabar audio localmente.', 'error')
+  if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+    $('#voice-recorder-support').textContent = 'No disponible'
+    return setVoiceStatus('Este navegador no permite grabar audio localmente. Use Chrome o Edge actualizado.', 'error')
+  }
   clearVoiceCapture()
+  const session = voiceSession
   voiceCancelled = false
-  setVoiceStatus('Preparando dictado…', 'loading')
+  voiceSelectedMimeType = selectMediaRecorderMimeType(MediaRecorder)
+  $('#voice-recorder-support').textContent = 'Disponible'
+  $('#voice-source-format').textContent = voiceSelectedMimeType || 'Formato predeterminado del navegador'
+  setVoiceStatus('Solicitando acceso al micrófono…', 'loading')
+  await updateMicrophonePermission()
   try {
-    voiceStream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true }, video: false })
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true }, video: false })
+    if (session !== voiceSession) {
+      stream.getTracks().forEach((track) => track.stop())
+      return
+    }
+    voiceStream = stream
+    $('#voice-permission').textContent = 'Concedido'
     voiceChunks = []
-    voiceRecorder = new MediaRecorder(voiceStream)
+    voiceRecorder = voiceSelectedMimeType
+      ? new MediaRecorder(voiceStream, { mimeType: voiceSelectedMimeType })
+      : new MediaRecorder(voiceStream)
+    voiceSelectedMimeType = voiceRecorder.mimeType || voiceSelectedMimeType
+    $('#voice-source-format').textContent = voiceSelectedMimeType || 'Formato predeterminado del navegador'
     voiceRecorder.addEventListener('dataavailable', (event) => { if (event.data.size) voiceChunks.push(event.data) })
-    voiceRecorder.addEventListener('stop', prepareRecordedVoice, { once: true })
     voiceRecorder.start(250)
-    voiceStartedAt = Date.now()
+    voiceStartedAt = performance.now()
     voiceTimer = window.setInterval(updateVoiceElapsed, 250)
-    $('#voice-capture').classList.add('recording')
+    $('#capture-panel-voice').classList.add('recording')
     $('#voice-start').classList.add('hidden')
     $('#voice-stop').classList.remove('hidden')
     $('#voice-state').textContent = 'Grabando'
-    setVoiceStatus('Grabación activa. Deténgala cuando termine; el límite es 60 segundos.', 'loading')
+    setVoiceStatus('Grabación activa. Hable cerca del micrófono y deténgala cuando termine.', 'loading')
     updateVoiceElapsed()
   } catch (error) {
+    if (session !== voiceSession) return
+    const denied = error?.name === 'NotAllowedError' || error?.name === 'SecurityError'
     clearVoiceCapture()
-    setVoiceStatus(error?.name === 'NotAllowedError' ? 'No se concedió permiso para usar el micrófono. Puede intentar de nuevo o escribir la observación.' : `No se pudo iniciar la grabación: ${error.message}`, 'error')
+    $('#voice-permission').textContent = denied ? 'Denegado' : 'No disponible'
+    setVoiceStatus(denied
+      ? 'Permiso de micrófono denegado. Permita el micrófono para 127.0.0.1 en Chrome o Edge y vuelva a intentar; también puede escribir la observación.'
+      : `No se pudo iniciar la grabación: ${error.message}. Compruebe que el micrófono esté conectado y no esté ocupado.`, 'error')
   }
 }
 
-function stopVoiceRecording() {
-  if (voiceRecorder?.state === 'recording') voiceRecorder.stop()
-  stopVoiceTracks()
+async function stopVoiceRecording() {
+  if (voiceRecorder?.state !== 'recording' || voiceStopping) return
+  voiceStopping = true
   clearInterval(voiceTimer)
   voiceTimer = null
   $('#voice-stop').classList.add('hidden')
-  $('#voice-capture').classList.remove('recording')
-  $('#voice-state').textContent = 'Procesando audio'
-  setVoiceStatus('Procesando audio localmente…', 'loading')
-}
-
-async function prepareRecordedVoice() {
-  if (voiceCancelled) return
+  $('#capture-panel-voice').classList.remove('recording')
+  $('#voice-state').textContent = 'Preparando audio'
+  setVoiceStatus('Finalizando la grabación y convirtiéndola localmente…', 'loading')
   try {
-    if (!voiceChunks.length) throw new Error('La grabación está vacía')
-    voiceBlob = await encodeMonoPcmWav(new Blob(voiceChunks, { type: voiceRecorder.mimeType }))
-    if (voiceBlob.size <= 44) throw new Error('La grabación está vacía')
-    showPreparedVoice(voiceBlob)
-    setVoiceStatus('Audio listo. Puede escucharlo, grabar de nuevo o solicitar la transcripción local.', 'success')
+    const session = voiceSession
+    const durationMs = Math.min(VOICE_MAX_MS, performance.now() - voiceStartedAt)
+    const recorded = await finalizeMediaRecording({
+      recorder: voiceRecorder,
+      stream: voiceStream,
+      chunks: voiceChunks,
+      selectedMimeType: voiceSelectedMimeType,
+      durationMs
+    })
+    voiceStream = null
+    if (!voiceCancelled && session === voiceSession) await prepareRecordedVoice(recorded, session)
   } catch (error) {
-    clearVoiceCapture()
-    setVoiceStatus(`El audio no pudo prepararse: ${error.message}`, 'error')
+    if (!voiceCancelled) {
+      clearVoiceCapture()
+      setVoiceStatus(`No se pudo completar la grabación: ${error.message}. Vuelva a grabar y hable cerca del micrófono.`, 'error')
+    }
+  } finally {
+    voiceStopping = false
   }
 }
 
-function showPreparedVoice(blob) {
+async function prepareRecordedVoice(recorded, session = voiceSession) {
+  if (voiceCancelled || session !== voiceSession) return
+  $('#voice-source-format').textContent = `${recorded.mimeType} · ${formatBytes(recorded.sizeBytes)} · ${formatSeconds(recorded.durationMs / 1_000)}`
+  if (!recorded.sizeBytes) {
+    clearVoiceCapture()
+    return setVoiceStatus('No se capturó audio. Revise el micrófono y vuelva a grabar.', 'error')
+  }
+  try {
+    const normalized = await normalizeBrowserAudio(recorded.blob)
+    if (voiceCancelled || session !== voiceSession) return
+    showPreparedVoice(normalized)
+    setVoiceStatus(`Audio capturado correctamente: ${formatSeconds(normalized.durationSeconds)} · ${formatBytes(normalized.sizeBytes)}. Puede escucharlo antes de transcribir.`, 'success')
+  } catch (error) {
+    clearVoiceCapture()
+    setVoiceStatus(`${error.message} Categoría: ${error.category ?? 'conversion-failed'}.`, 'error')
+  }
+}
+
+function showPreparedVoice(normalized) {
   if (voiceObjectUrl) URL.revokeObjectURL(voiceObjectUrl)
-  voiceBlob = blob
-  voiceObjectUrl = URL.createObjectURL(blob)
+  voiceBlob = normalized.blob
+  voiceObjectUrl = URL.createObjectURL(voiceBlob)
   $('#voice-playback').src = voiceObjectUrl
-  $('#voice-state').textContent = 'Audio listo'
+  $('#voice-playback-state').textContent = 'Objeto temporal listo'
+  $('#voice-state').textContent = 'Audio capturado'
+  $('#voice-elapsed').textContent = `${formatClock(normalized.durationSeconds)} / 01:00`
+  $('#voice-target-format').textContent = `audio/wav · PCM mono · 16 bits · ${normalized.sampleRateHz} Hz · ${formatBytes(normalized.sizeBytes)}`
   $$('#voice-listen, #voice-again, #voice-transcribe').forEach((button) => button.classList.remove('hidden'))
+  $('#voice-transcribe').disabled = voiceBlob.size <= 44
   $('#voice-start').classList.add('hidden')
 }
 
 async function loadVoiceExample() {
   clearVoiceCapture()
+  const session = voiceSession
+  voiceCancelled = false
   setVoiceStatus('Preparando dictado de ejemplo…', 'loading')
   try {
     const response = await fetch('/api/voice-example', { cache: 'no-store' })
+    if (session !== voiceSession) return
     if (!response.ok) throw new Error('No se pudo cargar el audio sintético de ejemplo')
-    showPreparedVoice(await response.blob())
-    $('#voice-elapsed').textContent = '00:05 / 01:00'
-    setVoiceStatus('Audio sintético listo. Use Transcribir para procesarlo con el motor local real.', 'success')
-  } catch (error) { setVoiceStatus(error.message, 'error') }
+    const source = await response.blob()
+    $('#voice-source-format').textContent = `${source.type} · ${formatBytes(source.size)}`
+    const normalized = await normalizeBrowserAudio(source)
+    if (session !== voiceSession) return
+    showPreparedVoice(normalized)
+    setVoiceStatus('Audio sintético capturado correctamente. Use Transcribir para procesarlo con el motor local real.', 'success')
+  } catch (error) {
+    clearVoiceCapture()
+    setVoiceStatus(`${error.message}. Puede volver a intentarlo.`, 'error')
+  }
 }
 
 async function transcribeVoiceRecording() {
-  if (!voiceBlob) return setVoiceStatus('Grabe o cargue un audio sintético antes de transcribir.', 'error')
+  if (!voiceBlob || voiceBlob.size <= 44) return setVoiceStatus('La grabación está vacía. Vuelva a grabar antes de transcribir.', 'error')
   voiceAbortController?.abort()
   voiceAbortController = new AbortController()
   const button = $('#voice-transcribe')
   button.disabled = true
-  $('#voice-state').textContent = 'Procesando audio'
-  setVoiceStatus('Procesando audio con transcripción local…', 'loading')
+  $('#voice-state').textContent = 'Transcribiendo localmente'
+  $('#voice-upload-format').textContent = `audio/wav · ${formatBytes(voiceBlob.size)}`
+  setVoiceStatus('Enviando WAV PCM al servidor local y transcribiendo con QVAC…', 'loading')
   try {
-    const response = await api('/api/voice-transcription', { method: 'POST', signal: voiceAbortController.signal, body: JSON.stringify({ base64: await fileToBase64(voiceBlob), mimeType: 'audio/wav' }) })
+    const response = await api('/api/voice-transcription', {
+      method: 'POST',
+      signal: voiceAbortController.signal,
+      headers: { 'content-type': 'audio/wav' },
+      body: voiceBlob
+    })
+    const received = response.received
+    $('#voice-server-format').textContent = received
+      ? `${received.mimeType} · ${received.format} mono · ${received.bitsPerSample} bits · ${received.sampleRateHz} Hz · ${formatBytes(received.sizeBytes)} · ${formatSeconds(received.durationSeconds)}`
+      : 'Audio WAV recibido'
     $('#voice-text').value = response.text
     $('#voice-text-wrap').classList.remove('hidden')
     $('#voice-state').textContent = 'Transcripción lista'
     setVoiceStatus('Transcripción lista. Revise y corrija el texto antes de usarlo.', 'success')
   } catch (error) {
     if (error.name !== 'AbortError') {
-      $('#voice-state').textContent = 'El audio no pudo transcribirse'
-      setVoiceStatus(`El audio no pudo transcribirse: ${error.message}. Puede volver a intentar o grabar de nuevo.`, 'error')
+      $('#voice-state').textContent = 'Falló la transcripción'
+      $('#voice-server-format').textContent = `Error: ${error.category ?? 'request-failed'}`
+      setVoiceStatus(transcriptionFailureMessage(error), 'error')
     }
-  } finally { button.disabled = false; voiceAbortController = null }
+  } finally {
+    button.disabled = !voiceBlob || voiceBlob.size <= 44
+    voiceAbortController = null
+  }
 }
 
 function useVoiceAsObservation() {
@@ -461,17 +554,19 @@ function useVoiceAsObservation() {
   captureProvenance = 'voice'
   updateNoteLength()
   clearVoiceCapture()
-  setFeedback('Texto de voz preparado como observación. Revíselo y envíelo explícitamente con el botón de captura.', 'success')
-  $('#note').focus()
+  selectCaptureMethod('text', { preserveProvenance: true })
+  setFeedback('El texto revisado se copió a la observación. Todavía no se ha guardado ni analizado; use “Guardar y analizar con QVAC” cuando esté listo.', 'success')
 }
 
 function cancelVoiceCapture() {
   clearVoiceCapture()
-  setVoiceStatus('Dictado cancelado. El audio temporal fue eliminado y no se creó ninguna observación.', 'success')
+  selectCaptureMethod('text')
+  setFeedback('Dictado cancelado. El audio temporal fue eliminado y no se creó ninguna observación.', 'success')
 }
 
 function clearVoiceCapture() {
   voiceCancelled = true
+  voiceSession += 1
   voiceAbortController?.abort()
   voiceAbortController = null
   if (voiceRecorder?.state === 'recording') voiceRecorder.stop()
@@ -481,18 +576,29 @@ function clearVoiceCapture() {
   voiceRecorder = null
   voiceChunks = []
   voiceBlob = null
+  voiceSelectedMimeType = ''
   if (voiceObjectUrl) URL.revokeObjectURL(voiceObjectUrl)
   voiceObjectUrl = null
   $('#voice-playback').pause()
   $('#voice-playback').removeAttribute('src')
-  $('#voice-capture').classList.remove('recording')
+  $('#capture-panel-voice').classList.remove('recording')
   $('#voice-start').classList.remove('hidden')
   $('#voice-stop').classList.add('hidden')
   $$('#voice-listen, #voice-again, #voice-transcribe').forEach((button) => button.classList.add('hidden'))
+  $('#voice-transcribe').disabled = true
   $('#voice-text-wrap').classList.add('hidden')
   $('#voice-text').value = ''
   $('#voice-state').textContent = 'Listo para grabar'
   $('#voice-elapsed').textContent = '00:00 / 01:00'
+  $('#voice-source-format').textContent = 'Sin audio'
+  $('#voice-target-format').textContent = 'Pendiente'
+  $('#voice-playback-state').textContent = 'Sin objeto temporal (revocado)'
+  $('#voice-upload-format').textContent = 'Pendiente'
+  $('#voice-server-format').textContent = 'Pendiente'
+}
+
+function hasVoiceCapture() {
+  return Boolean(voiceStream || voiceRecorder || voiceBlob || voiceObjectUrl || voiceAbortController)
 }
 
 function stopVoiceTracks() {
@@ -500,47 +606,41 @@ function stopVoiceTracks() {
   voiceStream = null
 }
 
-function updateVoiceElapsed() {
-  const elapsed = Math.min(VOICE_MAX_MS / 1000, Math.floor((Date.now() - voiceStartedAt) / 1000))
-  $('#voice-elapsed').textContent = `00:${String(elapsed).padStart(2, '0')} / 01:00`
-  if (elapsed >= VOICE_MAX_MS / 1000) stopVoiceRecording()
-}
-
-async function encodeMonoPcmWav(blob) {
-  const context = new AudioContext()
+async function updateMicrophonePermission() {
+  $('#voice-recorder-support').textContent = typeof MediaRecorder === 'undefined' ? 'No disponible' : 'Disponible'
+  if (!navigator.permissions?.query) return
   try {
-    const decoded = await context.decodeAudioData(await blob.arrayBuffer())
-    const sampleRate = Math.min(48000, decoded.sampleRate)
-    const length = Math.ceil(decoded.duration * sampleRate)
-    if (!length || decoded.duration > 60.05) throw new Error('La grabación supera el límite de 60 segundos o está vacía')
-    const offline = new OfflineAudioContext(1, length, sampleRate)
-    const mono = offline.createBuffer(1, decoded.length, decoded.sampleRate)
-    const target = mono.getChannelData(0)
-    for (let channel = 0; channel < decoded.numberOfChannels; channel += 1) {
-      const source = decoded.getChannelData(channel)
-      for (let index = 0; index < source.length; index += 1) target[index] += source[index] / decoded.numberOfChannels
-    }
-    const node = offline.createBufferSource()
-    node.buffer = mono
-    node.connect(offline.destination)
-    node.start()
-    return pcmToWave(await offline.startRendering())
-  } finally { await context.close() }
+    const permission = await navigator.permissions.query({ name: 'microphone' })
+    $('#voice-permission').textContent = ({ granted: 'Concedido', denied: 'Denegado', prompt: 'Se solicitará al grabar' })[permission.state] ?? 'No determinado'
+  } catch {
+    $('#voice-permission').textContent = 'Se comprobará al grabar'
+  }
 }
 
-function pcmToWave(buffer) {
-  const samples = buffer.getChannelData(0)
-  const output = new ArrayBuffer(44 + samples.length * 2)
-  const view = new DataView(output)
-  writeAscii(view, 0, 'RIFF'); view.setUint32(4, 36 + samples.length * 2, true); writeAscii(view, 8, 'WAVEfmt ')
-  view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true); view.setUint32(24, buffer.sampleRate, true)
-  view.setUint32(28, buffer.sampleRate * 2, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true); writeAscii(view, 36, 'data'); view.setUint32(40, samples.length * 2, true)
-  for (let index = 0; index < samples.length; index += 1) view.setInt16(44 + index * 2, Math.max(-1, Math.min(1, samples[index])) * 0x7fff, true)
-  return new Blob([output], { type: 'audio/wav' })
+function updateVoiceElapsed() {
+  const elapsedSeconds = Math.min(VOICE_MAX_MS / 1_000, (performance.now() - voiceStartedAt) / 1_000)
+  $('#voice-elapsed').textContent = `${formatClock(elapsedSeconds)} / 01:00`
+  if (elapsedSeconds >= VOICE_MAX_MS / 1_000) stopVoiceRecording()
 }
 
-function writeAscii(view, offset, value) { for (let index = 0; index < value.length; index += 1) view.setUint8(offset + index, value.charCodeAt(index)) }
+function transcriptionFailureMessage(error) {
+  const actions = {
+    'empty-audio': 'No se recibió audio. Vuelva a grabar y confirme que el medidor del sistema detecta su voz.',
+    'conversion-required': 'El formato del navegador no llegó convertido. Vuelva a grabar en Chrome o Edge actualizado.',
+    'invalid-wav': 'El WAV local quedó incompleto. Vuelva a grabar sin cambiar de modo hasta que aparezca “Audio capturado”.',
+    'model-unavailable': 'El modelo local de transcripción no está disponible. Ejecute la preparación documentada y vuelva a intentar.',
+    'no-usable-transcript': 'No se obtuvo texto utilizable. Vuelva a grabar, hable cerca del micrófono y reduzca el ruido de fondo.'
+  }
+  return `${actions[error.category] ?? `No se pudo transcribir el audio: ${error.message}. Vuelva a intentarlo o grabe de nuevo.`} Categoría: ${error.category ?? 'request-failed'}.`
+}
 
+function formatClock(seconds) {
+  const whole = Math.max(0, Math.min(60, Math.floor(seconds)))
+  return `00:${String(whole).padStart(2, '0')}`
+}
+
+function formatSeconds(seconds) { return `${Number(seconds).toFixed(2)} s` }
+function formatBytes(bytes) { return bytes < 1_024 ? `${bytes} B` : `${(bytes / 1_024).toFixed(1)} KB` }
 function setVoiceStatus(message, kind = '') { $('#voice-status').className = `feedback ${kind}`; $('#voice-status').textContent = message }
 
 function renderOriginalObservation(observation) {
@@ -1168,4 +1268,13 @@ function formatEvidenceAge(value) {
   return `Hace ${days} día${days === 1 ? '' : 's'}`
 }
 function escapeHtml(value) { const node = document.createElement('span'); node.textContent = value; return node.innerHTML }
-async function api(url, options) { const response = await fetch(url, { headers: { 'content-type': 'application/json' }, ...options }); const data = await response.json(); if (!response.ok) throw new Error(data.error || 'La solicitud local falló.'); return data }
+async function api(url, options) {
+  const response = await fetch(url, { headers: { 'content-type': 'application/json' }, ...options })
+  const data = await response.json()
+  if (!response.ok) {
+    const error = new Error(data.error || 'La solicitud local falló.')
+    error.category = data.errorCategory
+    throw error
+  }
+  return data
+}

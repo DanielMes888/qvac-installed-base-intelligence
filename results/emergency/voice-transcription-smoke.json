@@ -1,14 +1,14 @@
 {
   "schemaVersion": "voice-transcription-smoke-v1",
-  "startedAt": "2026-09-11T08:39:23.237Z",
-  "completedAt": "2026-09-11T08:39:27.101Z",
+  "startedAt": "2026-09-11T09:11:21.246Z",
+  "completedAt": "2026-09-11T09:11:25.053Z",
   "synthetic": true,
   "outcome": "passed",
   "transcription": {
     "engine": "@qvac/sdk 0.19.0 WHISPER_TINY_Q8_0",
     "real": true,
-    "firstMs": 3510.5481999999997,
-    "secondMs": 320.1017999999999,
+    "firstMs": 3470.9909,
+    "secondMs": 301.34270000000015,
     "modelLoads": 1,
     "reviewedTranscriptChanged": true
   },
@@ -33,10 +33,20 @@
     "qvacExtractionCallsDuringRecordingOrTranscription": 0,
     "qvacExtractionCallsAfterExplicitSubmit": 1,
     "nonLoopbackTranscriptionCallsObserved": 0,
-    "observationSavedBeforeExtraction": true
+    "observationSavedBeforeExtraction": true,
+    "uploadContentType": "audio/wav",
+    "received": {
+      "mimeType": "audio/wav",
+      "sizeBytes": 165590,
+      "format": "PCM",
+      "channels": 1,
+      "bitsPerSample": 16,
+      "sampleRateHz": 16000,
+      "durationSeconds": 5.1733125
+    }
   },
   "limitations": [
-    "Synthetic fixture audio only; microphone variability requires manual browser validation.",
+    "Synthetic fixture retained; physical-microphone transcription still requires owner validation in Chrome or Edge.",
     "Whisper Tiny mishears some proper names, so transcript review is mandatory.",
     "Instrumented Node boundaries are not a complete operating-system audit."
   ]
